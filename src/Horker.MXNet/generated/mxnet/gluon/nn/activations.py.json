@@ -1,0 +1,2131 @@
+{
+  "_Name": "Module",
+  "body": [
+    {
+      "_Name": "Expr",
+      "value": {
+        "_Name": "Constant",
+        "value": "'Basic neural network layers.'",
+        "kind": "None"
+      }
+    },
+    {
+      "_Name": "Assign",
+      "targets": [
+        {
+          "_Name": "Name",
+          "id": "'__all__'",
+          "ctx": {
+            "_Name": "Store"
+          }
+        }
+      ],
+      "value": {
+        "_Name": "List",
+        "elts": [
+          {
+            "_Name": "Constant",
+            "value": "'Activation'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'LeakyReLU'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'PReLU'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'ELU'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'SELU'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'Swish'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'GELU'",
+            "kind": "None"
+          }
+        ],
+        "ctx": {
+          "_Name": "Load"
+        }
+      },
+      "type_comment": "None"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "None",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'initializer'",
+          "asname": "None"
+        }
+      ],
+      "level": "3"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'block'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'HybridBlock'",
+          "asname": "None"
+        }
+      ],
+      "level": "2"
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'Activation'",
+      "bases": [
+        {
+          "_Name": "Name",
+          "id": "'HybridBlock'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'Applies an activation function to input.\\n\\n    Parameters\\n    ----------\\n    activation : str\\n        Name of activation function to use.\\n        See :func:`~mxnet.ndarray.Activation` for available choices.\\n\\n\\n    Inputs:\\n        - **data**: input tensor with arbitrary shape.\\n\\n    Outputs:\\n        - **out**: output tensor with the same shape as `data`.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'activation'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": {
+              "_Name": "arg",
+              "arg": "'kwargs'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'_act_type'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Name",
+                "id": "'activation'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'super'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'Activation'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "attr": "'__init__'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "None",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'kwargs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'_alias'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Attribute",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'self'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "attr": "'_act_type'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'hybrid_forward'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'F'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'x'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'F'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'Activation'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'x'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'act_type'",
+                    "value": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'_act_type'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  },
+                  {
+                    "_Name": "keyword",
+                    "arg": "'name'",
+                    "value": {
+                      "_Name": "Constant",
+                      "value": "'fwd'",
+                      "kind": "None"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__repr__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'s'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Constant",
+                "value": "'{name}({_act_type})'",
+                "kind": "None"
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'s'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'format'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'name'",
+                    "value": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'__class__'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'__name__'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  },
+                  {
+                    "_Name": "keyword",
+                    "arg": "None",
+                    "value": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'__dict__'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'LeakyReLU'",
+      "bases": [
+        {
+          "_Name": "Name",
+          "id": "'HybridBlock'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'Leaky version of a Rectified Linear Unit.\\n\\n    It allows a small gradient when the unit is not active\\n\\n    .. math::\\n\\n        f\\\\left(x\\\\right) = \\\\left\\\\{\\n            \\\\begin{array}{lr}\\n               \\\\alpha x & : x \\\\lt 0 \\\\\\\\\\n                      x & : x \\\\geq 0 \\\\\\\\\\n            \\\\end{array}\\n        \\\\right.\\\\\\\\\\n\\n    Parameters\\n    ----------\\n    alpha : float\\n        slope coefficient for the negative half axis. Must be >= 0.\\n\\n\\n    Inputs:\\n        - **data**: input tensor with arbitrary shape.\\n\\n    Outputs:\\n        - **out**: output tensor with the same shape as `data`.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'alpha'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": {
+              "_Name": "arg",
+              "arg": "'kwargs'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Assert",
+              "test": {
+                "_Name": "Compare",
+                "left": {
+                  "_Name": "Name",
+                  "id": "'alpha'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "ops": [
+                  {
+                    "_Name": "GtE"
+                  }
+                ],
+                "comparators": [
+                  {
+                    "_Name": "Constant",
+                    "value": "0",
+                    "kind": "None"
+                  }
+                ]
+              },
+              "msg": {
+                "_Name": "Constant",
+                "value": "'Slope coefficient for LeakyReLU must be no less than 0.'",
+                "kind": "None"
+              }
+            },
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'super'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'LeakyReLU'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "attr": "'__init__'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "None",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'kwargs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'_alpha'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Name",
+                "id": "'alpha'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'hybrid_forward'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'F'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'x'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'F'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'LeakyReLU'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'x'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'act_type'",
+                    "value": {
+                      "_Name": "Constant",
+                      "value": "'leaky'",
+                      "kind": "None"
+                    }
+                  },
+                  {
+                    "_Name": "keyword",
+                    "arg": "'slope'",
+                    "value": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'_alpha'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  },
+                  {
+                    "_Name": "keyword",
+                    "arg": "'name'",
+                    "value": {
+                      "_Name": "Constant",
+                      "value": "'fwd'",
+                      "kind": "None"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__repr__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'s'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Constant",
+                "value": "'{name}({alpha})'",
+                "kind": "None"
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'s'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'format'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'name'",
+                    "value": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'__class__'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'__name__'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  },
+                  {
+                    "_Name": "keyword",
+                    "arg": "'alpha'",
+                    "value": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'_alpha'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'PReLU'",
+      "bases": [
+        {
+          "_Name": "Name",
+          "id": "'HybridBlock'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'Parametric leaky version of a Rectified Linear Unit.\\n    <https://arxiv.org/abs/1502.01852>`_ paper.\\n\\n    It learns a gradient when the unit is not active\\n\\n    .. math::\\n\\n        f\\\\left(x\\\\right) = \\\\left\\\\{\\n            \\\\begin{array}{lr}\\n               \\\\alpha x & : x \\\\lt 0 \\\\\\\\\\n                      x & : x \\\\geq 0 \\\\\\\\\\n            \\\\end{array}\\n        \\\\right.\\\\\\\\\\n\\n    where alpha is a learned parameter.\\n\\n    Parameters\\n    ----------\\n    alpha_initializer : Initializer\\n        Initializer for the `embeddings` matrix.\\n\\n\\n    Inputs:\\n        - **data**: input tensor with arbitrary shape.\\n\\n    Outputs:\\n        - **out**: output tensor with the same shape as `data`.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'alpha_initializer'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": {
+              "_Name": "arg",
+              "arg": "'kwargs'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "defaults": [
+              {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'initializer'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'Constant'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Constant",
+                    "value": "0.25",
+                    "kind": "None"
+                  }
+                ],
+                "keywords": []
+              }
+            ]
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'super'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'PReLU'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "attr": "'__init__'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "None",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'kwargs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "_Name": "With",
+              "items": [
+                {
+                  "_Name": "withitem",
+                  "context_expr": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'name_scope'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [],
+                    "keywords": []
+                  },
+                  "optional_vars": "None"
+                }
+              ],
+              "body": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'alpha'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'params'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'get'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Constant",
+                        "value": "'alpha'",
+                        "kind": "None"
+                      }
+                    ],
+                    "keywords": [
+                      {
+                        "_Name": "keyword",
+                        "arg": "'shape'",
+                        "value": {
+                          "_Name": "Tuple",
+                          "elts": [
+                            {
+                              "_Name": "Constant",
+                              "value": "1",
+                              "kind": "None"
+                            }
+                          ],
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      },
+                      {
+                        "_Name": "keyword",
+                        "arg": "'init'",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'alpha_initializer'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "type_comment": "None"
+                }
+              ],
+              "type_comment": "None"
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'hybrid_forward'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'F'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'x'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'alpha'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'F'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'LeakyReLU'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'x'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'gamma'",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'alpha'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  },
+                  {
+                    "_Name": "keyword",
+                    "arg": "'act_type'",
+                    "value": {
+                      "_Name": "Constant",
+                      "value": "'prelu'",
+                      "kind": "None"
+                    }
+                  },
+                  {
+                    "_Name": "keyword",
+                    "arg": "'name'",
+                    "value": {
+                      "_Name": "Constant",
+                      "value": "'fwd'",
+                      "kind": "None"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'ELU'",
+      "bases": [
+        {
+          "_Name": "Name",
+          "id": "'HybridBlock'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'\\n    Exponential Linear Unit (ELU)\\n        \"Fast and Accurate Deep Network Learning by Exponential Linear Units\", Clevert et al, 2016\\n        https://arxiv.org/abs/1511.07289\\n        Published as a conference paper at ICLR 2016\\n\\n    Parameters\\n    ----------\\n    alpha : float\\n        The alpha parameter as described by Clevert et al, 2016\\n\\n\\n    Inputs:\\n        - **data**: input tensor with arbitrary shape.\\n\\n    Outputs:\\n        - **out**: output tensor with the same shape as `data`.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'alpha'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": {
+              "_Name": "arg",
+              "arg": "'kwargs'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "defaults": [
+              {
+                "_Name": "Constant",
+                "value": "1.0",
+                "kind": "None"
+              }
+            ]
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'super'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'ELU'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "attr": "'__init__'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "None",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'kwargs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'_alpha'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Name",
+                "id": "'alpha'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'hybrid_forward'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'F'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'x'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'F'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'LeakyReLU'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'x'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'act_type'",
+                    "value": {
+                      "_Name": "Constant",
+                      "value": "'elu'",
+                      "kind": "None"
+                    }
+                  },
+                  {
+                    "_Name": "keyword",
+                    "arg": "'slope'",
+                    "value": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'_alpha'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'SELU'",
+      "bases": [
+        {
+          "_Name": "Name",
+          "id": "'HybridBlock'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'\\n    Scaled Exponential Linear Unit (SELU)\\n        \"Self-Normalizing Neural Networks\", Klambauer et al, 2017\\n        https://arxiv.org/abs/1706.02515\\n\\n\\n    Inputs:\\n        - **data**: input tensor with arbitrary shape.\\n\\n    Outputs:\\n        - **out**: output tensor with the same shape as `data`.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": {
+              "_Name": "arg",
+              "arg": "'kwargs'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'super'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'SELU'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "attr": "'__init__'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "None",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'kwargs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'hybrid_forward'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'F'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'x'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'F'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'LeakyReLU'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'x'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'act_type'",
+                    "value": {
+                      "_Name": "Constant",
+                      "value": "'selu'",
+                      "kind": "None"
+                    }
+                  },
+                  {
+                    "_Name": "keyword",
+                    "arg": "'name'",
+                    "value": {
+                      "_Name": "Constant",
+                      "value": "'fwd'",
+                      "kind": "None"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'GELU'",
+      "bases": [
+        {
+          "_Name": "Name",
+          "id": "'HybridBlock'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'\\n    Gaussian Exponential Linear Unit (GELU)\\n        \"Gaussian Error Linear Units (GELUs)\", Hendrycks et al, 2016\\n        https://arxiv.org/abs/1606.08415\\n\\n\\n    Inputs:\\n        - **data**: input tensor with arbitrary shape.\\n\\n    Outputs:\\n        - **out**: output tensor with the same shape as `data`.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": {
+              "_Name": "arg",
+              "arg": "'kwargs'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'super'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'GELU'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "attr": "'__init__'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "None",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'kwargs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'hybrid_forward'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'F'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'x'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'F'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'LeakyReLU'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'x'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'act_type'",
+                    "value": {
+                      "_Name": "Constant",
+                      "value": "'gelu'",
+                      "kind": "None"
+                    }
+                  },
+                  {
+                    "_Name": "keyword",
+                    "arg": "'name'",
+                    "value": {
+                      "_Name": "Constant",
+                      "value": "'fwd'",
+                      "kind": "None"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'Swish'",
+      "bases": [
+        {
+          "_Name": "Name",
+          "id": "'HybridBlock'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'\\n    Swish Activation function\\n        https://arxiv.org/pdf/1710.05941.pdf\\n\\n    Parameters\\n    ----------\\n    beta : float\\n        swish(x) = x * sigmoid(beta*x)\\n\\n\\n    Inputs:\\n        - **data**: input tensor with arbitrary shape.\\n\\n    Outputs:\\n        - **out**: output tensor with the same shape as `data`.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'beta'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": {
+              "_Name": "arg",
+              "arg": "'kwargs'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "defaults": [
+              {
+                "_Name": "Constant",
+                "value": "1.0",
+                "kind": "None"
+              }
+            ]
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'super'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'Swish'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "attr": "'__init__'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "None",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'kwargs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'_beta'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Name",
+                "id": "'beta'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'hybrid_forward'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'F'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'x'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "BinOp",
+                "left": {
+                  "_Name": "Name",
+                  "id": "'x'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "op": {
+                  "_Name": "Mult"
+                },
+                "right": {
+                  "_Name": "Call",
+                  "func": {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'F'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'sigmoid'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "args": [
+                    {
+                      "_Name": "BinOp",
+                      "left": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'_beta'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "op": {
+                        "_Name": "Mult"
+                      },
+                      "right": {
+                        "_Name": "Name",
+                        "id": "'x'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    }
+                  ],
+                  "keywords": [
+                    {
+                      "_Name": "keyword",
+                      "arg": "'name'",
+                      "value": {
+                        "_Name": "Constant",
+                        "value": "'fwd'",
+                        "kind": "None"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    }
+  ],
+  "type_ignores": []
+}

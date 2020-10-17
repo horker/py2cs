@@ -1,0 +1,247 @@
+{
+    "UsingNamespaces": [
+        "using System;",
+        "using System.Linq;",
+        "using System.Collections;",
+        "using System.Collections.Generic;",
+        "using System.Threading;",
+        "using Horker.MXNet.Compat;",
+        "using static Horker.MXNet.Compat.Compat;",
+        "using static Horker.MXNet.Compat.Coercing;"
+    ],
+
+    "Namespace": "Horker.MXNet.Gluon",
+
+    "Replacements": {
+        "ndarray": "NDArray"
+    },
+
+    "Classes": {
+        "_BlockScope": {
+            "Fields": {
+                "_block": "internal Block _block;",
+                "_counter": "internal Dictionary<string, int> _counter;",
+                "_old_scope": "internal BlockScope _oldScope;",
+                "_name_scope": "internal BlockScope _nameScope;",
+                "_name": "internal string _name;"
+            },
+            "Methods": {
+                "__init__": {
+                    "Signature": "public BlockScope(Block block)"
+                },
+                "create": {
+                    "Signature": "public static BlockScope Create(string prefix, ParameterDict @params, string hint)"
+                },
+                "__enter__": {
+                    "Signature": "public BlockScope Enter()"
+                },
+                "__exit__": {
+                    "Signature": "public void Exit(object ptype, object value, object trace)"
+                }
+            },
+            "StaticVariableTypes": {
+                "_current": "ThreadLocal<BlockScope>"
+            }
+        },
+
+        "Block": {
+            "Fields": {
+                "_empty_prefix": "internal bool _emptyPrefix;",
+                "_prefix": "internal string _prefix;",
+                "_params": "internal ParameterDict _params;",
+                "_name": "internal string _name;",
+                "_scope": "internal BlockScope _scope;",
+                "_children": "internal Dictionary<string, Block> _children;",
+                "_reg_params": "internal ParameterDict _regParams;",
+                "_forward_hooks": "internal Hashtable _forwardHooks;",
+                "_forward_pre_hooks": "internal Hashtable _forwardPreHooks;"
+            },
+            "Methods": {
+                "__init__": {
+                    "Signature": "public Block(string prefix, ParameterDict @params)"
+                },
+                "__setattr__": {
+                    "Signature": "public void Setattr(string name, object value)"
+                },
+                "_check_container_with_block": {
+                    "Drop": true,
+                    "Signature": "public bool CheckContainerWithBlock()"
+                },
+                "_alias": {
+                    "Signature": "public string _alias()"
+                },
+                "prefix": {
+                    "Signature": "public string Prefix"
+                },
+                "name": {
+                    "Signature": "public string Name"
+                },
+                "name_scope": {
+                    "Signature": "public BlockScope NameScope()"
+                },
+                "params": {
+                    "Signature": "public ParameterDict Params"
+                },
+                "collect_params": {
+                    "Signature": "public ParameterDict CollectParams(string select = null)"
+                },
+                "_collect_params_with_prefix": {
+                    "Signature": "internal Hashtable _collectParamsWithPrefix(string prefix = \"\")"
+                },
+                "save_parameters": {
+                    "Signature": "public void SaveParamters(string filename)"
+                },
+                "save_params": {
+                    "Signature": "public void SaveParams(string filename)"
+                },
+                "load_parameters": {
+                    "Signature": "public void LoadParameters(string filename, Context ctx = null, bool allowMissing = false, bool ignoreExtra = false, bool castDtype = false, string dtypeSource = \"current\")"
+                },
+                "load_params": {
+                    "Signature": "public void LoadParams(string filename, Context ctx = null, bool allowMissing = false, bool ignoreExtra = false)"
+                },
+                "register_child": {
+                    "Signature": "public void RegisterChild(Block block, string name)"
+                },
+                "register_forward_pre_hook": {
+                    "Signature": "public HookHandle RegisterForwardPreHook(object hook)"
+                },
+                "register_forward_hook": {
+                    "Signature": "public HookHandle RegisterForwardHook(object hook)"
+                },
+                "apply": {
+                    "Signature": "public Block Apply(Action<Block> fn)"
+                },
+                "initialize": {
+                    "Signature": "public void Initialize(Initializer init = null, Context ctx, bool verbose = false, bool forceReinit = false)"
+                },
+                "hybridize": {
+                    "Signature": "public void Hybridize(bool active)"
+                },
+                "cast": {
+                    "Signature": "public void Cast(DType dtype)"
+                },
+                "__call__": {
+                    "Signature": "public NDArray Call(params NDArray[] args)"
+                },
+                "forward": {
+                    "Signature": "public NDArray Forward(params NDArray[] args)"
+                },
+                "summary": {
+                    "Drop": true
+                }
+            },
+            "SpecialMethods": [
+                "__setattr__",
+                "__call__"
+            ]
+        },
+
+        "HybridBlock": {
+            "Fields": {
+                "_cached_graph": "internal CachedGraph _cachedGraph;",
+                "_cached_op": "internal CachedOp _cachedOp;",
+                "_out_format": "internal List<int> _outFormat;",
+                "_in_format": "internal List<int> _inFormat;",
+                "_active": "internal bool _active;",
+                "_flags": "internal Dictionary<string, string> _flags;"
+            },
+
+            "Methods": {
+                "__init__": {
+                    "Signature": "public HybridBlock(string prefix = null, ParameterDict @params = null)"
+                },
+                "__setattr__": {
+                    "Signature": "public Setattr(string name, object value)"
+                },
+                "_get_graph": {
+                    "Signature": "internal CachedGraph _getGraph(NDArrayList args)"
+                },
+                "_build_cache": {
+                    "Signature": "internal void _buildCache(NDArrayList args)"
+                },
+                "_deferred_infer_shape": {
+                    "Signature": "internal void _deferredInferShape(NDArrayList args)"
+                },
+                "_call_cached_op": {
+                    "Signature": "internal void _callCachedOp(NDArrayList args)"
+                },
+                "_clear_cached_op": {
+                    "Signature": "internal void _clearCachedOp()"
+                },
+                "register_child": {
+                    "Signature": "public void RegisterChild(Block block, string name = null)"
+                },
+                "hybridize": {
+                    "Signature": "public void Hybridize(bool active = true, bool static_alloc = false, bool static_shape = false)"
+                },
+                "cast": {
+                    "Signature": "public void Cast(DType dtype)"
+                },
+                "_infer_attrs": {
+                    "Drop": true
+                },
+                "infer_shape": {
+                    "Signature": "public void InferShape(NDArrayList args)"
+                },
+                "infer_type": {
+                    "Signature": "public void InferType(NDArrayList args)"
+                },
+                "export": {
+                    "Signature": "public void Export(string path, int epoch = 0, bool removeAmpCast = true)"
+                },
+                "forward": {
+                    "Signature": "public NDArrayOrSymbol Forward(NDArrayOrSymbol x, params NDArrayOrSymbol[] args)"
+                },
+                "hybrid_forward": {
+                    "Signature": "public NDArrayOrSymbol HybridForward(NDArrayOrSymbol x, object F, params NDArrayOrSymbol[] args)"
+                }
+            }
+        },
+
+        "SymbolBlock": {
+            "Methods": {
+                "imports": {
+                    "Signature": "public static SymbolBlock Imports(string symbolFile, string[] inputNames, string paramFile = null, Context ctx = null)"
+                },
+                "__repr__": {
+                    "Signature": "public string Repr()"
+                },
+                "__init__": {
+                    "Signature": "public SymbolBlock(SymbolList outputs, SymbolList inputs, ParameterDict @params = null)"
+                },
+                "forward": {
+                    "Drop": true
+                },
+                "_clear_cached_op": {
+                    "Signature": "public void _clearCachedOp()"
+                },
+                "cast": {
+                    "Signature": "public void Cast(DType dtype)"
+                },
+                "hybrid_forward": {
+                    "Signature": "public NDArrayOrSymbol HybridForward(NDArrayOrSymbol x, object F, params NDArrayOrSymbol[] args)"
+                }
+            }
+        },
+
+        "Helper": {
+            "Methods": {
+                "_flatten": {
+                    "Drop": true,
+                    "Signature": "internal static Array _flatten(Array args, int inoutStr)"
+                },
+                "_regroup": {
+                    "Drop": true,
+                    "Signature": "internal static Array _regroup(Array args, int fmt)"
+                },
+                "_common_prefix": {
+                    "Signature": "internal static string _commonPrefix(params string[] names)"
+                },
+                "_infer_param_types": {
+                    "Signature": "internal static IList<DType> _inferParamTypes(SymbolList inParams, Symbol outParams, IList<string> argParams, IList<string> auxParams, DType defaultDType = mx_real_t)"
+                }
+            }
+        }
+    }
+}

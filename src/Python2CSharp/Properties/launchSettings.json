@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Python2CSharp": {
+      "commandName": "Project",
+      "commandLineArgs": "parameter.py.json parameter.py.config.json parameter_gen.cs",
+      "workingDirectory": "C:\\Users\\msumi\\work\\py2cs\\src\\Horker.MXNet\\generated\\mxnet\\gluon"
+    }
+  }
+}

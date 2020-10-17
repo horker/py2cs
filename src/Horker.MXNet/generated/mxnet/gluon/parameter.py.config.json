@@ -1,0 +1,220 @@
+{
+  "UsingNamespaces": [
+    "using System;",
+    "using System.Linq;",
+    "using System.Collections;",
+    "using System.Collections.Generic;",
+    "using System.Threading;",
+    "using Horker.MXNet;",
+    "using Horker.MXNet.Compat;",
+    "using static Horker.MXNet.Compat.Compat;",
+    "using static Horker.MXNet.Compat.Coercing;",
+    "using static Horker.MXNet.MXNetCoercing;",
+    "using static Horker.MXNet.MXNetCompat;",
+    "using static Horker.MXNet.DType;"
+  ],
+  "Namespace": "Horker.MXNet.Gluon",
+  "Replacements": {
+    "ndarray": "NDArray"
+  },
+  "Classes": {
+    "DeferredInitializationError": {
+      "Name": "DeferredInitializationError",
+      "Base": "MXNetError",
+      "Fields": {},
+      "Methods": {}
+    },
+    "Parameter": {
+      "Name": "Parameter",
+      "Base": "object",
+      "Fields": {
+        "_var": "private Symbol _var;",
+        "_data": "private NDArray _data;",
+        "_grad": "private NDArray _grad;",
+        "_ctx_list": "private Context[] _ctxList;",
+        "_ctx_map": "private object _ctxMap;",
+        "_trainer": "private Trainer _trainer;",
+        "_deferred_init": "private ValueTuple<Initializer, Context, Initializer, NDArray> _deferredInit;",
+        "_differentiable": "private bool _differentiable;",
+        "_allow_deferred_init": "private bool _allowDeferredInit;",
+        "_grad_req": "private string _gradReq;",
+        "_shape": "private Shape _shape;",
+        "name": "public string Name { get; set; }",
+        "_dtype": "private DType _dtype;",
+        "lr_mult": "public float LrMult { get; set; }",
+        "wd_mult": "public float WdMult { get; set; }",
+        "init": "public Initializer Init { get; set; }",
+        "_grad_stype": "private string _gradStype;",
+        "_stype": "private string _stype;",
+      },
+      "Methods": {
+        "__init__": {
+          "Signature": "public Parameter(string name, string gradReq = \"write\", Shape shape = null, DType dtype = mx_real_t, float lrMult = 1.0f, float wdMult = 1.0f, Initializer init = null, bool allowDeferredInit = false, bool differentiable = true, string stype = \"default\", string gradStype = \"default\")"
+        },
+        "__repr__": {
+          "Signature": "private string Repr()"
+        },
+        "grad_req": {
+          "SignatureSetter": "public override void SetGradReq(string req)",
+          "Signature": "public override string GradReq"
+        },
+        "dtype": {
+          "SignatureSetter": "public void SetDtype(DType dtype)",
+          "Signature": "public DType Dtype"
+        },
+        "shape": {
+          "SignatureSetter": "public void SetShape(Shape newShape)",
+          "Signature": "public Shape Shape"
+        },
+        "_set_trainer": {
+          "Signature": "private void _setTrainer(Trainer trainer)"
+        },
+        "_check_and_get": {
+          "Signature": "private object _checkAndGet(object arrList, Context ctx)"
+        },
+        "_get_row_sparse": {
+          "Signature": "private object _getRowSparse(object arrList, Context ctx, object rowId)"
+        },
+        "_load_init": {
+          "Signature": "private void _loadInit(NDArray data, Context ctx, bool castDtype = false, string dtypeSource = \"current\")"
+        },
+        "_finish_deferred_init": {
+          "Signature": "private void _finishDeferredInit()"
+        },
+        "_init_impl": {
+          "Signature": "private object _initImpl(NDArray data, object ctxList)"
+        },
+        "_init_grad": {
+          "Signature": "private object _initGrad()"
+        },
+        "_reduce": {
+          "Signature": "private object _reduce()"
+        },
+        "initialize": {
+          "Signature": "public object Initialize(Initializer init = null, Context ctx = null, object defaultInit = initializer.Uniform(), bool forceReinit = false)"
+        },
+        "reset_ctx": {
+          "Signature": "public void ResetCtx(Context ctx)"
+        },
+        "set_data": {
+          "Signature": "public void SetData(NDArray data)"
+        },
+        "row_sparse_data": {
+          "Signature": "public object RowSparseData(object rowId)"
+        },
+        "list_row_sparse_data": {
+          "Signature": "public object ListRowSparseData(object rowId)"
+        },
+        "data": {
+          "Signature": "public NDArray Data(Context ctx = null)"
+        },
+        "list_data": {
+          "Signature": "public object ListData()"
+        },
+        "grad": {
+          "Signature": "public object Grad(Context ctx = null)"
+        },
+        "list_grad": {
+          "Signature": "public object ListGrad()"
+        },
+        "list_ctx": {
+          "Signature": "public Context[] ListCtx()"
+        },
+        "zero_grad": {
+          "Signature": "public object ZeroGrad()"
+        },
+        "var": {
+          "Signature": "public Symbol Var()"
+        },
+        "cast": {
+          "Signature": "public void Cast(DType dtype)"
+        }
+      }
+    },
+    "Constant": {
+      "Name": "Constant",
+      "Base": "Parameter",
+      "Fields": {
+        "const": "public object Const { get; set; }",
+        "value": "public object Value { get; set; }"
+      },
+      "Methods": {
+        "__init__": {
+          "Signature": "public Constant(string name, object value)"
+        },
+        "__repr__": {
+          "Signature": "private object Repr()"
+        },
+        "grad_req": {
+          "SignatureSetter": "public override void SetGradReq(string req)",
+          "Signature": "public override string GradReq"
+        }
+      }
+    },
+    "ParameterDict": {
+      "Name": "ParameterDict",
+      "Base": "object",
+      "Fields": {
+        "_prefix": "private string _prefix;",
+        "_params": "private Dictionary<string, Parameter> _params;",
+        "_shared": "private ParameterDict _shared;"
+      },
+      "Methods": {
+        "__init__": {
+          "Signature": "public ParameterDict(string prefix = \"\", ParameterDict shared = null)"
+        },
+        "__repr__": {
+          "Signature": "private string Repr()"
+        },
+        "__getitem__": {
+          "Signature": "private Parameter Getitem(string key)"
+        },
+        "__iter__": {
+          "Signature": "private object Iter()"
+        },
+        "items": {
+          "Signature": "public IEnumerable<ValueTuple<string, Parameter>> Items()"
+        },
+        "keys": {
+          "Signature": "public IEnumerable<string> Keys()"
+        },
+        "values": {
+          "Signature": "public IEnumerable<Parameter> Values()"
+        },
+        "prefix": {
+          "Signature": "public string Prefix"
+        },
+        "_get_impl": {
+          "Signature": "private Parameter _getImpl(string name)"
+        },
+        "get": {
+          "Signature": "public object Get(string name, object kwargs)"
+        },
+        "get_constant": {
+          "Signature": "public object GetConstant(string name, object value = null)"
+        },
+        "update": {
+          "Signature": "public void Update(ParameterDict other)"
+        },
+        "initialize": {
+          "Signature": "public void Initialize(Initializer init = initializer.Uniform(), Context ctx = null, bool verbose = false, bool forceReinit = false)"
+        },
+        "zero_grad": {
+          "Signature": "public void ZeroGrad()"
+        },
+        "reset_ctx": {
+          "Signature": "public void ResetCtx(Context ctx)"
+        },
+        "setattr": {
+          "Signature": "public void Setattr(string name, object value)"
+        },
+        "save": {
+          "Signature": "public void Save(string filename, string stripPrefix = \"\")"
+        },
+        "load": {
+          "Signature": "public void Load(string filename, Context ctx = null, bool allowMissing = false, bool ignoreExtra = false, string restorePrefix = \"\", bool castDtype = false, string dtypeSource = \"current\")"
+        }
+      }
+    }
+  }
+}
