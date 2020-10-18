@@ -144,7 +144,7 @@ namespace Python2CSharp
 
                 var alias = ctx.MakeLocal();
                 ctx.SetAliasForLocal(l, alias);
-                _out.WriteLine($"var {alias} = ({castTo}){l};");
+                _out.WriteLine($"var {alias} = ({castTo}){ConvertAsLocal(l)};");
             }
 
             return ctx;
@@ -241,6 +241,21 @@ namespace Python2CSharp
             return result;
         }
 
+        private ValueConstraint GenerateToplevelExpression(JToken node, Context ctx)
+        {
+            if (ObjectNameOf(node) == "Name")
+            {
+                var id = GetNameProperty(node, "id");
+                if (char.IsUpper(id[0]) || id[0] == '_' && char.IsUpper(id[1]))
+                {
+                    _out.Write($"typeof({id})");
+                    return ValueConstraint.Any;
+                }
+            }
+
+            return Generate(node, ctx.AsExpression());
+        }
+
         private ValueConstraint GenerateExpression(JToken node, Context ctx)
         {
             return Generate(node, ctx.AsExpression());
@@ -268,12 +283,7 @@ namespace Python2CSharp
 
         private void GenerateCommaSeparated(JToken node, Context ctx)
         {
-            GenerateCommaSeparated(node, e => GenerateExpression(e, ctx));
-        }
-
-        private void GenerateCommaSeparated(IEnumerable<JToken> node, Context ctx)
-        {
-            GenerateCommaSeparated(node, e => GenerateExpression(e, ctx));
+            GenerateCommaSeparated(node, e => GenerateToplevelExpression(e, ctx));
         }
 
         #endregion
@@ -356,6 +366,9 @@ namespace Python2CSharp
 
             foreach (var a in analysis.ParamTypes.Keys)
                 ctx.TryAddLocal(a);
+
+            foreach (var (l, a) in mc.LocalAliases)
+                ctx.SetAliasForLocal(l, a);
 
             if (keywordArguments != null)
             {
@@ -455,18 +468,10 @@ namespace Python2CSharp
                 return ValueConstraint.Any;
             }
 
-            var baseClass = _config[className].Base;
-            if (baseClass == null)
-            {
-                var bases = node["bases"][0];
-                var baseClassName = FormatExpression(bases, ctx);
-            }
-
-            if (baseClass == "object")
-                baseClass = "PythonObject";
+            var baseClasses = _config[className].BaseClasses.Select(x => x == "object" ? "PythonObject" : x).Select(x => x.Replace("_", ""));
 
             _out.WriteNewLine();
-            _out.WriteLine($"public partial class {className.Replace("_", "")} : {baseClass.Replace("_", "")}");
+            _out.WriteLine($"public partial class {className.Replace("_", "")} : {string.Join(", ", baseClasses)}");
             _out.WriteOpening("{");
 
             foreach (var entry in _config[className].Fields)
@@ -530,6 +535,12 @@ namespace Python2CSharp
                     if (ObjectNameOf(target) == "Name" && GetNameProperty(target, "id") == "__all__")
                     {
                         _out.WriteLine("// Assignment of __all__");
+                        return ValueConstraint.Any;
+                    }
+
+                    if (ObjectNameOf(target) == "Attribute")
+                    {
+                        _out.WriteLine("// Assignment of attribute");
                         return ValueConstraint.Any;
                     }
 
@@ -1172,6 +1183,18 @@ namespace Python2CSharp
                 }
             }
 
+            // Special case: Ctypes.ByRef(value)
+
+            if (ObjectNameOf(func) == "Attribute" &&
+                ObjectNameOf(func["value"]) == "Name" &&
+                GetNameProperty(func["value"], "id") == "ctypes" &&
+                GetNameProperty(func, "attr") == "byref" &&
+                args.Count() == 1 && ObjectNameOf(args[0]) == "Name")
+            {
+                _out.Write($"ref {ConvertAsLocal(GetNameProperty(args[0], "id"))}");
+                return ValueConstraint.Any;
+            }
+
             // Special case: getattr(obj, "prop", default)
 
 //            if (ObjectNameOf(func) == "Name" && GetNameProperty(func, "id") == "getattr" &&
@@ -1218,7 +1241,21 @@ namespace Python2CSharp
 
             _out.Write("(");
 
-            GenerateCommaSeparated(args, ctx);
+            if (ObjectNameOf(func) == "Name" && GetNameProperty(func, "id") == "isinstance" && args.Count() == 2)
+            {
+                GenerateExpression(args[0], ctx);
+                _out.Write(", ");
+                if (ObjectNameOf(args[1]) == "Name" || ObjectNameOf(args[1]) == "Tuple")
+                {
+                    _out.Write("typeof(");
+                    GenerateExpression(args[1], ctx);
+                    _out.Write(")");
+                }
+            }
+            else
+            {
+                GenerateCommaSeparated(args, ctx);
+            }
 
             bool hasArgs = args.Count() > 0;
             foreach (var keyword in keywords)
@@ -1380,8 +1417,8 @@ namespace Python2CSharp
                 {
                     if (_config.Replacements.TryGetValue(n, out var rep))
                         _out.Write(rep);
-                    else if (!funcName && char.IsUpper(n[0]))
-                        _out.Write($"typeof({n})");
+//                    else if (!funcName && char.IsUpper(n[0]))
+//                        _out.Write($"typeof({n})");
                     else
                         _out.Write(ConvertToCamelCase(n, true));
                 }

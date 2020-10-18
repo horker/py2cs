@@ -3,7 +3,7 @@ Set-StrictMode -Version Latest
 $SourceRootPath = "$PSScriptRoot\..\incubator-mxnet\python\"
 
 $SourceFiles = @(
-#    "mxnet"
+    "mxnet\context.py"
     "mxnet\gluon\block.py"
     "mxnet\gluon\loss.py"
     "mxnet\gluon\parameter.py"
@@ -13,7 +13,7 @@ $SourceFiles = @(
     "mxnet\gluon\model_zoo\vision\vgg.py"
 )
 
-$OutRootPath = "$PSScriptRoot\..\src\Horker.MXNet"
+$OutRootPath = "$PSScriptRoot\..\src\Horker.MXNet\generated"
 
 $inFiles = $SourceFiles | foreach {
     Get-Item (Join-Path $SourceRootPath $_)

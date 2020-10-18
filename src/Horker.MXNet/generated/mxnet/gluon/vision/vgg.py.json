@@ -1,0 +1,2800 @@
+{
+  "_Name": "Module",
+  "body": [
+    {
+      "_Name": "Expr",
+      "value": {
+        "_Name": "Constant",
+        "value": "'VGG, implemented in Gluon.'",
+        "kind": "None"
+      }
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'__future__'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'division'",
+          "asname": "None"
+        }
+      ],
+      "level": "0"
+    },
+    {
+      "_Name": "Assign",
+      "targets": [
+        {
+          "_Name": "Name",
+          "id": "'__all__'",
+          "ctx": {
+            "_Name": "Store"
+          }
+        }
+      ],
+      "value": {
+        "_Name": "List",
+        "elts": [
+          {
+            "_Name": "Constant",
+            "value": "'VGG'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'vgg11'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'vgg13'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'vgg16'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'vgg19'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'vgg11_bn'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'vgg13_bn'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'vgg16_bn'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'vgg19_bn'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "'get_vgg'",
+            "kind": "None"
+          }
+        ],
+        "ctx": {
+          "_Name": "Load"
+        }
+      },
+      "type_comment": "None"
+    },
+    {
+      "_Name": "Import",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'os'",
+          "asname": "None"
+        }
+      ]
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'context'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'cpu'",
+          "asname": "None"
+        }
+      ],
+      "level": "4"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'initializer'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'Xavier'",
+          "asname": "None"
+        }
+      ],
+      "level": "4"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'block'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'HybridBlock'",
+          "asname": "None"
+        }
+      ],
+      "level": "3"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "None",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'nn'",
+          "asname": "None"
+        }
+      ],
+      "level": "3"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "None",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'base'",
+          "asname": "None"
+        }
+      ],
+      "level": "4"
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'VGG'",
+      "bases": [
+        {
+          "_Name": "Name",
+          "id": "'HybridBlock'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'VGG model from the `\"Very Deep Convolutional Networks for Large-Scale Image Recognition\"\\n    <https://arxiv.org/abs/1409.1556>`_ paper.\\n\\n    Parameters\\n    ----------\\n    layers : list of int\\n        Numbers of layers in each feature block.\\n    filters : list of int\\n        Numbers of filters in each feature block. List length should match the layers.\\n    classes : int, default 1000\\n        Number of classification classes.\\n    batch_norm : bool, default False\\n        Use batch normalization.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'layers'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'filters'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'classes'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'batch_norm'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": {
+              "_Name": "arg",
+              "arg": "'kwargs'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "defaults": [
+              {
+                "_Name": "Constant",
+                "value": "1000",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "False",
+                "kind": "None"
+              }
+            ]
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'super'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'VGG'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "attr": "'__init__'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "None",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'kwargs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "_Name": "Assert",
+              "test": {
+                "_Name": "Compare",
+                "left": {
+                  "_Name": "Call",
+                  "func": {
+                    "_Name": "Name",
+                    "id": "'len'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "args": [
+                    {
+                      "_Name": "Name",
+                      "id": "'layers'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  ],
+                  "keywords": []
+                },
+                "ops": [
+                  {
+                    "_Name": "Eq"
+                  }
+                ],
+                "comparators": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'len'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'filters'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ]
+              },
+              "msg": "None"
+            },
+            {
+              "_Name": "With",
+              "items": [
+                {
+                  "_Name": "withitem",
+                  "context_expr": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'name_scope'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [],
+                    "keywords": []
+                  },
+                  "optional_vars": "None"
+                }
+              ],
+              "body": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'features'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'_make_features'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'layers'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'filters'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'batch_norm'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                },
+                {
+                  "_Name": "Expr",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'features'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'add'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'nn'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'Dense'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Constant",
+                            "value": "4096",
+                            "kind": "None"
+                          }
+                        ],
+                        "keywords": [
+                          {
+                            "_Name": "keyword",
+                            "arg": "'activation'",
+                            "value": {
+                              "_Name": "Constant",
+                              "value": "'relu'",
+                              "kind": "None"
+                            }
+                          },
+                          {
+                            "_Name": "keyword",
+                            "arg": "'weight_initializer'",
+                            "value": {
+                              "_Name": "Constant",
+                              "value": "'normal'",
+                              "kind": "None"
+                            }
+                          },
+                          {
+                            "_Name": "keyword",
+                            "arg": "'bias_initializer'",
+                            "value": {
+                              "_Name": "Constant",
+                              "value": "'zeros'",
+                              "kind": "None"
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "keywords": []
+                  }
+                },
+                {
+                  "_Name": "Expr",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'features'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'add'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'nn'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'Dropout'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [],
+                        "keywords": [
+                          {
+                            "_Name": "keyword",
+                            "arg": "'rate'",
+                            "value": {
+                              "_Name": "Constant",
+                              "value": "0.5",
+                              "kind": "None"
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "keywords": []
+                  }
+                },
+                {
+                  "_Name": "Expr",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'features'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'add'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'nn'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'Dense'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Constant",
+                            "value": "4096",
+                            "kind": "None"
+                          }
+                        ],
+                        "keywords": [
+                          {
+                            "_Name": "keyword",
+                            "arg": "'activation'",
+                            "value": {
+                              "_Name": "Constant",
+                              "value": "'relu'",
+                              "kind": "None"
+                            }
+                          },
+                          {
+                            "_Name": "keyword",
+                            "arg": "'weight_initializer'",
+                            "value": {
+                              "_Name": "Constant",
+                              "value": "'normal'",
+                              "kind": "None"
+                            }
+                          },
+                          {
+                            "_Name": "keyword",
+                            "arg": "'bias_initializer'",
+                            "value": {
+                              "_Name": "Constant",
+                              "value": "'zeros'",
+                              "kind": "None"
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "keywords": []
+                  }
+                },
+                {
+                  "_Name": "Expr",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'features'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'add'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'nn'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'Dropout'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [],
+                        "keywords": [
+                          {
+                            "_Name": "keyword",
+                            "arg": "'rate'",
+                            "value": {
+                              "_Name": "Constant",
+                              "value": "0.5",
+                              "kind": "None"
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "keywords": []
+                  }
+                },
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'output'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'nn'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'Dense'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'classes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": [
+                      {
+                        "_Name": "keyword",
+                        "arg": "'weight_initializer'",
+                        "value": {
+                          "_Name": "Constant",
+                          "value": "'normal'",
+                          "kind": "None"
+                        }
+                      },
+                      {
+                        "_Name": "keyword",
+                        "arg": "'bias_initializer'",
+                        "value": {
+                          "_Name": "Constant",
+                          "value": "'zeros'",
+                          "kind": "None"
+                        }
+                      }
+                    ]
+                  },
+                  "type_comment": "None"
+                }
+              ],
+              "type_comment": "None"
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'_make_features'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'layers'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'filters'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'batch_norm'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'featurizer'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'nn'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'HybridSequential'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'prefix'",
+                    "value": {
+                      "_Name": "Constant",
+                      "value": "''",
+                      "kind": "None"
+                    }
+                  }
+                ]
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "For",
+              "target": {
+                "_Name": "Tuple",
+                "elts": [
+                  {
+                    "_Name": "Name",
+                    "id": "'i'",
+                    "ctx": {
+                      "_Name": "Store"
+                    }
+                  },
+                  {
+                    "_Name": "Name",
+                    "id": "'num'",
+                    "ctx": {
+                      "_Name": "Store"
+                    }
+                  }
+                ],
+                "ctx": {
+                  "_Name": "Store"
+                }
+              },
+              "iter": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'enumerate'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'layers'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              },
+              "body": [
+                {
+                  "_Name": "For",
+                  "target": {
+                    "_Name": "Name",
+                    "id": "'_'",
+                    "ctx": {
+                      "_Name": "Store"
+                    }
+                  },
+                  "iter": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'range'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'num'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "body": [
+                    {
+                      "_Name": "Expr",
+                      "value": {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'featurizer'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'add'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Call",
+                            "func": {
+                              "_Name": "Attribute",
+                              "value": {
+                                "_Name": "Name",
+                                "id": "'nn'",
+                                "ctx": {
+                                  "_Name": "Load"
+                                }
+                              },
+                              "attr": "'Conv2D'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "_Name": "Subscript",
+                                "value": {
+                                  "_Name": "Name",
+                                  "id": "'filters'",
+                                  "ctx": {
+                                    "_Name": "Load"
+                                  }
+                                },
+                                "slice": {
+                                  "_Name": "Index",
+                                  "value": {
+                                    "_Name": "Name",
+                                    "id": "'i'",
+                                    "ctx": {
+                                      "_Name": "Load"
+                                    }
+                                  }
+                                },
+                                "ctx": {
+                                  "_Name": "Load"
+                                }
+                              }
+                            ],
+                            "keywords": [
+                              {
+                                "_Name": "keyword",
+                                "arg": "'kernel_size'",
+                                "value": {
+                                  "_Name": "Constant",
+                                  "value": "3",
+                                  "kind": "None"
+                                }
+                              },
+                              {
+                                "_Name": "keyword",
+                                "arg": "'padding'",
+                                "value": {
+                                  "_Name": "Constant",
+                                  "value": "1",
+                                  "kind": "None"
+                                }
+                              },
+                              {
+                                "_Name": "keyword",
+                                "arg": "'weight_initializer'",
+                                "value": {
+                                  "_Name": "Call",
+                                  "func": {
+                                    "_Name": "Name",
+                                    "id": "'Xavier'",
+                                    "ctx": {
+                                      "_Name": "Load"
+                                    }
+                                  },
+                                  "args": [],
+                                  "keywords": [
+                                    {
+                                      "_Name": "keyword",
+                                      "arg": "'rnd_type'",
+                                      "value": {
+                                        "_Name": "Constant",
+                                        "value": "'gaussian'",
+                                        "kind": "None"
+                                      }
+                                    },
+                                    {
+                                      "_Name": "keyword",
+                                      "arg": "'factor_type'",
+                                      "value": {
+                                        "_Name": "Constant",
+                                        "value": "'out'",
+                                        "kind": "None"
+                                      }
+                                    },
+                                    {
+                                      "_Name": "keyword",
+                                      "arg": "'magnitude'",
+                                      "value": {
+                                        "_Name": "Constant",
+                                        "value": "2",
+                                        "kind": "None"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "_Name": "keyword",
+                                "arg": "'bias_initializer'",
+                                "value": {
+                                  "_Name": "Constant",
+                                  "value": "'zeros'",
+                                  "kind": "None"
+                                }
+                              }
+                            ]
+                          }
+                        ],
+                        "keywords": []
+                      }
+                    },
+                    {
+                      "_Name": "If",
+                      "test": {
+                        "_Name": "Name",
+                        "id": "'batch_norm'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "body": [
+                        {
+                          "_Name": "Expr",
+                          "value": {
+                            "_Name": "Call",
+                            "func": {
+                              "_Name": "Attribute",
+                              "value": {
+                                "_Name": "Name",
+                                "id": "'featurizer'",
+                                "ctx": {
+                                  "_Name": "Load"
+                                }
+                              },
+                              "attr": "'add'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "_Name": "Call",
+                                "func": {
+                                  "_Name": "Attribute",
+                                  "value": {
+                                    "_Name": "Name",
+                                    "id": "'nn'",
+                                    "ctx": {
+                                      "_Name": "Load"
+                                    }
+                                  },
+                                  "attr": "'BatchNorm'",
+                                  "ctx": {
+                                    "_Name": "Load"
+                                  }
+                                },
+                                "args": [],
+                                "keywords": []
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        }
+                      ],
+                      "orelse": []
+                    },
+                    {
+                      "_Name": "Expr",
+                      "value": {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'featurizer'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'add'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Call",
+                            "func": {
+                              "_Name": "Attribute",
+                              "value": {
+                                "_Name": "Name",
+                                "id": "'nn'",
+                                "ctx": {
+                                  "_Name": "Load"
+                                }
+                              },
+                              "attr": "'Activation'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "_Name": "Constant",
+                                "value": "'relu'",
+                                "kind": "None"
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        ],
+                        "keywords": []
+                      }
+                    }
+                  ],
+                  "orelse": [],
+                  "type_comment": "None"
+                },
+                {
+                  "_Name": "Expr",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'featurizer'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'add'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'nn'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'MaxPool2D'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [],
+                        "keywords": [
+                          {
+                            "_Name": "keyword",
+                            "arg": "'strides'",
+                            "value": {
+                              "_Name": "Constant",
+                              "value": "2",
+                              "kind": "None"
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "keywords": []
+                  }
+                }
+              ],
+              "orelse": [],
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Name",
+                "id": "'featurizer'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'hybrid_forward'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'F'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'x'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'x'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'features'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'x'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'x'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'output'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'x'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Name",
+                "id": "'x'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    },
+    {
+      "_Name": "Assign",
+      "targets": [
+        {
+          "_Name": "Name",
+          "id": "'vgg_spec'",
+          "ctx": {
+            "_Name": "Store"
+          }
+        }
+      ],
+      "value": {
+        "_Name": "Dict",
+        "keys": [
+          {
+            "_Name": "Constant",
+            "value": "11",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "13",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "16",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "19",
+            "kind": "None"
+          }
+        ],
+        "values": [
+          {
+            "_Name": "Tuple",
+            "elts": [
+              {
+                "_Name": "List",
+                "elts": [
+                  {
+                    "_Name": "Constant",
+                    "value": "1",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "1",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  }
+                ],
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              {
+                "_Name": "List",
+                "elts": [
+                  {
+                    "_Name": "Constant",
+                    "value": "64",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "128",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "256",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "512",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "512",
+                    "kind": "None"
+                  }
+                ],
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ],
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          {
+            "_Name": "Tuple",
+            "elts": [
+              {
+                "_Name": "List",
+                "elts": [
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  }
+                ],
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              {
+                "_Name": "List",
+                "elts": [
+                  {
+                    "_Name": "Constant",
+                    "value": "64",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "128",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "256",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "512",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "512",
+                    "kind": "None"
+                  }
+                ],
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ],
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          {
+            "_Name": "Tuple",
+            "elts": [
+              {
+                "_Name": "List",
+                "elts": [
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "3",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "3",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "3",
+                    "kind": "None"
+                  }
+                ],
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              {
+                "_Name": "List",
+                "elts": [
+                  {
+                    "_Name": "Constant",
+                    "value": "64",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "128",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "256",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "512",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "512",
+                    "kind": "None"
+                  }
+                ],
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ],
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          {
+            "_Name": "Tuple",
+            "elts": [
+              {
+                "_Name": "List",
+                "elts": [
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "2",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "4",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "4",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "4",
+                    "kind": "None"
+                  }
+                ],
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              {
+                "_Name": "List",
+                "elts": [
+                  {
+                    "_Name": "Constant",
+                    "value": "64",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "128",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "256",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "512",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "512",
+                    "kind": "None"
+                  }
+                ],
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ],
+            "ctx": {
+              "_Name": "Load"
+            }
+          }
+        ]
+      },
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'get_vgg'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [
+          {
+            "_Name": "arg",
+            "arg": "'num_layers'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'pretrained'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'ctx'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'root'",
+            "annotation": "None",
+            "type_comment": "None"
+          }
+        ],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": {
+          "_Name": "arg",
+          "arg": "'kwargs'",
+          "annotation": "None",
+          "type_comment": "None"
+        },
+        "defaults": [
+          {
+            "_Name": "Constant",
+            "value": "False",
+            "kind": "None"
+          },
+          {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'cpu'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [],
+            "keywords": []
+          },
+          {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Attribute",
+              "value": {
+                "_Name": "Attribute",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'os'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "attr": "'path'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "attr": "'join'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'base'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'data_dir'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": []
+              },
+              {
+                "_Name": "Constant",
+                "value": "'models'",
+                "kind": "None"
+              }
+            ],
+            "keywords": []
+          }
+        ]
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'VGG model from the `\"Very Deep Convolutional Networks for Large-Scale Image Recognition\"\\n    <https://arxiv.org/abs/1409.1556>`_ paper.\\n\\n    Parameters\\n    ----------\\n    num_layers : int\\n        Number of layers for the variant of densenet. Options are 11, 13, 16, 19.\\n    pretrained : bool, default False\\n        Whether to load the pretrained weights for model.\\n    ctx : Context, default CPU\\n        The context in which to load the pretrained weights.\\n    root : str, default $MXNET_HOME/models\\n        Location for keeping the model parameters.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Tuple",
+              "elts": [
+                {
+                  "_Name": "Name",
+                  "id": "'layers'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                },
+                {
+                  "_Name": "Name",
+                  "id": "'filters'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Subscript",
+            "value": {
+              "_Name": "Name",
+              "id": "'vgg_spec'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "slice": {
+              "_Name": "Index",
+              "value": {
+                "_Name": "Name",
+                "id": "'num_layers'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            },
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'net'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'VGG'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Name",
+                "id": "'layers'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              {
+                "_Name": "Name",
+                "id": "'filters'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ],
+            "keywords": [
+              {
+                "_Name": "keyword",
+                "arg": "None",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'kwargs'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                }
+              }
+            ]
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "If",
+          "test": {
+            "_Name": "Name",
+            "id": "'pretrained'",
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          "body": [
+            {
+              "_Name": "ImportFrom",
+              "module": "'model_store'",
+              "names": [
+                {
+                  "_Name": "alias",
+                  "name": "'get_model_file'",
+                  "asname": "None"
+                }
+              ],
+              "level": "2"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'batch_norm_suffix'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "IfExp",
+                "test": {
+                  "_Name": "Call",
+                  "func": {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'kwargs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'get'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "args": [
+                    {
+                      "_Name": "Constant",
+                      "value": "'batch_norm'",
+                      "kind": "None"
+                    }
+                  ],
+                  "keywords": []
+                },
+                "body": {
+                  "_Name": "Constant",
+                  "value": "'_bn'",
+                  "kind": "None"
+                },
+                "orelse": {
+                  "_Name": "Constant",
+                  "value": "''",
+                  "kind": "None"
+                }
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'net'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'load_parameters'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'get_model_file'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "BinOp",
+                        "left": {
+                          "_Name": "Constant",
+                          "value": "'vgg%d%s'",
+                          "kind": "None"
+                        },
+                        "op": {
+                          "_Name": "Mod"
+                        },
+                        "right": {
+                          "_Name": "Tuple",
+                          "elts": [
+                            {
+                              "_Name": "Name",
+                              "id": "'num_layers'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            {
+                              "_Name": "Name",
+                              "id": "'batch_norm_suffix'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            }
+                          ],
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      }
+                    ],
+                    "keywords": [
+                      {
+                        "_Name": "keyword",
+                        "arg": "'root'",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'root'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'ctx'",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'ctx'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "orelse": []
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Name",
+            "id": "'net'",
+            "ctx": {
+              "_Name": "Load"
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'vgg11'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": {
+          "_Name": "arg",
+          "arg": "'kwargs'",
+          "annotation": "None",
+          "type_comment": "None"
+        },
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'VGG-11 model from the `\"Very Deep Convolutional Networks for Large-Scale Image Recognition\"\\n    <https://arxiv.org/abs/1409.1556>`_ paper.\\n\\n    Parameters\\n    ----------\\n    pretrained : bool, default False\\n        Whether to load the pretrained weights for model.\\n    ctx : Context, default CPU\\n        The context in which to load the pretrained weights.\\n    root : str, default \\'$MXNET_HOME/models\\'\\n        Location for keeping the model parameters.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'get_vgg'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Constant",
+                "value": "11",
+                "kind": "None"
+              }
+            ],
+            "keywords": [
+              {
+                "_Name": "keyword",
+                "arg": "None",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'kwargs'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'vgg13'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": {
+          "_Name": "arg",
+          "arg": "'kwargs'",
+          "annotation": "None",
+          "type_comment": "None"
+        },
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'VGG-13 model from the `\"Very Deep Convolutional Networks for Large-Scale Image Recognition\"\\n    <https://arxiv.org/abs/1409.1556>`_ paper.\\n\\n    Parameters\\n    ----------\\n    pretrained : bool, default False\\n        Whether to load the pretrained weights for model.\\n    ctx : Context, default CPU\\n        The context in which to load the pretrained weights.\\n    root : str, default \\'$MXNET_HOME/models\\'\\n        Location for keeping the model parameters.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'get_vgg'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Constant",
+                "value": "13",
+                "kind": "None"
+              }
+            ],
+            "keywords": [
+              {
+                "_Name": "keyword",
+                "arg": "None",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'kwargs'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'vgg16'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": {
+          "_Name": "arg",
+          "arg": "'kwargs'",
+          "annotation": "None",
+          "type_comment": "None"
+        },
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'VGG-16 model from the `\"Very Deep Convolutional Networks for Large-Scale Image Recognition\"\\n    <https://arxiv.org/abs/1409.1556>`_ paper.\\n\\n    Parameters\\n    ----------\\n    pretrained : bool, default False\\n        Whether to load the pretrained weights for model.\\n    ctx : Context, default CPU\\n        The context in which to load the pretrained weights.\\n    root : str, default \\'$MXNET_HOME/models\\'\\n        Location for keeping the model parameters.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'get_vgg'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Constant",
+                "value": "16",
+                "kind": "None"
+              }
+            ],
+            "keywords": [
+              {
+                "_Name": "keyword",
+                "arg": "None",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'kwargs'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'vgg19'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": {
+          "_Name": "arg",
+          "arg": "'kwargs'",
+          "annotation": "None",
+          "type_comment": "None"
+        },
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'VGG-19 model from the `\"Very Deep Convolutional Networks for Large-Scale Image Recognition\"\\n    <https://arxiv.org/abs/1409.1556>`_ paper.\\n\\n    Parameters\\n    ----------\\n    pretrained : bool, default False\\n        Whether to load the pretrained weights for model.\\n    ctx : Context, default CPU\\n        The context in which to load the pretrained weights.\\n    root : str, default \\'$MXNET_HOME/models\\'\\n        Location for keeping the model parameters.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'get_vgg'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Constant",
+                "value": "19",
+                "kind": "None"
+              }
+            ],
+            "keywords": [
+              {
+                "_Name": "keyword",
+                "arg": "None",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'kwargs'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'vgg11_bn'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": {
+          "_Name": "arg",
+          "arg": "'kwargs'",
+          "annotation": "None",
+          "type_comment": "None"
+        },
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'VGG-11 model with batch normalization from the\\n    `\"Very Deep Convolutional Networks for Large-Scale Image Recognition\"\\n    <https://arxiv.org/abs/1409.1556>`_ paper.\\n\\n    Parameters\\n    ----------\\n    pretrained : bool, default False\\n        Whether to load the pretrained weights for model.\\n    ctx : Context, default CPU\\n        The context in which to load the pretrained weights.\\n    root : str, default \\'$MXNET_HOME/models\\'\\n        Location for keeping the model parameters.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Subscript",
+              "value": {
+                "_Name": "Name",
+                "id": "'kwargs'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "slice": {
+                "_Name": "Index",
+                "value": {
+                  "_Name": "Constant",
+                  "value": "'batch_norm'",
+                  "kind": "None"
+                }
+              },
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Constant",
+            "value": "True",
+            "kind": "None"
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'get_vgg'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Constant",
+                "value": "11",
+                "kind": "None"
+              }
+            ],
+            "keywords": [
+              {
+                "_Name": "keyword",
+                "arg": "None",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'kwargs'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'vgg13_bn'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": {
+          "_Name": "arg",
+          "arg": "'kwargs'",
+          "annotation": "None",
+          "type_comment": "None"
+        },
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'VGG-13 model with batch normalization from the\\n    `\"Very Deep Convolutional Networks for Large-Scale Image Recognition\"\\n    <https://arxiv.org/abs/1409.1556>`_ paper.\\n\\n    Parameters\\n    ----------\\n    pretrained : bool, default False\\n        Whether to load the pretrained weights for model.\\n    ctx : Context, default CPU\\n        The context in which to load the pretrained weights.\\n    root : str, default \\'$MXNET_HOME/models\\'\\n        Location for keeping the model parameters.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Subscript",
+              "value": {
+                "_Name": "Name",
+                "id": "'kwargs'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "slice": {
+                "_Name": "Index",
+                "value": {
+                  "_Name": "Constant",
+                  "value": "'batch_norm'",
+                  "kind": "None"
+                }
+              },
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Constant",
+            "value": "True",
+            "kind": "None"
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'get_vgg'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Constant",
+                "value": "13",
+                "kind": "None"
+              }
+            ],
+            "keywords": [
+              {
+                "_Name": "keyword",
+                "arg": "None",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'kwargs'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'vgg16_bn'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": {
+          "_Name": "arg",
+          "arg": "'kwargs'",
+          "annotation": "None",
+          "type_comment": "None"
+        },
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'VGG-16 model with batch normalization from the\\n    `\"Very Deep Convolutional Networks for Large-Scale Image Recognition\"\\n    <https://arxiv.org/abs/1409.1556>`_ paper.\\n\\n    Parameters\\n    ----------\\n    pretrained : bool, default False\\n        Whether to load the pretrained weights for model.\\n    ctx : Context, default CPU\\n        The context in which to load the pretrained weights.\\n    root : str, default \\'$MXNET_HOME/models\\'\\n        Location for keeping the model parameters.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Subscript",
+              "value": {
+                "_Name": "Name",
+                "id": "'kwargs'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "slice": {
+                "_Name": "Index",
+                "value": {
+                  "_Name": "Constant",
+                  "value": "'batch_norm'",
+                  "kind": "None"
+                }
+              },
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Constant",
+            "value": "True",
+            "kind": "None"
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'get_vgg'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Constant",
+                "value": "16",
+                "kind": "None"
+              }
+            ],
+            "keywords": [
+              {
+                "_Name": "keyword",
+                "arg": "None",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'kwargs'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'vgg19_bn'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": {
+          "_Name": "arg",
+          "arg": "'kwargs'",
+          "annotation": "None",
+          "type_comment": "None"
+        },
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'VGG-19 model with batch normalization from the\\n    `\"Very Deep Convolutional Networks for Large-Scale Image Recognition\"\\n    <https://arxiv.org/abs/1409.1556>`_ paper.\\n\\n    Parameters\\n    ----------\\n    pretrained : bool, default False\\n        Whether to load the pretrained weights for model.\\n    ctx : Context, default CPU\\n        The context in which to load the pretrained weights.\\n    root : str, default \\'$MXNET_HOME/models\\'\\n        Location for keeping the model parameters.\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Subscript",
+              "value": {
+                "_Name": "Name",
+                "id": "'kwargs'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "slice": {
+                "_Name": "Index",
+                "value": {
+                  "_Name": "Constant",
+                  "value": "'batch_norm'",
+                  "kind": "None"
+                }
+              },
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Constant",
+            "value": "True",
+            "kind": "None"
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'get_vgg'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Constant",
+                "value": "19",
+                "kind": "None"
+              }
+            ],
+            "keywords": [
+              {
+                "_Name": "keyword",
+                "arg": "None",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'kwargs'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    }
+  ],
+  "type_ignores": []
+}

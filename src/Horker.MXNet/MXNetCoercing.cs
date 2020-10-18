@@ -20,6 +20,11 @@ namespace Horker.MXNet
             return (BlockScope)obj;
         }
 
+        public static MXNet.Context CoerceIntoContext(object obj)
+        {
+            return (MXNet.Context)obj;
+        }
+
         public static DType CoerceIntoDType(object obj)
         {
             return (DType)obj;

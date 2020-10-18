@@ -1,0 +1,96 @@
+{
+  "UsingNamespaces": [
+    "using System;",
+    "using System.Linq;",
+    "using System.Collections;",
+    "using System.Collections.Generic;",
+    "using System.Threading;",
+    "using Horker.MXNet;",
+    "using Horker.MXNet.Compat;",
+    "using Horker.MXNet.Interop;",
+    "using static Horker.MXNet.Compat.Compat;",
+    "using static Horker.MXNet.Compat.Coercing;",
+    "using static Horker.MXNet.MXNetCompat;",
+    "using static Horker.MXNet.MXNetCoercing;",
+    "using static Horker.MXNet.DType;"
+  ],
+  "Namespace": "Horker.MXNet",
+  "Replacements": {
+    "ndarray": "NDArray"
+  },
+  "Classes": {
+    "Context": {
+      "Name": "Context",
+      "BaseClasses": [ "object", "IEquatable<Context>" ],
+      "Fields": {
+        "device_typeid": "public int DeviceTypeid { get; set; }",
+        "device_id": "public int DeviceId { get; set; }",
+        "_old_ctx": "private Context _oldCtx;"
+      },
+      "Methods": {
+        "__init__": {
+          "Signature": "public Context(string deviceType, int deviceId = 0)"
+        },
+        "device_type": {
+          "Signature": "public string DeviceType"
+        },
+        "__hash__": {
+          "Drop":  true,
+          "Signature": "private int Hash()"
+        },
+        "__eq__": {
+          "Signature": "public bool Equals(Context other)"
+        },
+        "__str__": {
+          "Signature": "private string Str()"
+        },
+        "__repr__": {
+          "Signature": "private string Repr()"
+        },
+        "__enter__": {
+          "Signature": "private Context Enter()"
+        },
+        "__exit__": {
+          "Signature": "private void Exit(object ptype, object value, object trace)"
+        },
+        "default_ctx": {
+          "SignatureSetter": "public static void SetDefaultCtx(Context val)",
+          "Signature": "public static Context DefaultCtx",
+          "LocalAliases": {
+              "cls": "Context"
+          }
+        },
+        "empty_cache": {
+          "Signature": "public void EmptyCache()"
+        }
+      },
+      "StaticVariableTypes": {
+        "_default_ctx": "ThreadLocal<Context>",
+        "devtype2str": "Dictionary<int, string>",
+        "devstr2type": "Dictionary<string, int>"
+      }
+    },
+    "Helper": {
+      "Methods": {
+        "cpu": {
+          "Signature": "public static Context Cpu(int deviceId = 0)"
+        },
+        "cpu_pinned": {
+          "Signature": "public static Context CpuPinned(int deviceId = 0)"
+        },
+        "gpu": {
+          "Signature": "public static Context Gpu(int deviceId = 0)"
+        },
+        "num_gpus": {
+          "Signature": "public static int NumGpus()"
+        },
+        "gpu_memory_info": {
+          "Signature": "public static ValueTuple<long, long> GpuMemoryInfo(int deviceId = 0)"
+        },
+        "current_context": {
+          "Signature": "public static Context CurrentContext()"
+        }
+      }
+    }
+  }
+}

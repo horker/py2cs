@@ -6,7 +6,7 @@ namespace Horker.MXNet.Compat
 {
     public static class Warnings
     {
-        public static void Warn(string s, int stacklevel = 0)
+        public static void Warn(string s, Type cls = null, int stacklevel = 0)
         {
             Console.WriteLine(s);
         }

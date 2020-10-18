@@ -1,15 +1,17 @@
 param(
-    [string]$PythonFile
+    [string]$PythonFile,
+    [Switch]$Clobber
 )
 
 Set-StrictMode -Version Latest
 
 $ClassRe = "^class (\w+)(?:\((\w+)\))?"
-$DefRe = "^(\s{0,4})def (\w+)\(((?:[^:]|\r|\n)+)\):"
+$DefRe = "^(\s{0,4})def (\w+)\(((?:[^:]|\r|\n)*)\):"
 $PropertyRe = "^\s{4}@property"
 $SetterRe = "^\s{4}@(\w+)\.setter"
+$ClassPropertyRe = "^\s{4}@classproperty"
 $FieldRe = "^\s*self\.([a-z\d_]+)\s*=\s*(.+)"
-$LineRe = "(" + ($ClassRe, $DefRe, $PropertyRe, $SetterRe, $FieldRe -join ")|(") + ")"
+$LineRe = "(" + ($ClassRe, $DefRe, $PropertyRe, $SetterRe, $ClassPropertyRe, $FieldRe -join ")|(") + ")"
 
 $Classes = [ordered]@{}
 
@@ -140,15 +142,20 @@ function Build-ClassDef([string[]]$lines) {
         elseif ($l -match $SetterRe) {
             $defType = "setter"
         }
+        elseif ($l -match $ClassPropertyRe) {
+            $defType = "classProperty"
+        }
         elseif ($l -match $DefRe) {
             $indent = $matches[1]
             $methodName = $matches[2]
             $returnType = (Infer-Type $methodName) + " "
             $params = $matches[3]
             $visibility = $methodName -match "^_" ? "private" : "public"
+            $static = ""
 
             if ($indent.Length -eq 0) {
                 $class = Get-ClassObject "Helper"
+                $static = "static "
             }
 
             if ($methodName -eq "__init__") {
@@ -164,7 +171,12 @@ function Build-ClassDef([string[]]$lines) {
                 }
             }
 
-            $params = ($params -split "\s*,\s*") | where { $_ -ne "self" }
+            if ($defType -eq "classProperty") {
+                $static = "static "
+            }
+
+            $params = @(($params -split "\s*,\s*") | where { -not [string]::IsNullOrWhitespace($_) -and $_ -ne "self" -and ($defType -ne "classProperty" -or $_ -ne "cls") })
+            $params.Count
             $paramString = ($params | foreach {
                 $name, $defaultValue = $_ -split "\s*=\s*"
                 $name = $name -replace "\*\*", ""
@@ -182,13 +194,14 @@ function Build-ClassDef([string[]]$lines) {
 
 
             if ($defType -eq "property" -and [string]::IsNullOrEmpty($paramString)) {
-                $line = "$visibility $returnType$camelCased"
+                $line = "$visibility $static $returnType$camelCased"
 
             }
             else {
-                $line = "$visibility $returnType$camelCased($paramString)"
+                $line = "$visibility $static $returnType$camelCased($paramString)"
 
             }
+            $paramString
 
             $m = $class.Methods[$methodName]
             if ($m -eq $null) {
@@ -220,6 +233,7 @@ $UsingNamespaces = @(
     "using static Horker.MXNet.Compat.Compat;",
     "using static Horker.MXNet.Compat.Coercing;",
     "using static Horker.MXNet.MXNetCoercing;",
+    "using static Horker.MXNet.MXNetCompat;",
     "using static Horker.MXNet.DType;"
 )
 
@@ -231,11 +245,29 @@ $Replacements = [ordered]@{
 
 ############################################################
 
+function Get-OutPath([string]$pythonFile)
+{
+    $basePath = (Get-Item $PSScriptRoot\..).FullName
+    $inPath = (Get-Item $pythonFile).FullName
+    $inPath = $inPath.Substring($basePath.Length) -Replace "incubator-mxnet\\python\\"
+    $outPath = "src\Horker.MXNet\generated\$inPath.config.json"
+    $outPath
+}
+
+############################################################
+
+$outPath = Get-OutPath $PythonFile
+if (-not $Clobber -and (Test-Path $outPath)) {
+    Write-Error "output file already exists: $outPath"
+    exit
+}
+
 $doc = Get-Content -Raw -Encoding utf8 $PythonFile
 
 $m = (New-Object Regex $LineRe, "Multiline").Matches($doc)
 
 $lines = $m | foreach { $_.Groups[0].Value -Replace "\r|\n", " " }
+$lines
 Build-ClassDef $lines
 
 $out = [ordered]@{
@@ -245,4 +277,5 @@ $out = [ordered]@{
     Classes = $Classes
 }
 
-$out | ConvertTo-Json -Depth 10
+$result = $out | ConvertTo-Json -Depth 10
+$result | Set-Content $outPath

@@ -113,6 +113,7 @@ namespace Python2CSharp
         public string SignatureSetter { get; set; } = string.Empty;
         public List<string> KeywordArguments { get; set; } = new List<string>();
         public List<string> Prologue { get; set; } = new List<string>();
+        public Dictionary<string, string> LocalAliases { get; set; } = new Dictionary<string, string>();
 
         private SignatureAnalysis _signatureAnalysis;
         private SignatureAnalysis _signatureSetterAnalysis;
@@ -151,7 +152,7 @@ namespace Python2CSharp
 
         public bool Drop { get; set; } = false;
         public string Name { get; set; } = "";
-        public string Base { get; set; } = "object";
+        public List<string> BaseClasses { get; set; } = new List<string>() { "object" };
         public Dictionary<string, string> Fields { get; set; } = new Dictionary<string, string>();
         public Dictionary<string, MethodConfig> Methods { get; set; } = new Dictionary<string, MethodConfig>();
         public List<string> SpecialMethods { get; set; } = new List<string>();

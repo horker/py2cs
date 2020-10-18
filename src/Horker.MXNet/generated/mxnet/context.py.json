@@ -1,0 +1,2582 @@
+{
+  "_Name": "Module",
+  "body": [
+    {
+      "_Name": "Expr",
+      "value": {
+        "_Name": "Constant",
+        "value": "'Context management API of mxnet.'",
+        "kind": "None"
+      }
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'__future__'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'absolute_import'",
+          "asname": "None"
+        }
+      ],
+      "level": "0"
+    },
+    {
+      "_Name": "Import",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'threading'",
+          "asname": "None"
+        }
+      ]
+    },
+    {
+      "_Name": "Import",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'warnings'",
+          "asname": "None"
+        }
+      ]
+    },
+    {
+      "_Name": "Import",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'ctypes'",
+          "asname": "None"
+        }
+      ]
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'base'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'classproperty'",
+          "asname": "None"
+        },
+        {
+          "_Name": "alias",
+          "name": "'with_metaclass'",
+          "asname": "None"
+        },
+        {
+          "_Name": "alias",
+          "name": "'_MXClassPropertyMetaClass'",
+          "asname": "None"
+        }
+      ],
+      "level": "1"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'base'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'_LIB'",
+          "asname": "None"
+        }
+      ],
+      "level": "1"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'base'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'check_call'",
+          "asname": "None"
+        }
+      ],
+      "level": "1"
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'Context'",
+      "bases": [
+        {
+          "_Name": "Call",
+          "func": {
+            "_Name": "Name",
+            "id": "'with_metaclass'",
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          "args": [
+            {
+              "_Name": "Name",
+              "id": "'_MXClassPropertyMetaClass'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            {
+              "_Name": "Name",
+              "id": "'object'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            }
+          ],
+          "keywords": []
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "\"Constructs a context.\\n\\n    MXNet can run operations on CPU and different GPUs.\\n    A context describes the device type and ID on which computation should be carried on.\\n\\n    One can use mx.cpu and mx.gpu for short.\\n\\n    See also\\n    ----------\\n    `How to run MXNet on multiple CPU/GPUs <http://mxnet.io/faq/multi_devices.html>`\\n    for more details.\\n\\n    Parameters\\n    ----------\\n    device_type : {'cpu', 'gpu'} or Context.\\n        String representing the device type.\\n\\n    device_id : int (default=0)\\n        The device id of the device, needed for GPU.\\n\\n    Note\\n    ----\\n    Context can also be used as a way to change the default context.\\n\\n    Examples\\n    --------\\n    >>> # array on cpu\\n    >>> cpu_array = mx.nd.ones((2, 3))\\n    >>> # switch default context to GPU(2)\\n    >>> with mx.Context(mx.gpu(2)):\\n    ...     gpu_array = mx.nd.ones((2, 3))\\n    >>> gpu_array.context\\n    gpu(2)\\n\\n    One can also explicitly specify the context when creating an array.\\n\\n    >>> gpu_array = mx.nd.ones((2, 3), mx.gpu(1))\\n    >>> gpu_array.context\\n    gpu(1)\\n    \"",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'_default_ctx'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Attribute",
+              "value": {
+                "_Name": "Name",
+                "id": "'threading'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "attr": "'local'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [],
+            "keywords": []
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'devtype2str'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Dict",
+            "keys": [
+              {
+                "_Name": "Constant",
+                "value": "1",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "2",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "3",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "5",
+                "kind": "None"
+              }
+            ],
+            "values": [
+              {
+                "_Name": "Constant",
+                "value": "'cpu'",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "'gpu'",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "'cpu_pinned'",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "'cpu_shared'",
+                "kind": "None"
+              }
+            ]
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'devstr2type'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Dict",
+            "keys": [
+              {
+                "_Name": "Constant",
+                "value": "'cpu'",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "'gpu'",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "'cpu_pinned'",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "'cpu_shared'",
+                "kind": "None"
+              }
+            ],
+            "values": [
+              {
+                "_Name": "Constant",
+                "value": "1",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "2",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "3",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "5",
+                "kind": "None"
+              }
+            ]
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'device_type'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'device_id'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": [
+              {
+                "_Name": "Constant",
+                "value": "0",
+                "kind": "None"
+              }
+            ]
+          },
+          "body": [
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'isinstance'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'device_type'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  {
+                    "_Name": "Name",
+                    "id": "'Context'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              },
+              "body": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'device_typeid'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'device_type'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'device_typeid'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "type_comment": "None"
+                },
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'device_id'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'device_type'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'device_id'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "type_comment": "None"
+                }
+              ],
+              "orelse": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'device_typeid'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Subscript",
+                    "value": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'Context'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'devstr2type'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "slice": {
+                      "_Name": "Index",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'device_type'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    },
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "type_comment": "None"
+                },
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'device_id'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'device_id'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "type_comment": "None"
+                }
+              ]
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'_old_ctx'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Constant",
+                "value": "None",
+                "kind": "None"
+              },
+              "type_comment": "None"
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'device_type'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Constant",
+                "value": "\"Returns the device type of current context.\\n\\n        Examples\\n        -------\\n        >>> mx.context.current_context().device_type\\n        'cpu'\\n        >>> mx.current_context().device_type\\n        'cpu'\\n\\n        Returns\\n        -------\\n        device_type : str\\n        \"",
+                "kind": "None"
+              }
+            },
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Subscript",
+                "value": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'Context'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'devtype2str'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "slice": {
+                  "_Name": "Index",
+                  "value": {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'self'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'device_typeid'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                },
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            }
+          ],
+          "decorator_list": [
+            {
+              "_Name": "Name",
+              "id": "'property'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            }
+          ],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__hash__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Constant",
+                "value": "'Compute hash value of context for dictionary lookup'",
+                "kind": "None"
+              }
+            },
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'hash'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Tuple",
+                    "elts": [
+                      {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'device_typeid'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'device_id'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__eq__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'other'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Constant",
+                "value": "'Compares two contexts. Two contexts are equal if they\\n        have the same device type and device id.\\n        '",
+                "kind": "None"
+              }
+            },
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "BoolOp",
+                "op": {
+                  "_Name": "And"
+                },
+                "values": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'isinstance'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'other'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'Context'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Compare",
+                    "left": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'device_typeid'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "ops": [
+                      {
+                        "_Name": "Eq"
+                      }
+                    ],
+                    "comparators": [
+                      {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'other'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'device_typeid'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "_Name": "Compare",
+                    "left": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'device_id'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "ops": [
+                      {
+                        "_Name": "Eq"
+                      }
+                    ],
+                    "comparators": [
+                      {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'other'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'device_id'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__str__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "BinOp",
+                "left": {
+                  "_Name": "Constant",
+                  "value": "'%s(%d)'",
+                  "kind": "None"
+                },
+                "op": {
+                  "_Name": "Mod"
+                },
+                "right": {
+                  "_Name": "Tuple",
+                  "elts": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'device_type'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'device_id'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  ],
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                }
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__repr__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'__str__'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": []
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__enter__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "UnaryOp",
+                "op": {
+                  "_Name": "Not"
+                },
+                "operand": {
+                  "_Name": "Call",
+                  "func": {
+                    "_Name": "Name",
+                    "id": "'hasattr'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "args": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'Context'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'_default_ctx'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    {
+                      "_Name": "Constant",
+                      "value": "'value'",
+                      "kind": "None"
+                    }
+                  ],
+                  "keywords": []
+                }
+              },
+              "body": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'Context'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'_default_ctx'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'value'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'Context'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Constant",
+                        "value": "'cpu'",
+                        "kind": "None"
+                      },
+                      {
+                        "_Name": "Constant",
+                        "value": "0",
+                        "kind": "None"
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                }
+              ],
+              "orelse": []
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'_old_ctx'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Attribute",
+                "value": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'Context'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'_default_ctx'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "attr": "'value'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'Context'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'_default_ctx'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'value'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Name",
+                "id": "'self'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Name",
+                "id": "'self'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__exit__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'ptype'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'value'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'trace'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'Context'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'_default_ctx'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'value'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Attribute",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'self'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "attr": "'_old_ctx'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'default_ctx'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'cls'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'warnings'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'warn'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Constant",
+                    "value": "'Context.default_ctx has been deprecated. Please use Context.current_context() instead. Please use test_utils.set_default_context to set a default context'",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Name",
+                    "id": "'DeprecationWarning'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "UnaryOp",
+                "op": {
+                  "_Name": "Not"
+                },
+                "operand": {
+                  "_Name": "Call",
+                  "func": {
+                    "_Name": "Name",
+                    "id": "'hasattr'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "args": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'Context'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'_default_ctx'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    {
+                      "_Name": "Constant",
+                      "value": "'value'",
+                      "kind": "None"
+                    }
+                  ],
+                  "keywords": []
+                }
+              },
+              "body": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'cls'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'_default_ctx'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'value'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'Context'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Constant",
+                        "value": "'cpu'",
+                        "kind": "None"
+                      },
+                      {
+                        "_Name": "Constant",
+                        "value": "0",
+                        "kind": "None"
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                }
+              ],
+              "orelse": []
+            },
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Attribute",
+                "value": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'cls'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'_default_ctx'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "attr": "'value'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            }
+          ],
+          "decorator_list": [
+            {
+              "_Name": "Name",
+              "id": "'classproperty'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            }
+          ],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'default_ctx'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'cls'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'val'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'warnings'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'warn'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Constant",
+                    "value": "'Context.default_ctx has been deprecated. Please use Context.current_context() instead. Please use test_utils.set_default_context to set a default context'",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Name",
+                    "id": "'DeprecationWarning'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'cls'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'_default_ctx'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'value'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Name",
+                "id": "'val'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            }
+          ],
+          "decorator_list": [
+            {
+              "_Name": "Attribute",
+              "value": {
+                "_Name": "Name",
+                "id": "'default_ctx'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "attr": "'setter'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            }
+          ],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'empty_cache'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Constant",
+                "value": "'Empties the memory cache for the current contexts device.\\n\\n        MXNet utilizes a memory pool to avoid excessive allocations.\\n        Calling empty_cache will empty the memory pool of the contexts\\n        device. This will only free the memory of the unreferenced data.\\n\\n        Examples\\n        -------\\n        >>> ctx = mx.gpu(0)\\n        >>> arr = mx.nd.ones((200,200), ctx=ctx)\\n        >>> del arr\\n        >>> ctx.empty_cache() # forces release of memory allocated for arr\\n        '",
+                "kind": "None"
+              }
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'dev_type'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'ctypes'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'c_int'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'self'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'device_typeid'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'dev_id'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'ctypes'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'c_int'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'self'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'device_id'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'check_call'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'_LIB'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'MXStorageEmptyCache'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'dev_type'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'dev_id'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    },
+    {
+      "_Name": "Assign",
+      "targets": [
+        {
+          "_Name": "Attribute",
+          "value": {
+            "_Name": "Attribute",
+            "value": {
+              "_Name": "Name",
+              "id": "'Context'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "attr": "'_default_ctx'",
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          "attr": "'value'",
+          "ctx": {
+            "_Name": "Store"
+          }
+        }
+      ],
+      "value": {
+        "_Name": "Call",
+        "func": {
+          "_Name": "Name",
+          "id": "'Context'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        },
+        "args": [
+          {
+            "_Name": "Constant",
+            "value": "'cpu'",
+            "kind": "None"
+          },
+          {
+            "_Name": "Constant",
+            "value": "0",
+            "kind": "None"
+          }
+        ],
+        "keywords": []
+      },
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'cpu'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [
+          {
+            "_Name": "arg",
+            "arg": "'device_id'",
+            "annotation": "None",
+            "type_comment": "None"
+          }
+        ],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": "None",
+        "defaults": [
+          {
+            "_Name": "Constant",
+            "value": "0",
+            "kind": "None"
+          }
+        ]
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "\"Returns a CPU context.\\n\\n    This function is a short cut for ``Context('cpu', device_id)``.\\n    For most operations, when no context is specified, the default context is `cpu()`.\\n\\n    Examples\\n    ----------\\n    >>> with mx.cpu():\\n    ...     cpu_array = mx.nd.ones((2, 3))\\n    >>> cpu_array.context\\n    cpu(0)\\n    >>> cpu_array = mx.nd.ones((2, 3), ctx=mx.cpu())\\n    >>> cpu_array.context\\n    cpu(0)\\n\\n    Parameters\\n    ----------\\n    device_id : int, optional\\n        The device id of the device. `device_id` is not needed for CPU.\\n        This is included to make interface compatible with GPU.\\n\\n    Returns\\n    -------\\n    context : Context\\n        The corresponding CPU context.\\n    \"",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'Context'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Constant",
+                "value": "'cpu'",
+                "kind": "None"
+              },
+              {
+                "_Name": "Name",
+                "id": "'device_id'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ],
+            "keywords": []
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'cpu_pinned'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [
+          {
+            "_Name": "arg",
+            "arg": "'device_id'",
+            "annotation": "None",
+            "type_comment": "None"
+          }
+        ],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": "None",
+        "defaults": [
+          {
+            "_Name": "Constant",
+            "value": "0",
+            "kind": "None"
+          }
+        ]
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "\"Returns a CPU pinned memory context. Copying from CPU pinned memory to GPU\\n    is faster than from normal CPU memory.\\n\\n    This function is a short cut for ``Context('cpu_pinned', device_id)``.\\n\\n    Examples\\n    ----------\\n    >>> with mx.cpu_pinned():\\n    ...     cpu_array = mx.nd.ones((2, 3))\\n    >>> cpu_array.context\\n    cpu_pinned(0)\\n    >>> cpu_array = mx.nd.ones((2, 3), ctx=mx.cpu_pinned())\\n    >>> cpu_array.context\\n    cpu_pinned(0)\\n\\n    Parameters\\n    ----------\\n    device_id : int, optional\\n        The device id of the device. `device_id` is not needed for CPU.\\n        This is included to make interface compatible with GPU.\\n\\n    Returns\\n    -------\\n    context : Context\\n        The corresponding CPU pinned memory context.\\n    \"",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'Context'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Constant",
+                "value": "'cpu_pinned'",
+                "kind": "None"
+              },
+              {
+                "_Name": "Name",
+                "id": "'device_id'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ],
+            "keywords": []
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'gpu'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [
+          {
+            "_Name": "arg",
+            "arg": "'device_id'",
+            "annotation": "None",
+            "type_comment": "None"
+          }
+        ],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": "None",
+        "defaults": [
+          {
+            "_Name": "Constant",
+            "value": "0",
+            "kind": "None"
+          }
+        ]
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "\"Returns a GPU context.\\n\\n    This function is a short cut for Context('gpu', device_id).\\n    The K GPUs on a node are typically numbered as 0,...,K-1.\\n\\n    Examples\\n    ----------\\n    >>> cpu_array = mx.nd.ones((2, 3))\\n    >>> cpu_array.context\\n    cpu(0)\\n    >>> with mx.gpu(1):\\n    ...     gpu_array = mx.nd.ones((2, 3))\\n    >>> gpu_array.context\\n    gpu(1)\\n    >>> gpu_array = mx.nd.ones((2, 3), ctx=mx.gpu(1))\\n    >>> gpu_array.context\\n    gpu(1)\\n\\n    Parameters\\n    ----------\\n    device_id : int, optional\\n        The device id of the device, needed for GPU.\\n\\n    Returns\\n    -------\\n    context : Context\\n        The corresponding GPU context.\\n    \"",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'Context'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Constant",
+                "value": "'gpu'",
+                "kind": "None"
+              },
+              {
+                "_Name": "Name",
+                "id": "'device_id'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ],
+            "keywords": []
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'num_gpus'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": "None",
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'Query CUDA for the number of GPUs present.\\n\\n    Raises\\n    ------\\n    Will raise an exception on any CUDA error.\\n\\n    Returns\\n    -------\\n    count : int\\n        The number of GPUs.\\n\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'count'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Attribute",
+              "value": {
+                "_Name": "Name",
+                "id": "'ctypes'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "attr": "'c_int'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [],
+            "keywords": []
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'check_call'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'_LIB'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'MXGetGPUCount'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'byref'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'count'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            ],
+            "keywords": []
+          }
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Attribute",
+            "value": {
+              "_Name": "Name",
+              "id": "'count'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "attr": "'value'",
+            "ctx": {
+              "_Name": "Load"
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'gpu_memory_info'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [
+          {
+            "_Name": "arg",
+            "arg": "'device_id'",
+            "annotation": "None",
+            "type_comment": "None"
+          }
+        ],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": "None",
+        "defaults": [
+          {
+            "_Name": "Constant",
+            "value": "0",
+            "kind": "None"
+          }
+        ]
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'Query CUDA for the free and total bytes of GPU global memory.\\n\\n    Parameters\\n    ----------\\n    device_id : int, optional\\n        The device id of the GPU device.\\n\\n    Raises\\n    ------\\n    Will raise an exception on any CUDA error.\\n\\n    Returns\\n    -------\\n    (free, total) : (int, int)\\n        The number of GPUs.\\n\\n    '",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'free'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Attribute",
+              "value": {
+                "_Name": "Name",
+                "id": "'ctypes'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "attr": "'c_uint64'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [],
+            "keywords": []
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'total'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Attribute",
+              "value": {
+                "_Name": "Name",
+                "id": "'ctypes'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "attr": "'c_uint64'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [],
+            "keywords": []
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'dev_id'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Attribute",
+              "value": {
+                "_Name": "Name",
+                "id": "'ctypes'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "attr": "'c_int'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Name",
+                "id": "'device_id'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ],
+            "keywords": []
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'check_call'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'_LIB'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'MXGetGPUMemoryInformation64'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'dev_id'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'byref'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'free'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'byref'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'total'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            ],
+            "keywords": []
+          }
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Tuple",
+            "elts": [
+              {
+                "_Name": "Attribute",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'free'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "attr": "'value'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              {
+                "_Name": "Attribute",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'total'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "attr": "'value'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ],
+            "ctx": {
+              "_Name": "Load"
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'current_context'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": "None",
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "\"Returns the current context.\\n\\n    By default, `mx.cpu()` is used for all the computations\\n    and it can be overridden by using `with mx.Context(x)` statement where\\n    x can be cpu(device_id) or gpu(device_id).\\n\\n    Examples\\n    -------\\n    >>> mx.current_context()\\n    cpu(0)\\n    >>> with mx.Context('gpu', 1):  # Context changed in `with` block.\\n    ...    mx.current_context()  # Computation done here will be on gpu(1).\\n    ...\\n    gpu(1)\\n    >>> mx.current_context() # Back to default context.\\n    cpu(0)\\n\\n    Returns\\n    -------\\n    default_ctx : Context\\n    \"",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "If",
+          "test": {
+            "_Name": "UnaryOp",
+            "op": {
+              "_Name": "Not"
+            },
+            "operand": {
+              "_Name": "Call",
+              "func": {
+                "_Name": "Name",
+                "id": "'hasattr'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "args": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'Context'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'_default_ctx'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                {
+                  "_Name": "Constant",
+                  "value": "'value'",
+                  "kind": "None"
+                }
+              ],
+              "keywords": []
+            }
+          },
+          "body": [
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'Context'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'_default_ctx'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'value'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'Context'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Constant",
+                    "value": "'cpu'",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "0",
+                    "kind": "None"
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            }
+          ],
+          "orelse": []
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Attribute",
+            "value": {
+              "_Name": "Attribute",
+              "value": {
+                "_Name": "Name",
+                "id": "'Context'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "attr": "'_default_ctx'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "attr": "'value'",
+            "ctx": {
+              "_Name": "Load"
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    }
+  ],
+  "type_ignores": []
+}
