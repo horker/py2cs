@@ -569,6 +569,12 @@ namespace Python2CSharp
             var newLocals = new List<bool>();
             List<string> reassigns = null;
 
+            var value = node["value"];
+            bool isCtype = targetsCount == 1 &&
+                ObjectNameOf(value) == "Call" && ObjectNameOf(value["func"]) == "Attribute" &&
+                ObjectNameOf(value["func"]["value"]) == "Name" &&
+                GetNameProperty(value["func"]["value"], "id") == "ctypes";
+
             for (var i = 0; i < targetsCount; ++i)
             {
                 var target = targets[i];
@@ -582,12 +588,18 @@ namespace Python2CSharp
                         types.Add(type);
                         newLocals.Add(type == null);
                         if (type == null)
+                        {
                             ctx.AddLocal(name);
+                            if (isCtype)
+                                ctx.SetLocalToCtype(name);
+                        }
                     }
                     else
                     {
                         types.Add(null); // Future work
                         newLocals.Add(false);
+                        if (isCtype)
+                            ctx.SetLocalToCtype(name);
                     }
                 }
                 else if (ObjectNameOf(target) == "Attribute" &&
@@ -1333,6 +1345,16 @@ namespace Python2CSharp
 
         public ValueConstraint GenerateAttribute(JToken node, Context ctx)
         {
+            // Special case: Value property call to ctype variables
+
+            if (GetNameProperty(node, "attr") == "value" &&
+                ObjectNameOf(node["value"]) == "Name" &&
+                ctx.IsLocalCtype(GetNameProperty(node["value"], "id")))
+            {
+                _out.Write(ConvertAsLocal(GetNameProperty(node["value"], "id")));
+                return ValueConstraint.Any;
+            }
+
             GenerateExpression(node["value"], ctx);
             var attr = ConvertToCamelCase(StripQuotes(node["attr"].Value<string>()), true);
             _out.Write($".{attr}");

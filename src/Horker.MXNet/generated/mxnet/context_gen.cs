@@ -169,7 +169,7 @@ namespace Horker.MXNet
             // Expr
             var count = Ctypes.CInt();
             CheckCall(LIB.MXGetGPUCount(ref count));
-            return count.Value;
+            return count;
         }
     }
     
@@ -182,7 +182,7 @@ namespace Horker.MXNet
             var total = Ctypes.CUint64();
             var devId = Ctypes.CInt(deviceId);
             CheckCall(LIB.MXGetGPUMemoryInformation64(devId, ref free, ref total));
-            return ValueTuple.Create(free.Value, total.Value);
+            return ValueTuple.Create(free, total);
         }
     }
     

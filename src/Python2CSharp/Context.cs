@@ -13,11 +13,23 @@ namespace Python2CSharp
         public enum ModuleContextEnum { Namespace, Class, Function };
         public enum StatementContextEnum { Statement, Expression };
 
+        public class Local
+        {
+            public string Alias { get; set; }
+            public bool IsCtype { get; set; }
+
+            public Local(string alias, bool isCtype = false)
+            {
+                Alias = alias;
+                IsCtype = isCtype;
+            }
+        }
+
         private Context _parent;
         private ModuleContextEnum _moduleContext;
         private StatementContextEnum _statementContext;
         private string _name;
-        private Dictionary<string, string> _locals;
+        private Dictionary<string, Local> _locals;
         private string _keywordArgumentName;
         private string _typeConstraint;
         private bool _isSetterDef;
@@ -37,13 +49,13 @@ namespace Python2CSharp
         public string TypeConstraint => _typeConstraint;
         public bool IsSetterDef => _isSetterDef;
 
-        public Context(Context parent = null, string name = null, ModuleContextEnum moduleContext = ModuleContextEnum.Namespace, StatementContextEnum statementContext = StatementContextEnum.Statement, Dictionary<string, string> locals = null, string keywordArgumentName = null, string typeConstraint = null, bool isSetterDef = false)
+        public Context(Context parent = null, string name = null, ModuleContextEnum moduleContext = ModuleContextEnum.Namespace, StatementContextEnum statementContext = StatementContextEnum.Statement, Dictionary<string, Local> locals = null, string keywordArgumentName = null, string typeConstraint = null, bool isSetterDef = false)
         {
             _parent = parent;
             _name = name;
             _moduleContext = moduleContext;
             _statementContext = statementContext;
-            _locals = locals ?? new Dictionary<string, string>();
+            _locals = locals ?? new Dictionary<string, Local>();
             _keywordArgumentName = keywordArgumentName;
             _typeConstraint = typeConstraint;
             _isSetterDef = isSetterDef;
@@ -56,7 +68,11 @@ namespace Python2CSharp
 
         public Context GetDeepCopy()
         {
-            return new Context(this, _name, _moduleContext, _statementContext, new Dictionary<string, string>(_locals), _keywordArgumentName, _typeConstraint, _isSetterDef);
+            var copyLocal = new Dictionary<string, Local>();
+            foreach (var l in _locals)
+                copyLocal.Add(l.Key, new Local(l.Value.Alias, l.Value.IsCtype));
+
+            return new Context(this, _name, _moduleContext, _statementContext, copyLocal, _keywordArgumentName, _typeConstraint, _isSetterDef);
         }
 
         public Context AsStatement()
@@ -86,12 +102,12 @@ namespace Python2CSharp
 
         public Context EnterClass(string name)
         {
-            return new Context(this, name, ModuleContextEnum.Class, StatementContextEnum.Statement, new Dictionary<string, string>());
+            return new Context(this, name, ModuleContextEnum.Class, StatementContextEnum.Statement);
         }
 
         public Context EnterFunction(string name, string keywordArgumentName, bool isSetterDef)
         {
-            return new Context(this, name, ModuleContextEnum.Function, StatementContextEnum.Statement, new Dictionary<string, string>(), keywordArgumentName, null, isSetterDef);
+            return new Context(this, name, ModuleContextEnum.Function, StatementContextEnum.Statement, null, keywordArgumentName, null, isSetterDef);
         }
 
         public Context WithTypeConstraint(string typeConstraint)
@@ -119,14 +135,14 @@ namespace Python2CSharp
 
         public void AddLocal(string name)
         {
-            _locals.Add(name, name);
+            _locals.Add(name, new Local(name));
         }
 
         public bool TryAddLocal(string name)
         {
             if (_locals.ContainsKey(name))
                 return false;
-            _locals.Add(name, name);
+            _locals.Add(name, new Local(name));
             return true;
         }
 
@@ -141,18 +157,18 @@ namespace Python2CSharp
             }
             while (_locals.ContainsKey(result));
 
-            _locals.Add(result, null);
+            _locals.Add(result, new Local(result));
             return result;
         }
 
         public void SetAliasForLocal(string name, string alias)
         {
-            _locals[name] = alias;
+            _locals[name].Alias = alias;
         }
 
         public string GetAliasForLocal(string name)
         {
-            return _locals[name];
+            return _locals[name].Alias;
         }
 
         public Context WithAliases(params (string, string)[] aliases)
@@ -164,6 +180,18 @@ namespace Python2CSharp
             }
 
             return ctx;
+        }
+
+        public void SetLocalToCtype(string name)
+        {
+            _locals[name].IsCtype = true;
+        }
+
+        public bool IsLocalCtype(string name)
+        {
+            if (_locals.TryGetValue(name, out var l))
+                return l.IsCtype;
+            return false;
         }
 
         public string GetClassName()
