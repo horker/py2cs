@@ -644,7 +644,7 @@
         ],
         "_slice": [
           {
-            "Signature": "internal object _slice(object start, object stop)"
+            "Signature": "internal NDArray _slice(int start, int stop)"
           }
         ],
         "_at": [

@@ -670,11 +670,13 @@ namespace Horker.MXNet
             CheckCall(_LIB.MXNDArraySyncCopyFromCPU(this.Handle, sourceArray.CTypes.DataAs(CTypes.CVoidP), CTypes.CSizeT(sourceArray.Size)));
         }
         
-        internal object _slice(object start, object stop)
+        internal NDArray _slice(int start, int stop)
         {
             // Expr
             var handle = new NDArrayHandle();
-            var (_) = _getIndexRange(start, stop, this.Shape.Item1);
+            var (local0, local1, _) = _getIndexRange(start, stop, this.Shape.Item1);
+            start = local0;
+            stop = local1;
             CheckCall(_LIB.MXNDArraySlice(this.Handle, MxUint(start), MxUint(stop), ref handle));
             return new NDArray(handle: handle, writable: this.Writable);
         }
@@ -686,7 +688,7 @@ namespace Horker.MXNet
             if (IsTrue((idx < 0)))
             {
                 var length = this.Shape.Item1;
-                // AugAssign
+                idx = (idx + length);
                 if (IsTrue((idx < 0)))
                 {
                     throw new IndexError(("index %d is out of bounds for axis 0 with size %d".PyFormat(ValueTuple.Create((idx - length), length))));
@@ -1353,7 +1355,7 @@ namespace Horker.MXNet
                 var size = 1;
                 foreach (var i in this.Shape)
                 {
-                    // AugAssign
+                    size = (size * i);
                 }
                 return size;
             }
@@ -1602,7 +1604,7 @@ namespace Horker.MXNet
             {
                 if (IsTrue((start < 0)))
                 {
-                    // AugAssign
+                    start = (start + length);
                     if (IsTrue((start < 0)))
                     {
                         throw new IndexError(("Slicing start %d exceeds limit of %d".PyFormat(ValueTuple.Create((start - length), length))));
@@ -1631,7 +1633,7 @@ namespace Horker.MXNet
             {
                 if (IsTrue((stop < 0)))
                 {
-                    // AugAssign
+                    stop = (stop + length);
                     if (IsTrue((stop < 0)))
                     {
                         throw new IndexError(("Slicing stop %d exceeds limit of %d".PyFormat(ValueTuple.Create((stop - length), length))));
@@ -1713,7 +1715,7 @@ namespace Horker.MXNet
                     throw new ValueError(("shape1=%s is not broadcastable to shape2=%s".PyFormat(ValueTuple.Create(shape1, shape2))));
                 }
                 shape[i] = Max(a, b);
-                // AugAssign
+                i = (i - 1);
             }
             return Tuple(shape);
         }
@@ -2041,7 +2043,7 @@ namespace Horker.MXNet
             var dtype = arrays.Item1.DType;
             foreach (var arr in arrays.Slice(1, null, null))
             {
-                // AugAssign
+                shapeAxis = (shapeAxis + arr.Shape[axis]);
                 Assert(IsTrue((shapeRest1 == arr.Shape.Slice(0, axis, null))), "(shapeRest1 == arr.Shape.Slice(0, axis, null))");
                 Assert(IsTrue((shapeRest2 == arr.Shape.Slice((axis + 1), null, null))), "(shapeRest2 == arr.Shape.Slice((axis + 1), null, null))");
                 Assert(IsTrue((dtype == arr.DType)), "(dtype == arr.DType)");
@@ -2063,7 +2065,7 @@ namespace Horker.MXNet
                     end[axis] = (idx + arr.Shape[axis]);
                     _internal._cropAssign(ret, arr, @out: ret, begin: Tuple(begin), end: Tuple(end));
                 }
-                // AugAssign
+                idx = (idx + arr.Shape[axis]);
             }
             return ret;
         }

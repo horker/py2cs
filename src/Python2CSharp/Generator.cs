@@ -282,6 +282,7 @@ namespace Python2CSharp
                 case "ClassDef": result = GenerateClassDef(node, ctx); break;
                 case "Return": result = GenerateReturn(node, ctx); break;
                 case "Assign": result = GenerateAssign(node, ctx); break;
+                case "AugAssign": result = GenerateAugAssign(node, ctx); break;
                 case "For": result = GenerateFor(node, ctx); break;
                 case "While": result = GenerateWhile(node, ctx); break;
                 case "If": result = GenerateIf(node, ctx); break;
@@ -800,34 +801,56 @@ namespace Python2CSharp
                                 var name = GetNameProperty(t, "id");
                                 if (!ctx.FindLocal(name))
                                 {
-                                    ctx.AddLocal(name);
                                     localDefined = true;
-                                    lhs.Add(ConvertAsLocal(name));
-                                    continue;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (localDefined)
+                            _out.Write("var (");
+
+                        var first = true;
+                        foreach (var t in target["elts"])
+                        {
+                            if (!first)
+                                _out.Write(", ");
+                            first = false;
+                            if (ObjectNameOf(t) == "Name")
+                            {
+                                var name = GetNameProperty(t, "id");
+                                if (!ctx.FindLocal(name))
+                                {
+                                    ctx.AddLocal(name);
+                                    if (localDefined)
+                                    {
+                                        _out.Write(ConvertAsLocal(name));
+                                        continue;
+                                    }
                                 }
                             }
 
                             if (localDefined)
                             {
                                 var local = ctx.MakeLocal();
-                                var exp = FormatExpression(t, ctx);
-                                lhs.Add(local);
+                                _out.Write(local);
 
                                 if (reassigns == null)
                                     reassigns = new List<string>();
+                                var exp = FormatExpression(t, ctx);
                                 reassigns.Add($"{exp} = {local};");
                             }
+                            else
+                            {
+                                GenerateExpression(t, ctx);
+                            }
                         }
-
-                        if (localDefined)
-                            _out.Write("var ");
-
-                        _out.Write($"({string.Join(", ", lhs)})");
+                        _out.Write(")");
                     }
                     else
                     {
                         // Subscript etc.
-                        Generate(target, ctx);
+                        GenerateExpression(target, ctx);
                     }
 
                     _out.Write(" = ");
@@ -847,6 +870,20 @@ namespace Python2CSharp
                 foreach (var r in reassigns)
                     _out.WriteLine(r);
             }
+
+            return ValueConstraint.Any;
+        }
+
+        public ValueConstraint GenerateAugAssign(JToken node, Context ctx)
+        {
+            var target = node["target"];
+            var op = node["op"]["_Name"].Value<string>();
+            var value = node["value"];
+
+            GenerateExpression(target, ctx);
+            _out.Write(" = ");
+            GenerateBinOp(target, op, value, ctx);
+            _out.WriteLine(";");
 
             return ValueConstraint.Any;
         }
@@ -1105,6 +1142,11 @@ namespace Python2CSharp
             var op = node["op"]["_Name"].Value<string>();
             var right = node["right"];
 
+            return GenerateBinOp(left, op, right, ctx);
+        }
+
+        private ValueConstraint GenerateBinOp(JToken left, string op, JToken right, Context ctx)
+        {
             if (op == "Pow")
             {
                 _out.Write("System.Math.Pow(");
