@@ -254,7 +254,7 @@ namespace Horker.MXNet.Gluon
             // Expr
             var @params = this._collectParamsWithPrefix();
             var argDict = @params.Items().Select((key, val) => ValueTuple.Create(key, val._reduce())).ToDictionary();
-            NDArray.Save(filename, argDict);
+            NDArrayBase.Save(filename, argDict);
         }
         
         public void SaveParams(string filename)
@@ -266,7 +266,7 @@ namespace Horker.MXNet.Gluon
         public void LoadParameters(string filename, Context ctx = null, bool allowMissing = false, bool ignoreExtra = false, bool castDtype = false, string dtypeSource = "current")
         {
             // Expr
-            var loaded = NDArray.Load(filename);
+            var loaded = NDArrayBase.Load(filename);
             var @params = this._collectParamsWithPrefix();
             if (IsTrue((IsTrue((!IsTrue(loaded))) && IsTrue((!IsTrue(@params)))))){
                 return;
@@ -364,7 +364,7 @@ namespace Horker.MXNet.Gluon
             }
         }
         
-        public NDArray Call(params NDArray[] args)
+        public NDArrayBase Call(params NDArrayBase[] args)
         {
             // Expr
             foreach (var hook in this._forwardPreHooks.Values())
@@ -379,7 +379,7 @@ namespace Horker.MXNet.Gluon
             return @out;
         }
         
-        public NDArray Forward(params NDArray[] args)
+        public NDArrayBase Forward(params NDArrayBase[] args)
         {
             // Expr
             throw new NotImplementedError();
@@ -487,7 +487,7 @@ namespace Horker.MXNet.Gluon
                 }
             }
             var flags = (new [] { ValueTuple.Create("data_indices", dataIndices), ValueTuple.Create("param_indices", paramIndices) } + this._flags);
-            this._cachedOp = CoerceIntoCachedOp(NDArray.CachedOp(@out, flags));
+            this._cachedOp = CoerceIntoCachedOp(NDArrayBase.CachedOp(@out, flags));
         }
         
         internal void _deferredInferShape(NDArrayList args)
@@ -502,8 +502,8 @@ namespace Horker.MXNet.Gluon
             var (fmt) = _flatten(args, "input");
             Assert((fmt == this._inFormat), "(fmt == this._inFormat)");
             var @out = this._cachedOp(Cargs);
-            if (IsTrue(Isinstance(@out, typeof(NDArray)))){
-                var local0 = (NDArray)out;
+            if (IsTrue(Isinstance(@out, typeof(NDArrayBase)))){
+                var local0 = (NDArrayBase)out;
                 @out = new [] { local0 };
             }
             return _regroup(@out, this._outFormat)[0];
@@ -579,14 +579,14 @@ namespace Horker.MXNet.Gluon
                     argDict[("aux:%s".PyFormat(Name))] = Param._reduce();
                 }
             }
-            NDArray.Save(("%s-%04d.params".PyFormat(ValueTuple.Create(path, epoch))), argDict);
+            NDArrayBase.Save(("%s-%04d.params".PyFormat(ValueTuple.Create(path, epoch))), argDict);
         }
         
         public NDArrayOrSymbol Forward(NDArrayOrSymbol x, params NDArrayOrSymbol[] args)
         {
             // Expr
-            if (IsTrue(Isinstance(x, typeof(NDArray)))){
-                var local0 = (NDArray)x;
+            if (IsTrue(Isinstance(x, typeof(NDArrayBase)))){
+                var local0 = (NDArrayBase)x;
                 var local1 = local0.Context;
                 local1.Enter();
                 try
@@ -700,7 +700,7 @@ namespace Horker.MXNet.Gluon
                 Assert((Len(i.GetInternals().ListOutputs()) == 1), "(Len(i.GetInternals().ListOutputs()) == 1)");
                 inputNames.Add(i.Name);
             }
-            var rowSparseStorage = NDArray.Ndarray.STORAGETYPESTRTOID["row_sparse"];
+            var rowSparseStorage = NDArrayBase.Ndarray.STORAGETYPESTRTOID["row_sparse"];
             foreach (var i in @out)
             {
                 foreach (var j in i.GetInternals())

@@ -128,8 +128,8 @@ namespace Horker.MXNet
         public void EmptyCache()
         {
             // Expr
-            var devType = Ctypes.CInt(this.DeviceTypeid);
-            var devId = Ctypes.CInt(this.DeviceId);
+            var devType = Compat.CTypes.CInt(this.DeviceTypeid);
+            var devId = Compat.CTypes.CInt(this.DeviceId);
             CheckCall(LIB.MXStorageEmptyCache(devType, devId));
         }
     }
@@ -167,7 +167,7 @@ namespace Horker.MXNet
         public static int NumGpus()
         {
             // Expr
-            var count = Ctypes.CInt();
+            var count = Compat.CTypes.CInt();
             CheckCall(LIB.MXGetGPUCount(ref count));
             return count;
         }
@@ -178,9 +178,9 @@ namespace Horker.MXNet
         public static ValueTuple<long, long> GpuMemoryInfo(int deviceId = 0)
         {
             // Expr
-            var free = Ctypes.CUint64();
-            var total = Ctypes.CUint64();
-            var devId = Ctypes.CInt(deviceId);
+            var free = Compat.CTypes.CUint64();
+            var total = Compat.CTypes.CUint64();
+            var devId = Compat.CTypes.CInt(deviceId);
             CheckCall(LIB.MXGetGPUMemoryInformation64(devId, ref free, ref total));
             return ValueTuple.Create(free, total);
         }

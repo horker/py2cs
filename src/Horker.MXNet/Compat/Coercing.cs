@@ -31,6 +31,17 @@ namespace Horker.MXNet.Compat
 
         public static Hashtable CoerceIntoHashtable(object obj) => (Hashtable)obj;
 
+        public static int CoerceIntoInt(int obj) => obj;
+        public static int CoerceIntoInt(bool obj) => obj ? 1 : 0;
+        public static int CoerceIntoInt(object obj) => obj == null ? 0 : throw new ArgumentException("Cannot coerce {obj} into int");
+
+        public static List<T> CoerceIntoList<T>(IEnumerable<T> values)
+        {
+            if (values == null)
+                return new List<T>();
+            return new List<T>(values);
+        }
+
         public static object CoerceIntoObject(object obj) => obj;
 
         public static string CoerceIntoString(object obj) => (string)obj;

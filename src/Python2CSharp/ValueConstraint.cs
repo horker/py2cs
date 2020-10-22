@@ -12,9 +12,21 @@ namespace Python2CSharp
         public static ValueConstraint Any => _any;
         public bool IsAny() => Type == null;
 
+        private static readonly ValueConstraint _terminal = new ValueConstraint("terminal");
+        public static ValueConstraint Terminal => _terminal;
+        public bool IsTerminal() => Type == "terminal";
+
         private static readonly ValueConstraint _bool = new ValueConstraint("bool");
         public static ValueConstraint Bool => _bool;
         public bool IsBool() => Type == "bool";
+
+        private static readonly ValueConstraint _true = new ValueConstraint("true");
+        public static ValueConstraint True => _true;
+        public bool IsTrue() => Type == "true";
+
+        private static readonly ValueConstraint _false = new ValueConstraint("false");
+        public static ValueConstraint False => _false;
+        public bool IsFalse() => Type == "false";
 
         private static readonly ValueConstraint _string = new ValueConstraint("string");
         public static ValueConstraint String => _string;

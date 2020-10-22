@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
@@ -26,6 +27,9 @@ namespace Horker.MXNet.Compat
                 throw new ApplicationException($"Assertion failed: {expression}");
         }
 
+        public static bool Bool(bool value) => value;
+        public static bool Bool(int value) => value != 0;
+
         public static IEnumerable<(int, T)> Enumerate<T>(IEnumerable<T> e)
         {
             var i = 0;
@@ -33,11 +37,19 @@ namespace Horker.MXNet.Compat
                 yield return (i, value);
         }
 
+        public static float Float(float value) => value;
+        public static float Float(object value) => (float)value;
+
         public static bool Hasattr<T>(T obj, string name)
         {
             var members = obj.GetType().GetMember(name);
             return members.Length >= 1;
         }
+
+        public static int Id(object value) => value.GetHashCode();
+
+        public static int Int(int value) => value;
+        public static int Int(object value) => (int)value;
 
         public static object Getattr<T>(T obj, string name)
         {
@@ -55,10 +67,15 @@ namespace Horker.MXNet.Compat
             return fallback;
         }
 
-        public static bool Isinstance(object obj, Type type)
-        {
-            return obj.GetType() == type || obj.GetType().IsSubclassOf(type);
-        }
+        public static bool Isinstance(object obj, Type type) => obj.GetType() == type || obj.GetType().IsSubclassOf(type);
+        public static bool Isinstance(object obj, ValueTuple<Type, Type> types) => Isinstance(obj, types.Item1) || Isinstance(obj, types.Item2);
+        public static bool Isinstance(object obj, ValueTuple<Type, Type, Type> types) => Isinstance(obj, types.Item1) || Isinstance(obj, types.Item2) || Isinstance(obj, types.Item3);
+        public static bool Isinstance(object obj, ValueTuple<Type, Type, Type, Type> types) => Isinstance(obj, types.Item1) || Isinstance(obj, types.Item2) || Isinstance(obj, types.Item3) || Isinstance(obj, types.Item4);
+        public static bool Isinstance(object obj, ValueTuple<Type, Type, Type, Type, Type> types) => Isinstance(obj, types.Item1) || Isinstance(obj, types.Item2) || Isinstance(obj, types.Item3) || Isinstance(obj, types.Item4) || Isinstance(obj, types.Item5);
+
+        public static bool IsNone(bool value) => !value;
+        public static bool IsNone(int value) => value == 0;
+        public static bool IsNone(object value) => value == null;
 
         public static bool IsTrue(bool value)
         {
@@ -75,7 +92,7 @@ namespace Horker.MXNet.Compat
             return s.Length;
         }
 
-        public static int Len(Array items)
+        public static int Len(System.Array items)
         {
             return items.Length;
         }
@@ -90,7 +107,7 @@ namespace Horker.MXNet.Compat
             return items.Count();
         }
 
-        public static int Len<T>(IList<T> items)
+        public static int Len<T>(List<T> items)
         {
             return items.Count;
         }
@@ -98,6 +115,18 @@ namespace Horker.MXNet.Compat
         public static List<T> List<T>(IEnumerable<T> items)
         {
             return new List<T>(items);
+        }
+
+        public static T Max<T>(T value1, T value2)
+            where T: IComparable<T>
+        {
+            return value1.CompareTo(value2) > 0 ? value1 : value2;
+        }
+
+        public static T Min<T>(T value1, T value2)
+            where T: IComparable<T>
+        {
+            return value1.CompareTo(value2) < 0 ? value1 : value2;
         }
 
         private static string ConvertFormatString(string f)

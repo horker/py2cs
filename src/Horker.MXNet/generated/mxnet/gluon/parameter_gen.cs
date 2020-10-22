@@ -32,7 +32,7 @@ namespace Horker.MXNet.Gluon
     
     public static partial class Helper
     {
-        public static object TensorTypes = CoerceIntoObject(ValueTuple.Create(Symbol.Symbol, NDArray.NDArray));
+        public static object TensorTypes = CoerceIntoObject(ValueTuple.Create(Symbol.Symbol, NDArrayBase.NDArray));
     }
     
     public partial class DeferredInitializationError : MXNetError
@@ -45,12 +45,12 @@ namespace Horker.MXNet.Gluon
     public partial class Parameter : PythonObject
     {
         private Symbol _var;
-        private NDArray _data;
-        private NDArray _grad;
+        private NDArrayBase _data;
+        private NDArrayBase _grad;
         private Context[] _ctxList;
         private object _ctxMap;
         private Trainer _trainer;
-        private ValueTuple<Initializer, Context, Initializer, NDArray> _deferredInit;
+        private ValueTuple<Initializer, Context, Initializer, NDArrayBase> _deferredInit;
         private bool _differentiable;
         private bool _allowDeferredInit;
         private string _gradReq;
@@ -73,7 +73,7 @@ namespace Horker.MXNet.Gluon
             this._ctxList = CoerceIntoContext[](null);
             this._ctxMap = CoerceIntoObject(null);
             this._trainer = CoerceIntoTrainer(null);
-            this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArray>(ValueTuple.Create());
+            this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArrayBase>(ValueTuple.Create());
             this._differentiable = CoerceIntoBool(differentiable);
             this._allowDeferredInit = CoerceIntoBool(allowDeferredInit);
             this._gradReq = CoerceIntoString(null);
@@ -218,7 +218,7 @@ namespace Horker.MXNet.Gluon
         private object _getRowSparse(object arrList, Context ctx, object rowId)
         {
             // Expr
-            if (IsTrue((!IsTrue(Isinstance(rowId, NDArray.NDArray))))){
+            if (IsTrue((!IsTrue(Isinstance(rowId, NDArrayBase.NDArray))))){
                 throw new TypeError(("row_id must have NDArray type, but %s is given".PyFormat(Type(rowId))));
             }
             if (IsTrue((!IsTrue(this._trainer)))){
@@ -229,7 +229,7 @@ namespace Horker.MXNet.Gluon
             return results;
         }
         
-        private void _loadInit(NDArray data, Context ctx, bool castDtype = false, string dtypeSource = "current")
+        private void _loadInit(NDArrayBase data, Context ctx, bool castDtype = false, string dtypeSource = "current")
         {
             // Expr
             if (IsTrue(castDtype)){
@@ -284,7 +284,7 @@ namespace Horker.MXNet.Gluon
                 Assert((IsTrue((ctx is null)) || IsTrue((Set(ctx) == Set(this.ListCtx())))), "(IsTrue((ctx is null)) || IsTrue((Set(ctx) == Set(this.ListCtx()))))");
                 this.SetData(data);
             }
-            this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArray>(ValueTuple.Create());
+            this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArrayBase>(ValueTuple.Create());
         }
         
         private void _finishDeferredInit()
@@ -294,14 +294,14 @@ namespace Horker.MXNet.Gluon
                 return;
             }
             var (init, ctx, defaultInit, data) = this._deferredInit;
-            this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArray>(ValueTuple.Create());
+            this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArrayBase>(ValueTuple.Create());
             Assert(ShapeIsKnown(this.Shape), "ShapeIsKnown(this.Shape)");
             var local0 = Autograd.Pause();
             local0.Enter();
             try
             {
                 if (IsTrue((data is null))){
-                    data = NDArray.Zeros(shape: this.Shape, dtype: this.Dtype, ctx: Context.Cpu(), stype: this._stype);
+                    data = NDArrayBase.Zeros(shape: this.Shape, dtype: this.Dtype, ctx: Context.Cpu(), stype: this._stype);
                     Initializer.Create(defaultInit)(Initializer.InitDesc(this.Name, new System.Collections.Hashtable(){
                         { "__init__", init },
                     }
@@ -315,7 +315,7 @@ namespace Horker.MXNet.Gluon
             }
         }
         
-        private object _initImpl(NDArray data, object ctxList)
+        private object _initImpl(NDArrayBase data, object ctxList)
         {
             // Expr
             this._ctxList = CoerceIntoContext[](List(ctxList));
@@ -339,7 +339,7 @@ namespace Horker.MXNet.Gluon
                 this._grad = CoerceIntoNDArray(null);
                 return null;
             }
-            this._grad = CoerceIntoNDArray(this._data.Select(i => NDArray.Zeros(shape: i.Shape, dtype: i.Dtype, ctx: i.Context, stype: this._gradStype)).ToList());
+            this._grad = CoerceIntoNDArray(this._data.Select(i => NDArrayBase.Zeros(shape: i.Shape, dtype: i.Dtype, ctx: i.Context, stype: this._gradStype)).ToList());
             Autograd.MarkVariables(this._checkAndGet(this._data, List), this._grad, this.GradReq);
         }
         
@@ -349,12 +349,12 @@ namespace Horker.MXNet.Gluon
             var ctx = Context.Cpu();
             if (IsTrue((this._stype == "default"))){
                 var block = this.ListData();
-                var data = (NDArray.AddN(block.Select(w => w.Copyto(ctx))) / Len(block));
+                var data = (NDArrayBase.AddN(block.Select(w => w.Copyto(ctx))) / Len(block));
             }
             else
             {
-                var allRowIds = NDArray.Arange(0, this.Shape.Item1, dtype: "int64", ctx: ctx);
-                data = NDArray.Zeros(this.Shape, stype: "row_sparse", ctx: ctx);
+                var allRowIds = NDArrayBase.Arange(0, this.Shape.Item1, dtype: "int64", ctx: ctx);
+                data = NDArrayBase.Zeros(this.Shape, stype: "row_sparse", ctx: ctx);
                 this._trainer._rowSparsePull(this, data, allRowIds, fullIdx: true);
             }
             return data;
@@ -381,12 +381,12 @@ namespace Horker.MXNet.Gluon
             }
             if (IsTrue((!IsTrue(ShapeIsKnown(this.Shape))))){
                 if (IsTrue(this._allowDeferredInit)){
-                    this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArray>(ValueTuple.Create(init, ctx, defaultInit, null));
+                    this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArrayBase>(ValueTuple.Create(init, ctx, defaultInit, null));
                     return null;
                 }
                 throw new ValueError(("Cannot initialize Parameter '%s' because it has invalid shape: %s.".PyFormat(ValueTuple.Create(this.Name, Str(this.Shape)))));
             }
-            this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArray>(ValueTuple.Create(init, ctx, defaultInit, null));
+            this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArrayBase>(ValueTuple.Create(init, ctx, defaultInit, null));
             this._finishDeferredInit();
         }
         
@@ -418,7 +418,7 @@ namespace Horker.MXNet.Gluon
                 if (IsTrue(this._deferredInit)){
                     var (init, unused, defaultInit, local1) = this._deferredInit;
                     data = local1;
-                    this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArray>(ValueTuple.Create(init, ctx, defaultInit, data));
+                    this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArrayBase>(ValueTuple.Create(init, ctx, defaultInit, data));
                 }
                 else
                 {
@@ -427,13 +427,13 @@ namespace Horker.MXNet.Gluon
             }
         }
         
-        public void SetData(NDArray data)
+        public void SetData(NDArrayBase data)
         {
             // Expr
             this.Shape = data.Shape;
             if (IsTrue((this._data is null))){
                 Assert(this._deferredInit, "this._deferredInit");
-                this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArray>((this._deferredInit.Slice(null, 3, null) + ValueTuple.Create(data)));
+                this._deferredInit = CoerceIntoValueTuple<Initializer, Context, Initializer, NDArrayBase>((this._deferredInit.Slice(null, 3, null) + ValueTuple.Create(data)));
                 return;
             }
             if (IsTrue((IsTrue(this._trainer) && IsTrue(this._trainer._kvInitialized) && IsTrue(this._trainer._updateOnKvstore)))){
@@ -465,7 +465,7 @@ namespace Horker.MXNet.Gluon
             return this._getRowSparse(this._data, List, rowId);
         }
         
-        public NDArray Data(Context ctx = null)
+        public NDArrayBase Data(Context ctx = null)
         {
             // Expr
             if (IsTrue((this._stype != "default"))){
@@ -521,7 +521,7 @@ namespace Horker.MXNet.Gluon
             }
             foreach (var i in this._grad)
             {
-                NDArray.ZerosLike(i, out: i);
+                NDArrayBase.ZerosLike(i, out: i);
             }
         }
         
@@ -568,8 +568,8 @@ namespace Horker.MXNet.Gluon
         
         public Constant(string name, object value)
         {
-            if (IsTrue((!IsTrue(Isinstance(value, NDArray.NDArray))))){
-                value = NDArray.Array(value);
+            if (IsTrue((!IsTrue(Isinstance(value, NDArrayBase.NDArray))))){
+                value = NDArrayBase.Array(value);
             }
             this.Value = value;
             // Skip: class {name}
@@ -747,7 +747,7 @@ namespace Horker.MXNet.Gluon
                 if (IsTrue((!(value is null)))){
                     Assert(Isinstance(param, typeof(Constant)), "Isinstance(param, typeof(Constant))");
                     var local0 = (Constant)param;
-                    if (IsTrue(Isinstance(value, NDArray.NDArray))){
+                    if (IsTrue(Isinstance(value, NDArrayBase.NDArray))){
                         value = value.Asnumpy();
                     }
                     Assert((IsTrue((local0.Shape == value.Shape)) && IsTrue((local0.Value.Asnumpy() == value).All())), "(IsTrue((local0.Shape == value.Shape)) && IsTrue((local0.Value.Asnumpy() == value).All()))");
@@ -824,7 +824,7 @@ namespace Horker.MXNet.Gluon
                 }
                 argDict[param.Name.Slice(Len(stripPrefix), null, null)] = weight;
             }
-            NDArray.Save(filename, argDict);
+            NDArrayBase.Save(filename, argDict);
         }
         
         public void Load(string filename, Context ctx = null, bool allowMissing = false, bool ignoreExtra = false, string restorePrefix = "", bool castDtype = false, string dtypeSource = "current")
@@ -837,7 +837,7 @@ namespace Horker.MXNet.Gluon
                 }
             }
             var lprefix = Len(restorePrefix);
-            var ndarrayLoad = NDArray.Load(filename);
+            var ndarrayLoad = NDArrayBase.Load(filename);
             var loaded = (IsTrue(Isinstance(ndarrayLoad, Dict)) ? ndarrayLoad.Items().Select((k, v) => ValueTuple.Create((IsTrue((IsTrue(k.Startswith("arg:")) || IsTrue(k.Startswith("aux:")))) ? k.Slice(4, null, null) : k), v)).ToList() : ndarrayLoad);
             var argDict = loaded.Select((k, v) => ValueTuple.Create((restorePrefix + k), v)).ToDictionary();
             if (IsTrue((!IsTrue(allowMissing)))){

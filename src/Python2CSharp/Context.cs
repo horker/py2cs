@@ -32,6 +32,7 @@ namespace Python2CSharp
         private Dictionary<string, Local> _locals;
         private string _keywordArgumentName;
         private string _typeConstraint;
+        private MethodConfig _methodConfig;
         private bool _isSetterDef;
 
         public ModuleContextEnum ModuleContext => _moduleContext;
@@ -47,9 +48,10 @@ namespace Python2CSharp
         public string Name => _name;
         public string KeywordArgumentName => _keywordArgumentName;
         public string TypeConstraint => _typeConstraint;
+        public MethodConfig MethodConfig => _methodConfig;
         public bool IsSetterDef => _isSetterDef;
 
-        public Context(Context parent = null, string name = null, ModuleContextEnum moduleContext = ModuleContextEnum.Namespace, StatementContextEnum statementContext = StatementContextEnum.Statement, Dictionary<string, Local> locals = null, string keywordArgumentName = null, string typeConstraint = null, bool isSetterDef = false)
+        public Context(Context parent = null, string name = null, ModuleContextEnum moduleContext = ModuleContextEnum.Namespace, StatementContextEnum statementContext = StatementContextEnum.Statement, Dictionary<string, Local> locals = null, string keywordArgumentName = null, string typeConstraint = null, MethodConfig methodConfing = null, bool isSetterDef = false)
         {
             _parent = parent;
             _name = name;
@@ -58,21 +60,22 @@ namespace Python2CSharp
             _locals = locals ?? new Dictionary<string, Local>();
             _keywordArgumentName = keywordArgumentName;
             _typeConstraint = typeConstraint;
+            _methodConfig = methodConfing;
             _isSetterDef = isSetterDef;
         }
 
         public Context GetCopy()
         {
-            return new Context(this, _name, _moduleContext, _statementContext, _locals, _keywordArgumentName, _typeConstraint, _isSetterDef);
+            return new Context(this, _name, _moduleContext, _statementContext, _locals, _keywordArgumentName, _typeConstraint, _methodConfig, _isSetterDef);
         }
 
-        public Context GetDeepCopy()
+        public Context DeepCopy()
         {
             var copyLocal = new Dictionary<string, Local>();
             foreach (var l in _locals)
                 copyLocal.Add(l.Key, new Local(l.Value.Alias, l.Value.IsCtype));
 
-            return new Context(this, _name, _moduleContext, _statementContext, copyLocal, _keywordArgumentName, _typeConstraint, _isSetterDef);
+            return new Context(this, _name, _moduleContext, _statementContext, copyLocal, _keywordArgumentName, _typeConstraint, _methodConfig, _isSetterDef);
         }
 
         public Context AsStatement()
@@ -105,9 +108,9 @@ namespace Python2CSharp
             return new Context(this, name, ModuleContextEnum.Class, StatementContextEnum.Statement);
         }
 
-        public Context EnterFunction(string name, string keywordArgumentName, bool isSetterDef)
+        public Context EnterFunction(string name, string keywordArgumentName, MethodConfig mc, bool isSetterDef)
         {
-            return new Context(this, name, ModuleContextEnum.Function, StatementContextEnum.Statement, null, keywordArgumentName, null, isSetterDef);
+            return new Context(this, name, ModuleContextEnum.Function, StatementContextEnum.Statement, null, keywordArgumentName, null, mc, isSetterDef);
         }
 
         public Context WithTypeConstraint(string typeConstraint)
@@ -173,7 +176,7 @@ namespace Python2CSharp
 
         public Context WithAliases(params (string, string)[] aliases)
         {
-            var ctx = GetDeepCopy();
+            var ctx = DeepCopy();
             foreach (var a in aliases)
             {
                 ctx.SetAliasForLocal(a.Item1, a.Item2);
@@ -192,6 +195,23 @@ namespace Python2CSharp
             if (_locals.TryGetValue(name, out var l))
                 return l.IsCtype;
             return false;
+        }
+
+        public void SetMethodConfig(MethodConfig mc)
+        {
+            if (_moduleContext != ModuleContextEnum.Function)
+                throw new InvalidOperationException("Current context is not a function");
+            _methodConfig = mc;
+        }
+
+        public MethodConfig GetMethodConfig()
+        {
+            if (_moduleContext != ModuleContextEnum.Function)
+                throw new InvalidOperationException("Current context is not a function");
+
+            if (_methodConfig == null)
+                throw new InvalidOperationException("Method config is null");
+            return _methodConfig;
         }
 
         public string GetClassName()

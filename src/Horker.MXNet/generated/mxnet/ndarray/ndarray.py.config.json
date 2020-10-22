@@ -1,0 +1,1215 @@
+{
+  "UsingNamespaces": [
+    "using System;",
+    "using System.Linq;",
+    "using System.Collections;",
+    "using System.Collections.Generic;",
+    "using System.Threading;",
+    "using Horker.MXNet;",
+    "using Horker.MXNet.Compat;",
+    "using Horker.MXNet.Interop;",
+    "using static Horker.MXNet.Base;",
+    "using static Horker.MXNet.Compat.Compat;",
+    "using static Horker.MXNet.Compat.Coercing;",
+    "using static Horker.MXNet.Compat.Array;",
+    "using static Horker.MXNet.MXNetCoercing;",
+    "using static Horker.MXNet.MXNetCompat;",
+    "using static Horker.MXNet.DType;",
+    "using NDArrayHandle = System.IntPtr;",
+    "using MxInt = System.Int32;",
+    "using MxUint = System.Int32;",
+    "using MxInt64 = System.Int64;",
+    "using PySlice = Horker.MXNet.Compat.Slice;",
+    "using Tuple = System.Collections.ICollection;",
+    "using List = System.Collections.ICollection;"
+  ],
+  "Namespace": "Horker.MXNet",
+  "Replacements": {
+    "ndarray": "NDArray",
+    "ctypes": "CTypes",
+    "dtype": "DType",
+    "stype": "SType",
+    "uint8": "UInt8"
+  },
+  "TypeNames": {
+    "NDArray": [
+      "NDArray"
+    ],
+    "tuple": [
+      "List<int>",
+      "List<PySlice>",
+      "IEnumerable<int>",
+      "IEnumerable<PySlice>"
+    ],
+    "list": [
+      "List<int>",
+      "List<PySlice>",
+      "IEnumerable<int>",
+      "IEnumerable<PySlice>"
+    ],
+    "py_slice":  [ "PySlice" ],
+    "mx_int": [
+      "mx_int"
+    ],
+    "mx_uint": [
+      "mx_uint"
+    ],
+    "integer_types": [
+      "int",
+      "long"
+    ],
+    "numeric_types": [
+      "float",
+      "int",
+      "long"
+    ]
+  },
+  "Classes": {
+    "Helper": {
+      "Name": "Helper",
+      "BaseClasses": null,
+      "Fields": {},
+      "Methods": {
+        "_new_empty_handle": [
+          {
+            "Signature": "internal static object _newEmptyHandle()"
+          }
+        ],
+        "_new_alloc_handle": [
+          {
+            "Signature": "internal static object _newAllocHandle(Shape shape, Context ctx, object delayAlloc, DType dtype = default)"
+          }
+        ],
+        "_new_from_shared_mem": [
+          {
+            "Signature": "internal static object _newFromSharedMem(object sharedPid, object sharedId, Shape shape, DType dtype)"
+          }
+        ],
+        "waitall": [
+          {
+            "Signature": "public static void Waitall()"
+          }
+        ],
+        "_storage_type": [
+          {
+            "Signature": "internal static int _storageType(NDArrayHandle handle)"
+          }
+        ],
+        "_get_indexing_dispatch_code": [
+          {
+            "Signature": "internal static int _getIndexingDispatchCode(NDArray key)"
+          },
+          {
+            "Signature": "internal static int _getIndexingDispatchCode(object key)"
+          }
+        ],
+        "_get_index_range": [
+          {
+            "Signature": "internal static ValueTuple<int, int, int> _getIndexRange(int start, int stop, int length, int step = 1)"
+          }
+        ],
+        "_get_oshape_of_gather_nd_op": [
+          {
+            "Signature": "internal static object _getOshapeOfGatherNdOp(Shape dshape, Shape ishape)"
+          }
+        ],
+        "_get_dim_size": [
+          {
+            "Signature": "internal static object _getDimSize(int start, int stop, int step)",
+            "Locals": {
+              "dim_size": {
+                "Type": "int",
+                "Definition": "int dimSize = 0;"
+              }
+            }
+          }
+        ],
+        "_get_broadcast_shape": [
+          {
+            "Signature": "internal static object _getBroadcastShape(Shape shape1, Shape shape2)",
+            "Locals": {
+              "shape": {
+                "Type": "Shape",
+                "Definition": "Shape shape;"
+              }
+            }
+          }
+        ],
+        "onehot_encode": [
+          {
+            "Signature": "public static object OnehotEncode(object indices, object @out)"
+          }
+        ],
+        "ones": [
+          {
+            "Signature": "public static object Ones(Shape shape, Context ctx = null, DType dtype = default)"
+          }
+        ],
+        "full": [
+          {
+            "Signature": "public static NDArray Full(Shape shape, object val, Context ctx = null, DType dtype = default, NDArray @out = null)"
+          }
+        ],
+        "array": [
+          {
+            "Signature": "public static object Array(NDArray sourceArray, Context ctx = null, DType dtype = default)"
+          }
+        ],
+        "moveaxis": [
+          {
+            "Signature": "public static object Moveaxis(object tensor, object source, object destination)"
+          }
+        ],
+        "arange": [
+          {
+            "Signature": "public static object Arange(object start, object stop = null, float step = 1.0f, int repeat = 1, object inferRange = null, Context ctx = null, DType dtype = default)"
+          }
+        ],
+        "linspace": [
+          {
+            "Signature": "public static object Linspace(object start, object stop, object num, bool endpoint = true, Context ctx = null, DType dtype = default)"
+          }
+        ],
+        "_ufunc_helper": [
+          {
+            "Signature": "internal static object _ufuncHelper(object lhs, object rhs, object fnArray, object fnScalar, object lfnScalar, object rfnScalar = null)"
+          }
+        ],
+        "add": [
+          {
+            "Signature": "public static object Add(object lhs, object rhs)"
+          }
+        ],
+        "subtract": [
+          {
+            "Signature": "public static object Subtract(object lhs, object rhs)"
+          }
+        ],
+        "multiply": [
+          {
+            "Signature": "public static object Multiply(object lhs, object rhs)"
+          }
+        ],
+        "divide": [
+          {
+            "Signature": "public static object Divide(object lhs, object rhs)"
+          }
+        ],
+        "modulo": [
+          {
+            "Signature": "public static object Modulo(object lhs, object rhs)"
+          }
+        ],
+        "power": [
+          {
+            "Signature": "public static object Power(object base, object exp)"
+          }
+        ],
+        "maximum": [
+          {
+            "Signature": "public static object Maximum(object lhs, object rhs)"
+          }
+        ],
+        "minimum": [
+          {
+            "Signature": "public static object Minimum(object lhs, object rhs)"
+          }
+        ],
+        "equal": [
+          {
+            "Signature": "public static object Equal(object lhs, object rhs)"
+          }
+        ],
+        "not_equal": [
+          {
+            "Signature": "public static object NotEqual(object lhs, object rhs)"
+          }
+        ],
+        "greater": [
+          {
+            "Signature": "public static object Greater(object lhs, object rhs)"
+          }
+        ],
+        "greater_equal": [
+          {
+            "Signature": "public static object GreaterEqual(object lhs, object rhs)"
+          }
+        ],
+        "lesser": [
+          {
+            "Signature": "public static object Lesser(object lhs, object rhs)"
+          }
+        ],
+        "lesser_equal": [
+          {
+            "Signature": "public static object LesserEqual(object lhs, object rhs)"
+          }
+        ],
+        "logical_and": [
+          {
+            "Signature": "public static object LogicalAnd(object lhs, object rhs)"
+          }
+        ],
+        "logical_or": [
+          {
+            "Signature": "public static object LogicalOr(object lhs, object rhs)"
+          }
+        ],
+        "logical_xor": [
+          {
+            "Signature": "public static object LogicalXor(object lhs, object rhs)"
+          }
+        ],
+        "true_divide": [
+          {
+            "Signature": "public static object TrueDivide(object lhs, object rhs)"
+          }
+        ],
+        "concatenate": [
+          {
+            "Signature": "public static object Concatenate(NDArrayList arrays, int axis = 0, bool alwaysCopy = true)"
+          }
+        ],
+        "imdecode": [
+          {
+            "Signature": "public static object Imdecode(object strImg, object clipRect = (0, object 0, object 0, object 0), object @out = null, int index = 0, int channels = 3, object mean = null)"
+          }
+        ],
+        "zeros": [
+          {
+            "Signature": "public static object Zeros(Shape shape, Context ctx = null, DType dtype = default)"
+          }
+        ],
+        "eye": [
+          {
+            "Signature": "public static object Eye(object N, int M = 0, int k = 0, Context ctx = null, DType dtype = default)"
+          }
+        ],
+        "empty": [
+          {
+            "Signature": "public static object Empty(Shape shape, Context ctx = null, DType dtype = default)"
+          }
+        ],
+        "histogram": [
+          {
+            "Signature": "public static object Histogram(object a, int bins = 10, object range = null)"
+          }
+        ],
+        "split_v2": [
+          {
+            "Signature": "public static object SplitV2(object ary, object indicesOrSections, int axis = 0, bool squeezeAxis = false)"
+          }
+        ],
+        "_dlpack_deleter": [
+          {
+            "Signature": "internal static object _dlpackDeleter(object pycapsule)"
+          }
+        ],
+        "to_dlpack_for_read": [
+          {
+            "Signature": "public static object ToDlpackForRead(object data)"
+          }
+        ],
+        "to_dlpack_for_write": [
+          {
+            "Signature": "public static object ToDlpackForWrite(object data)"
+          }
+        ],
+        "from_dlpack": [
+          {
+            "Signature": "public static object FromDlpack(object dlpack)"
+          }
+        ],
+        "dl_managed_tensor_deleter": [
+          {
+            "Signature": "public static object DlManagedTensorDeleter(object dlManagedTensorHandle)"
+          }
+        ],
+        "from_numpy": [
+          {
+            "Signature": "public static object FromNumpy(object ndarray, bool zeroCopy = true)"
+          }
+        ],
+        "_make_manager_ctx": [
+          {
+            "Signature": "internal object _makeManagerCtx(object obj)"
+          }
+        ],
+        "_make_dl_tensor": [
+          {
+            "Signature": "internal object _makeDlTensor(object array)"
+          }
+        ],
+        "_make_dl_managed_tensor": [
+          {
+            "Signature": "internal object _makeDlManagedTensor(object array)"
+          }
+        ]
+      },
+      "StaticVariableTypes": {
+        "_STORAGE_TYPE_UNDEFINED": "int",
+        "_STORAGE_TYPE_DEFAULT": "int",
+        "_STORAGE_TYPE_ROW_SPARSE": "int",
+        "_STORAGE_TYPE_CSR": "int",
+        "_DTYPE_NP_TO_MX":  "Dictionary<DType, int>",
+        "_DTYPE_MX_TO_NP":  "Dictionary<int, DType>",
+        "_STORAGE_TYPE_STR_TO_ID": "Dictionary<string, int>",
+        "_STORAGE_TYPE_ID_TO_STR": "Dictionary<int, string>",
+        "_GRAD_REQ_MAP": "Dictionary<string, int>",
+        "_NDARRAY_UNSUPPORTED_INDEXING": "int",
+        "_NDARRAY_BASIC_INDEXING": "int",
+        "_NDARRAY_ADVANCED_INDEXING": "int"
+      }
+    },
+    "NDArray": {
+      "Name": "NDArray",
+      "BaseClasses": [
+        "NDArrayBase"
+      ],
+      "Fields": {
+        "handle": {
+          "Signature": "public NDArrayHandle Handle { get; set; }",
+          "Inherited": true
+        }
+      },
+      "Methods": {
+        "_tvm_handle": [
+          {
+            "Signature": "internal object _tvmHandle"
+          }
+        ],
+        "__repr__": [
+          {
+            "Signature": "internal object __Repr__()"
+          }
+        ],
+        "__reduce__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Reduce__()"
+          }
+        ],
+        "_to_shared_mem": [
+          {
+            "Signature": "internal object __ToSharedMem__()"
+          }
+        ],
+        "__add__": [
+          {
+            "Signature": "internal object __Add__(object other)"
+          }
+        ],
+        "__iadd__": [
+          {
+            "Signature": "internal object __Iadd__(object other)"
+          }
+        ],
+        "__radd__": [
+          {
+            "Signature": "internal object __Radd__(object other)"
+          }
+        ],
+        "__sub__": [
+          {
+            "Signature": "internal object __Sub__(object other)"
+          }
+        ],
+        "__isub__": [
+          {
+            "Signature": "internal object __Isub__(object other)"
+          }
+        ],
+        "__rsub__": [
+          {
+            "Signature": "internal object __Rsub__(object other)"
+          }
+        ],
+        "__mul__": [
+          {
+            "Signature": "internal object __Mul__(object other)"
+          }
+        ],
+        "__neg__": [
+          {
+            "Signature": "internal object __Neg__()"
+          }
+        ],
+        "__imul__": [
+          {
+            "Signature": "internal object __Imul__(object other)"
+          }
+        ],
+        "__rmul__": [
+          {
+            "Signature": "internal object __Rmul__(object other)"
+          }
+        ],
+        "__div__": [
+          {
+            "Signature": "internal object __Div__(object other)"
+          }
+        ],
+        "__rdiv__": [
+          {
+            "Signature": "internal object __Rdiv__(object other)"
+          }
+        ],
+        "__idiv__": [
+          {
+            "Signature": "internal object __Idiv__(object other)"
+          }
+        ],
+        "__truediv__": [
+          {
+            "Signature": "internal object __Truediv__(object other)"
+          }
+        ],
+        "__rtruediv__": [
+          {
+            "Signature": "internal object __Rtruediv__(object other)"
+          }
+        ],
+        "__itruediv__": [
+          {
+            "Signature": "internal object __Itruediv__(object other)"
+          }
+        ],
+        "__mod__": [
+          {
+            "Signature": "internal object __Mod__(object other)"
+          }
+        ],
+        "__rmod__": [
+          {
+            "Signature": "internal object __Rmod__(object other)"
+          }
+        ],
+        "__imod__": [
+          {
+            "Signature": "internal object __Imod__(object other)"
+          }
+        ],
+        "__pow__": [
+          {
+            "Signature": "internal object __Pow__(object other)"
+          }
+        ],
+        "__rpow__": [
+          {
+            "Signature": "internal object __Rpow__(object other)"
+          }
+        ],
+        "__eq__": [
+          {
+            "Signature": "internal object __Eq__(object other)"
+          }
+        ],
+        "__hash__": [
+          {
+            "Signature": "internal object __Hash__()"
+          }
+        ],
+        "__ne__": [
+          {
+            "Signature": "internal object __Ne__(object other)"
+          }
+        ],
+        "__gt__": [
+          {
+            "Signature": "internal object __Gt__(object other)"
+          }
+        ],
+        "__ge__": [
+          {
+            "Signature": "internal object __Ge__(object other)"
+          }
+        ],
+        "__lt__": [
+          {
+            "Signature": "internal object __Lt__(object other)"
+          }
+        ],
+        "__le__": [
+          {
+            "Signature": "internal object __Le__(object other)"
+          }
+        ],
+        "__bool__": [
+          {
+            "Signature": "internal object __Bool__()"
+          }
+        ],
+        "__len__": [
+          {
+            "Signature": "internal object __Len__()"
+          }
+        ],
+        "__getstate__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Getstate__()"
+          }
+        ],
+        "__setstate__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Setstate__(object state)"
+          }
+        ],
+        "__setitem__": [
+          {
+            "Signature": "internal object __Setitem__(object key, object value)"
+          }
+        ],
+        "__getitem__": [
+          {
+            "Signature": "internal object __Getitem__(NDArray key)"
+          }
+        ],
+        "_get_index_nd": [
+          {
+            "Drop": true,
+            "Signature": "internal object _getIndexNd(object key)"
+          }
+        ],
+        "_prepare_value_nd": [
+          {
+            "Signature": "internal object _prepareValueNd(object value, object vshape)"
+          }
+        ],
+        "_set_nd_basic_indexing": [
+          {
+            "Signature": "internal object _setNdBasicIndexing(object key, object value)"
+          }
+        ],
+        "_set_nd_advanced_indexing": [
+          {
+            "Signature": "internal object _setNdAdvancedIndexing(object key, object value)"
+          }
+        ],
+        "_get_nd_basic_indexing": [
+          {
+            "Signature": "internal NDArray _getNdBasicIndexing(int key)"
+          },
+          {
+            "Signature": "internal NDArray _getNdBasicIndexing(IEnumerable<int> key)",
+            "Locals": {
+              "begin": {
+                "Type": "List<int>"
+              },
+              "end": {
+                "Type": "List<int>"
+              },
+              "step": {
+                "Type": "List<int>"
+              },
+              "kept_axes": {
+                "Type": "List<int>"
+              },
+              "slice_i": {
+                "Type": "int"
+              }
+            }
+          },
+          {
+            "Signature": "internal NDArray _getNdBasicIndexing(IEnumerable<PySlice> key)",
+            "Locals": {
+              "begin": {
+                "Type": "List<int>"
+              },
+              "end": {
+                "Type": "List<int>"
+              },
+              "step": {
+                "Type": "List<int>"
+              },
+              "kept_axes": {
+                "Type": "List<int>"
+              },
+              "slice_i": {
+                "Type": "PySlice"
+              }
+            }
+          }
+        ],
+        "_get_nd_advanced_indexing": [
+          {
+            "Signature": "internal object _getNdAdvancedIndexing(object key)"
+          }
+        ],
+        "_sync_copyfrom": [
+          {
+            "Signature": "internal object _syncCopyfrom(object sourceArray)"
+          }
+        ],
+        "_slice": [
+          {
+            "Signature": "internal object _slice(object start, object stop)"
+          }
+        ],
+        "_at": [
+          {
+            "Signature": "internal NDArray _at(int idx)"
+          }
+        ],
+        "reshape": [
+          {
+            "Signature": "public NDArray Reshape(Shape shape, bool reverse)"
+          }
+        ],
+        "reshape_like": [
+          {
+            "Signature": "public object ReshapeLike(object *args)"
+          }
+        ],
+        "zeros_like": [
+          {
+            "Signature": "public object ZerosLike(object *args)"
+          }
+        ],
+        "ones_like": [
+          {
+            "Signature": "public object OnesLike(object *args)"
+          }
+        ],
+        "broadcast_axes": [
+          {
+            "Signature": "public object BroadcastAxes(object *args)"
+          }
+        ],
+        "repeat": [
+          {
+            "Signature": "public object Repeat(object *args)"
+          }
+        ],
+        "pad": [
+          {
+            "Signature": "public object Pad(object *args)"
+          }
+        ],
+        "swapaxes": [
+          {
+            "Signature": "public object Swapaxes(object *args)"
+          }
+        ],
+        "split": [
+          {
+            "Signature": "public object Split(object *args)"
+          }
+        ],
+        "split_v2": [
+          {
+            "Signature": "public object SplitV2(object *args)"
+          }
+        ],
+        "slice": [
+          {
+            "Signature": "public object Slice(object *args)"
+          }
+        ],
+        "slice_axis": [
+          {
+            "Signature": "public object SliceAxis(object *args)"
+          }
+        ],
+        "slice_like": [
+          {
+            "Signature": "public object SliceLike(object *args)"
+          }
+        ],
+        "take": [
+          {
+            "Signature": "public object Take(object *args)"
+          }
+        ],
+        "one_hot": [
+          {
+            "Signature": "public object OneHot(object *args)"
+          }
+        ],
+        "pick": [
+          {
+            "Signature": "public object Pick(object *args)"
+          }
+        ],
+        "sort": [
+          {
+            "Signature": "public object Sort(object *args)"
+          }
+        ],
+        "topk": [
+          {
+            "Signature": "public object Topk(object *args)"
+          }
+        ],
+        "argsort": [
+          {
+            "Signature": "public object Argsort(object *args)"
+          }
+        ],
+        "argmax": [
+          {
+            "Signature": "public object Argmax(object *args)"
+          }
+        ],
+        "argmax_channel": [
+          {
+            "Signature": "public object ArgmaxChannel(object *args)"
+          }
+        ],
+        "argmin": [
+          {
+            "Signature": "public object Argmin(object *args)"
+          }
+        ],
+        "clip": [
+          {
+            "Signature": "public object Clip(object *args)"
+          }
+        ],
+        "abs": [
+          {
+            "Signature": "public object Abs(object *args)"
+          }
+        ],
+        "sign": [
+          {
+            "Signature": "public object Sign(object *args)"
+          }
+        ],
+        "flatten": [
+          {
+            "Signature": "public object Flatten(object *args)"
+          }
+        ],
+        "shape_array": [
+          {
+            "Signature": "public object ShapeArray(object *args)"
+          }
+        ],
+        "size_array": [
+          {
+            "Signature": "public object SizeArray(object *args)"
+          }
+        ],
+        "expand_dims": [
+          {
+            "Signature": "public object ExpandDims(object *args)"
+          }
+        ],
+        "tile": [
+          {
+            "Signature": "public object Tile(object *args)"
+          }
+        ],
+        "transpose": [
+          {
+            "Signature": "public object Transpose(object *args)"
+          }
+        ],
+        "flip": [
+          {
+            "Signature": "public object Flip(object *args)"
+          }
+        ],
+        "depth_to_space": [
+          {
+            "Signature": "public object DepthToSpace(object *args)"
+          }
+        ],
+        "space_to_depth": [
+          {
+            "Signature": "public object SpaceToDepth(object *args)"
+          }
+        ],
+        "diag": [
+          {
+            "Signature": "public object Diag(int k = 0)"
+          }
+        ],
+        "sum": [
+          {
+            "Signature": "public object Sum(object *args)"
+          }
+        ],
+        "nansum": [
+          {
+            "Signature": "public object Nansum(object *args)"
+          }
+        ],
+        "prod": [
+          {
+            "Signature": "public object Prod(object *args)"
+          }
+        ],
+        "nanprod": [
+          {
+            "Signature": "public object Nanprod(object *args)"
+          }
+        ],
+        "mean": [
+          {
+            "Signature": "public object Mean(object *args)"
+          }
+        ],
+        "max": [
+          {
+            "Signature": "public object Max(object *args)"
+          }
+        ],
+        "min": [
+          {
+            "Signature": "public object Min(object *args)"
+          }
+        ],
+        "norm": [
+          {
+            "Signature": "public object Norm(object *args)"
+          }
+        ],
+        "round": [
+          {
+            "Signature": "public object Round(object *args)"
+          }
+        ],
+        "rint": [
+          {
+            "Signature": "public object Rint(object *args)"
+          }
+        ],
+        "fix": [
+          {
+            "Signature": "public object Fix(object *args)"
+          }
+        ],
+        "floor": [
+          {
+            "Signature": "public object Floor(object *args)"
+          }
+        ],
+        "ceil": [
+          {
+            "Signature": "public object Ceil(object *args)"
+          }
+        ],
+        "trunc": [
+          {
+            "Signature": "public object Trunc(object *args)"
+          }
+        ],
+        "sin": [
+          {
+            "Signature": "public object Sin(object *args)"
+          }
+        ],
+        "cos": [
+          {
+            "Signature": "public object Cos(object *args)"
+          }
+        ],
+        "tan": [
+          {
+            "Signature": "public object Tan(object *args)"
+          }
+        ],
+        "arcsin": [
+          {
+            "Signature": "public object Arcsin(object *args)"
+          }
+        ],
+        "arccos": [
+          {
+            "Signature": "public object Arccos(object *args)"
+          }
+        ],
+        "arctan": [
+          {
+            "Signature": "public object Arctan(object *args)"
+          }
+        ],
+        "degrees": [
+          {
+            "Signature": "public object Degrees(object *args)"
+          }
+        ],
+        "radians": [
+          {
+            "Signature": "public object Radians(object *args)"
+          }
+        ],
+        "sinh": [
+          {
+            "Signature": "public object Sinh(object *args)"
+          }
+        ],
+        "cosh": [
+          {
+            "Signature": "public object Cosh(object *args)"
+          }
+        ],
+        "tanh": [
+          {
+            "Signature": "public object Tanh(object *args)"
+          }
+        ],
+        "arcsinh": [
+          {
+            "Signature": "public object Arcsinh(object *args)"
+          }
+        ],
+        "arccosh": [
+          {
+            "Signature": "public object Arccosh(object *args)"
+          }
+        ],
+        "arctanh": [
+          {
+            "Signature": "public object Arctanh(object *args)"
+          }
+        ],
+        "exp": [
+          {
+            "Signature": "public object Exp(object *args)"
+          }
+        ],
+        "expm1": [
+          {
+            "Signature": "public object Expm1(object *args)"
+          }
+        ],
+        "log": [
+          {
+            "Signature": "public object Log(object *args)"
+          }
+        ],
+        "log10": [
+          {
+            "Signature": "public object Log10(object *args)"
+          }
+        ],
+        "log2": [
+          {
+            "Signature": "public object Log2(object *args)"
+          }
+        ],
+        "log1p": [
+          {
+            "Signature": "public object Log1p(object *args)"
+          }
+        ],
+        "sqrt": [
+          {
+            "Signature": "public object Sqrt(object *args)"
+          }
+        ],
+        "rsqrt": [
+          {
+            "Signature": "public object Rsqrt(object *args)"
+          }
+        ],
+        "cbrt": [
+          {
+            "Signature": "public object Cbrt(object *args)"
+          }
+        ],
+        "rcbrt": [
+          {
+            "Signature": "public object Rcbrt(object *args)"
+          }
+        ],
+        "square": [
+          {
+            "Signature": "public object Square(object *args)"
+          }
+        ],
+        "reciprocal": [
+          {
+            "Signature": "public object Reciprocal(object *args)"
+          }
+        ],
+        "relu": [
+          {
+            "Signature": "public object Relu(object *args)"
+          }
+        ],
+        "sigmoid": [
+          {
+            "Signature": "public object Sigmoid(object *args)"
+          }
+        ],
+        "softmax": [
+          {
+            "Signature": "public object Softmax(object *args)"
+          }
+        ],
+        "log_softmax": [
+          {
+            "Signature": "public object LogSoftmax(object *args)"
+          }
+        ],
+        "softmin": [
+          {
+            "Signature": "public object Softmin(object *args)"
+          }
+        ],
+        "squeeze": [
+          {
+            "Signature": "public object Squeeze(object *args)"
+          }
+        ],
+        "broadcast_to": [
+          {
+            "Signature": "public object BroadcastTo(Shape shape)"
+          }
+        ],
+        "broadcast_like": [
+          {
+            "Signature": "public object BroadcastLike(object other)"
+          }
+        ],
+        "wait_to_read": [
+          {
+            "Signature": "public object WaitToRead()"
+          }
+        ],
+        "ndim": [
+          {
+            "Signature": "public object Ndim"
+          }
+        ],
+        "shape": [
+          {
+            "Signature": "public Shape Shape"
+          }
+        ],
+        "size": [
+          {
+            "Signature": "public object Size"
+          }
+        ],
+        "context": [
+          {
+            "Signature": "public object Context"
+          }
+        ],
+        "dtype": [
+          {
+            "Signature": "public DType Dtype"
+          }
+        ],
+        "stype": [
+          {
+            "Signature": "public string Stype"
+          }
+        ],
+        "T": [
+          {
+            "Signature": "public object T"
+          }
+        ],
+        "_fresh_grad": [
+          {
+            "SignatureSetter": "internal void Set_freshGrad(object state)"
+          }
+        ],
+        "asnumpy": [
+          {
+            "Signature": "public object Asnumpy()"
+          }
+        ],
+        "asscalar": [
+          {
+            "Signature": "public object Asscalar()"
+          }
+        ],
+        "astype": [
+          {
+            "Signature": "public string Astype(DType dtype, bool copy = true)"
+          }
+        ],
+        "copyto": [
+          {
+            "Signature": "public object Copyto(object other)"
+          }
+        ],
+        "copy": [
+          {
+            "Signature": "public object Copy()"
+          }
+        ],
+        "as_in_context": [
+          {
+            "Signature": "public object AsInContext(object context)"
+          }
+        ],
+        "attach_grad": [
+          {
+            "Signature": "public object AttachGrad(string gradReq = \"write\", string stype = null)"
+          }
+        ],
+        "grad": [
+          {
+            "Signature": "public object Grad"
+          }
+        ],
+        "detach": [
+          {
+            "Signature": "public object Detach()"
+          }
+        ],
+        "backward": [
+          {
+            "Signature": "public object Backward(object outGrad = null, bool retainGraph = false, bool trainMode = true)"
+          }
+        ],
+        "tostype": [
+          {
+            "Signature": "public string Tostype(string stype)"
+          }
+        ],
+        "to_dlpack_for_read": [
+          {
+            "Signature": "public object ToDlpackForRead()"
+          }
+        ],
+        "to_dlpack_for_write": [
+          {
+            "Signature": "public object ToDlpackForWrite()"
+          }
+        ]
+      }
+    },
+    "DLContext": {
+      "Name": "DLContext",
+      "BaseClasses": [
+        "object"
+      ],
+      "Fields": {},
+      "Methods": {}
+    },
+    "DLDataType": {
+      "Name": "DLDataType",
+      "BaseClasses": [
+        "object"
+      ],
+      "Fields": {},
+      "Methods": {}
+    },
+    "DLTensor": {
+      "Name": "DLTensor",
+      "BaseClasses": [
+        "object"
+      ],
+      "Fields": {},
+      "Methods": {}
+    },
+    "DLManagedTensor": {
+      "Name": "DLManagedTensor",
+      "BaseClasses": [
+        "object"
+      ],
+      "Fields": {},
+      "Methods": {}
+    }
+  }
+}

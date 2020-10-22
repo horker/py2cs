@@ -3,7 +3,10 @@ Set-StrictMode -Version Latest
 $SourceRootPath = "$PSScriptRoot\..\incubator-mxnet\python\"
 
 $SourceFiles = @(
+    "mxnet\autograd.py"
     "mxnet\context.py"
+    "mxnet\_ctypes\ndarray.py"
+    "mxnet\ndarray\ndarray.py"
     "mxnet\gluon\block.py"
     "mxnet\gluon\loss.py"
     "mxnet\gluon\parameter.py"

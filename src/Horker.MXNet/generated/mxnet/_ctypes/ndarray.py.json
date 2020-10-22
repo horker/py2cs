@@ -1,0 +1,3156 @@
+{
+  "_Name": "Module",
+  "body": [
+    {
+      "_Name": "Expr",
+      "value": {
+        "_Name": "Constant",
+        "value": "'NDArray configuration API.'",
+        "kind": "None"
+      }
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'__future__'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'absolute_import'",
+          "asname": "'_abs'"
+        }
+      ],
+      "level": "0"
+    },
+    {
+      "_Name": "Import",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'ctypes'",
+          "asname": "None"
+        }
+      ]
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'base'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'_LIB'",
+          "asname": "None"
+        }
+      ],
+      "level": "2"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'base'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'c_str_array'",
+          "asname": "None"
+        },
+        {
+          "_Name": "alias",
+          "name": "'c_handle_array'",
+          "asname": "None"
+        }
+      ],
+      "level": "2"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'base'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'NDArrayHandle'",
+          "asname": "None"
+        },
+        {
+          "_Name": "alias",
+          "name": "'CachedOpHandle'",
+          "asname": "None"
+        }
+      ],
+      "level": "2"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'base'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'check_call'",
+          "asname": "None"
+        }
+      ],
+      "level": "2"
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'NDArrayBase'",
+      "bases": [
+        {
+          "_Name": "Name",
+          "id": "'object'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'Base data structure for ndarray'",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'__slots__'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "List",
+            "elts": [
+              {
+                "_Name": "Constant",
+                "value": "'handle'",
+                "kind": "None"
+              },
+              {
+                "_Name": "Constant",
+                "value": "'writable'",
+                "kind": "None"
+              }
+            ],
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'handle'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'writable'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": [
+              {
+                "_Name": "Constant",
+                "value": "True",
+                "kind": "None"
+              }
+            ]
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Constant",
+                "value": "'initialize a new NDArray\\n\\n        Parameters\\n        ----------\\n        handle : NDArrayHandle\\n            NDArray handle of C API\\n        '",
+                "kind": "None"
+              }
+            },
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "Compare",
+                "left": {
+                  "_Name": "Name",
+                  "id": "'handle'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "ops": [
+                  {
+                    "_Name": "IsNot"
+                  }
+                ],
+                "comparators": [
+                  {
+                    "_Name": "Constant",
+                    "value": "None",
+                    "kind": "None"
+                  }
+                ]
+              },
+              "body": [
+                {
+                  "_Name": "Assert",
+                  "test": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'isinstance'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'handle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'NDArrayHandle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "msg": "None"
+                }
+              ],
+              "orelse": []
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'handle'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Name",
+                "id": "'handle'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'writable'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Name",
+                "id": "'writable'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__del__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'check_call'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'_LIB'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'MXNDArrayFree'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'handle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__reduce__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Tuple",
+                "elts": [
+                  {
+                    "_Name": "Name",
+                    "id": "'_ndarray_cls'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  {
+                    "_Name": "Tuple",
+                    "elts": [
+                      {
+                        "_Name": "Constant",
+                        "value": "None",
+                        "kind": "None"
+                      }
+                    ],
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'__getstate__'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [],
+                    "keywords": []
+                  }
+                ],
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    },
+    {
+      "_Name": "Assign",
+      "targets": [
+        {
+          "_Name": "Name",
+          "id": "'_ndarray_cls'",
+          "ctx": {
+            "_Name": "Store"
+          }
+        }
+      ],
+      "value": {
+        "_Name": "Constant",
+        "value": "None",
+        "kind": "None"
+      },
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'_set_ndarray_class'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [
+          {
+            "_Name": "arg",
+            "arg": "'cls'",
+            "annotation": "None",
+            "type_comment": "None"
+          }
+        ],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": "None",
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'Set the symbolic class to be cls'",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Global",
+          "names": [
+            "'_ndarray_cls'"
+          ]
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'_ndarray_cls'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Name",
+            "id": "'cls'",
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'_imperative_invoke'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [
+          {
+            "_Name": "arg",
+            "arg": "'handle'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'ndargs'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'keys'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'vals'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'out'",
+            "annotation": "None",
+            "type_comment": "None"
+          }
+        ],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": "None",
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'ctypes implementation of imperative invoke wrapper'",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "If",
+          "test": {
+            "_Name": "Compare",
+            "left": {
+              "_Name": "Name",
+              "id": "'out'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "ops": [
+              {
+                "_Name": "IsNot"
+              }
+            ],
+            "comparators": [
+              {
+                "_Name": "Constant",
+                "value": "None",
+                "kind": "None"
+              }
+            ]
+          },
+          "body": [
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'original_output'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Name",
+                "id": "'out'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'isinstance'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'out'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  {
+                    "_Name": "Name",
+                    "id": "'NDArrayBase'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              },
+              "body": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'out'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Tuple",
+                    "elts": [
+                      {
+                        "_Name": "Name",
+                        "id": "'out'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "type_comment": "None"
+                }
+              ],
+              "orelse": []
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'num_output'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'ctypes'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'c_int'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'len'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'out'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'output_vars'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'c_handle_array'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'out'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'output_vars'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'ctypes'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'cast'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Name",
+                    "id": "'output_vars'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'POINTER'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'NDArrayHandle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            }
+          ],
+          "orelse": [
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'original_output'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Constant",
+                "value": "None",
+                "kind": "None"
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'output_vars'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Call",
+                  "func": {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'ctypes'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'POINTER'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "args": [
+                    {
+                      "_Name": "Name",
+                      "id": "'NDArrayHandle'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  ],
+                  "keywords": []
+                },
+                "args": [],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'num_output'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'ctypes'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'c_int'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Constant",
+                    "value": "0",
+                    "kind": "None"
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            }
+          ]
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'out_stypes'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Call",
+              "func": {
+                "_Name": "Attribute",
+                "value": {
+                  "_Name": "Name",
+                  "id": "'ctypes'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "attr": "'POINTER'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "args": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'ctypes'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'c_int'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                }
+              ],
+              "keywords": []
+            },
+            "args": [],
+            "keywords": []
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'check_call'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'_LIB'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'MXImperativeInvokeEx'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'c_void_p'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'handle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'c_int'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Name",
+                          "id": "'len'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Name",
+                            "id": "'ndargs'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'c_handle_array'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'ndargs'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'byref'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'num_output'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'byref'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'output_vars'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'c_int'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Name",
+                          "id": "'len'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Name",
+                            "id": "'keys'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'c_str_array'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'keys'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'c_str_array'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "ListComp",
+                        "elt": {
+                          "_Name": "Call",
+                          "func": {
+                            "_Name": "Name",
+                            "id": "'str'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "_Name": "Name",
+                              "id": "'s'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        },
+                        "generators": [
+                          {
+                            "_Name": "comprehension",
+                            "target": {
+                              "_Name": "Name",
+                              "id": "'s'",
+                              "ctx": {
+                                "_Name": "Store"
+                              }
+                            },
+                            "iter": {
+                              "_Name": "Name",
+                              "id": "'vals'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "ifs": [],
+                            "is_async": "0"
+                          }
+                        ]
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'byref'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'out_stypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            ],
+            "keywords": []
+          }
+        },
+        {
+          "_Name": "If",
+          "test": {
+            "_Name": "Compare",
+            "left": {
+              "_Name": "Name",
+              "id": "'original_output'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "ops": [
+              {
+                "_Name": "IsNot"
+              }
+            ],
+            "comparators": [
+              {
+                "_Name": "Constant",
+                "value": "None",
+                "kind": "None"
+              }
+            ]
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Name",
+                "id": "'original_output'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            }
+          ],
+          "orelse": []
+        },
+        {
+          "_Name": "If",
+          "test": {
+            "_Name": "Compare",
+            "left": {
+              "_Name": "Attribute",
+              "value": {
+                "_Name": "Name",
+                "id": "'num_output'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "attr": "'value'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "ops": [
+              {
+                "_Name": "Eq"
+              }
+            ],
+            "comparators": [
+              {
+                "_Name": "Constant",
+                "value": "1",
+                "kind": "None"
+              }
+            ]
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'_ndarray_cls'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'cast'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Subscript",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'output_vars'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "slice": {
+                          "_Name": "Index",
+                          "value": {
+                            "_Name": "Constant",
+                            "value": "0",
+                            "kind": "None"
+                          }
+                        },
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'NDArrayHandle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'stype'",
+                    "value": {
+                      "_Name": "Subscript",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'out_stypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "slice": {
+                        "_Name": "Index",
+                        "value": {
+                          "_Name": "Constant",
+                          "value": "0",
+                          "kind": "None"
+                        }
+                      },
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "orelse": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "ListComp",
+                "elt": {
+                  "_Name": "Call",
+                  "func": {
+                    "_Name": "Name",
+                    "id": "'_ndarray_cls'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "args": [
+                    {
+                      "_Name": "Call",
+                      "func": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'ctypes'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'cast'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "_Name": "Subscript",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'output_vars'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "slice": {
+                            "_Name": "Index",
+                            "value": {
+                              "_Name": "Name",
+                              "id": "'i'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            }
+                          },
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        {
+                          "_Name": "Name",
+                          "id": "'NDArrayHandle'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  ],
+                  "keywords": [
+                    {
+                      "_Name": "keyword",
+                      "arg": "'stype'",
+                      "value": {
+                        "_Name": "Subscript",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'out_stypes'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "slice": {
+                          "_Name": "Index",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'i'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        },
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "generators": [
+                  {
+                    "_Name": "comprehension",
+                    "target": {
+                      "_Name": "Name",
+                      "id": "'i'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    },
+                    "iter": {
+                      "_Name": "Call",
+                      "func": {
+                        "_Name": "Name",
+                        "id": "'range'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'num_output'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'value'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    },
+                    "ifs": [],
+                    "is_async": "0"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'CachedOp'",
+      "bases": [
+        {
+          "_Name": "Name",
+          "id": "'object'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'Cached operator handle.'",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'__slots__'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "List",
+            "elts": [
+              {
+                "_Name": "Constant",
+                "value": "'handle'",
+                "kind": "None"
+              }
+            ],
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'sym'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'flags'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": [
+              {
+                "_Name": "Tuple",
+                "elts": [],
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ]
+          },
+          "body": [
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'handle'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'CachedOpHandle'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'check_call'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'_LIB'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'MXCreateCachedOpEx'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'sym'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'handle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Name",
+                          "id": "'len'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Name",
+                            "id": "'flags'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      },
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Name",
+                          "id": "'c_str_array'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "ListComp",
+                            "elt": {
+                              "_Name": "Name",
+                              "id": "'key'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "generators": [
+                              {
+                                "_Name": "comprehension",
+                                "target": {
+                                  "_Name": "Tuple",
+                                  "elts": [
+                                    {
+                                      "_Name": "Name",
+                                      "id": "'key'",
+                                      "ctx": {
+                                        "_Name": "Store"
+                                      }
+                                    },
+                                    {
+                                      "_Name": "Name",
+                                      "id": "'_'",
+                                      "ctx": {
+                                        "_Name": "Store"
+                                      }
+                                    }
+                                  ],
+                                  "ctx": {
+                                    "_Name": "Store"
+                                  }
+                                },
+                                "iter": {
+                                  "_Name": "Name",
+                                  "id": "'flags'",
+                                  "ctx": {
+                                    "_Name": "Load"
+                                  }
+                                },
+                                "ifs": [],
+                                "is_async": "0"
+                              }
+                            ]
+                          }
+                        ],
+                        "keywords": []
+                      },
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Name",
+                          "id": "'c_str_array'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "ListComp",
+                            "elt": {
+                              "_Name": "Call",
+                              "func": {
+                                "_Name": "Name",
+                                "id": "'str'",
+                                "ctx": {
+                                  "_Name": "Load"
+                                }
+                              },
+                              "args": [
+                                {
+                                  "_Name": "Name",
+                                  "id": "'val'",
+                                  "ctx": {
+                                    "_Name": "Load"
+                                  }
+                                }
+                              ],
+                              "keywords": []
+                            },
+                            "generators": [
+                              {
+                                "_Name": "comprehension",
+                                "target": {
+                                  "_Name": "Tuple",
+                                  "elts": [
+                                    {
+                                      "_Name": "Name",
+                                      "id": "'_'",
+                                      "ctx": {
+                                        "_Name": "Store"
+                                      }
+                                    },
+                                    {
+                                      "_Name": "Name",
+                                      "id": "'val'",
+                                      "ctx": {
+                                        "_Name": "Store"
+                                      }
+                                    }
+                                  ],
+                                  "ctx": {
+                                    "_Name": "Store"
+                                  }
+                                },
+                                "iter": {
+                                  "_Name": "Name",
+                                  "id": "'flags'",
+                                  "ctx": {
+                                    "_Name": "Load"
+                                  }
+                                },
+                                "ifs": [],
+                                "is_async": "0"
+                              }
+                            ]
+                          }
+                        ],
+                        "keywords": []
+                      },
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'ctypes'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'byref'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Attribute",
+                            "value": {
+                              "_Name": "Name",
+                              "id": "'self'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "attr": "'handle'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__del__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'check_call'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'_LIB'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'MXFreeCachedOp'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'handle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__call__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": {
+              "_Name": "arg",
+              "arg": "'args'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": {
+              "_Name": "arg",
+              "arg": "'kwargs'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Constant",
+                "value": "'ctypes implementation of imperative invoke wrapper'",
+                "kind": "None"
+              }
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'out'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'kwargs'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'pop'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Constant",
+                    "value": "'out'",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "None",
+                    "kind": "None"
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "Compare",
+                "left": {
+                  "_Name": "Name",
+                  "id": "'out'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "ops": [
+                  {
+                    "_Name": "IsNot"
+                  }
+                ],
+                "comparators": [
+                  {
+                    "_Name": "Constant",
+                    "value": "None",
+                    "kind": "None"
+                  }
+                ]
+              },
+              "body": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'original_output'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'out'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "type_comment": "None"
+                },
+                {
+                  "_Name": "If",
+                  "test": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'isinstance'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'out'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'NDArrayBase'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "body": [
+                    {
+                      "_Name": "Assign",
+                      "targets": [
+                        {
+                          "_Name": "Name",
+                          "id": "'out'",
+                          "ctx": {
+                            "_Name": "Store"
+                          }
+                        }
+                      ],
+                      "value": {
+                        "_Name": "Tuple",
+                        "elts": [
+                          {
+                            "_Name": "Name",
+                            "id": "'out'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "type_comment": "None"
+                    }
+                  ],
+                  "orelse": []
+                },
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'num_output'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'c_int'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Name",
+                          "id": "'len'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Name",
+                            "id": "'out'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                },
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'output_vars'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'c_handle_array'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'out'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                },
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'output_vars'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'cast'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'output_vars'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'ctypes'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'POINTER'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Name",
+                            "id": "'NDArrayHandle'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                }
+              ],
+              "orelse": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'original_output'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Constant",
+                    "value": "None",
+                    "kind": "None"
+                  },
+                  "type_comment": "None"
+                },
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'output_vars'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Call",
+                      "func": {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'ctypes'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'POINTER'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "_Name": "Name",
+                          "id": "'NDArrayHandle'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    },
+                    "args": [],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                },
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'num_output'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'c_int'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Constant",
+                        "value": "0",
+                        "kind": "None"
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                }
+              ]
+            },
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "Name",
+                "id": "'kwargs'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "body": [
+                {
+                  "_Name": "Raise",
+                  "exc": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'TypeError'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "BinOp",
+                        "left": {
+                          "_Name": "Constant",
+                          "value": "'CachedOp.__call__ got unexpected keyword argument(s): '",
+                          "kind": "None"
+                        },
+                        "op": {
+                          "_Name": "Add"
+                        },
+                        "right": {
+                          "_Name": "Call",
+                          "func": {
+                            "_Name": "Attribute",
+                            "value": {
+                              "_Name": "Constant",
+                              "value": "', '",
+                              "kind": "None"
+                            },
+                            "attr": "'join'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "_Name": "Call",
+                              "func": {
+                                "_Name": "Attribute",
+                                "value": {
+                                  "_Name": "Name",
+                                  "id": "'kwargs'",
+                                  "ctx": {
+                                    "_Name": "Load"
+                                  }
+                                },
+                                "attr": "'keys'",
+                                "ctx": {
+                                  "_Name": "Load"
+                                }
+                              },
+                              "args": [],
+                              "keywords": []
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "cause": "None"
+                }
+              ],
+              "orelse": []
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'out_stypes'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Call",
+                  "func": {
+                    "_Name": "Attribute",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'ctypes'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "attr": "'POINTER'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "args": [
+                    {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'c_int'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  ],
+                  "keywords": []
+                },
+                "args": [],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'check_call'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'_LIB'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'MXInvokeCachedOpEx'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'handle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'ctypes'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'c_int'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Call",
+                            "func": {
+                              "_Name": "Name",
+                              "id": "'len'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "_Name": "Name",
+                                "id": "'args'",
+                                "ctx": {
+                                  "_Name": "Load"
+                                }
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        ],
+                        "keywords": []
+                      },
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Name",
+                          "id": "'c_handle_array'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Name",
+                            "id": "'args'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      },
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'ctypes'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'byref'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Name",
+                            "id": "'num_output'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      },
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'ctypes'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'byref'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Name",
+                            "id": "'output_vars'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      },
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'ctypes'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'byref'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Name",
+                            "id": "'out_stypes'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "Compare",
+                "left": {
+                  "_Name": "Name",
+                  "id": "'original_output'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "ops": [
+                  {
+                    "_Name": "IsNot"
+                  }
+                ],
+                "comparators": [
+                  {
+                    "_Name": "Constant",
+                    "value": "None",
+                    "kind": "None"
+                  }
+                ]
+              },
+              "body": [
+                {
+                  "_Name": "Return",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'original_output'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                }
+              ],
+              "orelse": []
+            },
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "Compare",
+                "left": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'num_output'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'value'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "ops": [
+                  {
+                    "_Name": "Eq"
+                  }
+                ],
+                "comparators": [
+                  {
+                    "_Name": "Constant",
+                    "value": "1",
+                    "kind": "None"
+                  }
+                ]
+              },
+              "body": [
+                {
+                  "_Name": "Return",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'_ndarray_cls'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'ctypes'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'cast'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Subscript",
+                            "value": {
+                              "_Name": "Name",
+                              "id": "'output_vars'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "slice": {
+                              "_Name": "Index",
+                              "value": {
+                                "_Name": "Constant",
+                                "value": "0",
+                                "kind": "None"
+                              }
+                            },
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          {
+                            "_Name": "Name",
+                            "id": "'NDArrayHandle'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      }
+                    ],
+                    "keywords": [
+                      {
+                        "_Name": "keyword",
+                        "arg": "'stype'",
+                        "value": {
+                          "_Name": "Subscript",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'out_stypes'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "slice": {
+                            "_Name": "Index",
+                            "value": {
+                              "_Name": "Constant",
+                              "value": "0",
+                              "kind": "None"
+                            }
+                          },
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "orelse": [
+                {
+                  "_Name": "Return",
+                  "value": {
+                    "_Name": "ListComp",
+                    "elt": {
+                      "_Name": "Call",
+                      "func": {
+                        "_Name": "Name",
+                        "id": "'_ndarray_cls'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "_Name": "Call",
+                          "func": {
+                            "_Name": "Attribute",
+                            "value": {
+                              "_Name": "Name",
+                              "id": "'ctypes'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "attr": "'cast'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "_Name": "Subscript",
+                              "value": {
+                                "_Name": "Name",
+                                "id": "'output_vars'",
+                                "ctx": {
+                                  "_Name": "Load"
+                                }
+                              },
+                              "slice": {
+                                "_Name": "Index",
+                                "value": {
+                                  "_Name": "Name",
+                                  "id": "'i'",
+                                  "ctx": {
+                                    "_Name": "Load"
+                                  }
+                                }
+                              },
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            {
+                              "_Name": "Name",
+                              "id": "'NDArrayHandle'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      ],
+                      "keywords": [
+                        {
+                          "_Name": "keyword",
+                          "arg": "'stype'",
+                          "value": {
+                            "_Name": "Subscript",
+                            "value": {
+                              "_Name": "Name",
+                              "id": "'out_stypes'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "slice": {
+                              "_Name": "Index",
+                              "value": {
+                                "_Name": "Name",
+                                "id": "'i'",
+                                "ctx": {
+                                  "_Name": "Load"
+                                }
+                              }
+                            },
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "generators": [
+                      {
+                        "_Name": "comprehension",
+                        "target": {
+                          "_Name": "Name",
+                          "id": "'i'",
+                          "ctx": {
+                            "_Name": "Store"
+                          }
+                        },
+                        "iter": {
+                          "_Name": "Call",
+                          "func": {
+                            "_Name": "Name",
+                            "id": "'range'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "_Name": "Attribute",
+                              "value": {
+                                "_Name": "Name",
+                                "id": "'num_output'",
+                                "ctx": {
+                                  "_Name": "Load"
+                                }
+                              },
+                              "attr": "'value'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        },
+                        "ifs": [],
+                        "is_async": "0"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    }
+  ],
+  "type_ignores": []
+}

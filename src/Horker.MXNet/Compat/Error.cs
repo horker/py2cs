@@ -37,6 +37,17 @@ namespace Horker.MXNet.Compat
         { }
     }
 
+    public class IndexError : LookupError
+    {
+        public IndexError()
+            : base()
+        { }
+
+        public IndexError(string message)
+            : base(message)
+        { }
+    }
+
     public class KeyError : LookupError
     {
         public KeyError()

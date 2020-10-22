@@ -16,6 +16,12 @@ namespace Horker.MXNet
             set => Dimensions[index] = value;
         }
 
+        // Tuple-like accessors
+        internal int Item1 => Dimensions[0];
+        internal int Item2 => Dimensions[1];
+        internal int Item3 => Dimensions[2];
+        internal int Item4 => Dimensions[4];
+
         public int Length => Dimensions.Count;
 
         public Shape(params int[] d)

@@ -6,22 +6,22 @@ param(
 Set-StrictMode -Version Latest
 
 $ClassRe = "^class (\w+)(?:\((\w+)\))?"
-$DefRe = "^(\s{0,4})def (\w+)\(((?:[^:]|\r|\n)*)\):"
-$PropertyRe = "^\s{4}@property"
-$SetterRe = "^\s{4}@(\w+)\.setter"
-$ClassPropertyRe = "^\s{4}@classproperty"
-$FieldRe = "^\s*self\.([a-z\d_]+)\s*=\s*(.+)"
+$DefRe = "^( {0,4})def (\w+)\(((?:[^:]|\r|\n)*)\):"
+$PropertyRe = "^ {4}@property"
+$SetterRe = "^ {4}@(\w+)\.setter"
+$ClassPropertyRe = "^ {4}@classproperty"
+$FieldRe = "^ *self\.([a-z\d_]+)\s*=\s*(.+)"
 $LineRe = "(" + ($ClassRe, $DefRe, $PropertyRe, $SetterRe, $ClassPropertyRe, $FieldRe -join ")|(") + ")"
 
 $Classes = [ordered]@{}
 
-function Get-ClassObject([string]$name, [string]$base)
+function Get-ClassObject([string]$name, [string[]]$bases)
 {
     $class = $Classes[$name]
     if ($null -eq $class) {
         $class = [PSCustomObject]@{
             Name = $name
-            Base = $base
+            BaseClasses = $bases
             Fields = [ordered]@{}
             Methods = [ordered]@{}
         }
@@ -150,7 +150,7 @@ function Build-ClassDef([string[]]$lines) {
             $methodName = $matches[2]
             $returnType = (Infer-Type $methodName) + " "
             $params = $matches[3]
-            $visibility = $methodName -match "^_" ? "private" : "public"
+            $visibility = $methodName -match "^_" ? "internal" : "public"
             $static = ""
 
             if ($indent.Length -eq 0) {
@@ -175,7 +175,7 @@ function Build-ClassDef([string[]]$lines) {
                 $static = "static "
             }
 
-            $params = @(($params -split "\s*,\s*") | where { -not [string]::IsNullOrWhitespace($_) -and $_ -ne "self" -and ($defType -ne "classProperty" -or $_ -ne "cls") })
+            $params = @(($params -split "\s*,\s*") | where { -not [string]::IsNullOrWhitespace($_) -and $_ -ne "self" -and ($defType -ne "classProperty" -or $_ -ne "cls" -or -$_ -match "\*\*") })
             $params.Count
             $paramString = ($params | foreach {
                 $name, $defaultValue = $_ -split "\s*=\s*"
@@ -194,22 +194,22 @@ function Build-ClassDef([string[]]$lines) {
 
 
             if ($defType -eq "property" -and [string]::IsNullOrEmpty($paramString)) {
-                $line = "$visibility $static $returnType$camelCased"
+                $line = "$visibility $static$returnType$camelCased"
 
             }
             else {
-                $line = "$visibility $static $returnType$camelCased($paramString)"
+                $line = "$visibility $static$returnType$camelCased($paramString)"
 
             }
             $paramString
 
             $m = $class.Methods[$methodName]
             if ($m -eq $null) {
-                 $class.Methods[$methodName] = @{}
+                 $class.Methods[$methodName] = ,@{}
             }
 
             $key = $defType -eq "setter" ? "SignatureSetter" : "Signature"
-            $class.Methods[$methodName][$key] = $line
+            $class.Methods[$methodName] = ,@{ $key = $line }
 
             $defType = "function"
         }
@@ -230,17 +230,39 @@ $UsingNamespaces = @(
     "using System.Threading;",
     "using Horker.MXNet;",
     "using Horker.MXNet.Compat;",
+    "using Horker.MXNet.Interop;",
+    "using static Horker.MXNet.Base;",
     "using static Horker.MXNet.Compat.Compat;",
     "using static Horker.MXNet.Compat.Coercing;",
+    "using static Horker.MXNet.Compat.Array;",
     "using static Horker.MXNet.MXNetCoercing;",
     "using static Horker.MXNet.MXNetCompat;",
-    "using static Horker.MXNet.DType;"
+    "using static Horker.MXNet.DType;",
+    "using NDArrayHandle = System.IntPtr;",
+    "using MxInt = System.Int32;",
+    "using MxUint = System.Int32;",
+    "using MxInt64 = System.Int64;",
+    "using PySlice = Slice;",
+    "using Tuple = ICollection;"
 )
 
-$Namespace = "Horker.MXNet.Gluon"
+$Namespace = "Horker.MXNet"
 
 $Replacements = [ordered]@{
     "ndarray" = "NDArray"
+    "ctypes" = "CTypes"
+    "dtype" = "DType"
+    "stype" = "SType"
+    "uint8" =  "UInt8"
+}
+
+$TypeNames = [ordered]@{
+    "NDArray" = ,"NDArray"
+    "Tuple" =  ,"Tuple"
+    "mx_int" = ,"mx_int"
+    "mx_uint" = ,"mx_uint"
+    "integer_types" = "int", "long"
+    "numeric_types" = "float", "int", "long"
 }
 
 ############################################################
@@ -274,6 +296,7 @@ $out = [ordered]@{
     UsingNamespaces = $UsingNamespaces
     Namespace = $Namespace
     Replacements = $Replacements
+    TypeNames = $TypeNames
     Classes = $Classes
 }
 

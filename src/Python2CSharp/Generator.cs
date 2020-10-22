@@ -2,9 +2,11 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
@@ -33,27 +35,57 @@ namespace Python2CSharp
         private string ConvertToCamelCase(string s, bool upper)
         {
             if (s == "_")
-                return "unused";
+                return "_";
 
-            var words = s.Split(new[] { '_' });
+            // Upper snake cases
+            if (Regex.IsMatch(s, "^[A-Z0-9_]+$"))
+                return s;
 
+            // Special method names
+            bool special = false;
+            var m = Regex.Match(s, "^__(.+)__$");
+            if (m.Success)
+            {
+                special = true;
+                s = m.Groups[1].Value;
+            }
+
+            var words = s.Split(new[] { '_' }).Where(x => x.Length >= 1).ToArray();
+
+            string result = null;
             if (upper && s.Length >= 2 && s[0] == '_' && char.IsLower(s[1]))
             {
                 // member variables and private methods
-                var capitalized = words.Skip(2).Select(x => char.ToUpperInvariant(x[0]) + x.Substring(1));
-                return "_" + words[1] + string.Join("", capitalized);
+                var capitalized = words.Skip(1).Select(x => char.ToUpperInvariant(x[0]) + x.Substring(1));
+                result = "_" + words[0] + string.Join("", capitalized);
             }
-
-            if (upper)
+            else if (upper)
             {
                 var capitalized = words.Select(x => x.Length <= 1 ? x.ToUpper() : char.ToUpperInvariant(x[0]) + x.Substring(1));
-                return string.Join("", capitalized);
+                result = string.Join("", capitalized);
             }
             else
             {
                 var capitalized = words.Skip(1).Select(x => x.Length <= 1 ? x.ToUpper() : char.ToUpperInvariant(x[0]) + x.Substring(1));
-                return words[0] + string.Join("", capitalized);
+                result = words[0] + string.Join("", capitalized);
             }
+
+            if (special)
+                return "__" + result + "__";
+            return result;
+        }
+
+        private string ConvertAsLocal(string s)
+        {
+            return EscapeCsKeyword(ConvertToCamelCase(s, false));
+        }
+
+        private string ConvertAsMethodOrClassName(string s)
+        {
+            if (_config.Replacements.TryGetValue(s, out var rep))
+                return rep;
+            else
+                return ConvertToCamelCase(s, true);
         }
 
         private string ObjectNameOf(JToken node)
@@ -68,17 +100,12 @@ namespace Python2CSharp
 
         private static readonly HashSet<string> _keywords = new HashSet<string>()
         {
-            "params", "out"
+            "params", "out", "this"
         };
 
         private string EscapeCsKeyword(string s)
         {
             return _keywords.Contains(s) ? "@" + s : s;
-        }
-
-        private string ConvertAsLocal(string s)
-        {
-            return EscapeCsKeyword(ConvertToCamelCase(s, false));
         }
 
         private bool IsBareName(JToken func, Context ctx)
@@ -134,13 +161,14 @@ namespace Python2CSharp
 
         private Context ApplyIsInstanceConstraint(JToken test, Context ctx, bool copyContext)
         {
-            if (IsIsInstanceCall(test, ctx))
+            // I need a cast sentence only when isinstance() is called with a single type specified because specifing multiple types means that type casting is usually necessary to use its value in a python code.
+            if (IsIsInstanceCall(test, ctx) && _config.TypeNames.Keys.Contains(GetNameProperty(test["args"][1], "id")))
             {
                 var l = GetNameProperty(test["args"][0], "id");
                 var castTo = GetNameProperty(test["args"][1], "id");
 
                 if (copyContext)
-                    ctx = ctx.GetDeepCopy();
+                    ctx = ctx.DeepCopy();
 
                 var alias = ctx.MakeLocal();
                 ctx.SetAliasForLocal(l, alias);
@@ -159,14 +187,73 @@ namespace Python2CSharp
         {
             var f = new Formatter();
             var g = new Generator(f, _config);
-            g.GenerateExpression(node, ctx.GetDeepCopy());
+            g.GenerateExpression(node, ctx.DeepCopy());
 
             return f.GetOutput();
         }
 
-        private MethodConfig GetMethodConfig(Context ctx)
+        private ValueConstraint ResolveCondition(JToken test, Context ctx)
         {
-            return _config[ctx.GetClassName()][ctx.GetFunctionName()];
+            bool trueCond = true;
+            if (ObjectNameOf(test) == "UnaryOp" && ObjectNameOf(test["op"]) == "Not")
+            {
+                trueCond = false;
+                test = test["operand"];
+            }
+
+            if (!(ObjectNameOf(test) == "Call" &&
+                ObjectNameOf(test["func"]) == "Name" && GetNameProperty(test["func"], "id") == "isinstance"))
+                return ValueConstraint.Any;
+
+            if (ObjectNameOf(test["args"][0]) != "Name")
+                return ValueConstraint.Any;
+
+            var id = GetNameProperty(test["args"][0], "id");
+            var mc = ctx.GetMethodConfig();
+            if (!mc.SignatureAnalysis.ParamTypes.TryGetValue(id, out var type))
+                if (mc.Locals.TryGetValue(id, out var l))
+                    type = l.Type;
+
+            if (string.IsNullOrEmpty(type))
+                return ValueConstraint.Any;
+
+            var typeArg = test["args"][1];
+            if (ObjectNameOf(typeArg) == "Name")
+            {
+                var testType = GetNameProperty(typeArg, "id");
+                if (_config.TypeNames.TryGetValue(testType, out var testTypes))
+                {
+                    if (!testTypes.Contains(type))
+                        trueCond = !trueCond;
+                    return trueCond ? ValueConstraint.True : ValueConstraint.False;
+                }
+
+                if (type != ConvertAsMethodOrClassName(testType))
+                    trueCond = !trueCond;
+                return trueCond ? ValueConstraint.True : ValueConstraint.False;
+            }
+
+            if (ObjectNameOf(typeArg) == "Tuple")
+            {
+                var elts = typeArg["elts"];
+                if (elts.Any(x => ObjectNameOf(x) != "Name"))
+                    return ValueConstraint.Any;
+
+                foreach (var e in elts)
+                {
+                    var testType = GetNameProperty(e, "id");
+                    if (_config.TypeNames.TryGetValue(testType, out var testTypes))
+                    {
+                        if (testTypes.Contains(type))
+                            return trueCond ? ValueConstraint.True : ValueConstraint.False;
+                    }
+                }
+
+                trueCond = !trueCond;
+                return trueCond ? ValueConstraint.True : ValueConstraint.False;
+            }
+
+            return ValueConstraint.Any;
         }
 
         #endregion
@@ -182,7 +269,7 @@ namespace Python2CSharp
             }
 
             var name = node["_Name"].Value<string>();
-            ValueConstraint result = null;
+            ValueConstraint result = ValueConstraint.Any;
             switch (name)
             {
                 // Module
@@ -246,9 +333,10 @@ namespace Python2CSharp
             if (ObjectNameOf(node) == "Name")
             {
                 var id = GetNameProperty(node, "id");
-                if (char.IsUpper(id[0]) || id[0] == '_' && char.IsUpper(id[1]))
+                if (_config.TypeNames.Keys.Contains(id))
+//                    char.IsUpper(id[0]) || id.Length >= 2 && id[0] == '_' && char.IsUpper(id[1]))
                 {
-                    _out.Write($"typeof({id})");
+                    _out.Write($"typeof({ConvertAsMethodOrClassName(id)})");
                     return ValueConstraint.Any;
                 }
             }
@@ -263,9 +351,15 @@ namespace Python2CSharp
 
         private ValueConstraint GenerateBody(IEnumerable<JToken> nodes, Context ctx)
         {
+            var constraint = ValueConstraint.Any;
             foreach (var e in nodes)
-                Generate(e, ctx);
-            return ValueConstraint.Any;
+            {
+                constraint = Generate(e, ctx);
+                if (constraint.IsTerminal())
+                    break;
+            }
+
+            return constraint;
         }
 
         private void GenerateCommaSeparated(IEnumerable<JToken> node, Action<JToken> action)
@@ -320,17 +414,39 @@ namespace Python2CSharp
 
         public ValueConstraint GenerateFunctionDef(JToken node, Context ctx)
         {
+            var withinClass = ctx.IsInClass();
+            var className = withinClass ? ctx.GetClassName() : "Helper";
+            var funcName = GetNameProperty(node, "name");
+            List<MethodConfig> mcs;
+            try
+            {
+                mcs = _config[className][funcName];
+            }
+            catch (KeyNotFoundException)
+            {
+                throw new ArgumentException($"MethodConfig is not defined: {className}.{funcName}()");
+            }
+
+            foreach (var mc in mcs)
+                GenerateFunctionDef(node, ctx, mc);
+
+            return ValueConstraint.Any;
+        }
+
+        public ValueConstraint GenerateFunctionDef(JToken node, Context ctx, MethodConfig mc)
+        {
             _out.WriteNewLine();
 
+            var withinClass = ctx.IsInClass();
+            var className = withinClass ? ctx.GetClassName() : "Helper";
             var funcName = GetNameProperty(node, "name");
-            var mc = _config[ctx.GetClassName()][funcName];
+
             if (mc.Drop)
             {
                 _out.WriteLine($"// Drop: {funcName}");
                 return ValueConstraint.Any;
             }
 
-            var withinClass = ctx.IsInClass();
             if (!withinClass)
             {
                 _out.WriteLine("public static partial class Helper");
@@ -342,7 +458,7 @@ namespace Python2CSharp
             if (kwarg.Type == JTokenType.Object && ObjectNameOf(kwarg) == "arg")
                 kwargName = GetNameProperty(kwarg, "arg");
 
-            List<string> keywordArguments = mc?.KeywordArguments;
+            List<string> keywordArguments = mc.KeywordArguments;
 
             var isProertyDef = false;
             var isSetterDef = false;
@@ -359,7 +475,7 @@ namespace Python2CSharp
             var args = node["args"]["args"];
             var body = node["body"];
 
-            ctx = ctx.EnterFunction(funcName, kwargName, isSetterDef);
+            ctx = ctx.EnterFunction(funcName, kwargName, mc, isSetterDef);
 
             foreach (var arg in args)
                 ctx.AddLocal(GetNameProperty(arg, "arg"));
@@ -409,9 +525,9 @@ namespace Python2CSharp
                 if (withinClass && funcName == "__init__")
                     funcName = ctx.Name;
                 else
-                    funcName = ConvertToCamelCase(funcName, true);
+                    funcName = ConvertAsMethodOrClassName(funcName);
 
-                var argStrings = args.Select(x => "object " + ConvertToCamelCase(GetNameProperty(x, "arg"), false));
+                var argStrings = args.Select(x => "object " + ConvertAsLocal(GetNameProperty(x, "arg")));
                 _out.WriteLine($"public object {funcName}({string.Join(", ", argStrings)})");
             }
 
@@ -425,10 +541,25 @@ namespace Python2CSharp
             if (analysis.IsProperty)
                 _out.WriteOpening("get {");
 
-            if (mc?.Prologue != null)
+            if (!string.IsNullOrEmpty(kwargName))
             {
-                foreach (var p in mc?.Prologue)
+                ctx.AddLocal(kwargName);
+                _out.WriteLine($"var {kwargName} = new string[0];");
+            }
+
+            if (mc.Prologue != null)
+            {
+                foreach (var p in mc.Prologue)
                     _out.WriteLine(p);
+            }
+
+            foreach (var (l, c) in mc.Locals)
+            {
+                if (!string.IsNullOrEmpty(c.Definition))
+                {
+                    ctx.AddLocal(l);
+                    _out.WriteLine(c.Definition);
+                }
             }
 
             if (!string.IsNullOrEmpty(baseCall))
@@ -468,14 +599,22 @@ namespace Python2CSharp
                 return ValueConstraint.Any;
             }
 
-            var baseClasses = _config[className].BaseClasses.Select(x => x == "object" ? "PythonObject" : x).Select(x => x.Replace("_", ""));
+            var baseClasses = _config[className].BaseClasses.Select(x => x == "object" ? "PythonObject" : x).ToArray();
 
             _out.WriteNewLine();
-            _out.WriteLine($"public partial class {className.Replace("_", "")} : {string.Join(", ", baseClasses)}");
+            _out.Write($"public partial class {className}");
+            if (baseClasses.Length > 0)
+                _out.WriteLine($" : {string.Join(", ", baseClasses)}");
+            else
+                _out.WriteNewLine();
+
             _out.WriteOpening("{");
 
             foreach (var entry in _config[className].Fields)
-                _out.WriteLine(entry.Value);
+            {
+                if (!entry.Value.Inherited)
+                    _out.WriteLine(entry.Value.Signature);
+            }
             _out.WriteNewLine();
 
             GenerateBody(node["body"], ctx.EnterClass(className));
@@ -487,7 +626,7 @@ namespace Python2CSharp
 
         public ValueConstraint GenerateReturn(JToken node, Context ctx)
         {
-            var mc = GetMethodConfig(ctx);
+            var mc = ctx.GetMethodConfig();
 
             var value = node["value"];
             if (IsNone(value))
@@ -504,13 +643,13 @@ namespace Python2CSharp
                 _out.WriteLine(";");
             }
 
-            return ValueConstraint.Any;
+            return ValueConstraint.Terminal;
         }
 
         private void GenerateAssignRhs(JToken node, Context ctx, string type)
         {
             if (!string.IsNullOrEmpty(type))
-                _out.Write($"CoerceInto{ConvertToCamelCase(type, true)}(");
+                _out.Write($"CoerceInto{ConvertAsMethodOrClassName(type)}(");
 
             GenerateExpression(node["value"], ctx.WithTypeConstraint(type));
 
@@ -552,7 +691,7 @@ namespace Python2CSharp
                 var id = GetNameProperty(target, "id");
                 if (!_config[ctx.GetClassName()].StaticVariableTypes.TryGetValue(id, out type))
                     type = "object";
-                _out.Write($"public static {type} {ConvertToCamelCase(id, true)} = ");
+                _out.Write($"public static {type} {ConvertAsMethodOrClassName(id)} = ");
                 GenerateAssignRhs(node, ctx, type);
                 _out.WriteLine(";");
 
@@ -569,6 +708,7 @@ namespace Python2CSharp
             var newLocals = new List<bool>();
             List<string> reassigns = null;
 
+            var mc = ctx.GetMethodConfig();
             var value = node["value"];
             bool isCtype = targetsCount == 1 &&
                 ObjectNameOf(value) == "Call" && ObjectNameOf(value["func"]) == "Attribute" &&
@@ -584,23 +724,18 @@ namespace Python2CSharp
                     var name = GetNameProperty(target, "id");
                     if (!ctx.FindLocal(name))
                     {
-                        type = _config[ctx.GetClassName()].GetFieldTypeOf(name);
-                        types.Add(type);
-                        newLocals.Add(type == null);
-                        if (type == null)
-                        {
-                            ctx.AddLocal(name);
-                            if (isCtype)
-                                ctx.SetLocalToCtype(name);
-                        }
+                        ctx.AddLocal(name);
+                        newLocals.Add(true);
                     }
                     else
                     {
-                        types.Add(null); // Future work
                         newLocals.Add(false);
-                        if (isCtype)
-                            ctx.SetLocalToCtype(name);
                     }
+                    if (mc.Locals.TryGetValue(name, out var t))
+                        type = t.Type;
+                    types.Add(type);
+                    if (isCtype)
+                        ctx.SetLocalToCtype(name);
                 }
                 else if (ObjectNameOf(target) == "Attribute" &&
                     ObjectNameOf(target["value"]) == "Name" && GetNameProperty(target["value"], "id") == "self" &&
@@ -639,7 +774,7 @@ namespace Python2CSharp
                 if (useSetAttrs[i])
                 {
                     var attr = GetNameProperty(targets[0], "attr");
-                    _out.Write($"Setattr(\"{ConvertToCamelCase(attr, true)}\", ");
+                    _out.Write($"Setattr(\"{ConvertAsMethodOrClassName(attr)}\", ");
                     if (string.IsNullOrEmpty(rhs))
                         GenerateAssignRhs(node, ctx, types[i]);
                     else
@@ -718,26 +853,44 @@ namespace Python2CSharp
 
         public ValueConstraint GenerateFor(JToken node, Context ctx)
         {
+            _out.Write("foreach (var ");
+
+            var ctx2 = ctx.DeepCopy();
             var target = node["target"];
-            var localDefined = false;
-            if (target["_Name"].Value<string>() == "Name")
-                localDefined = ctx.TryAddLocal(GetNameProperty(target, "id"));
+            if (ObjectNameOf(target) == "Name")
+            {
+                var id = GetNameProperty(target, "id");
+                ctx2.TryAddLocal(id);
+                _out.Write(ConvertAsLocal(id));
+            }
             else
             {
-                if (target["_Name"].Value<string>() == "ValueTuple")
+                if (ObjectNameOf(target) == "Tuple")
                 {
+                    _out.Write("(");
+                    var first = true;
                     foreach (var e in target["elts"])
-                        localDefined = localDefined || ctx.TryAddLocal(GetNameProperty(e, "id"));
+                    {
+                        if (!first)
+                            _out.Write(", ");
+                        first = false;
+
+                        if (ObjectNameOf(e) != "Name")
+                            throw new ArgumentException("Complex expression is not acceptable as variables in for statements");
+
+                        var id = GetNameProperty(e, "id");
+                        ctx2.TryAddLocal(id);
+                        _out.Write(ConvertAsLocal(id));
+                    }
+                    _out.Write(")");
                 }
             }
 
-            _out.Write("foreach (var ");
-            GenerateExpression(target, ctx);
             _out.Write(" in ");
             GenerateExpression(node["iter"], ctx);
             _out.WriteLine(")");
             _out.WriteOpening("{");
-            GenerateBody(node["body"], ctx);
+            GenerateBody(node["body"], ctx2);
             _out.WriteClosing("}");
 
             return ValueConstraint.Any;
@@ -761,22 +914,35 @@ namespace Python2CSharp
         public ValueConstraint GenerateIf(JToken node, Context ctx)
         {
             var test = node["test"];
+            var cond = ResolveCondition(test, ctx);
+            var orElese = node["orelse"];
+
+            if (cond.IsTrue())
+                return GenerateBody(node["body"], ctx);
+
+            if (cond.IsFalse())
+            {
+                if (orElese.Count() > 0)
+                    return GenerateBody(orElese, ctx);
+                return ValueConstraint.Any;
+            }
+
             _out.Write("if (IsTrue(");
             GenerateExpression(node["test"], ctx);
-            _out.Write("))");
+            _out.WriteLine("))");
             _out.WriteOpening("{");
 
-            var ctx2 = ApplyIsInstanceConstraint(test, ctx, true);
+            var ctx2 = ctx.DeepCopy();
+            ApplyIsInstanceConstraint(test, ctx2, false);
             GenerateBody(node["body"], ctx2);
 
             _out.WriteClosing("}");
 
-            var orElese = node["orelse"];
             if (orElese.Count() > 0)
             {
                 _out.WriteLine("else");
                 _out.WriteOpening("{");
-                GenerateBody(orElese, ctx);
+                GenerateBody(orElese, ctx.DeepCopy());
                 _out.WriteClosing("}");
             }
 
@@ -825,7 +991,7 @@ namespace Python2CSharp
                 _out.WriteLine(";");
             }
 
-            return ValueConstraint.Any;
+            return ValueConstraint.Terminal;
         }
 
         public ValueConstraint GenerateTry(JToken node, Context ctx)
@@ -836,9 +1002,10 @@ namespace Python2CSharp
         public ValueConstraint GenerateAssert(JToken node, Context ctx)
         {
             var exp = FormatExpression(node["test"], ctx);
-            _out.WriteLine($"Assert({exp}, \"{exp.Replace("\"", "\\\"")}\");");
+            _out.WriteLine($"Assert(IsTrue({exp}), \"{exp.Replace("\"", "\\\"")}\");");
 
-            ApplyIsInstanceConstraint(node["test"], ctx, false);
+            // In most cases this is needless.
+            // ApplyIsInstanceConstraint(node["test"], ctx, false);
 
             return ValueConstraint.Any;
         }
@@ -1132,13 +1299,25 @@ namespace Python2CSharp
 
             _out.Write("(");
 
-            if (op == "IsNot")
+            if (op == "Is" || op == "IsNot")
             {
-                _out.Write("!(");
-                GenerateExpression(left, ctx);
-                _out.Write(" is ");
-                GenerateExpression(comparators[0], ctx);
-                _out.Write(")");
+                if (op == "IsNot")
+                    _out.Write("!");
+
+                if (ObjectNameOf(comparators[0]) == "Constant" && comparators[0]["value"].Value<string>() == "None")
+                {
+                    _out.Write("IsNone(");
+                    GenerateExpression(left, ctx);
+                    _out.Write(")");
+                }
+                else
+                {
+                    _out.Write("(");
+                    GenerateExpression(left, ctx);
+                    _out.Write(" is ");
+                    GenerateExpression(comparators[0], ctx);
+                    _out.Write(")");
+                }
             }
             else if (op == "In" || op == "NotIn")
             {
@@ -1181,16 +1360,16 @@ namespace Python2CSharp
             var args = node["args"];
             var keywords = node["keywords"];
 
-            // Special case: kwarg.get["var"]
+            // Special case: kwarg.get("var"[, default])
 
             if (ObjectNameOf(func) == "Attribute" &&
                 ObjectNameOf(func["value"]) == "Name" &&
                 GetNameProperty(func["value"], "id") == ctx.KeywordArgumentName)
             {
                 if (GetNameProperty(func, "attr") == "get" &&
-                    args.Count() == 1 && ObjectNameOf(args[0]) == "Constant")
+                    args.Count() <= 2 && ObjectNameOf(args[0]) == "Constant")
                 {
-                    _out.Write(ConvertToCamelCase(GetNameProperty(args[0], "value"), false));
+                    _out.Write(ConvertAsLocal(GetNameProperty(args[0], "value")));
                     return ValueConstraint.Any;
                 }
             }
@@ -1253,21 +1432,21 @@ namespace Python2CSharp
 
             _out.Write("(");
 
-            if (ObjectNameOf(func) == "Name" && GetNameProperty(func, "id") == "isinstance" && args.Count() == 2)
-            {
-                GenerateExpression(args[0], ctx);
-                _out.Write(", ");
-                if (ObjectNameOf(args[1]) == "Name" || ObjectNameOf(args[1]) == "Tuple")
-                {
-                    _out.Write("typeof(");
-                    GenerateExpression(args[1], ctx);
-                    _out.Write(")");
-                }
-            }
-            else
-            {
+//            if (ObjectNameOf(func) == "Name" && GetNameProperty(func, "id") == "isinstance" && args.Count() == 2)
+//            {
+//                GenerateExpression(args[0], ctx);
+//                _out.Write(", ");
+//                if (ObjectNameOf(args[1]) == "Name" || ObjectNameOf(args[1]) == "Tuple")
+//                {
+//                    _out.Write("typeof(");
+//                    GenerateExpression(args[1], ctx);
+//                    _out.Write(")");
+//                }
+//            }
+//            else
+//            {
                 GenerateCommaSeparated(args, ctx);
-            }
+//            }
 
             bool hasArgs = args.Count() > 0;
             foreach (var keyword in keywords)
@@ -1275,14 +1454,14 @@ namespace Python2CSharp
                 var arg = keyword["arg"];
                 if (IsNone(arg) && GetNameProperty(keyword["value"], "id") == ctx.KeywordArgumentName)
                 {
-                    var mc = GetMethodConfig(ctx);
+                    var mc = ctx.GetMethodConfig();
                     if (mc.KeywordArguments.Count > 0)
                     {
                         if (hasArgs)
                             _out.Write(", ");
                         hasArgs = true;
                         _out.Write(string.Join(", ", mc.KeywordArguments.Select(x => {
-                            var s = ConvertToCamelCase(x, false);
+                            var s = ConvertAsLocal(x);
                             return $"{s}: {s}";
                         })));
                     }
@@ -1292,7 +1471,7 @@ namespace Python2CSharp
                     if (hasArgs)
                         _out.Write(", ");
                     hasArgs = true;
-                    _out.Write(ConvertToCamelCase(StripQuotes(arg.Value<string>()), false));
+                    _out.Write(ConvertAsLocal(StripQuotes(arg.Value<string>())));
                     _out.Write(": ");
                     GenerateExpression(keyword["value"], ctx);
                 }
@@ -1356,7 +1535,7 @@ namespace Python2CSharp
             }
 
             GenerateExpression(node["value"], ctx);
-            var attr = ConvertToCamelCase(StripQuotes(node["attr"].Value<string>()), true);
+            var attr = ConvertAsMethodOrClassName(GetNameProperty(node, "attr"));
             _out.Write($".{attr}");
 
             return ValueConstraint.Any;
@@ -1370,7 +1549,7 @@ namespace Python2CSharp
             if (ObjectNameOf(value) == "Name" && GetNameProperty(value, "id") == ctx.KeywordArgumentName &&
                 ObjectNameOf(slice) == "Index" && ObjectNameOf(slice["value"]) == "Constant")
             {
-                _out.Write(ConvertToCamelCase(GetNameProperty(slice["value"], "value"), false));
+                _out.Write(ConvertAsLocal(GetNameProperty(slice["value"], "value")));
                 return ValueConstraint.Any;
             }
 
@@ -1437,12 +1616,7 @@ namespace Python2CSharp
                     _out.Write(ConvertAsLocal(ctx.GetAliasForLocal(n)));
                 else
                 {
-                    if (_config.Replacements.TryGetValue(n, out var rep))
-                        _out.Write(rep);
-//                    else if (!funcName && char.IsUpper(n[0]))
-//                        _out.Write($"typeof({n})");
-                    else
-                        _out.Write(ConvertToCamelCase(n, true));
+                    _out.Write(ConvertAsMethodOrClassName(n));
                 }
             }
 
@@ -1451,6 +1625,12 @@ namespace Python2CSharp
 
         public ValueConstraint GenerateList(JToken node, Context ctx)
         {
+            if (node["elts"].Count() == 0)
+            {
+                _out.Write("null");
+                return ValueConstraint.Any;
+            }
+
             _out.Write("new [] { ");
             GenerateCommaSeparated(node["elts"], ctx);
             _out.Write(" }");
@@ -1491,12 +1671,12 @@ namespace Python2CSharp
             var arg = node["arg"];
             if (arg.Value<string>() == "None" && GetNameProperty(node["value"], "id") == ctx.KeywordArgumentName)
             {
-                var mc = GetMethodConfig(ctx);
-                _out.Write(string.Join(", ", mc.KeywordArguments.Select(x => ConvertToCamelCase(x, false))));
+                var mc = ctx.GetMethodConfig();
+                _out.Write(string.Join(", ", mc.KeywordArguments.Select(x => ConvertAsLocal(x))));
             }
             else
             {
-                _out.Write(ConvertToCamelCase(StripQuotes(arg.Value<string>()), false));
+                _out.Write(ConvertAsLocal(StripQuotes(arg.Value<string>())));
                 _out.Write(": ");
                 GenerateExpression(node["value"], ctx);
             }

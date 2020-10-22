@@ -11,6 +11,11 @@ namespace Horker.MXNet.Compat
             return self.EndsWith(pat);
         }
 
+        public static string Join(this string self, params object[] values)
+        {
+            return string.Join(self, values);
+        }
+
         public static string Lower(this string self)
         {
             return self.ToLowerInvariant();

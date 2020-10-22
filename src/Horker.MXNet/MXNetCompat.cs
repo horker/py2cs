@@ -8,22 +8,30 @@ namespace Horker.MXNet
 {
     public static class MXNetCompat
     {
-        // Defined in mxnet/base.py
-        public static void CheckCall(int ret)
-        {
-            if (ret != 0)
-                throw new ApplicationException(Marshal.PtrToStringAnsi(LIB.MXGetLastError()));
-        }
-
         public static string Format(this string format, object arg0 = null, object arg1 = null, object arg2 = null, object arg3 = null, object arg4 = null, object arg5 = null, object arg6 = null, object arg7 = null, object arg8 = null, object arg9 = null, object name = null, object shape = null, object dtype = null)
         {
             // TODO
             return format;
         }
 
-        public static int Len(Shape shape)
+        public static bool IsNone(DType dtype)
         {
-            return shape.Length;
+            // In our implementation DType is struct and never becomes null.
+            return false;
         }
+
+        public static int Len(NDArrayList list) => list.Count;
+        public static int Len(Shape shape) => shape.Length;
+
+        public static List<int> List(Shape shape)
+        {
+            return new List<int>(shape.Dimensions);
+        }
+
+        public static int MxInt(int value) => value;
+        public static int MxInt(object value) => (int)value;
+
+        public static int MxUint(int value) => value;
+        public static int MxUint(object value) => (int)value;
     }
 }

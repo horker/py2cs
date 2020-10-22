@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Horker.MXNet
 {
+    // Defined in mxnet/context.py
     public partial class Context : PythonObject, IEquatable<Context>
     {
         public override bool Equals(object obj)

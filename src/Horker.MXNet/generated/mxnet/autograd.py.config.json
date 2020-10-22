@@ -1,0 +1,122 @@
+{
+  "UsingNamespaces": [
+    "using System;",
+    "using System.Linq;",
+    "using System.Collections;",
+    "using System.Collections.Generic;",
+    "using System.Threading;",
+    "using Horker.MXNet;",
+    "using Horker.MXNet.Compat;",
+    "using Horker.MXNet.Interop;",
+    "using static Horker.MXNet.Compat.Compat;",
+    "using static Horker.MXNet.Compat.Coercing;",
+    "using static Horker.MXNet.MXNetCoercing;",
+    "using static Horker.MXNet.MXNetCompat;",
+    "using static Horker.MXNet.DType;"
+  ],
+  "Namespace": "Horker.MXNet",
+  "Replacements": {
+    "ndarray": "NDArray",
+    "ctypes": "CTypes"
+  },
+  "Classes": {
+    "Helper": {
+      "Name": "Helper",
+      "BaseClasses": null,
+      "Fields": {},
+      "Methods": {
+        "set_recording": {
+          "Signature": "public static bool SetRecording(int isRecording)"
+        },
+        "set_training": {
+          "Signature": "public static bool SetTraining(int trainMode)"
+        },
+        "is_recording": {
+          "Signature": "public static bool IsRecording()"
+        },
+        "is_training": {
+          "Signature": "public static bool IsTraining()"
+        },
+        "record": {
+          "Signature": "public static RecordingStateScope Record(bool trainMode = true)"
+        },
+        "pause": {
+          "Signature": "public static RecordingStateScope Pause(bool trainMode = false)"
+        },
+        "train_mode": {
+          "Signature": "public static RecordingStateScope TrainMode()"
+        },
+        "predict_mode": {
+          "Signature": "public static RecordingStateScope PredictMode()"
+        },
+        "mark_variables": {
+          "Signature": "public static  void MarkVariables(NDArrayList variables, NDArrayList gradients, string gradReqs = \"write\")"
+        },
+        "_parse_head": {
+          "Signature": "private static  object _parseHead(object heads, object headGrads)"
+        },
+        "backward": {
+          "Signature": "public static  object Backward(object heads, object headGrads = null, bool retainGraph = false, bool trainMode = true)"
+        },
+        "grad": {
+          "Signature": "public static  object Grad(object heads, object variables, object headGrads = null, object retainGraph = null, bool createGraph = false, bool trainMode = true)"
+        },
+        "get_symbol": {
+          "Signature": "public static  object GetSymbol(object x)"
+        }
+      }
+    },
+    "_RecordingStateScope": {
+      "Name": "_RecordingStateScope",
+      "BaseClasses": [],
+      "Fields": {
+        "_enter_is_record": "private int _enterIsRecord;",
+        "_enter_train_mode": "private int _enterTrainMode;",
+        "_prev_is_record": "private int _prevIsRecord;",
+        "_prev_train_mode": "private int _prevTrainMode;"
+      },
+      "Methods": {
+        "__init__": {
+          "Signature": "public RecordingStateScope(bool isRecord, bool trainMode)"
+        },
+        "__enter__": {
+          "Signature": "public void Enter()"
+        },
+        "__exit__": {
+          "Signature": "public void Exit(object ptype, object value, object trace)"
+        }
+      }
+    },
+    "Function": {
+      "Drop": true,
+      "Name": "Function",
+      "BaseClasses": [
+        "object"
+      ],
+      "Fields": {
+        "ref_holder": "public object RefHolder { get; set; }",
+        "counter": "public int Counter { get; set; }",
+        "lock": "public object Lock { get; set; }",
+        "_used": "private object _used;",
+        "saved_tensors": "public object SavedTensors { get; set; }"
+      },
+      "Methods": {
+        "__init__": {
+          "Signature": "public  Function()"
+        },
+        "save_for_backward": {
+          "Signature": "public  object SaveForBackward(object *args)"
+        },
+        "__call__": {
+          "Signature": "private  object Call(object *inputs)"
+        },
+        "forward": {
+          "Signature": "public  object Forward(object *inputs)"
+        },
+        "backward": {
+          "Signature": "public  object Backward(object *outputGrads)"
+        }
+      }
+    }
+  }
+}

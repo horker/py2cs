@@ -104,6 +104,13 @@ namespace Python2CSharp
         }
     }
 
+    public class LocalConfig
+    {
+        public string Type { get; set; }
+        public string Definition { get; set; } = null;
+        public bool IsCType { get; set; } = false;
+    }
+
     public class MethodConfig
     {
         public static readonly MethodConfig Empty = new MethodConfig();
@@ -111,8 +118,9 @@ namespace Python2CSharp
         public bool Drop { get; set; } = false;
         public string Signature { get; set; } = string.Empty;
         public string SignatureSetter { get; set; } = string.Empty;
-        public List<string> KeywordArguments { get; set; } = new List<string>();
+        public List<string> KeywordArguments { get; set; } = new List<string>(); // ??
         public List<string> Prologue { get; set; } = new List<string>();
+        public Dictionary<string, LocalConfig> Locals { get; set; } = new Dictionary<string, LocalConfig>();
         public Dictionary<string, string> LocalAliases { get; set; } = new Dictionary<string, string>();
 
         private SignatureAnalysis _signatureAnalysis;
@@ -141,80 +149,90 @@ namespace Python2CSharp
 
     public class FieldConfig
     {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public bool IsStatic { get; set; }
+        public string Signature { get; set; }
+        public bool Inherited { get; set; } = false;
+
+        private string _name;
+        private string _type;
+        private bool _isStatic;
+
+        public string Name
+        {
+            get
+            {
+                AnalyzeField();
+                return _name;
+            }
+        }
+
+        public string Type
+        {
+            get
+            {
+                AnalyzeField();
+                return _type;
+            }
+        }
+
+        public bool IsStatic
+        {
+            get
+            {
+                AnalyzeField();
+                return _isStatic;
+            }
+        }
+
+        private void AnalyzeField()
+        {
+            var re = new Regex(@"^\s*(?:(?:public|protected|internal|private|static)\s*)*\s+([\w\.]+(?:<\w+(?:,\s*\w+)*>)?\s*(?:\[\])?)\s*(\w+)\s*(?:{\s*get;(?:\s*set;)?\s*}\s*)?;?\s*$");
+            var matches = re.Match(Signature);
+            if (!matches.Success)
+                throw new ArgumentException($"Signature analysis failed: {Signature}");
+            var type = matches.Groups[1].Value.Trim();
+            var name = matches.Groups[2].Value.Trim();
+
+            _type = type;
+            _name = name; ;
+            _isStatic = false;
+        }
     }
 
     public class ClassConfig
     {
         public static readonly ClassConfig Empty = new ClassConfig();
+        public static readonly List<MethodConfig> MethodEmpty = new List<MethodConfig>(new[] { MethodConfig.Empty });
 
         public bool Drop { get; set; } = false;
         public string Name { get; set; } = "";
         public List<string> BaseClasses { get; set; } = new List<string>() { "object" };
-        public Dictionary<string, string> Fields { get; set; } = new Dictionary<string, string>();
-        public Dictionary<string, MethodConfig> Methods { get; set; } = new Dictionary<string, MethodConfig>();
+        public Dictionary<string, FieldConfig> Fields { get; set; } = new Dictionary<string, FieldConfig>();
+        public Dictionary<string, List<MethodConfig>> Methods { get; set; } = new Dictionary<string, List<MethodConfig>>();
         public List<string> SpecialMethods { get; set; } = new List<string>();
         public Dictionary<string, string> StaticVariableTypes { get; set; } = new Dictionary<string, string>();
 
-        public MethodConfig this[string funcName] => Methods.TryGetValue(funcName, out var f) ? f : MethodConfig.Empty;
+        public List<MethodConfig> this[string funcName] => Methods.TryGetValue(funcName, out var f) ? f : MethodEmpty;
 
         private Dictionary<string, FieldConfig> _fieldConfig = new Dictionary<string, FieldConfig>();
 
-        public FieldConfig GetFieldConfig(string name)
-        {
-            if (_fieldConfig.TryGetValue(name, out var config))
-                return config;
-
-            if (StaticVariableTypes.TryGetValue(name, out var t))
-            {
-                config = new FieldConfig()
-                {
-                    Type = t,
-                    Name = name,
-                    IsStatic = true
-                };
-            }
-            else
-            {
-                if (Fields.TryGetValue(name, out var def))
-                    config = AnalyzeField(def);
-                else
-                    return null;
-            }
-
-            _fieldConfig[name] = config;
-            return config;
-        }
-
         public string GetFieldTypeOf(string name)
         {
-            return GetFieldConfig(name)?.Type;
+            if (StaticVariableTypes.TryGetValue(name, out var t))
+                return t;
+
+            if (Fields.TryGetValue(name, out var fc))
+                return fc.Type;
+
+            return null;
         }
 
-        private FieldConfig AnalyzeField(string definition)
-        {
-            var re = new Regex(@"^\s*(?:(?:public|protected|internal|private|static)\s*)*\s+([\w\.]+(?:<\w+(?:,\s*\w+)*>)?\s*(?:\[\])?)\s*(\w+)\s*;\s*$");
-            var matches = re.Match(definition);
-            if (!matches.Success)
-                throw new ArgumentException($"Definition analysis failed: {definition}");
-            var type = matches.Groups[1].Value.Trim();
-            var name = matches.Groups[2].Value.Trim();
-
-            return new FieldConfig()
-            {
-                Type = type,
-                Name = name,
-                IsStatic = false
-            };
-        }
     }
 
     public class Config
     {
         public List<string> UsingNamespaces { get; set; } = new List<string>();
         public string Namespace { get; set; }
+        public Dictionary<string, List<string>> TypeNames { get; set; } = new Dictionary<string, List<string>>();
 
         public Dictionary<string, string> Replacements { get; set; } = new Dictionary<string, string>();
 

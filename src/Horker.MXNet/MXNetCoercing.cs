@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using Horker.MXNet;
 using Horker.MXNet.Gluon;
+using NDArrayHandle = System.IntPtr;
 
 namespace Horker.MXNet
 {
@@ -28,6 +29,11 @@ namespace Horker.MXNet
         public static DType CoerceIntoDType(object obj)
         {
             return (DType)obj;
+        }
+
+        public static NDArrayHandle CoerceIntoNDArrayHandle(NDArrayHandle handle)
+        {
+            return handle;
         }
 
         public static ParameterDict CoerceIntoParameterDict(object obj)
