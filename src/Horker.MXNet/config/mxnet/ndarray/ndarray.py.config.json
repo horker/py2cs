@@ -14,17 +14,17 @@
       "Methods": {
         "_new_empty_handle": [
           {
-            "Signature": "internal static object _newEmptyHandle()"
+            "Signature": "internal static NDArrayHandle _newEmptyHandle()"
           }
         ],
         "_new_alloc_handle": [
           {
-            "Signature": "internal static object _newAllocHandle(Shape shape, Context ctx, object delayAlloc, DType dtype = default)"
+            "Signature": "internal static NDArrayHandle _newAllocHandle(Shape shape, Context ctx, bool delayAlloc, DType dtype = default)"
           }
         ],
         "_new_from_shared_mem": [
           {
-            "Signature": "internal static object _newFromSharedMem(object sharedPid, object sharedId, Shape shape, DType dtype)"
+            "Signature": "internal static NDArrayHandle _newFromSharedMem(int sharedPid, int sharedId, Shape shape, DType dtype)"
           }
         ],
         "waitall": [
@@ -377,7 +377,7 @@
         ],
         "imdecode": [
           {
-            "Signature": "public static object Imdecode(object strImg, object clipRect = (0, object 0, object 0, object 0), object @out = null, int index = 0, int channels = 3, object mean = null)"
+            "Signature": "public static NDArray Imdecode(string strImg, ValueTuple<int, int, int, int> clipRect, NDArray @out = null, int index = 0, int channels = 3, object mean = null)"
           }
         ],
         "zeros": [
@@ -392,7 +392,7 @@
         ],
         "empty": [
           {
-            "Signature": "public static object Empty(Shape shape, Context ctx = null, DType dtype = default)"
+            "Signature": "public static NDArray Empty(Shape shape, Context ctx = null, DType dtype = default)"
           }
         ],
         "histogram": [
@@ -402,36 +402,55 @@
         ],
         "split_v2": [
           {
-            "Signature": "public static object SplitV2(object ary, object indicesOrSections, int axis = 0, bool squeezeAxis = false)"
+            "Signature": "public static NDArray SplitV2(NDArray ary, int indicesOrSections, int axis = 0, bool squeezeAxis = false)",
+            "Locals": {
+              "indices": {
+                "Type": "List<int>"
+              }
+            }
+          },
+          {
+            "Signature": "public static NDArray SplitV2(NDArray ary, IEnumerable<int> indicesOrSections, int axis = 0, bool squeezeAxis = false)",
+            "Locals": {
+              "indices": {
+                "Type": "List<int>"
+              }
+            }
           }
         ],
         "_dlpack_deleter": [
           {
+            "Drop": true,
             "Signature": "internal static object _dlpackDeleter(object pycapsule)"
           }
         ],
         "to_dlpack_for_read": [
           {
+            "Drop": true,
             "Signature": "public static object ToDlpackForRead(object data)"
           }
         ],
         "to_dlpack_for_write": [
           {
+            "Drop": true,
             "Signature": "public static object ToDlpackForWrite(object data)"
           }
         ],
         "from_dlpack": [
           {
+            "Drop": true,
             "Signature": "public static object FromDlpack(object dlpack)"
           }
         ],
         "dl_managed_tensor_deleter": [
           {
+            "Drop": true,
             "Signature": "public static object DlManagedTensorDeleter(object dlManagedTensorHandle)"
           }
         ],
         "from_numpy": [
           {
+            "Drop": true,
             "Signature": "public static object FromNumpy(object ndarray, bool zeroCopy = true)"
           }
         ],
@@ -442,29 +461,42 @@
         ],
         "_make_dl_tensor": [
           {
+            "Drop": true,
             "Signature": "internal object _makeDlTensor(object array)"
           }
         ],
         "_make_dl_managed_tensor": [
           {
+            "Drop": true,
             "Signature": "internal object _makeDlManagedTensor(object array)"
           }
         ]
       },
-      "StaticVariableTypes": {
-        "_STORAGE_TYPE_UNDEFINED": "int",
-        "_STORAGE_TYPE_DEFAULT": "int",
-        "_STORAGE_TYPE_ROW_SPARSE": "int",
-        "_STORAGE_TYPE_CSR": "int",
-        "_DTYPE_NP_TO_MX":  "Dictionary<DType, int>",
-        "_DTYPE_MX_TO_NP":  "Dictionary<int, DType>",
-        "_STORAGE_TYPE_STR_TO_ID": "Dictionary<string, int>",
-        "_STORAGE_TYPE_ID_TO_STR": "Dictionary<int, string>",
-        "_GRAD_REQ_MAP": "Dictionary<string, int>",
-        "_NDARRAY_UNSUPPORTED_INDEXING": "int",
-        "_NDARRAY_BASIC_INDEXING": "int",
-        "_NDARRAY_ADVANCED_INDEXING": "int"
-      }
+      "StaticFields": {
+        "_STORAGE_TYPE_UNDEFINED": {
+          "Type": "int"
+        },
+        "_STORAGE_TYPE_DEFAULT": {
+          "Type": "int"
+        },
+        "_STORAGE_TYPE_ROW_SPARSE": {
+          "Type": "int"
+        },
+        "_STORAGE_TYPE_CSR": { "Type": "int" },
+        "_DTYPE_NP_TO_MX": { "Type": "Dictionary<DType, int>" },
+        "_DTYPE_MX_TO_NP": { "Type": "Dictionary<int, DType>" },
+        "_STORAGE_TYPE_STR_TO_ID": { "Type": "Dictionary<string, int>" },
+        "_STORAGE_TYPE_ID_TO_STR": { "Type": "Dictionary<int, string>" },
+        "_GRAD_REQ_MAP": { "Type": "Dictionary<string, int>" },
+        "_NDARRAY_UNSUPPORTED_INDEXING": { "Type": "int" },
+        "_NDARRAY_BASIC_INDEXING": { "Type": "int" },
+        "_NDARRAY_ADVANCED_INDEXING": { "Type": "int" },
+        "PyCapsuleDestructor": { "Drop": true },
+        "_c_str_dltensor": { "Drop": true },
+        "_c_str_used_dltensor": { "Drop": true },
+        "_c_dlpack_deleter": { "Drop": true },
+        "DeleterFunc": { "Drop": true }
+        }
     },
     "NDArray": {
       "Name": "NDArray",
@@ -1201,22 +1233,22 @@
         ],
         "context": [
           {
-            "Signature": "public object Context"
+            "Signature": "public Context Context"
           }
         ],
         "dtype": [
           {
-            "Signature": "public DType Dtype"
+            "Signature": "public DType DType"
           }
         ],
         "stype": [
           {
-            "Signature": "public string Stype"
+            "Signature": "public string SType"
           }
         ],
         "T": [
           {
-            "Signature": "public object T"
+            "Signature": "public NDArray T"
           }
         ],
         "_fresh_grad": [
@@ -1271,7 +1303,13 @@
         ],
         "backward": [
           {
-            "Signature": "public object Backward(object outGrad = null, bool retainGraph = false, bool trainMode = true)"
+            "Signature": "public object Backward(NDArray outGrad = null, bool retainGraph = false, bool trainMode = true)",
+            "Locals": {
+              "ograd_handles": {
+                "Type": "NDArrayHandle[]",
+                "Definition": "NDArrayHandle[] ogradHandles = null;"
+              }
+            }
           }
         ],
         "tostype": [
@@ -1281,17 +1319,20 @@
         ],
         "to_dlpack_for_read": [
           {
+            "Drop": true,
             "Signature": "public object ToDlpackForRead()"
           }
         ],
         "to_dlpack_for_write": [
           {
+            "Drop": true,
             "Signature": "public object ToDlpackForWrite()"
           }
         ]
       }
     },
     "DLContext": {
+      "Drop": true,
       "Name": "DLContext",
       "BaseClasses": [
         "object"
@@ -1300,6 +1341,7 @@
       "Methods": {}
     },
     "DLDataType": {
+      "Drop": true,
       "Name": "DLDataType",
       "BaseClasses": [
         "object"
@@ -1308,6 +1350,7 @@
       "Methods": {}
     },
     "DLTensor": {
+      "Drop": true,
       "Name": "DLTensor",
       "BaseClasses": [
         "object"
@@ -1316,6 +1359,7 @@
       "Methods": {}
     },
     "DLManagedTensor": {
+      "Drop": true,
       "Name": "DLManagedTensor",
       "BaseClasses": [
         "object"

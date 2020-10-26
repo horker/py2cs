@@ -37,14 +37,22 @@
     "NDArray": [
       "NDArray"
     ],
+    "NDArrayHandle": [
+      "NDArrayHandle"
+    ],
     "SymbolBase": [
       "SymbolBase"
     ],
     "Symbol": [
       "Symbol"
     ],
+    "SymbolHandle": [
+      "SymbolHandle"
+    ],
     "tuple": [
-      "Tuple"
+      "Tuple",
+      "List<int>",
+      "IEnumerable<int>"
     ],
     "list": [
       "List<int>",
@@ -75,6 +83,9 @@
     ],
     "string_types": [
       "string"
+    ],
+    "DeprecationWarning": [
+      "DeprecationWarning"
     ]
   }
 }

@@ -73,13 +73,13 @@ namespace Python2CSharp
                 return;
 
             var signatureRe = new Regex(@"^(?:(?:public|protected|internal|private|static|override|virtual)\s*)*\s+(?:(\w+(?:<[^>]+>+)?(?:\[\])?)\s+)?(\w+)(\(.*\))?$");
-            var matches = signatureRe.Match(Signature);
-            if (!matches.Success)
+            var match = signatureRe.Match(Signature);
+            if (!match.Success)
                 throw new ArgumentException($"Signature analysis failed: {Signature}");
 
-            _returnType = matches.Groups[1].Value;
-            _methodName = matches.Groups[2].Value;
-            var parameters = matches.Groups[3].Value;
+            _returnType = match.Groups[1].Value;
+            _methodName = match.Groups[2].Value;
+            var parameters = match.Groups[3].Value;
 
             if (string.IsNullOrWhiteSpace(parameters))
             {
@@ -90,15 +90,16 @@ namespace Python2CSharp
             if (parameters.Length == 2)
                 return;
 
-            var paramRe = new Regex(@"(?:params\s+)?(\w+(?:<\w+(?:,\s*\w+)*>)?\s*(?:\[\])?)\s*@?(\w+)(?:,\s*(?:params\s+)?(\w+(?:<\w+(?:,\s*\w+)*>)?\s*(?:\[\])?)\s*@?(\w+))*");
-            matches = paramRe.Match(parameters.Substring(1, parameters.Length - 2));
-            if (!matches.Success)
+            var paramRe = new Regex(@"(?:(?:params\s+)?(\w+(?:<[^>]+>+)?\s*(?:\[\])?)\s+@?([*\w]+)(?:\s*=\s*(?:[^(),]+|(?:\([^)]*\))))?(?:\s*,\s*)?)|(\)$)");
+            var matches = paramRe.Matches(parameters.Substring(1, parameters.Length - 1));
+
+            if (matches[matches.Count - 1].Groups[3].Value != ")")
                 throw new ArgumentException($"Signature analysis failed: {parameters}");
 
-            for (var i = 1; i < matches.Groups.Count; i += 2)
+            foreach (Match m in matches)
             {
-                var type = matches.Groups[i].Value.Trim();
-                var name = matches.Groups[i + 1].Value.Trim();
+                var type = m.Groups[1].Value.Trim();
+                var name = m.Groups[2].Value.Trim();
                 if (string.IsNullOrWhiteSpace(type))
                     continue;
                 _paramTypes.Add(name, type);
@@ -147,17 +148,6 @@ namespace Python2CSharp
                     _signatureSetterAnalysis = new SignatureAnalysis(SignatureSetter);
                 return _signatureSetterAnalysis;
             }
-        }
-
-        public string GetLocalType(string name)
-        {
-            if (SignatureAnalysis.ParamTypes.TryGetValue(name, out var type))
-                return type;
-
-            if (Locals.TryGetValue(name, out var config))
-                return config.Type;
-
-            return string.Empty;
         }
     }
 
@@ -212,6 +202,12 @@ namespace Python2CSharp
         }
     }
 
+    public class StaticFieldConfig
+    {
+        public bool Drop { get; set; }
+        public string Type { get; set; }
+    }
+
     public class ClassConfig
     {
         public static readonly ClassConfig Empty = new ClassConfig();
@@ -219,20 +215,18 @@ namespace Python2CSharp
 
         public bool Drop { get; set; } = false;
         public string Name { get; set; } = "";
-        public List<string> BaseClasses { get; set; } = new List<string>() { "object" };
+        public List<string> BaseClasses { get; set; } = new List<string>();
         public Dictionary<string, FieldConfig> Fields { get; set; } = new Dictionary<string, FieldConfig>();
         public Dictionary<string, List<MethodConfig>> Methods { get; set; } = new Dictionary<string, List<MethodConfig>>();
         public List<string> SpecialMethods { get; set; } = new List<string>();
-        public Dictionary<string, string> StaticVariableTypes { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, StaticFieldConfig> StaticFields { get; set; } = new Dictionary<string, StaticFieldConfig>();
 
         public List<MethodConfig> this[string funcName] => Methods.TryGetValue(funcName, out var f) ? f : MethodEmpty;
 
-        private Dictionary<string, FieldConfig> _fieldConfig = new Dictionary<string, FieldConfig>();
-
         public string GetFieldTypeOf(string name)
         {
-            if (StaticVariableTypes.TryGetValue(name, out var t))
-                return t;
+            if (StaticFields.TryGetValue(name, out var sfc))
+                return sfc.Type;
 
             if (Fields.TryGetValue(name, out var fc))
                 return fc.Type;

@@ -23,5 +23,8 @@ namespace Horker.MXNet
         {
             return type;
         }
+
+        public class NDArray
+        { }
     }
 }

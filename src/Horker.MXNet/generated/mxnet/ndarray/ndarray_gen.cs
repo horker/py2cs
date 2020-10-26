@@ -47,6 +47,7 @@ namespace Horker.MXNet
     // ImportFrom
     // ImportFrom
     // ImportFrom
+    
     // Assignment of __all__
     
     public static partial class Helper
@@ -148,7 +149,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        internal static object _newEmptyHandle()
+        internal static NDArrayHandle _newEmptyHandle()
         {
             // Expr
             var hdl = new NDArrayHandle();
@@ -159,7 +160,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        internal static object _newAllocHandle(Shape shape, Context ctx, object delayAlloc, DType dtype = default)
+        internal static NDArrayHandle _newAllocHandle(Shape shape, Context ctx, bool delayAlloc, DType dtype = default)
         {
             // Expr
             var hdl = new NDArrayHandle();
@@ -170,7 +171,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        internal static object _newFromSharedMem(object sharedPid, object sharedId, Shape shape, DType dtype)
+        internal static NDArrayHandle _newFromSharedMem(int sharedPid, int sharedId, Shape shape, DType dtype)
         {
             var hdl = new NDArrayHandle();
             CheckCall(_LIB.MXNDArrayCreateFromSharedMemEx(CTypes.CInt(sharedPid), CTypes.CInt(sharedId), CArray(typeof(MxInt), shape), MxInt(Len(shape)), CTypes.CInt(Int(_DTYPE_NP_TO_MX[Np.DType(dtype).Type])), ref hdl));
@@ -522,7 +523,7 @@ namespace Horker.MXNet
                     {
                         var local0 = (integer_types)sliceI;
                         begin.Append(local0);
-                        end.Append((IsTrue((local0 != (-1))) ? (local0 + 1) : this.Shape[i]));
+                        end.Append((IsTrue((local0 != (-1))) ? BinOp.Add(local0, 1) : this.Shape[i]));
                         steps.Append(1);
                     }
                     else
@@ -572,7 +573,37 @@ namespace Horker.MXNet
         {
             // Expr
             var shape = this.Shape;
-            throw new ValueError(("index=%s must be a slice, or an ineger, or a tuple of slices and integers to use basic indexing, received type=%s".PyFormat(ValueTuple.Create(Str(key), Str(Type(key))))));
+            Assert(IsTrue((Len(key) != 0)), "(Len(key) != 0)");
+            var begin = CoerceIntoList<int>(null);
+            var end = CoerceIntoList<int>(null);
+            var step = CoerceIntoList<int>(null);
+            var keptAxes = CoerceIntoList<int>(null);
+            var i = (-1);
+            foreach (var (i, sliceI) in Enumerate(key))
+            {
+                begin.Append(sliceI);
+                end.Append((IsTrue((sliceI != (-1))) ? BinOp.Add(sliceI, 1) : this.Shape[i]));
+                step.Append(1);
+            }
+            keptAxes.Extend(Range(BinOp.Add(i, 1), Len(shape)));
+            var slicedNd = Op.Slice(this, begin, end, step);
+            if (IsTrue((Len(keptAxes) == Len(shape))))
+            {
+                return slicedNd;
+            }
+            var oshape = null;
+            var slicedShape = slicedNd.Shape;
+            foreach (var axis in keptAxes)
+            {
+                oshape.Append(slicedShape[axis]);
+            }
+            if (IsTrue((Len(oshape) == 0)))
+            {
+                oshape.Append(1);
+            }
+            oshape = Tuple(oshape);
+            Assert(IsTrue((Np.Prod(oshape) == Np.Prod(slicedShape))), "(Np.Prod(oshape) == Np.Prod(slicedShape))");
+            return slicedNd.Reshape(oshape);
         }
         
         internal NDArray _getNdBasicIndexing(IEnumerable<PySlice> key)
@@ -620,7 +651,7 @@ namespace Horker.MXNet
             if (IsTrue((idx < 0)))
             {
                 var length = this.Shape.Item1;
-                idx = (idx + length);
+                idx = BinOp.Add(idx, length);
                 if (IsTrue((idx < 0)))
                 {
                     throw new IndexError(("index %d is out of bounds for axis 0 with size %d".PyFormat(ValueTuple.Create((idx - length), length))));
@@ -1225,7 +1256,7 @@ namespace Horker.MXNet
             {
                 throw new ValueError(errStr);
             }
-            curShape = ((ValueTuple.Create(1) * (Len(shape) - Len(curShape))) + curShape);
+            curShape = BinOp.Add(BinOp.Mult(ValueTuple.Create(1), (Len(shape) - Len(curShape))), curShape);
             var curShapeArr = Np.Array(curShape);
             var broadcastingAxes = Np.Nonzero((curShapeArr != Np.Array(shape)));
             if (IsTrue((curShapeArr[broadcastingAxes] != 1).Any()))
@@ -1287,13 +1318,13 @@ namespace Horker.MXNet
                 var size = 1;
                 foreach (var i in this.Shape)
                 {
-                    size = (size * i);
+                    size = BinOp.Mult(size, i);
                 }
                 return size;
             }
         }
         
-        public object Context
+        public Context Context
         {
             get {
                 // Expr
@@ -1304,7 +1335,7 @@ namespace Horker.MXNet
             }
         }
         
-        public DType Dtype
+        public DType DType
         {
             get {
                 // Expr
@@ -1314,7 +1345,7 @@ namespace Horker.MXNet
             }
         }
         
-        public string Stype
+        public string SType
         {
             get {
                 // Expr
@@ -1322,7 +1353,7 @@ namespace Horker.MXNet
             }
         }
         
-        public object T
+        public NDArray T
         {
             get {
                 // Expr
@@ -1380,7 +1411,7 @@ namespace Horker.MXNet
         public object Copyto(object other)
         {
             // Expr
-            throw new TypeError(("copyto does not support type " + Str(Type(other))));
+            throw new TypeError(BinOp.Add("copyto does not support type ", Str(Type(other))));
         }
         
         public object Copy()
@@ -1439,18 +1470,19 @@ namespace Horker.MXNet
             return _ndarrayCls(hdl);
         }
         
-        public object Backward(object outGrad = null, bool retainGraph = false, bool trainMode = true)
+        public object Backward(NDArray outGrad = null, bool retainGraph = false, bool trainMode = true)
         {
+            NDArrayHandle[] ogradHandles = null;
             // Expr
             if (IsTrue((IsNone(outGrad))))
             {
-                var ogradHandles = new [] { new NDArrayHandle(0) };
+                ogradHandles = CoerceIntoNDArrayHandleArray(new [] { new NDArrayHandle(0) });
             }
             else
             {
-                var ogradHandles = new [] { outGrad.Handle };
+                ogradHandles = CoerceIntoNDArrayHandleArray(new [] { outGrad.Handle });
             }
-            CheckCall(_LIB.MXAutogradBackwardEx(1, CHandleArray(new [] { this }), CArray(NDArrayHandle, OgradHandles), 0, CTypes.CVoidP(0), CTypes.CInt(retainGraph), CTypes.CInt(0), CTypes.CInt(trainMode), CTypes.CVoidP(0), CTypes.CVoidP(0)));
+            CheckCall(_LIB.MXAutogradBackwardEx(1, CHandleArray(new [] { this }), CArray(typeof(NDArrayHandle), ogradHandles), 0, CTypes.CVoidP(0), CTypes.CInt(retainGraph), CTypes.CInt(0), CTypes.CInt(trainMode), CTypes.CVoidP(0), CTypes.CVoidP(0)));
         }
         
         public string Tostype(string stype)
@@ -1459,17 +1491,9 @@ namespace Horker.MXNet
             return Op.CastStorage(this, stype: stype);
         }
         
-        public object ToDlpackForRead()
-        {
-            // Expr
-            return ToDlpackForRead(this);
-        }
+        // Drop: to_dlpack_for_read
         
-        public object ToDlpackForWrite()
-        {
-            // Expr
-            return ToDlpackForWrite(this);
-        }
+        // Drop: to_dlpack_for_write
     }
     
     public static partial class Helper
@@ -1536,7 +1560,7 @@ namespace Horker.MXNet
             {
                 if (IsTrue((start < 0)))
                 {
-                    start = (start + length);
+                    start = BinOp.Add(start, length);
                     if (IsTrue((start < 0)))
                     {
                         throw new IndexError(("Slicing start %d exceeds limit of %d".PyFormat(ValueTuple.Create((start - length), length))));
@@ -1565,7 +1589,7 @@ namespace Horker.MXNet
             {
                 if (IsTrue((stop < 0)))
                 {
-                    stop = (stop + length);
+                    stop = BinOp.Add(stop, length);
                     if (IsTrue((stop < 0)))
                     {
                         throw new IndexError(("Slicing stop %d exceeds limit of %d".PyFormat(ValueTuple.Create((stop - length), length))));
@@ -1608,12 +1632,12 @@ namespace Horker.MXNet
             if (IsTrue((step > 0)))
             {
                 Assert(IsTrue((start < stop)), "(start < stop)");
-                dimSize = CoerceIntoInt(((((stop - start) - 1) / step) + 1));
+                dimSize = CoerceIntoInt(BinOp.Add((((stop - start) - 1) / step), 1));
             }
             else
             {
                 Assert(IsTrue((stop < start)), "(stop < start)");
-                dimSize = CoerceIntoInt(((((start - stop) - 1) / (-step)) + 1));
+                dimSize = CoerceIntoInt(BinOp.Add((((start - stop) - 1) / (-step)), 1));
             }
             return dimSize;
         }
@@ -1693,18 +1717,7 @@ namespace Horker.MXNet
         public static object Array(NDArray sourceArray, Context ctx = null, DType dtype = default)
         {
             // Expr
-            if (IsTrue(Isinstance(sourceArray, typeof(NDArray))))
-            {
-                var local0 = (NDArray)sourceArray;
-                dtype = (IsTrue((IsNone(dtype))) ? local0.DType : dtype);
-            }
-            else
-            {
-                dtype = (IsTrue((IsNone(dtype))) ? MxRealT : dtype);
-                if (IsTrue((!IsTrue(Isinstance(sourceArray, Np.NDArray)))))
-                {
-                }
-            }
+            dtype = (IsTrue((IsNone(dtype))) ? sourceArray.DType : dtype);
             var arr = Empty(sourceArray.Shape, ctx, dtype);
             arr.Slice(null, null, null) = sourceArray;
             return arr;
@@ -1736,7 +1749,7 @@ namespace Horker.MXNet
             // Expr
             if (IsTrue((!IsNone(inferRange))))
             {
-                Warnings.Warn("`infer_range` argument has been deprecated", DeprecationWarning);
+                Warnings.Warn("`infer_range` argument has been deprecated", typeof(DeprecationWarning));
             }
             if (IsTrue((IsNone(ctx))))
             {
@@ -2423,16 +2436,16 @@ namespace Horker.MXNet
             }
             var shapeAxis = arrays.Item1.Shape[axis];
             var shapeRest1 = arrays.Item1.Shape.Slice(0, axis, null);
-            var shapeRest2 = arrays.Item1.Shape.Slice((axis + 1), null, null);
+            var shapeRest2 = arrays.Item1.Shape.Slice(BinOp.Add(axis, 1), null, null);
             var dtype = arrays.Item1.DType;
             foreach (var arr in arrays.Slice(1, null, null))
             {
-                shapeAxis = (shapeAxis + arr.Shape[axis]);
+                shapeAxis = BinOp.Add(shapeAxis, arr.Shape[axis]);
                 Assert(IsTrue((shapeRest1 == arr.Shape.Slice(0, axis, null))), "(shapeRest1 == arr.Shape.Slice(0, axis, null))");
-                Assert(IsTrue((shapeRest2 == arr.Shape.Slice((axis + 1), null, null))), "(shapeRest2 == arr.Shape.Slice((axis + 1), null, null))");
+                Assert(IsTrue((shapeRest2 == arr.Shape.Slice(BinOp.Add(axis, 1), null, null))), "(shapeRest2 == arr.Shape.Slice(BinOp.Add(axis, 1), null, null))");
                 Assert(IsTrue((dtype == arr.DType)), "(dtype == arr.DType)");
             }
-            var retShape = ((shapeRest1 + ValueTuple.Create(shapeAxis)) + shapeRest2);
+            var retShape = BinOp.Add(BinOp.Add(shapeRest1, ValueTuple.Create(shapeAxis)), shapeRest2);
             var ret = Empty(retShape, ctx: arrays.Item1.Context, dtype: dtype);
             var idx = 0;
             var begin = retShape.Select(_ => 0).ToList();
@@ -2441,15 +2454,15 @@ namespace Horker.MXNet
             {
                 if (IsTrue((axis == 0)))
                 {
-                    ret.Slice(idx, (idx + arr.Shape.Item1), null) = arr;
+                    ret.Slice(idx, BinOp.Add(idx, arr.Shape.Item1), null) = arr;
                 }
                 else
                 {
                     begin[axis] = idx;
-                    end[axis] = (idx + arr.Shape[axis]);
+                    end[axis] = BinOp.Add(idx, arr.Shape[axis]);
                     _internal._cropAssign(ret, arr, @out: ret, begin: Tuple(begin), end: Tuple(end));
                 }
-                idx = (idx + arr.Shape[axis]);
+                idx = BinOp.Add(idx, arr.Shape[axis]);
             }
             return ret;
         }
@@ -2457,7 +2470,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        public static object Imdecode(object strImg, object clipRect = (0, object 0, object 0, object 0), object @out = null, int index = 0, int channels = 3, object mean = null)
+        public static NDArray Imdecode(string strImg, ValueTuple<int, int, int, int> clipRect, NDArray @out = null, int index = 0, int channels = 3, object mean = null)
         {
             // Expr
             if (IsTrue((IsNone(mean))))
@@ -2507,7 +2520,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        public static object Empty(Shape shape, Context ctx = null, DType dtype = default)
+        public static NDArray Empty(Shape shape, Context ctx = null, DType dtype = default)
         {
             // Expr
             if (IsTrue((IsNone(ctx))))
@@ -2539,222 +2552,63 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        public static object SplitV2(object ary, object indicesOrSections, int axis = 0, bool squeezeAxis = false)
+        public static NDArray SplitV2(NDArray ary, int indicesOrSections, int axis = 0, bool squeezeAxis = false)
         {
             // Expr
-            var indices = null;
+            var indices = CoerceIntoList<int>(null);
             var axisSize = ary.Shape[axis];
-            if (IsTrue(Isinstance(indicesOrSections, typeof(Int))))
+            var sections = indicesOrSections;
+            if (IsTrue((axisSize % sections)))
             {
-                var local0 = (int)indicesOrSections;
-                var sections = local0;
-                if (IsTrue((axisSize % sections)))
-                {
-                    throw new ValueError("array split does not result in an equal division");
-                }
-                var sectionSize = Int((axisSize / sections));
-                indices = Range(sections).Select(i => (i * sectionSize)).ToList();
+                throw new ValueError("array split does not result in an equal division");
             }
-            else
-            {
-                if (IsTrue(Isinstance(indicesOrSections, typeof(Tuple))))
-                {
-                    var local0 = (tuple)indicesOrSections;
-                    indices = (new [] { 0 } + List(local0));
-                }
-                else
-                {
-                    throw new ValueError("indices_or_sections must either int or tuple of ints");
-                }
-            }
+            var sectionSize = Int((axisSize / sections));
+            indices = CoerceIntoList<int>(Range(sections).Select(i => BinOp.Mult(i, sectionSize)).ToList());
             return _internal._splitV2(ary, indices, axis, squeezeAxis);
         }
     }
     
     public static partial class Helper
     {
-        public static object PyCapsuleDestructor = CoerceIntoObject(CTypes.CFUNCTYPE(null, CTypes.CVoidP));
-    }
-    
-    public static partial class Helper
-    {
-        public static object _cStrDltensor = CoerceIntoObject(CStr("dltensor"));
-    }
-    
-    public static partial class Helper
-    {
-        public static object _cStrUsedDltensor = CoerceIntoObject(CStr("used_dltensor"));
-    }
-    
-    public static partial class Helper
-    {
-        internal static object _dlpackDeleter(object pycapsule)
-        {
-            pycapsule = CTypes.CVoidP(pycapsule);
-            if (IsTrue(CTypes.Pythonapi.PyCapsuleIsValid(pycapsule, _cStrDltensor)))
-            {
-                var ptr = CTypes.CVoidP(CTypes.Pythonapi.PyCapsuleGetPointer(pycapsule, _cStrDltensor));
-                CheckCall(_LIB.MXNDArrayCallDLPackDeleter(ptr));
-            }
-        }
-    }
-    
-    public static partial class Helper
-    {
-        public static object _cDlpackDeleter = CoerceIntoObject(new PyCapsuleDestructor(_dlpackDeleter));
-    }
-    
-    public static partial class Helper
-    {
-        public static object ToDlpackForRead(object data)
+        public static NDArray SplitV2(NDArray ary, IEnumerable<int> indicesOrSections, int axis = 0, bool squeezeAxis = false)
         {
             // Expr
-            data.WaitToRead();
-            var dlpack = new DLPackHandle();
-            CheckCall(_LIB.MXNDArrayToDLPack(data.Handle, ref dlpack));
-            return CTypes.Pythonapi.PyCapsuleNew(dlpack, _cStrDltensor, _cDlpackDeleter);
+            var indices = CoerceIntoList<int>(null);
+            var axisSize = ary.Shape[axis];
+            indices = CoerceIntoList<int>(BinOp.Add(new [] { 0 }, List(indicesOrSections)));
+            return _internal._splitV2(ary, indices, axis, squeezeAxis);
         }
     }
     
-    public static partial class Helper
-    {
-        public static object ToDlpackForWrite(object data)
-        {
-            // Expr
-            CheckCall(_LIB.MXNDArrayWaitToWrite(data.Handle));
-            var dlpack = new DLPackHandle();
-            CheckCall(_LIB.MXNDArrayToDLPack(data.Handle, ref dlpack));
-            return CTypes.Pythonapi.PyCapsuleNew(dlpack, _cStrDltensor, _cDlpackDeleter);
-        }
-    }
+    // Drop: PyCapsuleDestructor
     
-    public static partial class Helper
-    {
-        public static object FromDlpack(object dlpack)
-        {
-            // Expr
-            var handle = new NDArrayHandle();
-            dlpack = CTypes.PyObject(dlpack);
-            Assert(IsTrue(CTypes.Pythonapi.PyCapsuleIsValid(dlpack, _cStrDltensor)), "CTypes.Pythonapi.PyCapsuleIsValid(dlpack, _cStrDltensor)");
-            var dlpackHandle = CTypes.CVoidP(CTypes.Pythonapi.PyCapsuleGetPointer(dlpack, _cStrDltensor));
-            CheckCall(_LIB.MXNDArrayFromDLPackEx(dlpackHandle, false, ref handle));
-            CTypes.Pythonapi.PyCapsuleSetName(dlpack, _cStrUsedDltensor);
-            CTypes.Pythonapi.PyCapsuleSetDestructor(dlpack, null);
-            return new NDArray(handle: handle);
-        }
-    }
+    // Drop: _c_str_dltensor
     
-    public partial class DLContext : PythonObject
-    {
-        
-        public static object _fields = CoerceIntoObject(new [] { ValueTuple.Create("device_type", CTypes.CInt), ValueTuple.Create("device_id", CTypes.CInt) });
-    }
+    // Drop: _c_str_used_dltensor
     
-    public partial class DLDataType : PythonObject
-    {
-        
-        public static object _fields = CoerceIntoObject(new [] { ValueTuple.Create("type_code", CTypes.CUint8), ValueTuple.Create("bits", CTypes.CUint8), ValueTuple.Create("lanes", CTypes.CUint16) });
-        public static object TYPE_MAP = CoerceIntoObject(new object{
-            { "int32", ValueTuple.Create(0, 32, 1) },
-            { "int64", ValueTuple.Create(0, 64, 1) },
-            { "bool", ValueTuple.Create(1, 1, 1) },
-            { "uint32", ValueTuple.Create(1, 32, 1) },
-            { "uint64", ValueTuple.Create(1, 64, 1) },
-            { "float32", ValueTuple.Create(2, 32, 1) },
-            { "float64", ValueTuple.Create(2, 64, 1) },
-        }
-        );
-    }
+    // Drop: _dlpack_deleter
     
-    public partial class DLTensor : PythonObject
-    {
-        
-        public static object _fields = CoerceIntoObject(new [] { ValueTuple.Create("data", CTypes.CVoidP), ValueTuple.Create("ctx", DLContext), ValueTuple.Create("ndim", CTypes.CInt), ValueTuple.Create("dtype", DLDataType), ValueTuple.Create("shape", CTypes.POINTER(CTypes.CInt64)), ValueTuple.Create("strides", CTypes.POINTER(CTypes.CInt64)), ValueTuple.Create("byte_offset", CTypes.CUint64) });
-    }
+    // Drop: _c_dlpack_deleter
     
-    public partial class DLManagedTensor : PythonObject
-    {
-        
-        /* pass */
-    }
+    // Drop: to_dlpack_for_read
     
-    public static partial class Helper
-    {
-        public static object DeleterFunc = CoerceIntoObject(CTypes.CFUNCTYPE(null, CTypes.POINTER(DLManagedTensor)));
-    }
+    // Drop: to_dlpack_for_write
+    
+    // Drop: from_dlpack
+    
+    // Drop: DLContext
+    
+    // Drop: DLDataType
+    
+    // Drop: DLTensor
+    
+    // Drop: DLManagedTensor
+    
+    // Drop: DeleterFunc
+    
     // Assignment of attribute
     
-    public static partial class Helper
-    {
-        public static object DlManagedTensorDeleter(object dlManagedTensorHandle)
-        {
-            var voidP = dlManagedTensorHandle.Contents.ManagerCtx;
-            var pyobj = CTypes.Cast(voidP, CTypes.PyObject);
-            CTypes.Pythonapi.PyDecRef(pyobj);
-        }
-    }
+    // Drop: dl_managed_tensor_deleter
     
-    public static partial class Helper
-    {
-        public static object FromNumpy(object ndarray, bool zeroCopy = true)
-        {
-            // Expr
-            
-            public static partial class Helper
-            {
-                internal object _makeManagerCtx(object obj)
-                {
-                    var pyobj = CTypes.PyObject(obj);
-                    var voidP = CTypes.CVoidP.FromBuffer(pyobj);
-                    CTypes.Pythonapi.PyIncRef(pyobj);
-                    return voidP;
-                }
-            }
-            
-            public static partial class Helper
-            {
-                internal object _makeDlTensor(object array)
-                {
-                    if (IsTrue((!DLDataType.TYPE_MAP.Contains(Str(array.DType)))))
-                    {
-                        throw new ValueError((Str(array.DType) + " is not supported."));
-                    }
-                    var dlTensor = new DLTensor();
-                    dlTensor.Data = array.CTypes.DataAs(CTypes.CVoidP);
-                    dlTensor.Ctx = new DLContext(1, 0);
-                    dlTensor.Ndim = array.Ndim;
-                    dlTensor.DType = DLDataType.TYPE_MAP[Str(array.DType)];
-                    dlTensor.Shape = array.CTypes.ShapeAs(CTypes.CInt64);
-                    dlTensor.Strides = null;
-                    dlTensor.ByteOffset = 0;
-                    return dlTensor;
-                }
-            }
-            
-            public static partial class Helper
-            {
-                internal object _makeDlManagedTensor(object array)
-                {
-                    var cObj = new DLManagedTensor();
-                    cObj.DlTensor = _makeDlTensor(array);
-                    cObj.ManagerCtx = _makeManagerCtx(array);
-                    cObj.Deleter = DlManagedTensorDeleter;
-                    return cObj;
-                }
-            }
-            if (IsTrue((!IsTrue(zeroCopy))))
-            {
-                return Array(ndarray, dtype: ndarray.DType);
-            }
-            if (IsTrue((!IsTrue(ndarray.Flags["C_CONTIGUOUS"]))))
-            {
-                throw new ValueError("Only c-contiguous arrays are supported for zero-copy");
-            }
-            ndarray.Flags["WRITEABLE"] = false;
-            var cObj = _makeDlManagedTensor(ndarray);
-            var handle = new NDArrayHandle();
-            CheckCall(_LIB.MXNDArrayFromDLPackEx(ref cObj, true, ref handle));
-            return new NDArray(handle: handle);
-        }
-    }
+    // Drop: from_numpy
 }

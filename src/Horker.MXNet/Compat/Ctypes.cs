@@ -30,5 +30,8 @@ namespace Horker.MXNet.Compat
         public static bool CBool(bool obj) => obj;
         public static bool CBool(int obj) => obj != 0;
         public static bool CBool(object obj) => (bool)obj;
+
+        public static IntPtr CVoidP() => default;
+        public static IntPtr CVoidP(int obj) => (IntPtr)obj;
     }
 }

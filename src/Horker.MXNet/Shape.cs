@@ -116,44 +116,13 @@ namespace Horker.MXNet
 
         public IEnumerator<int> GetEnumerator()
         {
-            return new Enumerator(this);
+            foreach (var i in Dimensions)
+                yield return i;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
-        }
-
-        public class Enumerator : IEnumerator<int>
-        {
-            private Shape _shape;
-            private int _index;
-
-            public int Current => _shape[_index];
-
-            object IEnumerator.Current => Current;
-
-            public Enumerator(Shape shape)
-            {
-                _shape = shape;
-                _index = 0;
-            }
-            public void Dispose()
-            {
-            }
-
-            public bool MoveNext()
-            {
-                if (_index >= _shape.Length - 1)
-                    return false;
-                ++_index;
-                return true;
-            }
-
-            public void Reset()
-            {
-                _index = 0;
-            }
+            return GetEnumerator();
         }
     }
 }

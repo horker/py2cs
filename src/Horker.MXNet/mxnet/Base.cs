@@ -62,6 +62,7 @@ namespace Horker.MXNet
         public static int[] CArray(Type type, int[] values) => values;
 
         public static IntPtr[] CHandleArray(IntPtr[] values) => values;
+        public static IntPtr[] CHandleArray(NDArray[] values) => values.Select(x => x.Handle).ToArray();
         public static IntPtr[] CHandleArray(IEnumerable<IntPtr> values) => values.ToArray();
 
         public static string CStr(string s) => s;

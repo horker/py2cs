@@ -40,10 +40,10 @@ namespace Python2CSharp.MXNet
             var rhs = GetNameId(args[1]);
 
             var mc = ctx.GetMethodConfig();
-            var lhsType = mc.GetLocalType(lhs);
+            var lhsType = GetLocalOrParamType(lhs, ctx, mc);
             if (string.IsNullOrEmpty(lhsType))
                 return ValueConstraint.NotApplicable;
-            var rhsType = mc.GetLocalType(rhs);
+            var rhsType = GetLocalOrParamType(rhs, ctx, mc);
             if (string.IsNullOrEmpty(rhs))
                 return ValueConstraint.NotApplicable;
 

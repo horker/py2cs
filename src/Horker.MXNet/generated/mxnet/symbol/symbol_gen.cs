@@ -75,6 +75,7 @@ namespace Horker.MXNet
     // ImportFrom
     // ImportFrom
     // ImportFrom
+    
     // Assignment of __all__
     
     public partial class Symbol : SymbolBase, IEnumerable<Symbol>
@@ -290,7 +291,7 @@ namespace Horker.MXNet
                     throw new TypeError("Compose expect `Symbol` as arguments");
                 }
             }
-            var numArgs = (Len(args) + Len(kwargs));
+            var numArgs = BinOp.Add(Len(args), Len(kwargs));
             if (IsTrue((Len(kwargs) != 0)))
             {
                 keys = CoerceIntoStringArray(CStrArray(kwargs.Keys()));
@@ -472,20 +473,17 @@ namespace Horker.MXNet
         
         public object InferType(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
         }
         
         public object InferTypePartial(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return this._inferTypeImpl(true, Args);
         }
         
         internal object _inferTypeImpl(object partial, object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsTrue((Len(Args) != 0)) && IsTrue((Len(kwargs) != 0)))))
             {
@@ -502,7 +500,7 @@ namespace Horker.MXNet
                         s = _numpy.DType(s).Type;
                         if (IsTrue((!_DTYPE_NP_TO_MX.Contains(s))))
                         {
-                            throw new TypeError(("Argument need to be one of " + Str(_DTYPE_NP_TO_MX)));
+                            throw new TypeError(BinOp.Add("Argument need to be one of ", Str(_DTYPE_NP_TO_MX)));
                         }
                         sdata.Append(_DTYPE_NP_TO_MX[s]);
                     }
@@ -557,20 +555,17 @@ namespace Horker.MXNet
         
         public object InferShape(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
         }
         
         public object InferShapePartial(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return this._inferShapeImpl(true, Args);
         }
         
         internal object _inferShapeImpl(object partial, object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsTrue((Len(Args) != 0)) && IsTrue((Len(kwargs) != 0)))))
             {
@@ -677,69 +672,7 @@ namespace Horker.MXNet
             // Expr
             var argHandles = null;
             var argArrays = null;
-            if (IsTrue(Isinstance(args, typeof(List))))
-            {
-                var local0 = (list)args;
-                if (IsTrue((Len(local0) != Len(argNames))))
-                {
-                    throw new ValueError(("Length of %s does not match the number of arguments".PyFormat(argKey)));
-                }
-                foreach (var narr in local0)
-                {
-                    if (IsTrue((IsTrue((IsNone(narr))) && IsTrue(allowMissing))))
-                    {
-                        argHandles.Append(null);
-                    }
-                    else
-                    {
-                        if (IsTrue((!IsTrue(Isinstance(narr, typeof(NDArray))))))
-                        {
-                            throw new TypeError("Only accept list of NDArrays or dict of str to NDArray");
-                        }
-                        else
-                        {
-                            argHandles.Append(narr.Handle);
-                        }
-                    }
-                }
-                argArrays = local0;
-            }
-            else
-            {
-                if (IsTrue(Isinstance(args, Dict)))
-                {
-                    foreach (var name in argNames)
-                    {
-                        if (IsTrue((args.Contains(name))))
-                        {
-                            var narr = args[name];
-                            if (IsTrue((!IsTrue(Isinstance(narr, typeof(NDArray))))))
-                            {
-                                throw new TypeError("Only accept list of NDArrays or dict of str to NDArray");
-                            }
-                            argHandles.Append(narr.Handle);
-                            argArrays.Append(narr);
-                        }
-                        else
-                        {
-                            if (IsTrue(allowMissing))
-                            {
-                                argHandles.Append(null);
-                                argArrays.Append(null);
-                            }
-                            else
-                            {
-                                throw new ValueError(("key `%s` is missing in `%s`".PyFormat(ValueTuple.Create(name, argKey))));
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    throw new TypeError("Only accept list of NDArrays or dict of str to NDArray");
-                }
-            }
-            return ValueTuple.Create(CArray(NDArrayHandle, argHandles), argArrays);
+            throw new TypeError("Only accept list of NDArrays or dict of str to NDArray");
         }
         
         internal object _genAtomicSymbol()
@@ -751,7 +684,6 @@ namespace Horker.MXNet
         
         public object SimpleBind(Context ctx, string gradReq = "write", object typeDict = null, object stypeDict = null, object group2ctx = null, string sharedArgNames = null, object sharedExec = null, object sharedBuffer = null, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             var numProvidedArgTypes = 0;
             var providedArgTypeNames = CTypes.POINTER(CTypes.CCharP)();
@@ -810,44 +742,8 @@ namespace Horker.MXNet
             var providedGradReqNames = CTypes.POINTER(CTypes.CCharP)();
             if (IsTrue((!IsNone(gradReq))))
             {
-                if (IsTrue(Isinstance(gradReq, typeof(StringTypes))))
-                {
-                    var local0 = (string_types)gradReq;
-                    providedReqTypeListLen = 0;
-                    providedGradReqTypes = new [] { local0 };
-                }
-                else
-                {
-                    if (IsTrue(Isinstance(gradReq, typeof(List))))
-                    {
-                        var local0 = (list)gradReq;
-                        if (IsTrue((Len(local0) == 0)))
-                        {
-                            throw new RuntimeError("grad_req in simple_bind cannot be an empty list");
-                        }
-                        providedGradReqTypes = local0;
-                        providedReqTypeListLen = Len(providedGradReqTypes);
-                    }
-                    else
-                    {
-                        if (IsTrue(Isinstance(gradReq, Dict)))
-                        {
-                            if (IsTrue((Len(gradReq) == 0)))
-                            {
-                                throw new RuntimeError("grad_req in simple_bind cannot be an empty dict");
-                            }
-                            providedGradReqNames = null;
-                            providedGradReqTypes = null;
-                            foreach (var (k, v) in gradReq.Items())
-                            {
-                                providedGradReqNames.Append(k);
-                                providedGradReqTypes.Append(v);
-                            }
-                            providedGradReqNames = CStrArray(providedGradReqNames);
-                            providedReqTypeListLen = Len(providedGradReqTypes);
-                        }
-                    }
-                }
+                providedReqTypeListLen = 0;
+                providedGradReqTypes = new [] { gradReq };
                 providedGradReqTypes = CStrArray(providedGradReqTypes);
             }
             var numCtxMapKeys = MxUint(0);
@@ -873,43 +769,27 @@ namespace Horker.MXNet
             var sharedArgNameList = null;
             if (IsTrue((!IsNone(sharedArgNames))))
             {
-                if (IsTrue((!IsTrue(Isinstance(sharedArgNames, typeof(List))))))
-                {
-                    throw new ValueError("shared_arg_names in simple_bind must be a list or None");
-                }
-                sharedArgNameList = sharedArgNames;
+                throw new ValueError("shared_arg_names in simple_bind must be a list or None");
             }
             if (IsTrue((IsNone(sharedBuffer))))
             {
                 var sharedBufferLen = CTypes.CInt((-1));
                 var sharedBufferNames = CTypes.POINTER(CTypes.CCharP)();
-                var sharedBufferHandles = CTypes.POINTER(NDArrayHandle)();
+                var sharedBufferHandles = CTypes.POINTER(typeof(NDArrayHandle))();
             }
             else
             {
-                if (IsTrue((!IsTrue(Isinstance(sharedBuffer, Dict)))))
-                {
-                    throw new ValueError("shared_buffer in simple_bind must be dict or None");
-                }
-                var bufferNames = sharedBuffer.Keys();
-                var bufferArrays = sharedBuffer.Values();
-                foreach (var v in bufferArrays)
-                {
-                    Assert(IsTrue((v.SType == "default")), "(v.SType == \"default\")");
-                }
-                var sharedBufferNames = CStrArray(bufferNames);
-                var sharedBufferLen = CTypes.CInt(Len(bufferArrays));
-                var sharedBufferHandles = CHandleArray(bufferArrays);
+                throw new ValueError("shared_buffer in simple_bind must be dict or None");
             }
             var updatedSharedBufferNames = CTypes.POINTER(CTypes.CCharP)();
-            var updatedSharedBufferHandles = CTypes.POINTER(NDArrayHandle)();
+            var updatedSharedBufferHandles = CTypes.POINTER(typeof(NDArrayHandle))();
             var sharedExecHandle = (IsTrue((!IsNone(sharedExec))) ? sharedExec.Handle : new ExecutorHandle());
             var exeHandle = new ExecutorHandle();
             var numInArgs = CTypes.CUint();
-            var inArgHandles = CTypes.POINTER(NDArrayHandle)();
-            var argGradHandles = CTypes.POINTER(NDArrayHandle)();
+            var inArgHandles = CTypes.POINTER(typeof(NDArrayHandle))();
+            var argGradHandles = CTypes.POINTER(typeof(NDArrayHandle))();
             var numAuxStates = CTypes.CUint();
-            var auxStateHandles = CTypes.POINTER(NDArrayHandle)();
+            var auxStateHandles = CTypes.POINTER(typeof(NDArrayHandle))();
             if (IsTrue((!IsNone(sharedBuffer))))
             {
                 foreach (var i in Range(SharedBufferLen.Value))
@@ -937,7 +817,7 @@ namespace Horker.MXNet
             args = local0;
             if (IsTrue((IsNone(argsGrad))))
             {
-                var argsGradHandle = CArray(NDArrayHandle, (new [] { null } * Len(args)));
+                var argsGradHandle = CArray(typeof(NDArrayHandle), BinOp.Mult(new [] { null }, Len(args)));
             }
             else
             {
@@ -950,42 +830,11 @@ namespace Horker.MXNet
             }
             var (auxArgsHandle, local1) = this._getNdarrayInputs("aux_states", auxStates, this.ListAuxiliaryStates(), false);
             auxStates = local1;
-            if (IsTrue(Isinstance(gradReq, typeof(StringTypes))))
+            if (IsTrue((!_GRAD_REQ_MAP.Contains(gradReq))))
             {
-                var local2 = (string_types)gradReq;
-                if (IsTrue((!_GRAD_REQ_MAP.Contains(local2))))
-                {
-                    throw new ValueError(("grad_req must be in %s".PyFormat(Str(_GRAD_REQ_MAP))));
-                }
-                var reqsArray = CArrayBuf(typeof(MxUint), Array("I", (new [] { _GRAD_REQ_MAP[local2] } * Len(listedArguments))));
+                throw new ValueError(("grad_req must be in %s".PyFormat(Str(_GRAD_REQ_MAP))));
             }
-            else
-            {
-                if (IsTrue(Isinstance(gradReq, typeof(List))))
-                {
-                    var local2 = (list)gradReq;
-                    var reqsArray = CArrayBuf(typeof(MxUint), Array("I", local2.Select(item => _GRAD_REQ_MAP[item]).ToList()));
-                }
-                else
-                {
-                    if (IsTrue(Isinstance(gradReq, Dict)))
-                    {
-                        var reqArray = null;
-                        foreach (var name in listedArguments)
-                        {
-                            if (IsTrue((gradReq.Contains(name))))
-                            {
-                                reqArray.Append(_GRAD_REQ_MAP[gradReq[name]]);
-                            }
-                            else
-                            {
-                                reqArray.Append(0);
-                            }
-                        }
-                        var reqsArray = CArrayBuf(typeof(MxUint), Array("I", reqArray));
-                    }
-                }
-            }
+            var reqsArray = CArrayBuf(typeof(MxUint), Array("I", BinOp.Mult(new [] { _GRAD_REQ_MAP[gradReq] }, Len(listedArguments))));
             var ctxMapKeys = null;
             var ctxMapDevTypes = null;
             var ctxMapDevIds = null;
@@ -1000,7 +849,7 @@ namespace Horker.MXNet
             }
             var handle = new ExecutorHandle();
             var sharedHandle = (IsTrue((!IsNone(sharedExec))) ? sharedExec.Handle : new ExecutorHandle());
-            CheckCall(_LIB.MXExecutorBindEX(this.Handle, CTypes.CInt(ctx.DeviceTypeid), CTypes.CInt(ctx.DeviceId), MxUint(Len(ctxMapKeys)), CStrArray(ctxMapKeys), CArrayBuf(CTypes.CInt, Array("i", ctxMapDevTypes)), CArrayBuf(CTypes.CInt, Array("i", ctxMapDevIds)), MxUint(Len(args)), argsHandle, ArgsGradHandle, ReqsArray, MxUint(Len(auxStates)), auxArgsHandle, sharedHandle, ref handle));
+            CheckCall(_LIB.MXExecutorBindEX(this.Handle, CTypes.CInt(ctx.DeviceTypeid), CTypes.CInt(ctx.DeviceId), MxUint(Len(ctxMapKeys)), CStrArray(ctxMapKeys), CArrayBuf(CTypes.CInt, Array("i", ctxMapDevTypes)), CArrayBuf(CTypes.CInt, Array("i", ctxMapDevIds)), MxUint(Len(args)), argsHandle, ArgsGradHandle, reqsArray, MxUint(Len(auxStates)), auxArgsHandle, sharedHandle, ref handle));
             var executor = new Executor(handle, this, ctx, gradReq, group2ctx);
             executor.ArgArrays = args;
             executor.GradArrays = argsGrad;
@@ -1019,7 +868,6 @@ namespace Horker.MXNet
         
         public object Eval(Context ctx = null, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(ctx))))
             {
@@ -1030,588 +878,504 @@ namespace Horker.MXNet
         
         public object Reshape(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Reshape(this, Args);
         }
         
         public object ReshapeLike(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ReshapeLike(this, Args);
         }
         
         public string Astype(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Cast(this, Args);
         }
         
         public object ZerosLike(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ZerosLike(this, Args);
         }
         
         public object OnesLike(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.OnesLike(this, Args);
         }
         
         public object BroadcastAxes(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.BroadcastAxes(this, Args);
         }
         
         public object Repeat(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Repeat(this, Args);
         }
         
         public object Pad(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Pad(this, Args);
         }
         
         public object Swapaxes(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Swapaxes(this, Args);
         }
         
         public object Split(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Split(this, Args);
         }
         
         public object SplitV2(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return SplitV2(this, Args);
         }
         
         public object Slice(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Slice(this, Args);
         }
         
         public object SliceAxis(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.SliceAxis(this, Args);
         }
         
         public object SliceLike(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.SliceLike(this, Args);
         }
         
         public object Take(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Take(this, Args);
         }
         
         public object OneHot(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.OneHot(this, Args);
         }
         
         public object Pick(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Pick(this, Args);
         }
         
         public object Sort(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sort(this, Args);
         }
         
         public object Topk(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Topk(this, Args);
         }
         
         public object Argsort(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Argsort(this, Args);
         }
         
         public object Argmax(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Argmax(this, Args);
         }
         
         public object ArgmaxChannel(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ArgmaxChannel(this, Args);
         }
         
         public object Argmin(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Argmin(this, Args);
         }
         
         public object Clip(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Clip(this, Args);
         }
         
         public object Abs(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Abs(this, Args);
         }
         
         public object Sign(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sign(this, Args);
         }
         
         public object Flatten(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Flatten(this, Args);
         }
         
         public object ShapeArray(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ShapeArray(this, Args);
         }
         
         public object SizeArray(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.SizeArray(this, Args);
         }
         
         public object ExpandDims(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ExpandDims(this, Args);
         }
         
         public object BroadcastTo(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.BroadcastTo(this, Args);
         }
         
         public object BroadcastLike(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.BroadcastLike(this, Args);
         }
         
         public object Tile(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Tile(this, Args);
         }
         
         public object Transpose(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Transpose(this, Args);
         }
         
         public object Flip(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Flip(this, Args);
         }
         
         public object DepthToSpace(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.DepthToSpace(this, Args);
         }
         
         public object SpaceToDepth(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.SpaceToDepth(this, Args);
         }
         
         public object Diag(int k = 0, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Diag(this, k);
         }
         
         public object Sum(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sum(this, Args);
         }
         
         public object Nansum(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Nansum(this, Args);
         }
         
         public object Prod(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Prod(this, Args);
         }
         
         public object Nanprod(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Nanprod(this, Args);
         }
         
         public object Mean(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Mean(this, Args);
         }
         
         public object Max(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Max(this, Args);
         }
         
         public object Min(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Min(this, Args);
         }
         
         public object Norm(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Norm(this, Args);
         }
         
         public object Round(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Round(this, Args);
         }
         
         public object Rint(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Rint(this, Args);
         }
         
         public object Fix(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Fix(this, Args);
         }
         
         public object Floor(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Floor(this, Args);
         }
         
         public object Ceil(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Ceil(this, Args);
         }
         
         public object Trunc(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Trunc(this, Args);
         }
         
         public object Sin(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sin(this, Args);
         }
         
         public object Cos(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Cos(this, Args);
         }
         
         public object Tan(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Tan(this, Args);
         }
         
         public object Arcsin(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arcsin(this, Args);
         }
         
         public object Arccos(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arccos(this, Args);
         }
         
         public object Arctan(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arctan(this, Args);
         }
         
         public object Degrees(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Degrees(this, Args);
         }
         
         public object Radians(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Radians(this, Args);
         }
         
         public object Sinh(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sinh(this, Args);
         }
         
         public object Cosh(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Cosh(this, Args);
         }
         
         public object Tanh(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Tanh(this, Args);
         }
         
         public object Arcsinh(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arcsinh(this, Args);
         }
         
         public object Arccosh(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arccosh(this, Args);
         }
         
         public object Arctanh(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arctanh(this, Args);
         }
         
         public object Exp(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Exp(this, Args);
         }
         
         public object Expm1(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Expm1(this, Args);
         }
         
         public object Log(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log(this, Args);
         }
         
         public object Log10(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log10(this, Args);
         }
         
         public object Log2(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log2(this, Args);
         }
         
         public object Log1p(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log1p(this, Args);
         }
         
         public object Sqrt(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sqrt(this, Args);
         }
         
         public object Rsqrt(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Rsqrt(this, Args);
         }
         
         public object Cbrt(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Cbrt(this, Args);
         }
         
         public object Rcbrt(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Rcbrt(this, Args);
         }
         
         public object Square(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Square(this, Args);
         }
         
         public object Reciprocal(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Reciprocal(this, Args);
         }
         
         public object Relu(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Relu(this, Args);
         }
         
         public object Sigmoid(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sigmoid(this, Args);
         }
         
         public object Softmax(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Softmax(this, Args);
         }
         
         public object LogSoftmax(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.LogSoftmax(this, Args);
         }
         
         public object Softmin(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Softmin(this, Args);
         }
         
         public object Squeeze(object *args, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Squeeze(this, Args);
         }
@@ -1664,7 +1428,6 @@ namespace Horker.MXNet
     {
         public static object Var(string name, object attr = null, Shape shape = null, object lrMult = null, object wdMult = null, DType dtype = null, Initializer init = null, string stype = null, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             var handle = new SymbolHandle();
             CheckCall(_LIB.MXSymbolCreateVariable(CStr(name), ref handle));
@@ -1695,10 +1458,7 @@ namespace Horker.MXNet
             }
             if (IsTrue((!IsNone(init))))
             {
-                if (IsTrue((!IsTrue(Isinstance(init, typeof(StringTypes))))))
-                {
-                    init = init.Dumps();
-                }
+                init = init.Dumps();
                 attr["__init__"] = init;
             }
             if (IsTrue((!IsNone(stype))))
@@ -1757,13 +1517,7 @@ namespace Horker.MXNet
         public static object LoadJson(object jsonStr)
         {
             // Expr
-            if (IsTrue((!IsTrue(Isinstance(jsonStr, typeof(StringTypes))))))
-            {
-                throw new TypeError("fname required to be string");
-            }
-            var handle = new SymbolHandle();
-            CheckCall(_LIB.MXSymbolCreateFromJSON(CStr(jsonStr), ref handle));
-            return new Symbol(handle);
+            throw new TypeError("fname required to be string");
         }
     }
     
@@ -1786,7 +1540,7 @@ namespace Horker.MXNet
             }
             if (IsTrue((IsTrue(Isinstance(@base, Number)) && IsTrue(Isinstance(exp, Number)))))
             {
-                return System.Math.Pow(@base, exp);
+                return System.FMath.Pow(@base, exp);
             }
             else
             {
@@ -1892,7 +1646,6 @@ namespace Horker.MXNet
     {
         public static object Eye(object N, int M = 0, int k = 0, DType dtype = null, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(dtype))))
             {
@@ -1906,7 +1659,6 @@ namespace Horker.MXNet
     {
         public static object Zeros(Shape shape, DType dtype = null, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(dtype))))
             {
@@ -1920,7 +1672,6 @@ namespace Horker.MXNet
     {
         public static object Ones(Shape shape, DType dtype = null, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(dtype))))
             {
@@ -1934,7 +1685,6 @@ namespace Horker.MXNet
     {
         public static object Full(Shape shape, object val, DType dtype = null, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(dtype))))
             {
@@ -1974,7 +1724,6 @@ namespace Horker.MXNet
     {
         public static object Histogram(object a, int bins = 10, object range = null, object kwargs)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(range))))
             {
@@ -1991,24 +1740,7 @@ namespace Horker.MXNet
             // Expr
             var indices = null;
             var sections = 0;
-            if (IsTrue(Isinstance(indicesOrSections, typeof(Int))))
-            {
-                var local0 = (int)indicesOrSections;
-                sections = local0;
-            }
-            else
-            {
-                if (IsTrue(Isinstance(indicesOrSections, typeof(Tuple))))
-                {
-                    var local0 = (tuple)indicesOrSections;
-                    indices = (new [] { 0 } + List(local0));
-                }
-                else
-                {
-                    throw new ValueError("indices_or_sections must either int or tuple of ints");
-                }
-            }
-            return _internal._splitV2(ary, indices, axis, squeezeAxis, sections);
+            throw new ValueError("indices_or_sections must either int or tuple of ints");
         }
     }
     // Expr

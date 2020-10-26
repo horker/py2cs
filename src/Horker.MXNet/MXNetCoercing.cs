@@ -36,6 +36,11 @@ namespace Horker.MXNet
             return handle;
         }
 
+        public static NDArrayHandle[] CoerceIntoNDArrayHandleArray(NDArrayHandle[] handles)
+        {
+            return handles;
+        }
+
         public static ParameterDict CoerceIntoParameterDict(object obj)
         {
             return (ParameterDict)obj;

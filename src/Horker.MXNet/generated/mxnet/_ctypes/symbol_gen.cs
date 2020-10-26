@@ -112,7 +112,7 @@ namespace Horker.MXNet
                     throw new TypeError("Compose expect `Symbol` as arguments");
                 }
             }
-            var numArgs = (Len(args) + Len(kwargs));
+            var numArgs = BinOp.Add(Len(args), Len(kwargs));
             if (IsTrue((Len(kwargs) != 0)))
             {
                 keys = CoerceIntoStringArray(CStrArray(kwargs.Keys()));

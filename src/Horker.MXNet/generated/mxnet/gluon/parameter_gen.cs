@@ -243,7 +243,7 @@ namespace Horker.MXNet.Gluon
                 this.Shape = Tuple(Zip(this.Shape, data.Shape).Select((i, j) => (IsTrue((i != 0)) ? i : j)));
             }
             if (IsTrue(this.Dtype)){
-                if (IsTrue((IsTrue(castDtype) && IsTrue((Np.Dtype(this.Dtype).Type != data.Dtype))))){
+                if (IsTrue((IsTrue(castDtype) && IsTrue((FakeNumpy.Dtype(this.Dtype).Type != data.Dtype))))){
                     if (IsTrue((dtypeSource == "current"))){
                         data = data.Astype(this.Dtype, copy: false);
                     }
@@ -256,7 +256,7 @@ namespace Horker.MXNet.Gluon
                 }
                 else
                 {
-                    Assert((Np.Dtype(this.Dtype).Type == data.Dtype), "(Np.Dtype(this.Dtype).Type == data.Dtype)");
+                    Assert((FakeNumpy.Dtype(this.Dtype).Type == data.Dtype), "(Np.Dtype(this.Dtype).Type == data.Dtype)");
                 }
             }
             if (IsTrue((this._stype != data.Stype))){
@@ -715,7 +715,7 @@ namespace Horker.MXNet.Gluon
                         }
                         else
                         {
-                            if (IsTrue((IsTrue((K == "dtype")) && IsTrue((Np.Dtype(V) == Np.Dtype(existing)))))){
+                            if (IsTrue((IsTrue((K == "dtype")) && IsTrue((FakeNumpy.Dtype(V) == FakeNumpy.Dtype(existing)))))){
                                 continue;
                             }
                         }

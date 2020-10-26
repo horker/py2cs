@@ -42,8 +42,8 @@ namespace Python2CSharp
 
         public string ConvertToCamelCase(string s, bool upper)
         {
-            if (s == "_")
-                return "_";
+            if (string.IsNullOrWhiteSpace(s) || s == "_")
+                return s;
 
             // Upper snake cases
             if (Regex.IsMatch(s, "^[A-Z0-9_]+$"))
@@ -77,6 +77,33 @@ namespace Python2CSharp
                 var capitalized = words.Skip(1).Select(x => x.Length <= 1 ? x.ToUpper() : char.ToUpperInvariant(x[0]) + x.Substring(1));
                 result = words[0] + string.Join("", capitalized);
             }
+
+            if (special)
+                return "__" + result + "__";
+            return result;
+        }
+
+        public string ConvertToSnakeCase(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s) || s == "_")
+                return s;
+
+            // Upper snake cases
+            if (Regex.IsMatch(s, "^[A-Z0-9_]+$"))
+                return s;
+
+            // Special method names
+            bool special = false;
+            var m = Regex.Match(s, "^__(.+)__$");
+            if (m.Success)
+            {
+                special = true;
+                s = m.Groups[1].Value;
+            }
+
+            var result = string.Join("_", Regex.Split(s, @"([A-Z][^A-Z]+)")
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Select(x => x.Length == 1 ? char.ToLower(x[0]).ToString() : char.ToLower(x[0]) + x.Substring(1)));
 
             if (special)
                 return "__" + result + "__";
@@ -217,6 +244,34 @@ namespace Python2CSharp
             return f.GetOutput();
         }
 
+        public string GetLocalOrParamType(string name, Context ctx, MethodConfig mc)
+        {
+            if (mc.Locals.TryGetValue(name, out var config))
+                return config.Type;
+
+            if (ctx.FindLocal(name))
+                name = ctx.GetAliasForLocal(name);
+
+            // We can't use ConvertAsLocal() because it escapes C# keywords thus we will use ConvertToCamelCase() instead.
+            if (mc.SignatureAnalysis.ParamTypes.TryGetValue(ConvertToCamelCase(name, false), out var type))
+                return type;
+
+            return string.Empty;
+        }
+
+        public bool HasLocalOrParam(string name, Context ctx, MethodConfig mc)
+        {
+            if (mc.Locals.ContainsKey(name))
+                return true;
+
+            if (ctx.FindLocal(name))
+                name = ctx.GetAliasForLocal(name);
+            if (mc.SignatureAnalysis.ParamTypes.ContainsKey(ConvertToCamelCase(name, false)))
+                return true;
+
+            return false;
+        }
+
         public ValueConstraint ResolveCondition(JToken test, Context ctx)
         {
             bool trueCond = true;
@@ -236,7 +291,7 @@ namespace Python2CSharp
             var id = GetNameProperty(test["args"][0], "id");
             id = ctx.GetAliasForLocal(id);
             var mc = ctx.GetMethodConfig();
-            var type = mc.GetLocalType(id);
+            var type = GetLocalOrParamType(id, ctx, mc);
 
             if (string.IsNullOrEmpty(type))
                 return ValueConstraint.Any;
@@ -509,11 +564,8 @@ namespace Python2CSharp
 
             ctx = ctx.EnterFunction(funcName, kwargName, mc, isSetterDef);
 
-            foreach (var arg in args)
-                ctx.AddLocal(GetNameProperty(arg, "arg"));
-
             foreach (var a in analysis.ParamTypes.Keys)
-                ctx.TryAddLocal(a);
+                ctx.AddLocal(ConvertToSnakeCase(a));
 
             foreach (var (l, a) in mc.LocalAliases)
                 ctx.SetAliasForLocal(l, a);
@@ -521,7 +573,7 @@ namespace Python2CSharp
             if (keywordArguments != null)
             {
                 foreach (var arg in keywordArguments)
-                    ctx.AddLocal(arg);
+                    ctx.TryAddLocal(arg);
             }
 
             var oldOut = _out;
@@ -573,7 +625,7 @@ namespace Python2CSharp
             if (analysis.IsProperty)
                 _out.WriteOpening("get {");
 
-            if (!string.IsNullOrEmpty(kwargName) && !analysis.ParamTypes.ContainsKey(ConvertAsLocal(kwargName)) && string.IsNullOrEmpty(mc.GetLocalType(ConvertAsLocal(kwargName))))
+            if (!string.IsNullOrEmpty(kwargName) && !HasLocalOrParam(kwargName, ctx, mc))
             {
                 ctx.TryAddLocal(kwargName);
                 _out.WriteLine($"var {ConvertAsLocal(kwargName)} = new Dictionary<string, string>();");
@@ -589,7 +641,7 @@ namespace Python2CSharp
             {
                 if (!string.IsNullOrEmpty(c.Definition))
                 {
-                    ctx.AddLocal(l);
+                    ctx.TryAddLocal(l);
                     _out.WriteLine(c.Definition);
                 }
             }
@@ -627,6 +679,7 @@ namespace Python2CSharp
             var config = _config[className];
             if (config.Drop)
             {
+                _out.WriteNewLine();
                 _out.WriteLine($"// Drop: {className}");
                 return ValueConstraint.Any;
             }
@@ -706,28 +759,47 @@ namespace Python2CSharp
 
                 var target = targets[0];
                 var withinNamespace = ctx.IsInNamespace();
+
                 if (withinNamespace)
                 {
                     if (ObjectNameOf(target) == "Name" && GetNameProperty(target, "id") == "__all__")
                     {
+                        _out.WriteNewLine();
                         _out.WriteLine("// Assignment of __all__");
                         return ValueConstraint.Any;
                     }
 
                     if (ObjectNameOf(target) == "Attribute")
                     {
+                        _out.WriteNewLine();
                         _out.WriteLine("// Assignment of attribute");
                         return ValueConstraint.Any;
                     }
+                }
 
+                var id = GetNameProperty(target, "id");
+                if (_config[ctx.GetClassName()].StaticFields.TryGetValue(id, out var sf))
+                {
+                    if (sf.Drop)
+                    {
+                        _out.WriteNewLine();
+                        _out.WriteLine($"// Drop: {id}");
+                        return ValueConstraint.Any;
+                    }
+                    type = sf.Type;
+                }
+                else
+                {
+                    type = "object";
+                }
+
+                if (withinNamespace)
+                {
                     _out.WriteNewLine();
                     _out.WriteLine("public static partial class Helper");
                     _out.WriteOpening("{");
                 }
 
-                var id = GetNameProperty(target, "id");
-                if (!_config[ctx.GetClassName()].StaticVariableTypes.TryGetValue(id, out type))
-                    type = "object";
                 _out.Write($"public static {type} {ConvertAsMethodOrClassName(id)} = ");
                 GenerateAssignRhs(node, ctx, type);
                 _out.WriteLine(";");
@@ -1166,9 +1238,10 @@ namespace Python2CSharp
 
         private static Dictionary<string, string> _binOpMap = new Dictionary<string, string>
         {
-            { "Add", " + " },
+            { "Add", "BinOp.Add" },
+            { "Mult", "BinOp.Mult" },
+            { "Pow", "System.FMath.Pow" },
             { "Sub", " - " },
-            { "Mult", " * " },
             { "MatMult", " /* MatMult */ " },
             { "Div", " / " },
             { "Mod", " % " },
@@ -1191,9 +1264,10 @@ namespace Python2CSharp
 
         public ValueConstraint GenerateBinOp(JToken left, string op, JToken right, Context ctx)
         {
-            if (op == "Pow")
+            if (op == "Add" || op == "Mult" || op == "Pow")
             {
-                _out.Write("System.Math.Pow(");
+                _out.Write(_binOpMap[op]);
+                _out.Write("(");
                 GenerateExpression(left, ctx);
                 _out.Write(", ");
                 GenerateExpression(right, ctx);

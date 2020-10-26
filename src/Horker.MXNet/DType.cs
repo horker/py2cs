@@ -20,7 +20,7 @@ namespace Horker.MXNet
         }
     }
 
-    public struct DType
+    public struct DType : IEquatable<DType>
     {
         private static DTypeInternal[] _internals = new DTypeInternal[]
         {
@@ -40,11 +40,6 @@ namespace Horker.MXNet
             _nameToDTypeMap = new Dictionary<string, int>();
             foreach (var i in _internals)
                 _nameToDTypeMap[i.Name] = i.Index;
-        }
-
-        public static DType Get(string name)
-        {
-            return new DType(_nameToDTypeMap[name]);
         }
 
         private int _index;
@@ -68,6 +63,39 @@ namespace Horker.MXNet
         private DType(int index)
         {
             _index = index;
+        }
+
+        public static DType Get(string name)
+        {
+            return new DType(_nameToDTypeMap[name]);
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other.GetType() != typeof(DType))
+                return false;
+
+            return _index == ((DType)other)._index;
+        }
+
+        public bool Equals(DType other)
+        {
+            return _index == (other)._index;
+        }
+
+        public override int GetHashCode()
+        {
+            return _index;
+        }
+
+        public static bool operator==(DType lhs, DType rhs)
+        {
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator!=(DType lhs, DType rhs)
+        {
+            return !lhs.Equals(rhs);
         }
 
         public static implicit operator DType(string name)
