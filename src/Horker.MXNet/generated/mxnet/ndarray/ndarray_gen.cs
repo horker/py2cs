@@ -153,7 +153,7 @@ namespace Horker.MXNet
         {
             // Expr
             var hdl = new NDArrayHandle();
-            CheckCall(_LIB.MXNDArrayCreateNone(ref hdl));
+            CheckCall(_LIB.MXNDArrayCreateNone(out hdl));
             return hdl;
         }
     }
@@ -164,7 +164,7 @@ namespace Horker.MXNet
         {
             // Expr
             var hdl = new NDArrayHandle();
-            CheckCall(_LIB.MXNDArrayCreateEx(CArrayBuf(typeof(MxUint), NativeArray("I", shape)), MxUint(Len(shape)), CTypes.CInt(ctx.DeviceTypeid), CTypes.CInt(ctx.DeviceId), CTypes.CInt(Int(delayAlloc)), CTypes.CInt(Int(_DTYPE_NP_TO_MX[Np.DType(dtype).Type])), ref hdl));
+            CheckCall(_LIB.MXNDArrayCreateEx(CArrayBuf(typeof(MxUint), NativeArray("I", shape)), MxUint(Len(shape)), CTypes.CInt(ctx.DeviceTypeid), CTypes.CInt(ctx.DeviceId), CTypes.CInt(Int(delayAlloc)), CTypes.CInt(Int(_DTYPE_NP_TO_MX[Np.DType(dtype).Type])), out hdl));
             return hdl;
         }
     }
@@ -174,7 +174,7 @@ namespace Horker.MXNet
         internal static NDArrayHandle _newFromSharedMem(int sharedPid, int sharedId, Shape shape, DType dtype)
         {
             var hdl = new NDArrayHandle();
-            CheckCall(_LIB.MXNDArrayCreateFromSharedMemEx(CTypes.CInt(sharedPid), CTypes.CInt(sharedId), CArray(typeof(MxInt), shape), MxInt(Len(shape)), CTypes.CInt(Int(_DTYPE_NP_TO_MX[Np.DType(dtype).Type])), ref hdl));
+            CheckCall(_LIB.MXNDArrayCreateFromSharedMemEx(CTypes.CInt(sharedPid), CTypes.CInt(sharedId), CArray(typeof(MxInt), shape), MxInt(Len(shape)), CTypes.CInt(Int(_DTYPE_NP_TO_MX[Np.DType(dtype).Type])), out hdl));
             return hdl;
         }
     }
@@ -193,7 +193,7 @@ namespace Horker.MXNet
         internal static int _storageType(NDArrayHandle handle)
         {
             var storageType = CTypes.CInt(0);
-            CheckCall(_LIB.MXNDArrayGetStorageType(handle, ref storageType));
+            CheckCall(_LIB.MXNDArrayGetStorageType(handle, out storageType));
             return storageType;
         }
     }
@@ -221,7 +221,7 @@ namespace Horker.MXNet
         {
             var sharedPid = CTypes.CInt();
             var sharedId = CTypes.CInt();
-            CheckCall(_LIB.MXNDArrayGetSharedMemHandle(this.Handle, ref sharedPid, ref sharedId));
+            CheckCall(_LIB.MXNDArrayGetSharedMemHandle(this.Handle, out sharedPid, out sharedId));
             return ValueTuple.Create(sharedPid, sharedId, this.Shape, this.DType);
         }
         
@@ -640,7 +640,7 @@ namespace Horker.MXNet
             var (local0, local1, _) = _getIndexRange(start, stop, this.Shape.Item1);
             start = local0;
             stop = local1;
-            CheckCall(_LIB.MXNDArraySlice(this.Handle, MxUint(start), MxUint(stop), ref handle));
+            CheckCall(_LIB.MXNDArraySlice(this.Handle, MxUint(start), MxUint(stop), out handle));
             return new NDArray(handle: handle, writable: this.Writable);
         }
         
@@ -657,7 +657,7 @@ namespace Horker.MXNet
                     throw new IndexError(("index %d is out of bounds for axis 0 with size %d".PyFormat(ValueTuple.Create((idx - length), length))));
                 }
             }
-            CheckCall(_LIB.MXNDArrayAt(this.Handle, MxUint(idx), ref handle));
+            CheckCall(_LIB.MXNDArrayAt(this.Handle, MxUint(idx), out handle));
             return new NDArray(handle: handle, writable: this.Writable);
         }
         
@@ -683,7 +683,7 @@ namespace Horker.MXNet
             }
             reverse = reverse;
             var handle = new NDArrayHandle();
-            CheckCall(_LIB.MXNDArrayReshape64(this.Handle, Len(shape), CArray(CTypes.CInt64, shape), reverse, ref handle));
+            CheckCall(_LIB.MXNDArrayReshape64(this.Handle, Len(shape), CArray(CTypes.CInt64, shape), reverse, out handle));
             return new NDArray(handle: handle, writable: this.Writable);
         }
         
@@ -1299,7 +1299,7 @@ namespace Horker.MXNet
                 // Expr
                 var ndim = MxInt();
                 var pdata = CTypes.POINTER(typeof(MxInt))();
-                CheckCall(_LIB.MXNDArrayGetShapeEx(this.Handle, ref ndim, ref pdata));
+                CheckCall(_LIB.MXNDArrayGetShapeEx(this.Handle, out ndim, out pdata));
                 if (IsTrue((ndim.Value == (-1))))
                 {
                     return null;
@@ -1330,7 +1330,7 @@ namespace Horker.MXNet
                 // Expr
                 var devTypeid = CTypes.CInt();
                 var devId = CTypes.CInt();
-                CheckCall(_LIB.MXNDArrayGetContext(this.Handle, ref devTypeid, ref devId));
+                CheckCall(_LIB.MXNDArrayGetContext(this.Handle, out devTypeid, out devId));
                 return new Context(Context.Devtype2str[devTypeid], devId);
             }
         }
@@ -1340,7 +1340,7 @@ namespace Horker.MXNet
             get {
                 // Expr
                 var mxDtype = CTypes.CInt();
-                CheckCall(_LIB.MXNDArrayGetDType(this.Handle, ref mxDtype));
+                CheckCall(_LIB.MXNDArrayGetDType(this.Handle, out mxDtype));
                 return _DTYPE_MX_TO_NP[mxDtype];
             }
         }
@@ -1369,7 +1369,7 @@ namespace Horker.MXNet
         {
             // Expr
             var @out = CTypes.CInt();
-            CheckCall(_LIB.MXNDArrayGetGradState(this.Handle, ref @out));
+            CheckCall(_LIB.MXNDArrayGetGradState(this.Handle, out @out));
             return @out;
         }
         
@@ -1452,7 +1452,7 @@ namespace Horker.MXNet
                 // Expr
                 // ImportFrom
                 var hdl = new NDArrayHandle();
-                CheckCall(_LIB.MXNDArrayGetGrad(this.Handle, ref hdl));
+                CheckCall(_LIB.MXNDArrayGetGrad(this.Handle, out hdl));
                 if (IsTrue((IsNone(hdl.Value))))
                 {
                     return null;
@@ -1466,7 +1466,7 @@ namespace Horker.MXNet
             // Expr
             // ImportFrom
             var hdl = new NDArrayHandle();
-            CheckCall(_LIB.MXNDArrayDetach(this.Handle, ref hdl));
+            CheckCall(_LIB.MXNDArrayDetach(this.Handle, out hdl));
             return _ndarrayCls(hdl);
         }
         

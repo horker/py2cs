@@ -22,7 +22,7 @@ using SymbolHandle = System.IntPtr;
 // ReSharper disable once CheckNamespace
 namespace Horker.MXNet.Interop
 {
-    internal sealed partial class _LIB
+    public static partial class _LIB
     {
         #region Methods
 

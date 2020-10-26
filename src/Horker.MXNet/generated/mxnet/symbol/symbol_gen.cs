@@ -210,7 +210,7 @@ namespace Horker.MXNet
         {
             // Expr
             var handle = new SymbolHandle();
-            CheckCall(_LIB.MXSymbolCopy(this.Handle, ref handle));
+            CheckCall(_LIB.MXSymbolCopy(this.Handle, out handle));
             return new Symbol(handle);
         }
         
@@ -314,7 +314,7 @@ namespace Horker.MXNet
                 throw new IndexError();
             }
             var handle = new SymbolHandle();
-            CheckCall(_LIB.MXSymbolGetOutput(this.Handle, MxUint(index), ref handle));
+            CheckCall(_LIB.MXSymbolGetOutput(this.Handle, MxUint(index), out handle));
             return new Symbol(handle: handle);
         }
         
@@ -355,7 +355,7 @@ namespace Horker.MXNet
                 throw new IndexError();
             }
             var handle = new SymbolHandle();
-            CheckCall(_LIB.MXSymbolGetOutput(this.Handle, MxUint(indexReassigned), ref handle));
+            CheckCall(_LIB.MXSymbolGetOutput(this.Handle, MxUint(indexReassigned), out handle));
             return new Symbol(handle: handle);
         }
         
@@ -365,7 +365,7 @@ namespace Horker.MXNet
                 // Expr
                 var ret = CTypes.CCharP();
                 var success = CTypes.CInt();
-                CheckCall(_LIB.MXSymbolGetName(this.Handle, ref ret, ref success));
+                CheckCall(_LIB.MXSymbolGetName(this.Handle, out ret, out success));
                 if (IsTrue((success != 0)))
                 {
                     return PyStr(ret);
@@ -382,7 +382,7 @@ namespace Horker.MXNet
             // Expr
             var ret = CTypes.CCharP();
             var success = CTypes.CInt();
-            CheckCall(_LIB.MXSymbolGetAttr(this.Handle, CStr(key), ref ret, ref success));
+            CheckCall(_LIB.MXSymbolGetAttr(this.Handle, CStr(key), out ret, out success));
             if (IsTrue((success != 0)))
             {
                 return PyStr(ret);
@@ -410,7 +410,7 @@ namespace Horker.MXNet
         {
             // Expr
             var handle = new SymbolHandle();
-            CheckCall(_LIB.MXSymbolGetInternals(this.Handle, ref handle));
+            CheckCall(_LIB.MXSymbolGetInternals(this.Handle, out handle));
             return new Symbol(handle: handle);
         }
         
@@ -418,7 +418,7 @@ namespace Horker.MXNet
         {
             // Expr
             var handle = new SymbolHandle();
-            CheckCall(_LIB.MXSymbolGetChildren(this.Handle, ref handle));
+            CheckCall(_LIB.MXSymbolGetChildren(this.Handle, out handle));
             var ret = new Symbol(handle: handle);
             if (IsTrue((Len(ret.ListOutputs()) == 0)))
             {
@@ -432,7 +432,7 @@ namespace Horker.MXNet
             // Expr
             var size = CTypes.CUint();
             var sarr = CTypes.POINTER(CTypes.CCharP)();
-            CheckCall(_LIB.MXSymbolListArguments(this.Handle, ref size, ref sarr));
+            CheckCall(_LIB.MXSymbolListArguments(this.Handle, out size, out sarr));
             return Range(size).Select(i => PyStr(sarr[i])).ToList();
         }
         
@@ -441,7 +441,7 @@ namespace Horker.MXNet
             // Expr
             var size = CTypes.CUint();
             var sarr = CTypes.POINTER(CTypes.CCharP)();
-            CheckCall(_LIB.MXSymbolListOutputs(this.Handle, ref size, ref sarr));
+            CheckCall(_LIB.MXSymbolListOutputs(this.Handle, out size, out sarr));
             return Range(size).Select(i => PyStr(sarr[i])).ToList();
         }
         
@@ -449,7 +449,7 @@ namespace Horker.MXNet
         {
             // Expr
             var outputCount = MxUint();
-            CheckCall(_LIB.MXSymbolGetNumOutputs(this.Handle, ref outputCount));
+            CheckCall(_LIB.MXSymbolGetNumOutputs(this.Handle, out outputCount));
             return outputCount.Value;
         }
         
@@ -458,7 +458,7 @@ namespace Horker.MXNet
             // Expr
             var size = CTypes.CUint();
             var sarr = CTypes.POINTER(CTypes.CCharP)();
-            CheckCall(_LIB.MXSymbolListAuxiliaryStates(this.Handle, ref size, ref sarr));
+            CheckCall(_LIB.MXSymbolListAuxiliaryStates(this.Handle, out size, out sarr));
             return Range(size).Select(i => PyStr(sarr[i])).ToList();
         }
         
@@ -467,7 +467,7 @@ namespace Horker.MXNet
             // Expr
             var size = CTypes.CUint();
             var sarr = CTypes.POINTER(CTypes.CCharP)();
-            CheckCall(_LIB.NNSymbolListInputNames(this.Handle, 0, ref size, ref sarr));
+            CheckCall(_LIB.NNSymbolListInputNames(this.Handle, 0, out size, out sarr));
             return Range(size).Select(i => PyStr(sarr[i])).ToList();
         }
         
@@ -539,7 +539,7 @@ namespace Horker.MXNet
             {
                 var inferFunc = _LIB.MXSymbolInferType;
             }
-            CheckCall(InferFunc(this.Handle, MxUint(Len(sdata)), Keys, CArrayBuf(CTypes.CInt, Array("i", sdata)), ref argTypeSize, ref argTypeData, ref outTypeSize, ref outTypeData, ref auxTypeSize, ref auxTypeData, ref complete));
+            CheckCall(InferFunc(this.Handle, MxUint(Len(sdata)), Keys, CArrayBuf(CTypes.CInt, Array("i", sdata)), out argTypeSize, out argTypeData, out outTypeSize, out outTypeData, out auxTypeSize, out auxTypeData, out complete));
             if (IsTrue((complete != 0)))
             {
                 var argTypes = Range(argTypeSize.Value).Select(i => _DTYPE_MX_TO_NP[argTypeData[i]]).ToList();
@@ -622,7 +622,7 @@ namespace Horker.MXNet
             {
                 var inferFunc = _LIB.MXSymbolInferShapeEx;
             }
-            CheckCall(InferFunc(this.Handle, MxUint((Len(indptr) - 1)), Keys, CArrayBuf(typeof(MxUint), Array("I", indptr)), CArrayBuf(typeof(MxInt), Array("i", sdata)), ref argShapeSize, ref argShapeNdim, ref argShapeData, ref outShapeSize, ref outShapeNdim, ref outShapeData, ref auxShapeSize, ref auxShapeNdim, ref auxShapeData, ref complete));
+            CheckCall(InferFunc(this.Handle, MxUint((Len(indptr) - 1)), Keys, CArrayBuf(typeof(MxUint), Array("I", indptr)), CArrayBuf(typeof(MxInt), Array("i", sdata)), out argShapeSize, out argShapeNdim, out argShapeData, out outShapeSize, out outShapeNdim, out outShapeData, out auxShapeSize, out auxShapeNdim, out auxShapeData, out complete));
             if (IsTrue((complete != 0)))
             {
                 var argShapes = Range(argShapeSize.Value).Select(i => (IsTrue((argShapeNdim[i] >= 0)) ? Tuple(argShapeData[i].Slice(null, argShapeNdim[i], null)) : null)).ToList();
@@ -640,7 +640,7 @@ namespace Horker.MXNet
         {
             // Expr
             var debugStr = CTypes.CCharP();
-            CheckCall(_LIB.MXSymbolPrint(this.Handle, ref debugStr));
+            CheckCall(_LIB.MXSymbolPrint(this.Handle, out debugStr));
             return PyStr(debugStr);
         }
         
@@ -650,7 +650,7 @@ namespace Horker.MXNet
             if (IsTrue(removeAmpCast))
             {
                 var handle = new SymbolHandle();
-                CheckCall(_LIB.MXSymbolRemoveAmpCast(this.Handle, ref handle));
+                CheckCall(_LIB.MXSymbolRemoveAmpCast(this.Handle, out handle));
                 CheckCall(_LIB.MXSymbolSaveToFile(handle, CStr(fname)));
             }
             else
@@ -663,7 +663,7 @@ namespace Horker.MXNet
         {
             // Expr
             var jsonStr = CTypes.CCharP();
-            CheckCall(_LIB.MXSymbolSaveToJSON(this.Handle, ref jsonStr));
+            CheckCall(_LIB.MXSymbolSaveToJSON(this.Handle, out jsonStr));
             return PyStr(jsonStr);
         }
         
@@ -678,7 +678,7 @@ namespace Horker.MXNet
         internal object _genAtomicSymbol()
         {
             var handle = new SymbolHandle();
-            CheckCall(_LIB.MXGenAtomicSymbolFromSymbol(this.Handle, ref handle));
+            CheckCall(_LIB.MXGenAtomicSymbolFromSymbol(this.Handle, out handle));
             return new Symbol(handle);
         }
         
@@ -849,7 +849,7 @@ namespace Horker.MXNet
             }
             var handle = new ExecutorHandle();
             var sharedHandle = (IsTrue((!IsNone(sharedExec))) ? sharedExec.Handle : new ExecutorHandle());
-            CheckCall(_LIB.MXExecutorBindEX(this.Handle, CTypes.CInt(ctx.DeviceTypeid), CTypes.CInt(ctx.DeviceId), MxUint(Len(ctxMapKeys)), CStrArray(ctxMapKeys), CArrayBuf(CTypes.CInt, Array("i", ctxMapDevTypes)), CArrayBuf(CTypes.CInt, Array("i", ctxMapDevIds)), MxUint(Len(args)), argsHandle, ArgsGradHandle, reqsArray, MxUint(Len(auxStates)), auxArgsHandle, sharedHandle, ref handle));
+            CheckCall(_LIB.MXExecutorBindEX(this.Handle, CTypes.CInt(ctx.DeviceTypeid), CTypes.CInt(ctx.DeviceId), MxUint(Len(ctxMapKeys)), CStrArray(ctxMapKeys), CArrayBuf(CTypes.CInt, Array("i", ctxMapDevTypes)), CArrayBuf(CTypes.CInt, Array("i", ctxMapDevIds)), MxUint(Len(args)), argsHandle, ArgsGradHandle, reqsArray, MxUint(Len(auxStates)), auxArgsHandle, sharedHandle, out handle));
             var executor = new Executor(handle, this, ctx, gradReq, group2ctx);
             executor.ArgArrays = args;
             executor.GradArrays = argsGrad;
@@ -862,7 +862,7 @@ namespace Horker.MXNet
             // Expr
             var handle = new SymbolHandle();
             var cWrt = CStrArray(wrt);
-            CheckCall(_LIB.MXSymbolGrad(this.Handle, MxUint(Len(wrt)), cWrt, ref handle));
+            CheckCall(_LIB.MXSymbolGrad(this.Handle, MxUint(Len(wrt)), cWrt, out handle));
             return new Symbol(handle);
         }
         
@@ -1384,7 +1384,7 @@ namespace Horker.MXNet
         {
             // Expr
             var @out = new SymbolHandle();
-            CheckCall(_LIB.MXGenBackendSubgraph(this.Handle, CStr(backend), ref @out));
+            CheckCall(_LIB.MXGenBackendSubgraph(this.Handle, CStr(backend), out @out));
             return new Symbol(@out);
         }
         
@@ -1430,7 +1430,7 @@ namespace Horker.MXNet
         {
             // Expr
             var handle = new SymbolHandle();
-            CheckCall(_LIB.MXSymbolCreateVariable(CStr(name), ref handle));
+            CheckCall(_LIB.MXSymbolCreateVariable(CStr(name), out handle));
             var ret = new Symbol(handle);
             if (IsTrue((!IsTrue(Hasattr(AttrScope._current, "value")))))
             {
@@ -1496,7 +1496,7 @@ namespace Horker.MXNet
                 throw new TypeError("Expected a list of symbols as input");
             }
             var handle = new SymbolHandle();
-            CheckCall(_LIB.MXSymbolCreateGroup(MxUint(Len(symbols)), CHandleArray(symbols), ref handle));
+            CheckCall(_LIB.MXSymbolCreateGroup(MxUint(Len(symbols)), CHandleArray(symbols), out handle));
             return new Symbol(handle);
         }
     }
@@ -1507,7 +1507,7 @@ namespace Horker.MXNet
         {
             // Expr
             var handle = new SymbolHandle();
-            CheckCall(_LIB.MXSymbolCreateFromFile(CStr(fname), ref handle));
+            CheckCall(_LIB.MXSymbolCreateFromFile(CStr(fname), out handle));
             return new Symbol(handle);
         }
     }

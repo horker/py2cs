@@ -1543,7 +1543,7 @@ namespace Python2CSharp
                 GetNameProperty(func, "attr") == "byref" &&
                 args.Count() == 1 && ObjectNameOf(args[0]) == "Name")
             {
-                _out.Write($"ref {ConvertAsLocal(GetNameProperty(args[0], "id"))}");
+                _out.Write($"out {ConvertAsLocal(GetNameProperty(args[0], "id"))}");
                 return ValueConstraint.Any;
             }
 
