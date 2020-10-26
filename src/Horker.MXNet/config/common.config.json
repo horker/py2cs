@@ -16,6 +16,7 @@
     "using static Horker.MXNet.DType;",
     "using NDArrayHandle = System.IntPtr;",
     "using SymbolHandle = System.IntPtr;",
+    "using DisposableObject = Horker.MXNet.Interop.DisposableObject;",
     "using _LIB = Horker.MXNet.Interop._LIB;",
     "using MxInt = System.Int32;",
     "using MxUint = System.Int32;",

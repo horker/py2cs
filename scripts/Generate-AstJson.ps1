@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-$SourceRootPath = "$PSScriptRoot\..\incubator-mxnet\python\"
+$SourceRootPath = "$PSScriptRoot\..\pip\mxnet_cu101mkl-1.5.0-py2.py3-none-win_amd64"
 
 $SourceFiles = @(
     "mxnet\autograd.py"

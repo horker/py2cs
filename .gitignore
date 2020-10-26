@@ -6,6 +6,7 @@ private/
 ast/
 incubator-mxnet/
 MxNet.Sharp/
+pip/
 
 .vs/
 bin/

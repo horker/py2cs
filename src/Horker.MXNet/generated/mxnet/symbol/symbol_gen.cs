@@ -14,6 +14,7 @@ using static Horker.MXNet.MXNetCompat;
 using static Horker.MXNet.DType;
 using NDArrayHandle = System.IntPtr;
 using SymbolHandle = System.IntPtr;
+using DisposableObject = Horker.MXNet.Interop.DisposableObject;
 using _LIB = Horker.MXNet.Interop._LIB;
 using MxInt = System.Int32;
 using MxUint = System.Int32;
@@ -22,30 +23,6 @@ using PySlice = Horker.MXNet.Compat.Slice;
 using Tuple = System.Collections.ICollection;
 using List = System.Collections.ICollection;
 using _numpy = Horker.MXNet.Np;
-using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Horker.MXNet;
-using Horker.MXNet.Compat;
-using static Horker.MXNet.Base;
-using static Horker.MXNet.Compat.Compat;
-using static Horker.MXNet.Compat.Coercing;
-using static Horker.MXNet.Compat.Array;
-using static Horker.MXNet.MXNetCoercing;
-using static Horker.MXNet.MXNetCompat;
-using static Horker.MXNet.DType;
-using NDArrayHandle = System.IntPtr;
-using SymbolHandle = System.IntPtr;
-using _LIB = Horker.MXNet._LIB;
-using MxInt = System.Int32;
-using MxUint = System.Int32;
-using MxInt64 = System.Int64;
-using PySlice = Horker.MXNet.Compat.Slice;
-using Tuple = System.Collections.ICollection;
-using List = System.Collections.ICollection;
-using _numpy = Np;
 
 namespace Horker.MXNet
 {
