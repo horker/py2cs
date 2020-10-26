@@ -29,6 +29,7 @@ namespace Horker.MXNet.Compat
 
         public static bool Bool(bool value) => value;
         public static bool Bool(int value) => value != 0;
+        public static bool Bool(float value) => value != 0;
 
         public static IEnumerable<(int, T)> Enumerate<T>(IEnumerable<T> e)
         {
@@ -87,30 +88,11 @@ namespace Horker.MXNet.Compat
             return value != null;
         }
 
-        public static int Len(string s)
-        {
-            return s.Length;
-        }
-
-        public static int Len(System.Array items)
-        {
-            return items.Length;
-        }
-
-        public static int Len(ICollection items)
-        {
-            return items.Count;
-        }
-
-        public static int Len<T>(IEnumerable<T> items)
-        {
-            return items.Count();
-        }
-
-        public static int Len<T>(List<T> items)
-        {
-            return items.Count;
-        }
+        public static int Len(string s) => s.Length;
+        public static int Len<T>(IEnumerable<T> items) => items.Count();
+        public static int Len<K, V>(IDictionary<K, V> items) => items.Count;
+        public static int Len(System.Array items) => items.Length;
+        public static int Len<T>(IList<T> items) => items.Count;
 
         public static List<T> List<T>(IEnumerable<T> items)
         {
@@ -169,10 +151,14 @@ namespace Horker.MXNet.Compat
             return string.Format(ConvertFormatString(f), values.Item1, values.Item2, values.Item3, values.Item4);
         }
 
-        public static IEnumerable<int> Range(int n)
+        public static IEnumerable<int> Range(int stop)
         {
-            for (var i = 0; i < n; ++i)
-                yield return i;
+            return new Range(stop);
+        }
+
+        public static IEnumerable<int> Range(int start, int stop, int step = 1)
+        {
+            return new Range(start, stop, step);
         }
 
         public static HashSet<T> Set<T>(IEnumerable<T> items)

@@ -1,0 +1,1004 @@
+{
+  "UsingNamespaces": [
+    "using System;",
+    "using System.Linq;",
+    "using System.Collections;",
+    "using System.Collections.Generic;",
+    "using System.Threading;",
+    "using Horker.MXNet;",
+    "using Horker.MXNet.Compat;",
+    "using static Horker.MXNet.Base;",
+    "using static Horker.MXNet.Compat.Compat;",
+    "using static Horker.MXNet.Compat.Coercing;",
+    "using static Horker.MXNet.Compat.Array;",
+    "using static Horker.MXNet.MXNetCoercing;",
+    "using static Horker.MXNet.MXNetCompat;",
+    "using static Horker.MXNet.DType;",
+    "using NDArrayHandle = System.IntPtr;",
+    "using SymbolHandle = System.IntPtr;",
+    "using _LIB = Horker.MXNet._LIB;",
+    "using MxInt = System.Int32;",
+    "using MxUint = System.Int32;",
+    "using MxInt64 = System.Int64;",
+    "using PySlice = Horker.MXNet.Compat.Slice;",
+    "using Tuple = System.Collections.ICollection;",
+    "using List = System.Collections.ICollection;",
+    "using _numpy = Np;"
+  ],
+  "Namespace": "Horker.MXNet",
+  "Replacements": {
+    "ndarray": "NDArray",
+    "ctypes": "CTypes",
+    "dtype": "DType",
+    "stype": "SType",
+    "uint8": "UInt8"
+  },
+  "TypeNames": {
+    "NDArray": [
+      "NDArray"
+    ],
+    "SymbolBase": [
+      "SymbolBase"
+    ],
+    "Symbol": [
+      "Symbol"
+    ],
+    "tuple": [
+      "Tuple"
+    ],
+    "list": [
+      "List<int>",
+      "List<PySlice>",
+      "IEnumerable<int>",
+      "IEnumerable<PySlice>"
+    ],
+    "int": [
+      "int"
+    ],
+    "py_slice": [
+      "PySlice"
+    ],
+    "mx_int": [
+      "mx_int"
+    ],
+    "mx_uint": [
+      "mx_uint"
+    ],
+    "integer_types": [
+      "int",
+      "long"
+    ],
+    "numeric_types": [
+      "float",
+      "int",
+      "long"
+    ],
+    "string_types": [
+      "string"
+    ]
+  },
+  "Classes": {
+    "Symbol": {
+      "Name": "Symbol",
+      "BaseClasses": [
+        "SymbolBase", "IEnumerable<Symbol>"
+      ],
+      "Fields": {
+        "handle": {
+          "Inherited": true,
+          "Signature": "public SymbolHandle Handle { get; set; }"
+        }
+      },
+      "Methods": {
+        "__repr__": [
+          {
+            "Signature": "internal object __Repr__()"
+          }
+        ],
+        "__iter__": [
+          {
+            "Signature": "internal object __Iter__()"
+          }
+        ],
+        "__add__": [
+          {
+            "Signature": "internal object __Add__(object other)"
+          }
+        ],
+        "__bool__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Bool__()"
+          }
+        ],
+        "__iadd__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Iadd__(object other)"
+          }
+        ],
+        "__radd__": [
+          {
+            "Signature": "internal object __Radd__(object other)"
+          }
+        ],
+        "__sub__": [
+          {
+            "Signature": "internal object __Sub__(object other)"
+          }
+        ],
+        "__isub__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Isub__(object other)"
+          }
+        ],
+        "__rsub__": [
+          {
+            "Signature": "internal object __Rsub__(object other)"
+          }
+        ],
+        "__mul__": [
+          {
+            "Signature": "internal object __Mul__(object other)"
+          }
+        ],
+        "__imul__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Imul__(object other)"
+          }
+        ],
+        "__rmul__": [
+          {
+            "Signature": "internal object __Rmul__(object other)"
+          }
+        ],
+        "__div__": [
+          {
+            "Signature": "internal object __Div__(object other)"
+          }
+        ],
+        "__rdiv__": [
+          {
+            "Signature": "internal object __Rdiv__(object other)"
+          }
+        ],
+        "__mod__": [
+          {
+            "Signature": "internal object __Mod__(object other)"
+          }
+        ],
+        "__rmod__": [
+          {
+            "Signature": "internal object __Rmod__(object other)"
+          }
+        ],
+        "__idiv__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Idiv__(object other)"
+          }
+        ],
+        "__truediv__": [
+          {
+            "Signature": "internal object __Truediv__(object other)"
+          }
+        ],
+        "__rtruediv__": [
+          {
+            "Signature": "internal object __Rtruediv__(object other)"
+          }
+        ],
+        "__itruediv__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Itruediv__(object other)"
+          }
+        ],
+        "__pow__": [
+          {
+            "Signature": "internal object __Pow__(object other)"
+          }
+        ],
+        "__rpow__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Rpow__(object other)"
+          }
+        ],
+        "__neg__": [
+          {
+            "Signature": "internal object __Neg__()"
+          }
+        ],
+        "__copy__": [
+          {
+            "Signature": "internal Symbol __Copy__()"
+          }
+        ],
+        "__deepcopy__": [
+          {
+            "Signature": "internal Symbol __Deepcopy__(object _ = null)"
+          }
+        ],
+        "__eq__": [
+          {
+            "Signature": "internal object __Eq__(object other)"
+          }
+        ],
+        "__ne__": [
+          {
+            "Signature": "internal object __Ne__(object other)"
+          }
+        ],
+        "__gt__": [
+          {
+            "Signature": "internal object __Gt__(object other)"
+          }
+        ],
+        "__ge__": [
+          {
+            "Signature": "internal object __Ge__(object other)"
+          }
+        ],
+        "__lt__": [
+          {
+            "Signature": "internal object __Lt__(object other)"
+          }
+        ],
+        "__le__": [
+          {
+            "Signature": "internal object __Le__(object other)"
+          }
+        ],
+        "__getstate__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Getstate__()"
+          }
+        ],
+        "__setstate__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Setstate__(object state)"
+          }
+        ],
+        "__call__": [
+          {
+            "Signature": "internal Symbol __Call__(SymbolList args)"
+          }
+        ],
+        "_compose": [
+          {
+            "Signature": "internal void _compose(SymbolList args, string name = null)",
+            "Locals": {
+              "keys": {
+                "Type": "string[]",
+                "Definition": "string[] keys = null;"
+              },
+              "kwargs": {
+                "Type": "Dictionary<string, IntPtr>",
+                "Definition": "var kwargs = new Dictionary<string, IntPtr>();"
+              }
+            }
+          }
+        ],
+        "__getitem__": [
+          {
+            "Signature": "internal object __Getitem__(int index)"
+          },
+          {
+            "Signature": "internal object __Getitem__(PySlice index)"
+          },
+          {
+            "Signature": "internal object __Getitem__(string index)",
+            "Locals": {
+              "idx": {
+                "Type": "int"
+              },
+              "indexReassigned": {
+                "Type": "int"
+              }
+            },
+            "Reassigned": [ "index" ]
+          }
+        ],
+        "name": [
+          {
+            "Signature": "public string Name"
+          }
+        ],
+        "attr": [
+          {
+            "Signature": "public string Attr(string key)"
+          }
+        ],
+        "list_attr": [
+          {
+            "Drop": true,
+            "Signature": "public object ListAttr(bool recursive = false)"
+          }
+        ],
+        "attr_dict": [
+          {
+            "Drop": true,
+            "Signature": "public object AttrDict()"
+          }
+        ],
+        "_set_attr": [
+          {
+            "Signature": "internal void _setAttr(Dictionary<string, string> kwargs)",
+            "Locals": {
+              "value": {
+                "Type": "string"
+              }
+            }
+          }
+        ],
+        "get_internals": [
+          {
+            "Signature": "public object GetInternals()"
+          }
+        ],
+        "get_children": [
+          {
+            "Signature": "public object GetChildren()"
+          }
+        ],
+        "list_arguments": [
+          {
+            "Signature": "public object ListArguments()"
+          }
+        ],
+        "list_outputs": [
+          {
+            "Signature": "public List<string> ListOutputs()"
+          }
+        ],
+        "__len__": [
+          {
+            "Signature": "internal int __Len__()"
+          }
+        ],
+        "list_auxiliary_states": [
+          {
+            "Signature": "public object ListAuxiliaryStates()"
+          }
+        ],
+        "list_inputs": [
+          {
+            "Signature": "public object ListInputs()"
+          }
+        ],
+        "infer_type": [
+          {
+            "Signature": "public object InferType(object *args, object kwargs)"
+          }
+        ],
+        "infer_type_partial": [
+          {
+            "Signature": "public object InferTypePartial(object *args, object kwargs)"
+          }
+        ],
+        "_infer_type_impl": [
+          {
+            "Signature": "internal object _inferTypeImpl(object partial, object *args, object kwargs)"
+          }
+        ],
+        "infer_shape": [
+          {
+            "Signature": "public object InferShape(object *args, object kwargs)"
+          }
+        ],
+        "infer_shape_partial": [
+          {
+            "Signature": "public object InferShapePartial(object *args, object kwargs)"
+          }
+        ],
+        "_infer_shape_impl": [
+          {
+            "Signature": "internal object _inferShapeImpl(object partial, object *args, object kwargs)"
+          }
+        ],
+        "debug_str": [
+          {
+            "Signature": "public object DebugStr()"
+          }
+        ],
+        "save": [
+          {
+            "Signature": "public object Save(string fname, bool removeAmpCast = true)"
+          }
+        ],
+        "tojson": [
+          {
+            "Signature": "public object Tojson()"
+          }
+        ],
+        "_get_ndarray_inputs": [
+          {
+            "Signature": "internal object _getNdarrayInputs(object argKey, object args, string argNames, object allowMissing)"
+          }
+        ],
+        "_gen_atomic_symbol": [
+          {
+            "Signature": "internal object _genAtomicSymbol()"
+          }
+        ],
+        "simple_bind": [
+          {
+            "Signature": "public object SimpleBind(Context ctx, string gradReq = \"write\", object typeDict = null, object stypeDict = null, object group2ctx = null, string sharedArgNames = null, object sharedExec = null, object sharedBuffer = null, object kwargs)"
+          }
+        ],
+        "bind": [
+          {
+            "Signature": "public object Bind(Context ctx, object args, object argsGrad = null, string gradReq = \"write\", object auxStates = null, object group2ctx = null, object sharedExec = null)"
+          }
+        ],
+        "gradient": [
+          {
+            "Signature": "public object Gradient(object wrt)"
+          }
+        ],
+        "eval": [
+          {
+            "Signature": "public object Eval(Context ctx = null, object kwargs)"
+          }
+        ],
+        "reshape": [
+          {
+            "Signature": "public object Reshape(object *args, object kwargs)"
+          }
+        ],
+        "reshape_like": [
+          {
+            "Signature": "public object ReshapeLike(object *args, object kwargs)"
+          }
+        ],
+        "astype": [
+          {
+            "Signature": "public string Astype(object *args, object kwargs)"
+          }
+        ],
+        "zeros_like": [
+          {
+            "Signature": "public object ZerosLike(object *args, object kwargs)"
+          }
+        ],
+        "ones_like": [
+          {
+            "Signature": "public object OnesLike(object *args, object kwargs)"
+          }
+        ],
+        "broadcast_axes": [
+          {
+            "Signature": "public object BroadcastAxes(object *args, object kwargs)"
+          }
+        ],
+        "repeat": [
+          {
+            "Signature": "public object Repeat(object *args, object kwargs)"
+          }
+        ],
+        "pad": [
+          {
+            "Signature": "public object Pad(object *args, object kwargs)"
+          }
+        ],
+        "swapaxes": [
+          {
+            "Signature": "public object Swapaxes(object *args, object kwargs)"
+          }
+        ],
+        "split": [
+          {
+            "Signature": "public object Split(object *args, object kwargs)"
+          }
+        ],
+        "split_v2": [
+          {
+            "Signature": "public object SplitV2(object *args, object kwargs)"
+          }
+        ],
+        "slice": [
+          {
+            "Signature": "public object Slice(object *args, object kwargs)"
+          }
+        ],
+        "slice_axis": [
+          {
+            "Signature": "public object SliceAxis(object *args, object kwargs)"
+          }
+        ],
+        "slice_like": [
+          {
+            "Signature": "public object SliceLike(object *args, object kwargs)"
+          }
+        ],
+        "take": [
+          {
+            "Signature": "public object Take(object *args, object kwargs)"
+          }
+        ],
+        "one_hot": [
+          {
+            "Signature": "public object OneHot(object *args, object kwargs)"
+          }
+        ],
+        "pick": [
+          {
+            "Signature": "public object Pick(object *args, object kwargs)"
+          }
+        ],
+        "sort": [
+          {
+            "Signature": "public object Sort(object *args, object kwargs)"
+          }
+        ],
+        "topk": [
+          {
+            "Signature": "public object Topk(object *args, object kwargs)"
+          }
+        ],
+        "argsort": [
+          {
+            "Signature": "public object Argsort(object *args, object kwargs)"
+          }
+        ],
+        "argmax": [
+          {
+            "Signature": "public object Argmax(object *args, object kwargs)"
+          }
+        ],
+        "argmax_channel": [
+          {
+            "Signature": "public object ArgmaxChannel(object *args, object kwargs)"
+          }
+        ],
+        "argmin": [
+          {
+            "Signature": "public object Argmin(object *args, object kwargs)"
+          }
+        ],
+        "clip": [
+          {
+            "Signature": "public object Clip(object *args, object kwargs)"
+          }
+        ],
+        "abs": [
+          {
+            "Signature": "public object Abs(object *args, object kwargs)"
+          }
+        ],
+        "sign": [
+          {
+            "Signature": "public object Sign(object *args, object kwargs)"
+          }
+        ],
+        "flatten": [
+          {
+            "Signature": "public object Flatten(object *args, object kwargs)"
+          }
+        ],
+        "shape_array": [
+          {
+            "Signature": "public object ShapeArray(object *args, object kwargs)"
+          }
+        ],
+        "size_array": [
+          {
+            "Signature": "public object SizeArray(object *args, object kwargs)"
+          }
+        ],
+        "expand_dims": [
+          {
+            "Signature": "public object ExpandDims(object *args, object kwargs)"
+          }
+        ],
+        "broadcast_to": [
+          {
+            "Signature": "public object BroadcastTo(object *args, object kwargs)"
+          }
+        ],
+        "broadcast_like": [
+          {
+            "Signature": "public object BroadcastLike(object *args, object kwargs)"
+          }
+        ],
+        "tile": [
+          {
+            "Signature": "public object Tile(object *args, object kwargs)"
+          }
+        ],
+        "transpose": [
+          {
+            "Signature": "public object Transpose(object *args, object kwargs)"
+          }
+        ],
+        "flip": [
+          {
+            "Signature": "public object Flip(object *args, object kwargs)"
+          }
+        ],
+        "depth_to_space": [
+          {
+            "Signature": "public object DepthToSpace(object *args, object kwargs)"
+          }
+        ],
+        "space_to_depth": [
+          {
+            "Signature": "public object SpaceToDepth(object *args, object kwargs)"
+          }
+        ],
+        "diag": [
+          {
+            "Signature": "public object Diag(int k = 0, object kwargs)"
+          }
+        ],
+        "sum": [
+          {
+            "Signature": "public object Sum(object *args, object kwargs)"
+          }
+        ],
+        "nansum": [
+          {
+            "Signature": "public object Nansum(object *args, object kwargs)"
+          }
+        ],
+        "prod": [
+          {
+            "Signature": "public object Prod(object *args, object kwargs)"
+          }
+        ],
+        "nanprod": [
+          {
+            "Signature": "public object Nanprod(object *args, object kwargs)"
+          }
+        ],
+        "mean": [
+          {
+            "Signature": "public object Mean(object *args, object kwargs)"
+          }
+        ],
+        "max": [
+          {
+            "Signature": "public object Max(object *args, object kwargs)"
+          }
+        ],
+        "min": [
+          {
+            "Signature": "public object Min(object *args, object kwargs)"
+          }
+        ],
+        "norm": [
+          {
+            "Signature": "public object Norm(object *args, object kwargs)"
+          }
+        ],
+        "round": [
+          {
+            "Signature": "public object Round(object *args, object kwargs)"
+          }
+        ],
+        "rint": [
+          {
+            "Signature": "public object Rint(object *args, object kwargs)"
+          }
+        ],
+        "fix": [
+          {
+            "Signature": "public object Fix(object *args, object kwargs)"
+          }
+        ],
+        "floor": [
+          {
+            "Signature": "public object Floor(object *args, object kwargs)"
+          }
+        ],
+        "ceil": [
+          {
+            "Signature": "public object Ceil(object *args, object kwargs)"
+          }
+        ],
+        "trunc": [
+          {
+            "Signature": "public object Trunc(object *args, object kwargs)"
+          }
+        ],
+        "sin": [
+          {
+            "Signature": "public object Sin(object *args, object kwargs)"
+          }
+        ],
+        "cos": [
+          {
+            "Signature": "public object Cos(object *args, object kwargs)"
+          }
+        ],
+        "tan": [
+          {
+            "Signature": "public object Tan(object *args, object kwargs)"
+          }
+        ],
+        "arcsin": [
+          {
+            "Signature": "public object Arcsin(object *args, object kwargs)"
+          }
+        ],
+        "arccos": [
+          {
+            "Signature": "public object Arccos(object *args, object kwargs)"
+          }
+        ],
+        "arctan": [
+          {
+            "Signature": "public object Arctan(object *args, object kwargs)"
+          }
+        ],
+        "degrees": [
+          {
+            "Signature": "public object Degrees(object *args, object kwargs)"
+          }
+        ],
+        "radians": [
+          {
+            "Signature": "public object Radians(object *args, object kwargs)"
+          }
+        ],
+        "sinh": [
+          {
+            "Signature": "public object Sinh(object *args, object kwargs)"
+          }
+        ],
+        "cosh": [
+          {
+            "Signature": "public object Cosh(object *args, object kwargs)"
+          }
+        ],
+        "tanh": [
+          {
+            "Signature": "public object Tanh(object *args, object kwargs)"
+          }
+        ],
+        "arcsinh": [
+          {
+            "Signature": "public object Arcsinh(object *args, object kwargs)"
+          }
+        ],
+        "arccosh": [
+          {
+            "Signature": "public object Arccosh(object *args, object kwargs)"
+          }
+        ],
+        "arctanh": [
+          {
+            "Signature": "public object Arctanh(object *args, object kwargs)"
+          }
+        ],
+        "exp": [
+          {
+            "Signature": "public object Exp(object *args, object kwargs)"
+          }
+        ],
+        "expm1": [
+          {
+            "Signature": "public object Expm1(object *args, object kwargs)"
+          }
+        ],
+        "log": [
+          {
+            "Signature": "public object Log(object *args, object kwargs)"
+          }
+        ],
+        "log10": [
+          {
+            "Signature": "public object Log10(object *args, object kwargs)"
+          }
+        ],
+        "log2": [
+          {
+            "Signature": "public object Log2(object *args, object kwargs)"
+          }
+        ],
+        "log1p": [
+          {
+            "Signature": "public object Log1p(object *args, object kwargs)"
+          }
+        ],
+        "sqrt": [
+          {
+            "Signature": "public object Sqrt(object *args, object kwargs)"
+          }
+        ],
+        "rsqrt": [
+          {
+            "Signature": "public object Rsqrt(object *args, object kwargs)"
+          }
+        ],
+        "cbrt": [
+          {
+            "Signature": "public object Cbrt(object *args, object kwargs)"
+          }
+        ],
+        "rcbrt": [
+          {
+            "Signature": "public object Rcbrt(object *args, object kwargs)"
+          }
+        ],
+        "square": [
+          {
+            "Signature": "public object Square(object *args, object kwargs)"
+          }
+        ],
+        "reciprocal": [
+          {
+            "Signature": "public object Reciprocal(object *args, object kwargs)"
+          }
+        ],
+        "relu": [
+          {
+            "Signature": "public object Relu(object *args, object kwargs)"
+          }
+        ],
+        "sigmoid": [
+          {
+            "Signature": "public object Sigmoid(object *args, object kwargs)"
+          }
+        ],
+        "softmax": [
+          {
+            "Signature": "public object Softmax(object *args, object kwargs)"
+          }
+        ],
+        "log_softmax": [
+          {
+            "Signature": "public object LogSoftmax(object *args, object kwargs)"
+          }
+        ],
+        "softmin": [
+          {
+            "Signature": "public object Softmin(object *args, object kwargs)"
+          }
+        ],
+        "squeeze": [
+          {
+            "Signature": "public object Squeeze(object *args, object kwargs)"
+          }
+        ],
+        "get_backend_symbol": [
+          {
+            "Signature": "public object GetBackendSymbol(object backend)"
+          }
+        ],
+        "wait_to_read": [
+          {
+            "Signature": "public object WaitToRead()"
+          }
+        ],
+        "asnumpy": [
+          {
+            "Signature": "public object Asnumpy()"
+          }
+        ],
+        "asscalar": [
+          {
+            "Signature": "public object Asscalar()"
+          }
+        ],
+        "copy": [
+          {
+            "Signature": "public object Copy()"
+          }
+        ],
+        "as_in_context": [
+          {
+            "Signature": "public object AsInContext()"
+          }
+        ],
+        "detach": [
+          {
+            "Signature": "public object Detach()"
+          }
+        ],
+        "backward": [
+          {
+            "Signature": "public object Backward()"
+          }
+        ]
+      }
+    },
+    "Helper": {
+      "Name": "Helper",
+      "BaseClasses": null,
+      "Fields": {},
+      "Methods": {
+        "var": [
+          {
+            "Signature": "public static object Var(string name, object attr = null, Shape shape = null, object lrMult = null, object wdMult = null, DType dtype = null, Initializer init = null, string stype = null, object kwargs)"
+          }
+        ],
+        "Group": [
+          {
+            "Signature": "public static object Group(object symbols)"
+          }
+        ],
+        "load": [
+          {
+            "Signature": "public static object Load(string fname)"
+          }
+        ],
+        "load_json": [
+          {
+            "Signature": "public static object LoadJson(object jsonStr)"
+          }
+        ],
+        "pow": [
+          {
+            "Signature": "public static object Pow(object base, object exp)"
+          }
+        ],
+        "power": [
+          {
+            "Signature": "public static object Power(object base, object exp)"
+          }
+        ],
+        "maximum": [
+          {
+            "Signature": "public static object Maximum(object left, object right)"
+          }
+        ],
+        "minimum": [
+          {
+            "Signature": "public static object Minimum(object left, object right)"
+          }
+        ],
+        "hypot": [
+          {
+            "Signature": "public static object Hypot(object left, object right)"
+          }
+        ],
+        "eye": [
+          {
+            "Signature": "public static object Eye(object N, int M = 0, int k = 0, DType dtype = null, object kwargs)"
+          }
+        ],
+        "zeros": [
+          {
+            "Signature": "public static object Zeros(Shape shape, DType dtype = null, object kwargs)"
+          }
+        ],
+        "ones": [
+          {
+            "Signature": "public static object Ones(Shape shape, DType dtype = null, object kwargs)"
+          }
+        ],
+        "full": [
+          {
+            "Signature": "public static object Full(Shape shape, object val, DType dtype = null, object kwargs)"
+          }
+        ],
+        "arange": [
+          {
+            "Signature": "public static object Arange(object start, object stop = null, float step = 1.0f, int repeat = 1, bool inferRange = false, string name = null, DType dtype = null)"
+          }
+        ],
+        "linspace": [
+          {
+            "Signature": "public static object Linspace(object start, object stop, object num, bool endpoint = true, string name = null, DType dtype = null)"
+          }
+        ],
+        "histogram": [
+          {
+            "Signature": "public static object Histogram(object a, int bins = 10, object range = null, object kwargs)"
+          }
+        ],
+        "split_v2": [
+          {
+            "Signature": "public static object SplitV2(object ary, object indicesOrSections, int axis = 0, bool squeezeAxis = false)"
+          }
+        ]
+      }
+    }
+  }
+}

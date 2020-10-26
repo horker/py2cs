@@ -1,24 +1,46 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using NDArrayHandle = System.IntPtr;
 
 namespace Horker.MXNet
 {
     public class NDArrayList : IList<NDArray>
     {
+        private List<NDArray> _data;
+
         public NDArray this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public NDArray Item1 => this[0];
-        public NDArray Item2 => this[1];
-        public NDArray Item3 => this[2];
-        public NDArray Item4 => this[3];
-        public NDArray Item5 => this[4];
-        public NDArray Item6 => this[5];
+        internal NDArray Item1 => this[0];
+        internal NDArray Item2 => this[1];
+        internal NDArray Item3 => this[2];
+        internal NDArray Item4 => this[3];
+        internal NDArray Item5 => this[4];
+        internal NDArray Item6 => this[5];
+
+        public IEnumerable<NDArrayHandle> Handles => _data.Where(x => x != null).Select(x => x.Handle);
 
         public int Count => throw new NotImplementedException();
 
         public bool IsReadOnly => throw new NotImplementedException();
+
+        public NDArrayList()
+        {
+            _data = new List<NDArray>();
+        }
+
+        public NDArrayList(IEnumerable<NDArray> a)
+        {
+            _data = new List<NDArray>(a);
+        }
+
+        public NDArrayList(NDArray a)
+            : this()
+        {
+            _data.Add(a);
+        }
 
         public void Add(NDArray item)
         {

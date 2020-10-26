@@ -8,6 +8,8 @@ namespace Horker.MXNet.Compat
 {
     public static class CTypes
     {
+        public static string CCharP() => string.Empty;
+
         public static int CInt() => default;
         public static int CInt(int obj) => obj;
         public static int CInt(object obj) => (int)obj;
@@ -19,6 +21,10 @@ namespace Horker.MXNet.Compat
         public static long CUint64() => default;
         public static long CUint64(long obj) => obj;
         public static long CUint64(object obj) => (long)obj;
+
+        public static int CUint() => default;
+        public static int CUint(int obj) => obj;
+        public static int CUint(object obj) => (int)obj;
 
         public static bool CBool() => default;
         public static bool CBool(bool obj) => obj;

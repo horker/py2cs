@@ -1,0 +1,2073 @@
+{
+  "_Name": "Module",
+  "body": [
+    {
+      "_Name": "Expr",
+      "value": {
+        "_Name": "Constant",
+        "value": "'Symbolic configuration API.'",
+        "kind": "None"
+      }
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'__future__'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'absolute_import'",
+          "asname": "'_abs'"
+        }
+      ],
+      "level": "0"
+    },
+    {
+      "_Name": "Import",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'ctypes'",
+          "asname": "None"
+        }
+      ]
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'base'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'_LIB'",
+          "asname": "None"
+        }
+      ],
+      "level": "2"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'base'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'c_str_array'",
+          "asname": "None"
+        },
+        {
+          "_Name": "alias",
+          "name": "'c_handle_array'",
+          "asname": "None"
+        },
+        {
+          "_Name": "alias",
+          "name": "'c_str'",
+          "asname": "None"
+        },
+        {
+          "_Name": "alias",
+          "name": "'mx_uint'",
+          "asname": "None"
+        }
+      ],
+      "level": "2"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'base'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'SymbolHandle'",
+          "asname": "None"
+        }
+      ],
+      "level": "2"
+    },
+    {
+      "_Name": "ImportFrom",
+      "module": "'base'",
+      "names": [
+        {
+          "_Name": "alias",
+          "name": "'check_call'",
+          "asname": "None"
+        }
+      ],
+      "level": "2"
+    },
+    {
+      "_Name": "Assign",
+      "targets": [
+        {
+          "_Name": "Name",
+          "id": "'_symbol_cls'",
+          "ctx": {
+            "_Name": "Store"
+          }
+        }
+      ],
+      "value": {
+        "_Name": "Constant",
+        "value": "None",
+        "kind": "None"
+      },
+      "type_comment": "None"
+    },
+    {
+      "_Name": "ClassDef",
+      "name": "'SymbolBase'",
+      "bases": [
+        {
+          "_Name": "Name",
+          "id": "'object'",
+          "ctx": {
+            "_Name": "Load"
+          }
+        }
+      ],
+      "keywords": [],
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'Symbol is symbolic graph.'",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'__slots__'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "List",
+            "elts": [
+              {
+                "_Name": "Constant",
+                "value": "'handle'",
+                "kind": "None"
+              }
+            ],
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__init__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'handle'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Constant",
+                "value": "'Initialize the function with handle\\n\\n        Parameters\\n        ----------\\n        handle : SymbolHandle\\n            the handle to the underlying C++ Symbol\\n        '",
+                "kind": "None"
+              }
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'handle'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Name",
+                "id": "'handle'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__del__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'check_call'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'_LIB'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'NNSymbolFree'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'handle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'_compose'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": {
+              "_Name": "arg",
+              "arg": "'args'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": {
+              "_Name": "arg",
+              "arg": "'kwargs'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Constant",
+                "value": "'Compose symbol on inputs.\\n\\n        This call mutates the current symbol.\\n\\n        Parameters\\n        ----------\\n        args:\\n            provide positional arguments\\n\\n        kwargs:\\n            provide keyword arguments\\n\\n        Returns\\n        -------\\n        the resulting symbol\\n        '",
+                "kind": "None"
+              }
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'name'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'kwargs'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'pop'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Constant",
+                    "value": "'name'",
+                    "kind": "None"
+                  },
+                  {
+                    "_Name": "Constant",
+                    "value": "None",
+                    "kind": "None"
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "Name",
+                "id": "'name'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "body": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'name'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'c_str'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'name'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                }
+              ],
+              "orelse": []
+            },
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "BoolOp",
+                "op": {
+                  "_Name": "And"
+                },
+                "values": [
+                  {
+                    "_Name": "Compare",
+                    "left": {
+                      "_Name": "Call",
+                      "func": {
+                        "_Name": "Name",
+                        "id": "'len'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "_Name": "Name",
+                          "id": "'args'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    },
+                    "ops": [
+                      {
+                        "_Name": "NotEq"
+                      }
+                    ],
+                    "comparators": [
+                      {
+                        "_Name": "Constant",
+                        "value": "0",
+                        "kind": "None"
+                      }
+                    ]
+                  },
+                  {
+                    "_Name": "Compare",
+                    "left": {
+                      "_Name": "Call",
+                      "func": {
+                        "_Name": "Name",
+                        "id": "'len'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "_Name": "Name",
+                          "id": "'kwargs'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    },
+                    "ops": [
+                      {
+                        "_Name": "NotEq"
+                      }
+                    ],
+                    "comparators": [
+                      {
+                        "_Name": "Constant",
+                        "value": "0",
+                        "kind": "None"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "body": [
+                {
+                  "_Name": "Raise",
+                  "exc": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'TypeError'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Constant",
+                        "value": "'compose only accept input Symbols                 either as positional or keyword arguments, not both'",
+                        "kind": "None"
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "cause": "None"
+                }
+              ],
+              "orelse": []
+            },
+            {
+              "_Name": "For",
+              "target": {
+                "_Name": "Name",
+                "id": "'arg'",
+                "ctx": {
+                  "_Name": "Store"
+                }
+              },
+              "iter": {
+                "_Name": "Name",
+                "id": "'args'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "body": [
+                {
+                  "_Name": "If",
+                  "test": {
+                    "_Name": "UnaryOp",
+                    "op": {
+                      "_Name": "Not"
+                    },
+                    "operand": {
+                      "_Name": "Call",
+                      "func": {
+                        "_Name": "Name",
+                        "id": "'isinstance'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "_Name": "Name",
+                          "id": "'arg'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        {
+                          "_Name": "Name",
+                          "id": "'SymbolBase'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  },
+                  "body": [
+                    {
+                      "_Name": "Raise",
+                      "exc": {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Name",
+                          "id": "'TypeError'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Constant",
+                            "value": "'Compose expect `Symbol` as arguments'",
+                            "kind": "None"
+                          }
+                        ],
+                        "keywords": []
+                      },
+                      "cause": "None"
+                    }
+                  ],
+                  "orelse": []
+                }
+              ],
+              "orelse": [],
+              "type_comment": "None"
+            },
+            {
+              "_Name": "For",
+              "target": {
+                "_Name": "Name",
+                "id": "'val'",
+                "ctx": {
+                  "_Name": "Store"
+                }
+              },
+              "iter": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'kwargs'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'values'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [],
+                "keywords": []
+              },
+              "body": [
+                {
+                  "_Name": "If",
+                  "test": {
+                    "_Name": "UnaryOp",
+                    "op": {
+                      "_Name": "Not"
+                    },
+                    "operand": {
+                      "_Name": "Call",
+                      "func": {
+                        "_Name": "Name",
+                        "id": "'isinstance'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "_Name": "Name",
+                          "id": "'val'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        {
+                          "_Name": "Name",
+                          "id": "'SymbolBase'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  },
+                  "body": [
+                    {
+                      "_Name": "Raise",
+                      "exc": {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Name",
+                          "id": "'TypeError'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Constant",
+                            "value": "'Compose expect `Symbol` as arguments'",
+                            "kind": "None"
+                          }
+                        ],
+                        "keywords": []
+                      },
+                      "cause": "None"
+                    }
+                  ],
+                  "orelse": []
+                }
+              ],
+              "orelse": [],
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'num_args'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "BinOp",
+                "left": {
+                  "_Name": "Call",
+                  "func": {
+                    "_Name": "Name",
+                    "id": "'len'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "args": [
+                    {
+                      "_Name": "Name",
+                      "id": "'args'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  ],
+                  "keywords": []
+                },
+                "op": {
+                  "_Name": "Add"
+                },
+                "right": {
+                  "_Name": "Call",
+                  "func": {
+                    "_Name": "Name",
+                    "id": "'len'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "args": [
+                    {
+                      "_Name": "Name",
+                      "id": "'kwargs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  ],
+                  "keywords": []
+                }
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "Compare",
+                "left": {
+                  "_Name": "Call",
+                  "func": {
+                    "_Name": "Name",
+                    "id": "'len'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "args": [
+                    {
+                      "_Name": "Name",
+                      "id": "'kwargs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  ],
+                  "keywords": []
+                },
+                "ops": [
+                  {
+                    "_Name": "NotEq"
+                  }
+                ],
+                "comparators": [
+                  {
+                    "_Name": "Constant",
+                    "value": "0",
+                    "kind": "None"
+                  }
+                ]
+              },
+              "body": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'keys'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'c_str_array'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'kwargs'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'keys'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [],
+                        "keywords": []
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                },
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'args'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'c_handle_array'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'kwargs'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'values'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [],
+                        "keywords": []
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                }
+              ],
+              "orelse": [
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'keys'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Constant",
+                    "value": "None",
+                    "kind": "None"
+                  },
+                  "type_comment": "None"
+                },
+                {
+                  "_Name": "Assign",
+                  "targets": [
+                    {
+                      "_Name": "Name",
+                      "id": "'args'",
+                      "ctx": {
+                        "_Name": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'c_handle_array'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Attribute",
+                          "value": {
+                            "_Name": "Name",
+                            "id": "'kwargs'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "attr": "'values'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [],
+                        "keywords": []
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  "type_comment": "None"
+                }
+              ]
+            },
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'check_call'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'_LIB'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'NNSymbolCompose'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'handle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'name'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'num_args'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'keys'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'args'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'_set_attr'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": {
+              "_Name": "arg",
+              "arg": "'kwargs'",
+              "annotation": "None",
+              "type_comment": "None"
+            },
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Constant",
+                "value": "'Set the attribute of the symbol.\\n\\n        Parameters\\n        ----------\\n        **kwargs\\n            The attributes to set\\n        '",
+                "kind": "None"
+              }
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'keys'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'c_str_array'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'kwargs'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'keys'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'vals'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'c_str_array'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "ListComp",
+                    "elt": {
+                      "_Name": "Call",
+                      "func": {
+                        "_Name": "Name",
+                        "id": "'str'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "_Name": "Name",
+                          "id": "'s'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    },
+                    "generators": [
+                      {
+                        "_Name": "comprehension",
+                        "target": {
+                          "_Name": "Name",
+                          "id": "'s'",
+                          "ctx": {
+                            "_Name": "Store"
+                          }
+                        },
+                        "iter": {
+                          "_Name": "Call",
+                          "func": {
+                            "_Name": "Attribute",
+                            "value": {
+                              "_Name": "Name",
+                              "id": "'kwargs'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "attr": "'values'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "args": [],
+                          "keywords": []
+                        },
+                        "ifs": [],
+                        "is_async": "0"
+                      }
+                    ]
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Name",
+                  "id": "'num_args'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'mx_uint'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'len'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'kwargs'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              },
+              "type_comment": "None"
+            },
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'check_call'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'_LIB'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'MXSymbolSetAttrs'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Attribute",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'self'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "attr": "'handle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'num_args'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'keys'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      {
+                        "_Name": "Name",
+                        "id": "'vals'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'_set_handle'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              },
+              {
+                "_Name": "arg",
+                "arg": "'handle'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Constant",
+                "value": "'Set handle.'",
+                "kind": "None"
+              }
+            },
+            {
+              "_Name": "Assign",
+              "targets": [
+                {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'self'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'handle'",
+                  "ctx": {
+                    "_Name": "Store"
+                  }
+                }
+              ],
+              "value": {
+                "_Name": "Name",
+                "id": "'handle'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "type_comment": "None"
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        },
+        {
+          "_Name": "FunctionDef",
+          "name": "'__reduce__'",
+          "args": {
+            "_Name": "arguments",
+            "posonlyargs": [],
+            "args": [
+              {
+                "_Name": "arg",
+                "arg": "'self'",
+                "annotation": "None",
+                "type_comment": "None"
+              }
+            ],
+            "vararg": "None",
+            "kwonlyargs": [],
+            "kw_defaults": [],
+            "kwarg": "None",
+            "defaults": []
+          },
+          "body": [
+            {
+              "_Name": "Return",
+              "value": {
+                "_Name": "Tuple",
+                "elts": [
+                  {
+                    "_Name": "Name",
+                    "id": "'_symbol_cls'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  {
+                    "_Name": "Tuple",
+                    "elts": [
+                      {
+                        "_Name": "Constant",
+                        "value": "None",
+                        "kind": "None"
+                      }
+                    ],
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'self'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'__getstate__'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [],
+                    "keywords": []
+                  }
+                ],
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            }
+          ],
+          "decorator_list": [],
+          "returns": "None",
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": []
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'_set_symbol_class'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [
+          {
+            "_Name": "arg",
+            "arg": "'cls'",
+            "annotation": "None",
+            "type_comment": "None"
+          }
+        ],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": "None",
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Constant",
+            "value": "'Set the symbolic class to be cls'",
+            "kind": "None"
+          }
+        },
+        {
+          "_Name": "Global",
+          "names": [
+            "'_symbol_cls'"
+          ]
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'_symbol_cls'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Name",
+            "id": "'cls'",
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          "type_comment": "None"
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    },
+    {
+      "_Name": "FunctionDef",
+      "name": "'_symbol_creator'",
+      "args": {
+        "_Name": "arguments",
+        "posonlyargs": [],
+        "args": [
+          {
+            "_Name": "arg",
+            "arg": "'handle'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'args'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'kwargs'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'keys'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'vals'",
+            "annotation": "None",
+            "type_comment": "None"
+          },
+          {
+            "_Name": "arg",
+            "arg": "'name'",
+            "annotation": "None",
+            "type_comment": "None"
+          }
+        ],
+        "vararg": "None",
+        "kwonlyargs": [],
+        "kw_defaults": [],
+        "kwarg": "None",
+        "defaults": []
+      },
+      "body": [
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'sym_handle'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'SymbolHandle'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [],
+            "keywords": []
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "Expr",
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'check_call'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'_LIB'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'MXSymbolCreateAtomicSymbol'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'c_void_p'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'handle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'mx_uint'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Call",
+                        "func": {
+                          "_Name": "Name",
+                          "id": "'len'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "_Name": "Name",
+                            "id": "'keys'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'c_str_array'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'keys'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Name",
+                      "id": "'c_str_array'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "ListComp",
+                        "elt": {
+                          "_Name": "Call",
+                          "func": {
+                            "_Name": "Name",
+                            "id": "'str'",
+                            "ctx": {
+                              "_Name": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "_Name": "Name",
+                              "id": "'v'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        },
+                        "generators": [
+                          {
+                            "_Name": "comprehension",
+                            "target": {
+                              "_Name": "Name",
+                              "id": "'v'",
+                              "ctx": {
+                                "_Name": "Store"
+                              }
+                            },
+                            "iter": {
+                              "_Name": "Name",
+                              "id": "'vals'",
+                              "ctx": {
+                                "_Name": "Load"
+                              }
+                            },
+                            "ifs": [],
+                            "is_async": "0"
+                          }
+                        ]
+                      }
+                    ],
+                    "keywords": []
+                  },
+                  {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'ctypes'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'byref'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "_Name": "Name",
+                        "id": "'sym_handle'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                ],
+                "keywords": []
+              }
+            ],
+            "keywords": []
+          }
+        },
+        {
+          "_Name": "If",
+          "test": {
+            "_Name": "BoolOp",
+            "op": {
+              "_Name": "And"
+            },
+            "values": [
+              {
+                "_Name": "Name",
+                "id": "'args'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              {
+                "_Name": "Name",
+                "id": "'kwargs'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ]
+          },
+          "body": [
+            {
+              "_Name": "Raise",
+              "exc": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Name",
+                  "id": "'TypeError'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Constant",
+                    "value": "'Operators with variable length input can only accept inputSymbols either as positional or keyword arguments, not both'",
+                    "kind": "None"
+                  }
+                ],
+                "keywords": []
+              },
+              "cause": "None"
+            }
+          ],
+          "orelse": []
+        },
+        {
+          "_Name": "Assign",
+          "targets": [
+            {
+              "_Name": "Name",
+              "id": "'s'",
+              "ctx": {
+                "_Name": "Store"
+              }
+            }
+          ],
+          "value": {
+            "_Name": "Call",
+            "func": {
+              "_Name": "Name",
+              "id": "'_symbol_cls'",
+              "ctx": {
+                "_Name": "Load"
+              }
+            },
+            "args": [
+              {
+                "_Name": "Name",
+                "id": "'sym_handle'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              }
+            ],
+            "keywords": []
+          },
+          "type_comment": "None"
+        },
+        {
+          "_Name": "If",
+          "test": {
+            "_Name": "Name",
+            "id": "'args'",
+            "ctx": {
+              "_Name": "Load"
+            }
+          },
+          "body": [
+            {
+              "_Name": "Expr",
+              "value": {
+                "_Name": "Call",
+                "func": {
+                  "_Name": "Attribute",
+                  "value": {
+                    "_Name": "Name",
+                    "id": "'s'",
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  },
+                  "attr": "'_compose'",
+                  "ctx": {
+                    "_Name": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "_Name": "Starred",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'args'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "ctx": {
+                      "_Name": "Load"
+                    }
+                  }
+                ],
+                "keywords": [
+                  {
+                    "_Name": "keyword",
+                    "arg": "'name'",
+                    "value": {
+                      "_Name": "Name",
+                      "id": "'name'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "orelse": [
+            {
+              "_Name": "If",
+              "test": {
+                "_Name": "Name",
+                "id": "'kwargs'",
+                "ctx": {
+                  "_Name": "Load"
+                }
+              },
+              "body": [
+                {
+                  "_Name": "Expr",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'s'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'_compose'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [],
+                    "keywords": [
+                      {
+                        "_Name": "keyword",
+                        "arg": "'name'",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'name'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      },
+                      {
+                        "_Name": "keyword",
+                        "arg": "None",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'kwargs'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "orelse": [
+                {
+                  "_Name": "Expr",
+                  "value": {
+                    "_Name": "Call",
+                    "func": {
+                      "_Name": "Attribute",
+                      "value": {
+                        "_Name": "Name",
+                        "id": "'s'",
+                        "ctx": {
+                          "_Name": "Load"
+                        }
+                      },
+                      "attr": "'_compose'",
+                      "ctx": {
+                        "_Name": "Load"
+                      }
+                    },
+                    "args": [],
+                    "keywords": [
+                      {
+                        "_Name": "keyword",
+                        "arg": "'name'",
+                        "value": {
+                          "_Name": "Name",
+                          "id": "'name'",
+                          "ctx": {
+                            "_Name": "Load"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_Name": "Return",
+          "value": {
+            "_Name": "Name",
+            "id": "'s'",
+            "ctx": {
+              "_Name": "Load"
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": "None",
+      "type_comment": "None"
+    }
+  ],
+  "type_ignores": []
+}

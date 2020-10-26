@@ -8,8 +8,8 @@ namespace Horker.MXNet
     // Defined in mxnet/_ctypes/ndarray.py
     public partial class NDArrayBase : DisposableObject
     {
-        public NDArrayHandle Handle { get; private set; }
-        public bool Writable { get; private set; }
+        public NDArrayHandle Handle { get; protected set; }
+        public bool Writable { get; protected set; }
 
         internal NDArrayBase(NDArrayHandle handle, bool writable = true)
         {
@@ -20,10 +20,14 @@ namespace Horker.MXNet
             Writable = writable;
         }
 
+        internal NDArrayBase()
+            : this(IntPtr.Zero, false)
+        { }
+
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
-            LIB.MXNDArrayFree(Handle);
+            _LIB.MXNDArrayFree(Handle);
             Handle = NDArrayHandle.Zero;
         }
     }

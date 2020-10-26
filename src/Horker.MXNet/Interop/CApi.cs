@@ -80,7 +80,7 @@ namespace Horker.MXNet.Interop
         /// <param name="out">the returning handle</param>
         /// <returns>0 when success, -1 when failure happens</returns>
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern int MXNDArrayCreateNone(ref NDArrayHandle @out);
+        public static extern int MXNDArrayCreateNone(out NDArrayHandle @out);
 
         /// <summary>
         ///     free the narray handle
@@ -130,11 +130,11 @@ namespace Horker.MXNet.Interop
         /// <param name="out_names">the names of returning NDArrays, can be NULL</param>
         /// <returns>0 when success, -1 when failure happens</returns>
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern int MXNDArrayLoad([MarshalAs(UnmanagedType.LPStr)] string fname,
-            ref uint out_size,
-            ref AtomicSymbolCreator out_arr,
-            ref uint out_name_size,
-            ref AtomicSymbolCreator out_names);
+        public static extern int MXNDArrayLoad([MarshalAs(UnmanagedType.LPUTF8Str)] string fname,
+            out uint out_size,
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)]out NDArrayHandle[] out_arr,
+            out uint out_name_size,
+            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str, SizeParamIndex = 3)]out string[] out_names);
 
         /// <summary>
         ///     Load list / dictionary of narrays from file content loaded into memory. 
@@ -409,7 +409,7 @@ namespace Horker.MXNet.Interop
             string[] keys,
             [In] [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)]
             string[] vals,
-            ref SymbolHandle @out);
+            out SymbolHandle @out);
 
         /// <summary>
         ///     Load a symbol from a json file.
@@ -469,7 +469,7 @@ namespace Horker.MXNet.Interop
         /// <param name="success">Whether the result is contained in out.</param>
         /// <returns>0 when success, -1 when failure happens</returns>
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern int MXSymbolGetName(SymbolHandle symbol, ref AtomicSymbolCreator @out, ref int success);
+        public static extern int MXSymbolGetName(SymbolHandle symbol, ref string @out, ref int success);
 
         /// <summary>
         /// Get a symbol that contains all the internals.
@@ -523,13 +523,13 @@ namespace Horker.MXNet.Interop
         /// <returns>0 when success, -1 when failure happens</returns>
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern int MXSymbolGetAtomicSymbolInfo(AtomicSymbolCreator creator,
-            ref AtomicSymbolCreator name,
-            ref AtomicSymbolCreator description,
-            ref uint num_args,
-            ref AtomicSymbolCreator arg_names,
-            ref AtomicSymbolCreator arg_type_infos,
-            ref AtomicSymbolCreator arg_descriptions,
-            ref AtomicSymbolCreator key_var_num_args,
+            out AtomicSymbolCreator name,
+            out AtomicSymbolCreator description,
+            out uint num_args,
+            out AtomicSymbolCreator arg_names,
+            out AtomicSymbolCreator arg_type_infos,
+            out AtomicSymbolCreator arg_descriptions,
+            out AtomicSymbolCreator key_var_num_args,
             ref AtomicSymbolCreator return_type);
 
         /// <summary>
@@ -685,7 +685,7 @@ namespace Horker.MXNet.Interop
         /// <param name="out_array">the output AtomicSymbolCreator array</param>
         /// <returns>0 when success, -1 when failure happens</returns>
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern int MXSymbolListAtomicSymbolCreators(ref uint out_size, ref AtomicSymbolCreator out_array);
+        public static extern int MXSymbolListAtomicSymbolCreators(out uint out_size, out AtomicSymbolCreator out_array);
 
         /// <summary>
         ///     List auxiliary states in the symbol.
@@ -714,7 +714,7 @@ namespace Horker.MXNet.Interop
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern int MXSymbolListOutputs(SymbolHandle symbol,
             ref uint out_size,
-            ref AtomicSymbolCreator out_str_array);
+            out string[] out_str_array);
 
         /// <summary>
         ///     Save a symbol into a json file.

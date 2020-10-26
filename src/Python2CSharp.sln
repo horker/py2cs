@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Python2CSharp", "Python2CSharp\Python2CSharp.csproj", "{2B266151-62BC-4D23-AA6F-EA08251AB05B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Horker.MXNet", "Horker.MXNet\Horker.MXNet.csproj", "{84853B8A-9A02-4E5D-9BFC-2B48364030DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Horker.MXNet", "Horker.MXNet\Horker.MXNet.csproj", "{84853B8A-9A02-4E5D-9BFC-2B48364030DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{B72D8B71-FF9D-4B68-9CFB-18F80FBF5DD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{84853B8A-9A02-4E5D-9BFC-2B48364030DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84853B8A-9A02-4E5D-9BFC-2B48364030DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84853B8A-9A02-4E5D-9BFC-2B48364030DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B72D8B71-FF9D-4B68-9CFB-18F80FBF5DD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B72D8B71-FF9D-4B68-9CFB-18F80FBF5DD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B72D8B71-FF9D-4B68-9CFB-18F80FBF5DD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B72D8B71-FF9D-4B68-9CFB-18F80FBF5DD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

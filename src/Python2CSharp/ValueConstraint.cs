@@ -8,9 +8,13 @@ namespace Python2CSharp
     {
         public string Type { get; }
 
-        private static readonly ValueConstraint _any = new ValueConstraint(null);
+        private static readonly ValueConstraint _invalid = new ValueConstraint(null);
+        public static ValueConstraint NotApplicable = _invalid;
+        public bool IsInvalid() => Type == null;
+
+        private static readonly ValueConstraint _any = new ValueConstraint("any");
         public static ValueConstraint Any => _any;
-        public bool IsAny() => Type == null;
+        public bool IsAny() => Type == "any";
 
         private static readonly ValueConstraint _terminal = new ValueConstraint("terminal");
         public static ValueConstraint Terminal => _terminal;

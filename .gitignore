@@ -24,6 +24,7 @@ packages/
 *.svg
 temp.*
 tokens.txt
+exports.txt
 
 notebook/
 doxygen/

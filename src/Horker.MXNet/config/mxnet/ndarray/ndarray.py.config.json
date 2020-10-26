@@ -1,68 +1,10 @@
 {
   "UsingNamespaces": [
-    "using System;",
-    "using System.Linq;",
-    "using System.Collections;",
-    "using System.Collections.Generic;",
-    "using System.Threading;",
-    "using Horker.MXNet;",
-    "using Horker.MXNet.Compat;",
-    "using Horker.MXNet.Interop;",
-    "using static Horker.MXNet.Base;",
-    "using static Horker.MXNet.Compat.Compat;",
-    "using static Horker.MXNet.Compat.Coercing;",
-    "using static Horker.MXNet.Compat.Array;",
-    "using static Horker.MXNet.MXNetCoercing;",
-    "using static Horker.MXNet.MXNetCompat;",
-    "using static Horker.MXNet.DType;",
-    "using NDArrayHandle = System.IntPtr;",
-    "using MxInt = System.Int32;",
-    "using MxUint = System.Int32;",
-    "using MxInt64 = System.Int64;",
-    "using PySlice = Horker.MXNet.Compat.Slice;",
-    "using Tuple = System.Collections.ICollection;",
-    "using List = System.Collections.ICollection;"
   ],
   "Namespace": "Horker.MXNet",
   "Replacements": {
-    "ndarray": "NDArray",
-    "ctypes": "CTypes",
-    "dtype": "DType",
-    "stype": "SType",
-    "uint8": "UInt8"
   },
   "TypeNames": {
-    "NDArray": [
-      "NDArray"
-    ],
-    "tuple": [
-      "List<int>",
-      "List<PySlice>",
-      "IEnumerable<int>",
-      "IEnumerable<PySlice>"
-    ],
-    "list": [
-      "List<int>",
-      "List<PySlice>",
-      "IEnumerable<int>",
-      "IEnumerable<PySlice>"
-    ],
-    "py_slice":  [ "PySlice" ],
-    "mx_int": [
-      "mx_int"
-    ],
-    "mx_uint": [
-      "mx_uint"
-    ],
-    "integer_types": [
-      "int",
-      "long"
-    ],
-    "numeric_types": [
-      "float",
-      "int",
-      "long"
-    ]
   },
   "Classes": {
     "Helper": {
@@ -172,97 +114,260 @@
         ],
         "_ufunc_helper": [
           {
+            "Drop": true,
             "Signature": "internal static object _ufuncHelper(object lhs, object rhs, object fnArray, object fnScalar, object lfnScalar, object rfnScalar = null)"
           }
         ],
         "add": [
           {
-            "Signature": "public static object Add(object lhs, object rhs)"
+            "Signature": "public static NDArray Add(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray Add(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray Add(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float Add(float lhs, float rhs)"
           }
         ],
         "subtract": [
           {
-            "Signature": "public static object Subtract(object lhs, object rhs)"
+            "Signature": "public static NDArray Subtract(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray Subtract(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray Subtract(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float Subtract(float lhs, float rhs)"
           }
         ],
         "multiply": [
           {
-            "Signature": "public static object Multiply(object lhs, object rhs)"
+            "Signature": "public static NDArray Multiply(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray Multiply(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray Multiply(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float Multiply(float lhs, float rhs)"
           }
         ],
         "divide": [
           {
-            "Signature": "public static object Divide(object lhs, object rhs)"
+            "Signature": "public static NDArray Divide(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray Divide(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray Divide(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float Divide(float lhs, float rhs)"
           }
         ],
         "modulo": [
           {
-            "Signature": "public static object Modulo(object lhs, object rhs)"
+            "Signature": "public static NDArray Modulo(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray Modulo(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray Modulo(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float Modulo(float lhs, float rhs)"
           }
         ],
         "power": [
           {
-            "Signature": "public static object Power(object base, object exp)"
+            "Signature": "public static NDArray Power(NDArray @base, NDArray exp)"
+          },
+          {
+            "Signature": "public static NDArray Power(NDArray @base, float exp)"
+          },
+          {
+            "Signature": "public static NDArray Power(float @base, NDArray exp)"
+          },
+          {
+            "Signature": "public static float Power(float @base, float exp)"
           }
         ],
         "maximum": [
           {
-            "Signature": "public static object Maximum(object lhs, object rhs)"
+            "Signature": "public static NDArray Maximum(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray Maximum(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray Maximum(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float Maximum(float lhs, float rhs)"
           }
         ],
         "minimum": [
           {
-            "Signature": "public static object Minimum(object lhs, object rhs)"
+            "Signature": "public static NDArray Minimum(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray Minimum(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray Minimum(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float Minimum(float lhs, float rhs)"
           }
         ],
         "equal": [
           {
-            "Signature": "public static object Equal(object lhs, object rhs)"
+            "Signature": "public static NDArray Equal(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray Equal(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray Equal(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float Equal(float lhs, float rhs)"
           }
         ],
         "not_equal": [
           {
-            "Signature": "public static object NotEqual(object lhs, object rhs)"
+            "Signature": "public static NDArray NotEqual(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray NotEqual(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray NotEqual(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float NotEqual(float lhs, float rhs)"
           }
         ],
         "greater": [
           {
-            "Signature": "public static object Greater(object lhs, object rhs)"
+            "Signature": "public static NDArray Greater(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray Greater(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray Greater(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float Greater(float lhs, float rhs)"
           }
         ],
         "greater_equal": [
           {
-            "Signature": "public static object GreaterEqual(object lhs, object rhs)"
+            "Signature": "public static NDArray GreaterEqual(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray GreaterEqual(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray GreaterEqual(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float GreaterEqual(float lhs, float rhs)"
           }
         ],
         "lesser": [
           {
-            "Signature": "public static object Lesser(object lhs, object rhs)"
+            "Signature": "public static NDArray Lesser(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray Lesser(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray Lesser(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float Lesser(float lhs, float rhs)"
           }
         ],
         "lesser_equal": [
           {
-            "Signature": "public static object LesserEqual(object lhs, object rhs)"
+            "Signature": "public static NDArray LesserEqual(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray LesserEqual(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray LesserEqual(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float LesserEqual(float lhs, float rhs)"
           }
         ],
         "logical_and": [
           {
-            "Signature": "public static object LogicalAnd(object lhs, object rhs)"
+            "Signature": "public static NDArray LogicalAnd(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray LogicalAnd(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray LogicalAnd(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float LogicalAnd(float lhs, float rhs)"
           }
         ],
         "logical_or": [
           {
-            "Signature": "public static object LogicalOr(object lhs, object rhs)"
+            "Signature": "public static NDArray LogicalOr(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray LogicalOr(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray LogicalOr(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float LogicalOr(float lhs, float rhs)"
           }
         ],
         "logical_xor": [
           {
-            "Signature": "public static object LogicalXor(object lhs, object rhs)"
+            "Signature": "public static NDArray LogicalXor(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray LogicalXor(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray LogicalXor(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static float LogicalXor(float lhs, float rhs)"
           }
         ],
         "true_divide": [
           {
-            "Signature": "public static object TrueDivide(object lhs, object rhs)"
+            "Signature": "public static NDArray TrueDivide(NDArray lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray TrueDivide(NDArray lhs, float rhs)"
+          },
+          {
+            "Signature": "public static NDArray TrueDivide(float lhs, NDArray rhs)"
+          },
+          {
+            "Signature": "public static NDArray TrueDivide(float lhs, float rhs)"
           }
         ],
         "concatenate": [
@@ -375,6 +480,7 @@
       "Methods": {
         "_tvm_handle": [
           {
+            "Drop": true,
             "Signature": "internal object _tvmHandle"
           }
         ],
@@ -654,7 +760,13 @@
         ],
         "reshape": [
           {
-            "Signature": "public NDArray Reshape(Shape shape, bool reverse)"
+            "Signature": "public NDArray Reshape(Shape shape, bool reverse)",
+            "Locals": {
+              "kwargs": {
+                "Type": "string[]",
+                "Definition": "var kwargs = new string[0];"
+              }
+            }
           }
         ],
         "reshape_like": [

@@ -6,7 +6,9 @@ $SourceFiles = @(
     "mxnet\autograd.py"
     "mxnet\context.py"
     "mxnet\_ctypes\ndarray.py"
+    "mxnet\_ctypes\symbol.py"
     "mxnet\ndarray\ndarray.py"
+    "mxnet\symbol\symbol.py"
     "mxnet\gluon\block.py"
     "mxnet\gluon\loss.py"
     "mxnet\gluon\parameter.py"
@@ -30,11 +32,11 @@ foreach ($inFile in $inFiles) {
     $null = mkdir $OutRootPath\$path -force
     $outFile = "$OutRootPath\$path\$($inFile.Name + ".json")"
 
-    if ((Test-Path $outFile) -and
-        $inFile.LastWriteTime -le (Get-Item $outFile).LastWriteTime) {
-        Write-Host " ... skip"
-        continue
-    }
+#    if ((Test-Path $outFile) -and
+#        $inFile.LastWriteTime -le (Get-Item $outFile).LastWriteTime) {
+#        Write-Host " ... skip"
+#        continue
+#    }
 
     Write-Host
     python.exe "$PSScriptRoot\..\scripts\print_ast.py" $inFile temp.ast

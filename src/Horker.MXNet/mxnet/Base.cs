@@ -7,6 +7,7 @@ using Horker.MXNet.Compat;
 using static Horker.MXNet.Compat.Array;
 using System.Data.Common;
 using System.Net;
+using System.Linq;
 
 namespace Horker.MXNet
 {
@@ -58,9 +59,16 @@ namespace Horker.MXNet
             return new CArrayBufIntermediate(type, nativeArrayResult.Item1, nativeArrayResult.Item2);
         }
 
-        public static int[] CArray(Type type, int[] values)
-        {
-            return values;
-        }
+        public static int[] CArray(Type type, int[] values) => values;
+
+        public static IntPtr[] CHandleArray(IntPtr[] values) => values;
+        public static IntPtr[] CHandleArray(IEnumerable<IntPtr> values) => values.ToArray();
+
+        public static string CStr(string s) => s;
+
+        public static string[] CStrArray(string[] s) => s;
+        public static string[] CStrArray(IEnumerable<string> s) => s.ToArray();
+
+        public static string PyStr(string s) => s;
     }
 }

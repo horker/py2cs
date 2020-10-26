@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
+using YamlDotNet.Serialization;
 
 namespace Python2CSharp
 {
@@ -118,6 +120,7 @@ namespace Python2CSharp
         public bool Drop { get; set; } = false;
         public string Signature { get; set; } = string.Empty;
         public string SignatureSetter { get; set; } = string.Empty;
+        public List<string> Reassigned { get; set; } = new List<string>();
         public List<string> KeywordArguments { get; set; } = new List<string>(); // ??
         public List<string> Prologue { get; set; } = new List<string>();
         public Dictionary<string, LocalConfig> Locals { get; set; } = new Dictionary<string, LocalConfig>();
@@ -144,6 +147,17 @@ namespace Python2CSharp
                     _signatureSetterAnalysis = new SignatureAnalysis(SignatureSetter);
                 return _signatureSetterAnalysis;
             }
+        }
+
+        public string GetLocalType(string name)
+        {
+            if (SignatureAnalysis.ParamTypes.TryGetValue(name, out var type))
+                return type;
+
+            if (Locals.TryGetValue(name, out var config))
+                return config.Type;
+
+            return string.Empty;
         }
     }
 
@@ -239,5 +253,31 @@ namespace Python2CSharp
         public Dictionary<string, ClassConfig> Classes { get; set; } = new Dictionary<string, ClassConfig>();
 
         public ClassConfig this[string className] => Classes.TryGetValue(className, out var c) ? c : ClassConfig.Empty;
+
+        public static Config Load(string configFile)
+        {
+            var deserializer = new DeserializerBuilder().Build();
+            var config = deserializer.Deserialize<Config>(File.ReadAllText(configFile));
+            return config;
+        }
+
+        public static Config Load(string configFile, string commonConfigFile)
+        {
+            var c = Load(configFile);
+            var cc = Load(commonConfigFile);
+
+            cc.UsingNamespaces.AddRange(c.UsingNamespaces);
+            c.UsingNamespaces = cc.UsingNamespaces;
+
+            foreach (var (k, v) in c.TypeNames)
+                cc.TypeNames[k] = v;
+            c.TypeNames = cc.TypeNames;
+
+            foreach (var (k, v) in c.Replacements)
+                cc.Replacements[k] = v;
+            c.Replacements = cc.Replacements;
+
+            return c;
+        }
     }
 }

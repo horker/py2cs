@@ -21,6 +21,7 @@ namespace Horker.MXNet
         }
 
         public static int Len(NDArrayList list) => list.Count;
+        public static int Len(SymbolList list) => list.Count;
         public static int Len(Shape shape) => shape.Length;
 
         public static List<int> List(Shape shape)
@@ -31,7 +32,10 @@ namespace Horker.MXNet
         public static int MxInt(int value) => value;
         public static int MxInt(object value) => (int)value;
 
-        public static int MxUint(int value) => value;
+        // uint is not useful; We will use int instead.
+        public static int MxUint() => default;
+        public static int MxUint(uint value) => (int)value;
+        public static int MxUint(int value) => (int)value;
         public static int MxUint(object value) => (int)value;
     }
 }

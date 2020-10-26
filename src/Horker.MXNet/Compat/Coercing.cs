@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -45,6 +46,9 @@ namespace Horker.MXNet.Compat
         public static object CoerceIntoObject(object obj) => obj;
 
         public static string CoerceIntoString(object obj) => (string)obj;
+
+        public static string[] CoerceIntoStringArray(IEnumerable<string> items) => items.ToArray();
+        public static string[] CoerceIntoStringArray(object items) => new string[0];
 
         public static ThreadLocal<T> CoerceIntoThreadLocal<T>(object obj) => new ThreadLocal<T>();
 

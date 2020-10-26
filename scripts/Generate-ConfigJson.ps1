@@ -32,10 +32,30 @@ function Get-ClassObject([string]$name, [string[]]$bases)
 
 function ConvertTo-CamelCase([string]$s, [bool]$upper = $true)
 {
+    if ($s -eq "_") {
+        return $s
+    }
+
+    if ($s -match "^[A-Z0-9_]+$") {
+        return $s
+    }
+
+    $special = $false
+    if ($s -match "^__(.+)__$") {
+        $special = $true
+        $s = $matces.Groups[1].Value
+    }
+
     $s = $s -replace "^(?:__)?(.+)(?:__)?$", '$1'
 
     $words = $s -split "(?<=.)_"
-    ($words | foreach { $i = 0 } { ++$i; ($upper -or $i -gt 1) -and $_.Length -gt 1 ? [char]::ToUpper($_[0]) + $_.Substring(1) : $_ }) -join ""
+    $result = ($words | foreach { $i = 0 } { ++$i; ($upper -or $i -gt 1) -and $_.Length -gt 1 ? [char]::ToUpper($_[0]) + $_.Substring(1) : $_ }) -join ""
+
+    if ($special) {
+        $result = "__" + $result + "__"
+    }
+
+    $result
 }
 
 function Infer-Type([string]$Name, [string]$DefaultValue = "") {
@@ -130,10 +150,14 @@ function Build-ClassDef([string[]]$lines) {
             $visibility = $camelCased -match "^_" ? "private" : "public"
 
             if ($name -match "^_") {
-                $class.Fields[$name] = "private $type $camelCased;"
+                $class.Fields[$name] = [ordered]@{
+                    Signature = "private $type $camelCased;"
+                }
             }
             else {
-                $class.Fields[$name] = "public $type $camelCased { get; set; }"
+                $class.Fields[$name] = [ordered]@{
+                    Signature = "public $type $camelCased { get; set; }"
+                }
             }
         }
         elseif ($l -match $PropertyRe) {
@@ -223,27 +247,29 @@ function Build-ClassDef([string[]]$lines) {
 ############################################################
 
 $UsingNamespaces = @(
-    "using System;",
-    "using System.Linq;",
-    "using System.Collections;",
-    "using System.Collections.Generic;",
-    "using System.Threading;",
-    "using Horker.MXNet;",
-    "using Horker.MXNet.Compat;",
-    "using Horker.MXNet.Interop;",
-    "using static Horker.MXNet.Base;",
-    "using static Horker.MXNet.Compat.Compat;",
-    "using static Horker.MXNet.Compat.Coercing;",
-    "using static Horker.MXNet.Compat.Array;",
-    "using static Horker.MXNet.MXNetCoercing;",
-    "using static Horker.MXNet.MXNetCompat;",
-    "using static Horker.MXNet.DType;",
-    "using NDArrayHandle = System.IntPtr;",
-    "using MxInt = System.Int32;",
-    "using MxUint = System.Int32;",
-    "using MxInt64 = System.Int64;",
-    "using PySlice = Slice;",
-    "using Tuple = ICollection;"
+    "using System;"
+    "using System.Linq;"
+    "using System.Collections;"
+    "using System.Collections.Generic;"
+    "using System.Threading;"
+    "using Horker.MXNet;"
+    "using Horker.MXNet.Compat;"
+    "using Horker.MXNet.Interop;"
+    "using static Horker.MXNet.Base;"
+    "using static Horker.MXNet.Compat.Compat;"
+    "using static Horker.MXNet.Compat.Coercing;"
+    "using static Horker.MXNet.Compat.Array;"
+    "using static Horker.MXNet.MXNetCoercing;"
+    "using static Horker.MXNet.MXNetCompat;"
+    "using static Horker.MXNet.DType;"
+    "using NDArrayHandle = System.IntPtr;"
+    "using SymbolHandle = System.IntPtr;"
+    "using MxInt = System.Int32;"
+    "using MxUint = System.Int32;"
+    "using MxInt64 = System.Int64;"
+    "using PySlice = Horker.MXNet.Compat.Slice;"
+    "using Tuple = System.Collections.ICollection;"
+    "using List = System.Collections.ICollection;"
 )
 
 $Namespace = "Horker.MXNet"
@@ -258,11 +284,21 @@ $Replacements = [ordered]@{
 
 $TypeNames = [ordered]@{
     "NDArray" = ,"NDArray"
-    "Tuple" =  ,"Tuple"
+    "SymbolBase" = ,"SymbolBase"
+    "Symbol" = ,"Symbol"
+    "tuple" =  ,"Tuple"
+    "list" = @(
+      "List<int>"
+      "List<PySlice>"
+      "IEnumerable<int>"
+      "IEnumerable<PySlice>"
+    )
+    "py_slice" = ,"PySlice"
     "mx_int" = ,"mx_int"
     "mx_uint" = ,"mx_uint"
     "integer_types" = "int", "long"
     "numeric_types" = "float", "int", "long"
+    "string_types" = ,"string"
 }
 
 ############################################################

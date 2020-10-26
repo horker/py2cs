@@ -2,8 +2,8 @@
   "profiles": {
     "Python2CSharp": {
       "commandName": "Project",
-      "commandLineArgs": "ndarray.py.json ndarray.py.config.json ndarray_gen.cs",
-      "workingDirectory": "C:\\Users\\msumi\\work\\py2cs\\src\\Horker.MXNet\\generated\\mxnet\\ndarray"
+      "commandLineArgs": "config\\mxnet generated\\mxnet config\\common.config.json",
+      "workingDirectory": "C:\\Users\\msumi\\work\\py2cs\\src\\Horker.MXNet"
     }
   }
 }

@@ -166,7 +166,10 @@ namespace Python2CSharp
 
         public void SetAliasForLocal(string name, string alias)
         {
-            _locals[name].Alias = alias;
+            if (_locals.TryGetValue(name, out var l))
+                l.Alias = alias;
+            else
+                _locals.Add(name, new Local(alias));
         }
 
         public string GetAliasForLocal(string name)

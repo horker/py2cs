@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Threading;
 using Horker.MXNet;
 using Horker.MXNet.Compat;
-using Horker.MXNet.Interop;
 using static Horker.MXNet.Base;
 using static Horker.MXNet.Compat.Compat;
 using static Horker.MXNet.Compat.Coercing;
@@ -14,12 +13,15 @@ using static Horker.MXNet.MXNetCoercing;
 using static Horker.MXNet.MXNetCompat;
 using static Horker.MXNet.DType;
 using NDArrayHandle = System.IntPtr;
+using SymbolHandle = System.IntPtr;
+using _LIB = Horker.MXNet.Interop._LIB;
 using MxInt = System.Int32;
 using MxUint = System.Int32;
 using MxInt64 = System.Int64;
 using PySlice = Horker.MXNet.Compat.Slice;
 using Tuple = System.Collections.ICollection;
 using List = System.Collections.ICollection;
+using _numpy = Horker.MXNet.Np;
 
 namespace Horker.MXNet
 {
@@ -203,18 +205,13 @@ namespace Horker.MXNet
         public static object __ArrayPriority__ = CoerceIntoObject(1000.0);
         public static object _tvmTcode = CoerceIntoObject(19);
         
-        internal object _tvmHandle
-        {
-            get {
-                return this.Handle.Value;
-            }
-        }
+        // Drop: _tvm_handle
         
         internal object __Repr__()
         {
             // Expr
             var shapeInfo = "x".Join(this.Shape.Select(x => ("%d".PyFormat(x))).ToList());
-            return ("\n%s\n<%s %s @%s>".PyFormat(ValueTuple.Create(Str(this.Asnumpy()), this.__Class__.__Name__, shapeInfo, this.Context)));
+            return ("\n%s\n<%s %s @%s>".PyFormat(ValueTuple.Create(Str(this.Asnumpy()), this.GetType().Name, shapeInfo, this.Context)));
         }
         
         // Drop: __reduce__
@@ -490,7 +487,7 @@ namespace Horker.MXNet
             // Expr
             if (IsTrue((ValueNd.Shape != vshape)))
             {
-                var valueNd = valueNd.BroadcastTo(vshape);
+                var valueNd = ValueNd.BroadcastTo(vshape);
             }
             return ValueNd;
         }
@@ -575,79 +572,14 @@ namespace Horker.MXNet
         {
             // Expr
             var shape = this.Shape;
-            Assert(IsTrue((Len(key) != 0)), "(Len(key) != 0)");
-            var begin = CoerceIntoList<int>(null);
-            var end = CoerceIntoList<int>(null);
-            var step = CoerceIntoList<int>(null);
-            var keptAxes = CoerceIntoList<int>(null);
-            var i = (-1);
-            foreach (var (i, sliceI) in Enumerate(key))
-            {
-                begin.Append(sliceI);
-                end.Append((IsTrue((sliceI != (-1))) ? (sliceI + 1) : this.Shape[i]));
-                step.Append(1);
-            }
-            keptAxes.Extend(Range((i + 1), Len(shape)));
-            var slicedNd = Op.Slice(this, begin, end, step);
-            if (IsTrue((Len(keptAxes) == Len(shape))))
-            {
-                return slicedNd;
-            }
-            var oshape = null;
-            var slicedShape = slicedNd.Shape;
-            foreach (var axis in keptAxes)
-            {
-                oshape.Append(slicedShape[axis]);
-            }
-            if (IsTrue((Len(oshape) == 0)))
-            {
-                oshape.Append(1);
-            }
-            oshape = Tuple(oshape);
-            Assert(IsTrue((Np.Prod(oshape) == Np.Prod(slicedShape))), "(Np.Prod(oshape) == Np.Prod(slicedShape))");
-            return slicedNd.Reshape(oshape);
+            throw new ValueError(("index=%s must be a slice, or an ineger, or a tuple of slices and integers to use basic indexing, received type=%s".PyFormat(ValueTuple.Create(Str(key), Str(Type(key))))));
         }
         
         internal NDArray _getNdBasicIndexing(IEnumerable<PySlice> key)
         {
             // Expr
             var shape = this.Shape;
-            Assert(IsTrue((Len(key) != 0)), "(Len(key) != 0)");
-            var begin = CoerceIntoList<int>(null);
-            var end = CoerceIntoList<int>(null);
-            var step = CoerceIntoList<int>(null);
-            var keptAxes = CoerceIntoList<int>(null);
-            var i = (-1);
-            foreach (var (i, sliceI) in Enumerate(key))
-            {
-                if (IsTrue((sliceI.Step == 0)))
-                {
-                    throw new ValueError(("basic index=%s cannot have slice=%s with step = 0".PyFormat(ValueTuple.Create(Str(key), Str(sliceI)))));
-                }
-                begin.Append(sliceI.Start);
-                end.Append(sliceI.Stop);
-                step.Append(sliceI.Step);
-                keptAxes.Append(i);
-            }
-            keptAxes.Extend(Range((i + 1), Len(shape)));
-            var slicedNd = Op.Slice(this, begin, end, step);
-            if (IsTrue((Len(keptAxes) == Len(shape))))
-            {
-                return slicedNd;
-            }
-            var oshape = null;
-            var slicedShape = slicedNd.Shape;
-            foreach (var axis in keptAxes)
-            {
-                oshape.Append(slicedShape[axis]);
-            }
-            if (IsTrue((Len(oshape) == 0)))
-            {
-                oshape.Append(1);
-            }
-            oshape = Tuple(oshape);
-            Assert(IsTrue((Np.Prod(oshape) == Np.Prod(slicedShape))), "(Np.Prod(oshape) == Np.Prod(slicedShape))");
-            return slicedNd.Reshape(oshape);
+            throw new ValueError(("index=%s must be a slice, or an ineger, or a tuple of slices and integers to use basic indexing, received type=%s".PyFormat(ValueTuple.Create(Str(key), Str(Type(key))))));
         }
         
         internal object _getNdAdvancedIndexing(object key)
@@ -726,560 +658,560 @@ namespace Horker.MXNet
         
         public object ReshapeLike(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ReshapeLike(this, Args);
         }
         
         public object ZerosLike(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ZerosLike(this, Args);
         }
         
         public object OnesLike(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.OnesLike(this, Args);
         }
         
         public object BroadcastAxes(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.BroadcastAxes(this, Args);
         }
         
         public object Repeat(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Repeat(this, Args);
         }
         
         public object Pad(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Pad(this, Args);
         }
         
         public object Swapaxes(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Swapaxes(this, Args);
         }
         
         public object Split(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Split(this, Args);
         }
         
         public object SplitV2(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return SplitV2(this, Args);
         }
         
         public object Slice(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Slice(this, Args);
         }
         
         public object SliceAxis(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.SliceAxis(this, Args);
         }
         
         public object SliceLike(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.SliceLike(this, Args);
         }
         
         public object Take(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Take(this, Args);
         }
         
         public object OneHot(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.OneHot(this, Args);
         }
         
         public object Pick(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Pick(this, Args);
         }
         
         public object Sort(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sort(this, Args);
         }
         
         public object Topk(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Topk(this, Args);
         }
         
         public object Argsort(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Argsort(this, Args);
         }
         
         public object Argmax(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Argmax(this, Args);
         }
         
         public object ArgmaxChannel(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ArgmaxChannel(this, Args);
         }
         
         public object Argmin(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Argmin(this, Args);
         }
         
         public object Clip(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Clip(this, Args);
         }
         
         public object Abs(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Abs(this, Args);
         }
         
         public object Sign(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sign(this, Args);
         }
         
         public object Flatten(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Flatten(this, Args);
         }
         
         public object ShapeArray(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ShapeArray(this, Args);
         }
         
         public object SizeArray(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.SizeArray(this, Args);
         }
         
         public object ExpandDims(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ExpandDims(this, Args);
         }
         
         public object Tile(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Tile(this, Args);
         }
         
         public object Transpose(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Transpose(this, Args);
         }
         
         public object Flip(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Flip(this, Args);
         }
         
         public object DepthToSpace(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.DepthToSpace(this, Args);
         }
         
         public object SpaceToDepth(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.SpaceToDepth(this, Args);
         }
         
         public object Diag(int k = 0)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Diag(this, k);
         }
         
         public object Sum(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sum(this, Args);
         }
         
         public object Nansum(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Nansum(this, Args);
         }
         
         public object Prod(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Prod(this, Args);
         }
         
         public object Nanprod(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Nanprod(this, Args);
         }
         
         public object Mean(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Mean(this, Args);
         }
         
         public object Max(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Max(this, Args);
         }
         
         public object Min(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Min(this, Args);
         }
         
         public object Norm(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Norm(this, Args);
         }
         
         public object Round(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Round(this, Args);
         }
         
         public object Rint(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Rint(this, Args);
         }
         
         public object Fix(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Fix(this, Args);
         }
         
         public object Floor(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Floor(this, Args);
         }
         
         public object Ceil(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Ceil(this, Args);
         }
         
         public object Trunc(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Trunc(this, Args);
         }
         
         public object Sin(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sin(this, Args);
         }
         
         public object Cos(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Cos(this, Args);
         }
         
         public object Tan(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Tan(this, Args);
         }
         
         public object Arcsin(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arcsin(this, Args);
         }
         
         public object Arccos(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arccos(this, Args);
         }
         
         public object Arctan(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arctan(this, Args);
         }
         
         public object Degrees(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Degrees(this, Args);
         }
         
         public object Radians(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Radians(this, Args);
         }
         
         public object Sinh(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sinh(this, Args);
         }
         
         public object Cosh(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Cosh(this, Args);
         }
         
         public object Tanh(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Tanh(this, Args);
         }
         
         public object Arcsinh(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arcsinh(this, Args);
         }
         
         public object Arccosh(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arccosh(this, Args);
         }
         
         public object Arctanh(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arctanh(this, Args);
         }
         
         public object Exp(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Exp(this, Args);
         }
         
         public object Expm1(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Expm1(this, Args);
         }
         
         public object Log(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log(this, Args);
         }
         
         public object Log10(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log10(this, Args);
         }
         
         public object Log2(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log2(this, Args);
         }
         
         public object Log1p(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log1p(this, Args);
         }
         
         public object Sqrt(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sqrt(this, Args);
         }
         
         public object Rsqrt(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Rsqrt(this, Args);
         }
         
         public object Cbrt(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Cbrt(this, Args);
         }
         
         public object Rcbrt(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Rcbrt(this, Args);
         }
         
         public object Square(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Square(this, Args);
         }
         
         public object Reciprocal(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Reciprocal(this, Args);
         }
         
         public object Relu(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Relu(this, Args);
         }
         
         public object Sigmoid(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sigmoid(this, Args);
         }
         
         public object Softmax(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Softmax(this, Args);
         }
         
         public object LogSoftmax(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.LogSoftmax(this, Args);
         }
         
         public object Softmin(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Softmin(this, Args);
         }
         
         public object Squeeze(object *args)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Squeeze(this, Args);
         }
@@ -1734,7 +1666,7 @@ namespace Horker.MXNet
     {
         public static object Ones(Shape shape, Context ctx = null, DType dtype = default)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(ctx))))
             {
@@ -1827,198 +1759,650 @@ namespace Horker.MXNet
         }
     }
     
+    // Drop: _ufunc_helper
+    
     public static partial class Helper
     {
-        internal static object _ufuncHelper(object lhs, object rhs, object fnArray, object fnScalar, object lfnScalar, object rfnScalar = null)
+        public static NDArray Add(NDArray lhs, NDArray rhs)
         {
             // Expr
-            if (IsTrue(Isinstance(rhs, typeof(NumericTypes))))
-            {
-                var local0 = (numeric_types)rhs;
-                return lfnScalar.Call(lhs, Float(local0));
-            }
-            else
-            {
-                if (IsTrue(Isinstance(rhs, typeof(NDArray))))
-                {
-                    var local0 = (NDArray)rhs;
-                    return fnArray.Call(lhs, local0);
-                }
-                else
-                {
-                    throw new TypeError(("type %s not supported".PyFormat(Str(Type(rhs)))));
-                }
-            }
+            return Op.BroadcastAdd(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object Add(object lhs, object rhs)
+        public static NDArray Add(NDArray lhs, float rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastAdd, Operator.Add, _internal._plusScalar, null);
+            return _internal._plusScalar(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object Subtract(object lhs, object rhs)
+        public static NDArray Add(float lhs, NDArray rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastSub, Operator.Sub, _internal._minusScalar, _internal._rminusScalar);
+            return _internal._plusScalar(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object Multiply(object lhs, object rhs)
+        public static float Add(float lhs, float rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastMul, Operator.Mul, _internal._mulScalar, null);
+            return Operator.Add(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object Divide(object lhs, object rhs)
+        public static NDArray Subtract(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastDiv, Operator.Truediv, _internal._divScalar, _internal._rdivScalar);
+            return Op.BroadcastSub(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object Modulo(object lhs, object rhs)
+        public static NDArray Subtract(NDArray lhs, float rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastMod, Operator.Mod, _internal._modScalar, _internal._rmodScalar);
+            return _internal._minusScalar(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object Power(object base, object exp)
+        public static NDArray Subtract(float lhs, NDArray rhs)
         {
             // Expr
-            return _ufuncHelper(base, exp, Op.BroadcastPower, Operator.Pow, _internal._powerScalar, _internal._rpowerScalar);
+            return _internal._rminusScalar(rhs, lhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object Maximum(object lhs, object rhs)
+        public static float Subtract(float lhs, float rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastMaximum, // Lambda
-            , _internal._maximumScalar, null);
+            return Operator.Sub(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object Minimum(object lhs, object rhs)
+        public static NDArray Multiply(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastMinimum, // Lambda
-            , _internal._minimumScalar, null);
+            return Op.BroadcastMul(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object Equal(object lhs, object rhs)
+        public static NDArray Multiply(NDArray lhs, float rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastEqual, // Lambda
-            , _internal._equalScalar, null);
+            return _internal._mulScalar(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object NotEqual(object lhs, object rhs)
+        public static NDArray Multiply(float lhs, NDArray rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastNotEqual, // Lambda
-            , _internal._notEqualScalar, null);
+            return _internal._mulScalar(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object Greater(object lhs, object rhs)
+        public static float Multiply(float lhs, float rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastGreater, // Lambda
-            , _internal._greaterScalar, _internal._lesserScalar);
+            return Operator.Mul(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object GreaterEqual(object lhs, object rhs)
+        public static NDArray Divide(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastGreaterEqual, // Lambda
-            , _internal._greaterEqualScalar, _internal._lesserEqualScalar);
+            return Op.BroadcastDiv(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object Lesser(object lhs, object rhs)
+        public static NDArray Divide(NDArray lhs, float rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastLesser, // Lambda
-            , _internal._lesserScalar, _internal._greaterScalar);
+            return _internal._divScalar(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object LesserEqual(object lhs, object rhs)
+        public static NDArray Divide(float lhs, NDArray rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastLesserEqual, // Lambda
-            , _internal._lesserEqualScalar, _internal._greaterEqualScalar);
+            return _internal._rdivScalar(rhs, lhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object LogicalAnd(object lhs, object rhs)
+        public static float Divide(float lhs, float rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastLogicalAnd, // Lambda
-            , _internal._logicalAndScalar, null);
+            return Operator.Truediv(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object LogicalOr(object lhs, object rhs)
+        public static NDArray Modulo(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastLogicalOr, // Lambda
-            , _internal._logicalOrScalar, null);
+            return Op.BroadcastMod(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object LogicalXor(object lhs, object rhs)
+        public static NDArray Modulo(NDArray lhs, float rhs)
         {
             // Expr
-            return _ufuncHelper(lhs, rhs, Op.BroadcastLogicalXor, // Lambda
-            , _internal._logicalXorScalar, null);
+            return _internal._modScalar(lhs, rhs);;
         }
     }
     
     public static partial class Helper
     {
-        public static object TrueDivide(object lhs, object rhs)
+        public static NDArray Modulo(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._rmodScalar(rhs, lhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float Modulo(float lhs, float rhs)
+        {
+            // Expr
+            return Operator.Mod(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Power(NDArray @base, NDArray exp)
+        {
+            // Expr
+            return Op.BroadcastPower(base, exp);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Power(NDArray @base, float exp)
+        {
+            // Expr
+            return _internal._powerScalar(base, exp);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Power(float @base, NDArray exp)
+        {
+            // Expr
+            return _internal._rpowerScalar(exp, base);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float Power(float @base, float exp)
+        {
+            // Expr
+            return Operator.Pow(base, exp);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Maximum(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Op.BroadcastMaximum(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Maximum(NDArray lhs, float rhs)
+        {
+            // Expr
+            return _internal._maximumScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Maximum(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._maximumScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float Maximum(float lhs, float rhs)
+        {
+            // Expr
+            return (IsTrue((lhs > rhs)) ? lhs : rhs);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Minimum(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Op.BroadcastMinimum(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Minimum(NDArray lhs, float rhs)
+        {
+            // Expr
+            return _internal._minimumScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Minimum(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._minimumScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float Minimum(float lhs, float rhs)
+        {
+            // Expr
+            return (IsTrue((lhs < rhs)) ? lhs : rhs);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Equal(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Op.BroadcastEqual(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Equal(NDArray lhs, float rhs)
+        {
+            // Expr
+            return _internal._equalScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Equal(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._equalScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float Equal(float lhs, float rhs)
+        {
+            // Expr
+            return (IsTrue((lhs == rhs)) ? 1 : 0);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray NotEqual(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Op.BroadcastNotEqual(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray NotEqual(NDArray lhs, float rhs)
+        {
+            // Expr
+            return _internal._notEqualScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray NotEqual(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._notEqualScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float NotEqual(float lhs, float rhs)
+        {
+            // Expr
+            return (IsTrue((lhs != rhs)) ? 1 : 0);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Greater(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Op.BroadcastGreater(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Greater(NDArray lhs, float rhs)
+        {
+            // Expr
+            return _internal._greaterScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Greater(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._lesserScalar(rhs, lhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float Greater(float lhs, float rhs)
+        {
+            // Expr
+            return (IsTrue((lhs > rhs)) ? 1 : 0);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray GreaterEqual(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Op.BroadcastGreaterEqual(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray GreaterEqual(NDArray lhs, float rhs)
+        {
+            // Expr
+            return _internal._greaterEqualScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray GreaterEqual(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._lesserEqualScalar(rhs, lhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float GreaterEqual(float lhs, float rhs)
+        {
+            // Expr
+            return (IsTrue((lhs >= rhs)) ? 1 : 0);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Lesser(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Op.BroadcastLesser(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Lesser(NDArray lhs, float rhs)
+        {
+            // Expr
+            return _internal._lesserScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray Lesser(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._greaterScalar(rhs, lhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float Lesser(float lhs, float rhs)
+        {
+            // Expr
+            return (IsTrue((lhs < rhs)) ? 1 : 0);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LesserEqual(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Op.BroadcastLesserEqual(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LesserEqual(NDArray lhs, float rhs)
+        {
+            // Expr
+            return _internal._lesserEqualScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LesserEqual(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._greaterEqualScalar(rhs, lhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float LesserEqual(float lhs, float rhs)
+        {
+            // Expr
+            return (IsTrue((lhs <= rhs)) ? 1 : 0);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LogicalAnd(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Op.BroadcastLogicalAnd(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LogicalAnd(NDArray lhs, float rhs)
+        {
+            // Expr
+            return _internal._logicalAndScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LogicalAnd(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._logicalAndScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float LogicalAnd(float lhs, float rhs)
+        {
+            // Expr
+            return (IsTrue((IsTrue(lhs) && IsTrue(rhs))) ? 1 : 0);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LogicalOr(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Op.BroadcastLogicalOr(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LogicalOr(NDArray lhs, float rhs)
+        {
+            // Expr
+            return _internal._logicalOrScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LogicalOr(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._logicalOrScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float LogicalOr(float lhs, float rhs)
+        {
+            // Expr
+            return (IsTrue((IsTrue(lhs) || IsTrue(rhs))) ? 1 : 0);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LogicalXor(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Op.BroadcastLogicalXor(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LogicalXor(NDArray lhs, float rhs)
+        {
+            // Expr
+            return _internal._logicalXorScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray LogicalXor(float lhs, NDArray rhs)
+        {
+            // Expr
+            return _internal._logicalXorScalar(lhs, rhs);;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static float LogicalXor(float lhs, float rhs)
+        {
+            // Expr
+            return (IsTrue((Bool(lhs) ^ Bool(rhs))) ? 1 : 0);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray TrueDivide(NDArray lhs, NDArray rhs)
+        {
+            // Expr
+            return Divide(lhs, rhs);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray TrueDivide(NDArray lhs, float rhs)
+        {
+            // Expr
+            return Divide(lhs, rhs);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray TrueDivide(float lhs, NDArray rhs)
+        {
+            // Expr
+            return Divide(lhs, rhs);
+        }
+    }
+    
+    public static partial class Helper
+    {
+        public static NDArray TrueDivide(float lhs, float rhs)
         {
             // Expr
             return Divide(lhs, rhs);
@@ -2095,7 +2479,7 @@ namespace Horker.MXNet
     {
         public static object Zeros(Shape shape, Context ctx = null, DType dtype = default)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(ctx))))
             {
@@ -2110,7 +2494,7 @@ namespace Horker.MXNet
     {
         public static object Eye(object N, int M = 0, int k = 0, Context ctx = null, DType dtype = default)
         {
-            var kwargs = new string[0];
+            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(ctx))))
             {
@@ -2160,9 +2544,10 @@ namespace Horker.MXNet
             // Expr
             var indices = null;
             var axisSize = ary.Shape[axis];
-            if (IsTrue(Isinstance(indicesOrSections, Int)))
+            if (IsTrue(Isinstance(indicesOrSections, typeof(Int))))
             {
-                var sections = indicesOrSections;
+                var local0 = (int)indicesOrSections;
+                var sections = local0;
                 if (IsTrue((axisSize % sections)))
                 {
                     throw new ValueError("array split does not result in an equal division");
