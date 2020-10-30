@@ -45,161 +45,250 @@ namespace Horker.MXNet.Interop
 {
     public static partial class _LIB
     {
+
         // MXNET_DLL const char *MXGetLastError();
         [DllImport(MXNetDll)]
-        public static extern string MXGetLastError();
+        public static extern int MXGetLastError(
+        );
 
         // MXNET_DLL int MXLibInfoFeatures(const struct LibFeature **libFeature, size_t *size);
         [DllImport(MXNetDll)]
-        public static extern int MXLibInfoFeatures(out LibFeature[] libFeature, out size_t size);
+        public static extern int MXLibInfoFeatures(
+            LibFeature[][] libFeature,
+            size_t[] size
+        );
 
         // MXNET_DLL int MXRandomSeed(int seed);
         [DllImport(MXNetDll)]
-        public static extern int MXRandomSeed(int seed);
+        public static extern int MXRandomSeed(
+            int seed
+        );
 
         // MXNET_DLL int MXRandomSeedContext(int seed, int dev_type, int dev_id);
         [DllImport(MXNetDll)]
-        public static extern int MXRandomSeedContext(int seed, int dev_type, int dev_id);
+        public static extern int MXRandomSeedContext(
+            int seed,
+            int dev_type,
+            int dev_id
+        );
 
         // MXNET_DLL int MXNotifyShutdown();
         [DllImport(MXNetDll)]
-        public static extern int MXNotifyShutdown();
+        public static extern int MXNotifyShutdown(
+        );
 
         // MXNET_DLL int MXSetProcessProfilerConfig(int num_params, const char* const* keys,
         //     const char* const* vals,
         //     KVStoreHandle kvstoreHandle);
         [DllImport(MXNetDll)]
-        public static extern int MXSetProcessProfilerConfig(int num_params, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] keys,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] vals,
-            KVStoreHandle kvstoreHandle);
+        public static extern int MXSetProcessProfilerConfig(
+            int num_params,
+            string[] keys,
+            string[] vals,
+            KVStoreHandle kvstoreHandle
+        );
 
         // MXNET_DLL int MXSetProfilerConfig(int num_params, const char* const* keys, const char* const* vals);
         [DllImport(MXNetDll)]
-        public static extern int MXSetProfilerConfig(int num_params, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] keys, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] vals);
+        public static extern int MXSetProfilerConfig(
+            int num_params,
+            string[] keys,
+            string[] vals
+        );
 
         // MXNET_DLL int MXSetProcessProfilerState(int state, int profile_process,
         //     KVStoreHandle kvStoreHandle);
         [DllImport(MXNetDll)]
-        public static extern int MXSetProcessProfilerState(int state, int profile_process,
-            KVStoreHandle kvStoreHandle);
+        public static extern int MXSetProcessProfilerState(
+            int state,
+            int profile_process,
+            KVStoreHandle kvStoreHandle
+        );
 
         // MXNET_DLL int MXSetProfilerState(int state);
         [DllImport(MXNetDll)]
-        public static extern int MXSetProfilerState(int state);
+        public static extern int MXSetProfilerState(
+            int state
+        );
 
         // MXNET_DLL int MXDumpProcessProfile(int finished, int profile_process, KVStoreHandle kvStoreHandle);
         [DllImport(MXNetDll)]
-        public static extern int MXDumpProcessProfile(int finished, int profile_process, KVStoreHandle kvStoreHandle);
+        public static extern int MXDumpProcessProfile(
+            int finished,
+            int profile_process,
+            KVStoreHandle kvStoreHandle
+        );
 
         // MXNET_DLL int MXDumpProfile(int finished);
         [DllImport(MXNetDll)]
-        public static extern int MXDumpProfile(int finished);
+        public static extern int MXDumpProfile(
+            int finished
+        );
 
         // MXNET_DLL int MXAggregateProfileStatsPrint(const char **out_str, int reset);
         [DllImport(MXNetDll)]
-        public static extern int MXAggregateProfileStatsPrint([MarshalAs(UnmanagedType.LPUTF8Str)] out string out_str, int reset);
+        public static extern int MXAggregateProfileStatsPrint(
+            out string out_str,
+            int reset
+        );
 
         // MXNET_DLL int MXAggregateProfileStatsPrintEx(const char **out_str, int reset, int format,
         //     int sort_by, int ascending);
         [DllImport(MXNetDll)]
-        public static extern int MXAggregateProfileStatsPrintEx([MarshalAs(UnmanagedType.LPUTF8Str)] out string out_str, int reset, int format,
-            int sort_by, int ascending);
+        public static extern int MXAggregateProfileStatsPrintEx(
+            out string out_str,
+            int reset,
+            int format,
+            int sort_by,
+            int ascending
+        );
 
         // MXNET_DLL int MXProcessProfilePause(int paused, int profile_process, KVStoreHandle kvStoreHandle);
         [DllImport(MXNetDll)]
-        public static extern int MXProcessProfilePause(int paused, int profile_process, KVStoreHandle kvStoreHandle);
+        public static extern int MXProcessProfilePause(
+            int paused,
+            int profile_process,
+            KVStoreHandle kvStoreHandle
+        );
 
         // MXNET_DLL int MXProfilePause(int paused);
         [DllImport(MXNetDll)]
-        public static extern int MXProfilePause(int paused);
+        public static extern int MXProfilePause(
+            int paused
+        );
 
         // MXNET_DLL int MXProfileCreateDomain(const char *domain, ProfileHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXProfileCreateDomain([MarshalAs(UnmanagedType.LPUTF8Str)] string domain, out ProfileHandle @out);
+        public static extern int MXProfileCreateDomain(
+            char[] domain,
+            out ProfileHandle @out
+        );
 
         // MXNET_DLL int MXProfileCreateTask(ProfileHandle domain,
         //     const char *task_name,
         //     ProfileHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXProfileCreateTask(ProfileHandle domain,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string task_name,
-            out ProfileHandle @out);
+        public static extern int MXProfileCreateTask(
+            ProfileHandle domain,
+            char[] task_name,
+            out ProfileHandle @out
+        );
 
         // MXNET_DLL int MXProfileCreateFrame(ProfileHandle domain,
         //     const char *frame_name,
         //     ProfileHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXProfileCreateFrame(ProfileHandle domain,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string frame_name,
-            out ProfileHandle @out);
+        public static extern int MXProfileCreateFrame(
+            ProfileHandle domain,
+            char[] frame_name,
+            out ProfileHandle @out
+        );
 
         // MXNET_DLL int MXProfileCreateEvent(const char *event_name, ProfileHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXProfileCreateEvent([MarshalAs(UnmanagedType.LPUTF8Str)] string event_name, out ProfileHandle @out);
+        public static extern int MXProfileCreateEvent(
+            char[] event_name,
+            out ProfileHandle @out
+        );
 
         // MXNET_DLL int MXProfileCreateCounter(ProfileHandle domain,
         //     const char *counter_name,
         //     ProfileHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXProfileCreateCounter(ProfileHandle domain,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string counter_name,
-            out ProfileHandle @out);
+        public static extern int MXProfileCreateCounter(
+            ProfileHandle domain,
+            char[] counter_name,
+            out ProfileHandle @out
+        );
 
         // MXNET_DLL int MXProfileDestroyHandle(ProfileHandle frame_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXProfileDestroyHandle(ProfileHandle frame_handle);
+        public static extern int MXProfileDestroyHandle(
+            ProfileHandle frame_handle
+        );
 
         // MXNET_DLL int MXProfileDurationStart(ProfileHandle duration_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXProfileDurationStart(ProfileHandle duration_handle);
+        public static extern int MXProfileDurationStart(
+            ProfileHandle duration_handle
+        );
 
         // MXNET_DLL int MXProfileDurationStop(ProfileHandle duration_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXProfileDurationStop(ProfileHandle duration_handle);
+        public static extern int MXProfileDurationStop(
+            ProfileHandle duration_handle
+        );
 
         // MXNET_DLL int MXProfileSetCounter(ProfileHandle counter_handle, uint64_t value);
         [DllImport(MXNetDll)]
-        public static extern int MXProfileSetCounter(ProfileHandle counter_handle, uint64_t value);
+        public static extern int MXProfileSetCounter(
+            ProfileHandle counter_handle,
+            int64_t value
+        );
 
         // MXNET_DLL int MXProfileAdjustCounter(ProfileHandle counter_handle, int64_t value);
         [DllImport(MXNetDll)]
-        public static extern int MXProfileAdjustCounter(ProfileHandle counter_handle, int64_t value);
+        public static extern int MXProfileAdjustCounter(
+            ProfileHandle counter_handle,
+            int64_t value
+        );
 
         // MXNET_DLL int MXProfileSetMarker(ProfileHandle domain,
         //     const char *instant_marker_name,
         //     const char *scope);
         [DllImport(MXNetDll)]
-        public static extern int MXProfileSetMarker(ProfileHandle domain,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string instant_marker_name,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string scope);
+        public static extern int MXProfileSetMarker(
+            ProfileHandle domain,
+            char[] instant_marker_name,
+            char[] scope
+        );
 
         // MXNET_DLL int MXSetNumOMPThreads(int thread_num);
         [DllImport(MXNetDll)]
-        public static extern int MXSetNumOMPThreads(int thread_num);
+        public static extern int MXSetNumOMPThreads(
+            int thread_num
+        );
 
         // MXNET_DLL int MXEngineSetBulkSize(int bulk_size, int* prev_bulk_size);
         [DllImport(MXNetDll)]
-        public static extern int MXEngineSetBulkSize(int bulk_size, out int prev_bulk_size);
+        public static extern int MXEngineSetBulkSize(
+            int bulk_size,
+            int[] prev_bulk_size
+        );
 
         // MXNET_DLL int MXGetGPUCount(int* out);
         [DllImport(MXNetDll)]
-        public static extern int MXGetGPUCount(out int @out);
+        public static extern int MXGetGPUCount(
+            out int @out
+        );
 
         // MXNET_DLL int MXGetGPUMemoryInformation(int dev, int *free_mem, int *total_mem);
         [DllImport(MXNetDll)]
-        public static extern int MXGetGPUMemoryInformation(int dev, out int free_mem, out int total_mem);
+        public static extern int MXGetGPUMemoryInformation(
+            int dev,
+            int[] free_mem,
+            int[] total_mem
+        );
 
         // MXNET_DLL int MXGetGPUMemoryInformation64(int dev, uint64_t *free_mem, uint64_t *total_mem);
         [DllImport(MXNetDll)]
-        public static extern int MXGetGPUMemoryInformation64(int dev, out uint64_t free_mem, out uint64_t total_mem);
+        public static extern int MXGetGPUMemoryInformation64(
+            int dev,
+            int64_t[] free_mem,
+            int64_t[] total_mem
+        );
 
         // MXNET_DLL int MXGetVersion(int *out);
         [DllImport(MXNetDll)]
-        public static extern int MXGetVersion(out int @out);
+        public static extern int MXGetVersion(
+            out int @out
+        );
 
         // MXNET_DLL int MXNDArrayCreateNone(NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayCreateNone(out NDArrayHandle @out);
+        public static extern int MXNDArrayCreateNone(
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArrayCreate(const mx_uint *shape,
         //     mx_uint ndim,
@@ -208,12 +297,14 @@ namespace Horker.MXNet.Interop
         //     int delay_alloc,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayCreate(mx_uint[] shape,
-            mx_uint ndim,
+        public static extern int MXNDArrayCreate(
+            int[] shape,
+            int ndim,
             int dev_type,
             int dev_id,
             int delay_alloc,
-            out NDArrayHandle @out);
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArrayCreateEx(const mx_uint *shape,
         //     mx_uint ndim,
@@ -223,13 +314,15 @@ namespace Horker.MXNet.Interop
         //     int dtype,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayCreateEx(mx_uint[] shape,
-            mx_uint ndim,
+        public static extern int MXNDArrayCreateEx(
+            int[] shape,
+            int ndim,
             int dev_type,
             int dev_id,
             int delay_alloc,
             int dtype,
-            out NDArrayHandle @out);
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArrayCreateSparseEx(int storage_type,
         //     const mx_uint *shape,
@@ -244,34 +337,40 @@ namespace Horker.MXNet.Interop
         //     const mx_uint *aux_shape,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayCreateSparseEx(int storage_type,
-            mx_uint[] shape,
-            mx_uint ndim,
+        public static extern int MXNDArrayCreateSparseEx(
+            int storage_type,
+            int[] shape,
+            int ndim,
             int dev_type,
             int dev_id,
             int delay_alloc,
             int dtype,
-            mx_uint num_aux,
-            out int aux_type,
-            out mx_uint aux_ndims,
-            mx_uint[] aux_shape,
-            out NDArrayHandle @out);
+            int num_aux,
+            int[] aux_type,
+            int[] aux_ndims,
+            int[] aux_shape,
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArrayLoadFromRawBytes(const void *buf,
         //     size_t size,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayLoadFromRawBytes(IntPtr buf,
+        public static extern int MXNDArrayLoadFromRawBytes(
+            IntPtr buf,
             size_t size,
-            out NDArrayHandle @out);
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArraySaveRawBytes(NDArrayHandle handle,
         //     size_t *out_size,
         //     const char **out_buf);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArraySaveRawBytes(NDArrayHandle handle,
+        public static extern int MXNDArraySaveRawBytes(
+            NDArrayHandle handle,
             out size_t out_size,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] out string out_buf);
+            out string out_buf
+        );
 
         // MXNET_DLL int MXNDArraySave(const char* fname,
         //     mx_uint num_args,
@@ -298,79 +397,103 @@ namespace Horker.MXNet.Interop
         //     const void *data,
         //     size_t size);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArraySyncCopyFromCPU(NDArrayHandle handle,
+        public static extern int MXNDArraySyncCopyFromCPU(
+            NDArrayHandle handle,
             IntPtr data,
-            size_t size);
+            size_t size
+        );
 
         // MXNET_DLL int MXNDArraySyncCopyToCPU(NDArrayHandle handle,
         //     void *data,
         //     size_t size);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArraySyncCopyToCPU(NDArrayHandle handle,
+        public static extern int MXNDArraySyncCopyToCPU(
+            NDArrayHandle handle,
             IntPtr data,
-            size_t size);
+            size_t size
+        );
 
         // MXNET_DLL int MXNDArraySyncCopyFromNDArray(NDArrayHandle handle_dst,
         //     const NDArrayHandle handle_src,
         //     const int i);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArraySyncCopyFromNDArray(NDArrayHandle handle_dst,
+        public static extern int MXNDArraySyncCopyFromNDArray(
+            NDArrayHandle handle_dst,
             NDArrayHandle handle_src,
-            int i);
+            int i
+        );
 
         // MXNET_DLL int MXNDArraySyncCheckFormat(NDArrayHandle handle, const bool full_check);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArraySyncCheckFormat(NDArrayHandle handle, bool full_check);
+        public static extern int MXNDArraySyncCheckFormat(
+            NDArrayHandle handle,
+            bool full_check
+        );
 
         // MXNET_DLL int MXNDArrayWaitToRead(NDArrayHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayWaitToRead(NDArrayHandle handle);
+        public static extern int MXNDArrayWaitToRead(
+            NDArrayHandle handle
+        );
 
         // MXNET_DLL int MXNDArrayWaitToWrite(NDArrayHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayWaitToWrite(NDArrayHandle handle);
+        public static extern int MXNDArrayWaitToWrite(
+            NDArrayHandle handle
+        );
 
         // MXNET_DLL int MXNDArrayWaitAll();
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayWaitAll();
+        public static extern int MXNDArrayWaitAll(
+        );
 
         // MXNET_DLL int MXNDArrayFree(NDArrayHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayFree(NDArrayHandle handle);
+        public static extern int MXNDArrayFree(
+            NDArrayHandle handle
+        );
 
         // MXNET_DLL int MXNDArraySlice(NDArrayHandle handle,
         //     mx_uint slice_begin,
         //     mx_uint slice_end,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArraySlice(NDArrayHandle handle,
-            mx_uint slice_begin,
-            mx_uint slice_end,
-            out NDArrayHandle @out);
+        public static extern int MXNDArraySlice(
+            NDArrayHandle handle,
+            int slice_begin,
+            int slice_end,
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArrayAt(NDArrayHandle handle,
         //     mx_uint idx,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayAt(NDArrayHandle handle,
-            mx_uint idx,
-            out NDArrayHandle @out);
+        public static extern int MXNDArrayAt(
+            NDArrayHandle handle,
+            int idx,
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArrayGetStorageType(NDArrayHandle handle,
         //     int *out_storage_type);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetStorageType(NDArrayHandle handle,
-            out int out_storage_type);
+        public static extern int MXNDArrayGetStorageType(
+            NDArrayHandle handle,
+            out int out_storage_type
+        );
 
         // MXNET_DLL int MXNDArrayReshape(NDArrayHandle handle,
         //     int ndim,
         //     int *dims,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayReshape(NDArrayHandle handle,
+        public static extern int MXNDArrayReshape(
+            NDArrayHandle handle,
             int ndim,
             int[] dims,
-            out NDArrayHandle @out);
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArrayReshape64(NDArrayHandle handle,
         //     int ndim,
@@ -378,109 +501,147 @@ namespace Horker.MXNet.Interop
         //     bool reverse,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayReshape64(NDArrayHandle handle,
+        public static extern int MXNDArrayReshape64(
+            NDArrayHandle handle,
             int ndim,
-            int[] dims,
+            dim_t[] dims,
             bool reverse,
-            out NDArrayHandle @out);
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArrayGetShape(NDArrayHandle handle,
         //     mx_uint *out_dim,
         //     const mx_uint **out_pdata);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetShape(NDArrayHandle handle,
-            out mx_uint out_dim,
-            out mx_uint[] out_pdata);
+        public static extern int MXNDArrayGetShape(
+            NDArrayHandle handle,
+            out int out_dim,
+            out int[] out_pdata
+        );
 
         // MXNET_DLL int MXNDArrayGetShapeEx(NDArrayHandle handle,
         //     int *out_dim,
         //     const int **out_pdata);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetShapeEx(NDArrayHandle handle,
+        public static extern int MXNDArrayGetShapeEx(
+            NDArrayHandle handle,
             out int out_dim,
-            out int[] out_pdata);
+            out int[] out_pdata
+        );
 
         // MXNET_DLL int MXNDArrayGetData(NDArrayHandle handle,
         //     void **out_pdata);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetData(NDArrayHandle handle,
-            out IntPtr out_pdata);
+        public static extern int MXNDArrayGetData(
+            NDArrayHandle handle,
+            out IntPtr out_pdata
+        );
 
         // MXNET_DLL int MXNDArrayToDLPack(NDArrayHandle handle,
         //     DLManagedTensorHandle *out_dlpack);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayToDLPack(NDArrayHandle handle,
-            out DLManagedTensorHandle out_dlpack);
+        public static extern int MXNDArrayToDLPack(
+            NDArrayHandle handle,
+            out DLManagedTensorHandle out_dlpack
+        );
 
         // MXNET_DLL int MXNDArrayFromDLPack(DLManagedTensorHandle dlpack,
         //     NDArrayHandle *out_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayFromDLPack(DLManagedTensorHandle dlpack,
-            out NDArrayHandle out_handle);
+        public static extern int MXNDArrayFromDLPack(
+            DLManagedTensorHandle dlpack,
+            out NDArrayHandle out_handle
+        );
 
         // MXNET_DLL int MXNDArrayFromDLPackEx(DLManagedTensorHandle dlpack,
         //     const bool transient_handle,
         //     NDArrayHandle *out_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayFromDLPackEx(DLManagedTensorHandle dlpack,
+        public static extern int MXNDArrayFromDLPackEx(
+            DLManagedTensorHandle dlpack,
             bool transient_handle,
-            out NDArrayHandle out_handle);
+            out NDArrayHandle out_handle
+        );
 
         // MXNET_DLL int MXNDArrayCallDLPackDeleter(DLManagedTensorHandle dlpack);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayCallDLPackDeleter(DLManagedTensorHandle dlpack);
+        public static extern int MXNDArrayCallDLPackDeleter(
+            DLManagedTensorHandle dlpack
+        );
 
         // MXNET_DLL int MXNDArrayGetDType(NDArrayHandle handle,
         //     int *out_dtype);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetDType(NDArrayHandle handle,
-            out int out_dtype);
+        public static extern int MXNDArrayGetDType(
+            NDArrayHandle handle,
+            out int out_dtype
+        );
 
         // MXNET_DLL int MXNDArrayGetAuxType(NDArrayHandle handle,
         //     mx_uint i,
         //     int *out_type);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetAuxType(NDArrayHandle handle,
-            mx_uint i,
-            out int out_type);
+        public static extern int MXNDArrayGetAuxType(
+            NDArrayHandle handle,
+            int i,
+            out int out_type
+        );
 
         // MXNET_DLL int MXNDArrayGetAuxNDArray(NDArrayHandle handle,
         //     mx_uint i,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetAuxNDArray(NDArrayHandle handle,
-            mx_uint i,
-            out NDArrayHandle @out);
+        public static extern int MXNDArrayGetAuxNDArray(
+            NDArrayHandle handle,
+            int i,
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArrayGetDataNDArray(NDArrayHandle handle,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetDataNDArray(NDArrayHandle handle,
-            out NDArrayHandle @out);
+        public static extern int MXNDArrayGetDataNDArray(
+            NDArrayHandle handle,
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArrayGetContext(NDArrayHandle handle,
         //     int *out_dev_type,
         //     int *out_dev_id);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetContext(NDArrayHandle handle,
+        public static extern int MXNDArrayGetContext(
+            NDArrayHandle handle,
             out int out_dev_type,
-            out int out_dev_id);
+            out int out_dev_id
+        );
 
         // MXNET_DLL int MXNDArrayGetGrad(NDArrayHandle handle, NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetGrad(NDArrayHandle handle, out NDArrayHandle @out);
+        public static extern int MXNDArrayGetGrad(
+            NDArrayHandle handle,
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArrayDetach(NDArrayHandle handle, NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayDetach(NDArrayHandle handle, out NDArrayHandle @out);
+        public static extern int MXNDArrayDetach(
+            NDArrayHandle handle,
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXNDArraySetGradState(NDArrayHandle handle, int state);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArraySetGradState(NDArrayHandle handle, int state);
+        public static extern int MXNDArraySetGradState(
+            NDArrayHandle handle,
+            int state
+        );
 
         // MXNET_DLL int MXNDArrayGetGradState(NDArrayHandle handle, int *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetGradState(NDArrayHandle handle, out int @out);
+        public static extern int MXNDArrayGetGradState(
+            NDArrayHandle handle,
+            out int @out
+        );
 
         // MXNET_DLL int MXListFunctions(mx_uint *out_size,
         //     FunctionHandle **out_array);
@@ -489,8 +650,10 @@ namespace Horker.MXNet.Interop
         // MXNET_DLL int MXGetFunction(const char *name,
         //     FunctionHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXGetFunction([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-            out FunctionHandle @out);
+        public static extern int MXGetFunction(
+            char[] name,
+            out FunctionHandle @out
+        );
 
         // MXNET_DLL int MXFuncGetInfo(FunctionHandle fun,
         //     const char **name,
@@ -508,21 +671,25 @@ namespace Horker.MXNet.Interop
         //     mx_uint *num_mutate_vars,
         //     int *type_mask);
         [DllImport(MXNetDll)]
-        public static extern int MXFuncDescribe(FunctionHandle fun,
-            out mx_uint num_use_vars,
-            out mx_uint num_scalars,
-            out mx_uint num_mutate_vars,
-            out int type_mask);
+        public static extern int MXFuncDescribe(
+            FunctionHandle fun,
+            int[] num_use_vars,
+            int[] num_scalars,
+            int[] num_mutate_vars,
+            int[] type_mask
+        );
 
         // MXNET_DLL int MXFuncInvoke(FunctionHandle fun,
         //     NDArrayHandle *use_vars,
         //     mx_float *scalar_args,
         //     NDArrayHandle *mutate_vars);
         [DllImport(MXNetDll)]
-        public static extern int MXFuncInvoke(FunctionHandle fun,
-            out NDArrayHandle use_vars,
-            out mx_float scalar_args,
-            out NDArrayHandle mutate_vars);
+        public static extern int MXFuncInvoke(
+            FunctionHandle fun,
+            NDArrayHandle[] use_vars,
+            mx_float[] scalar_args,
+            NDArrayHandle[] mutate_vars
+        );
 
         // MXNET_DLL int MXFuncInvokeEx(FunctionHandle fun,
         //     NDArrayHandle *use_vars,
@@ -532,13 +699,15 @@ namespace Horker.MXNet.Interop
         //     char **param_keys,
         //     char **param_vals);
         [DllImport(MXNetDll)]
-        public static extern int MXFuncInvokeEx(FunctionHandle fun,
-            out NDArrayHandle use_vars,
-            out mx_float scalar_args,
-            out NDArrayHandle mutate_vars,
+        public static extern int MXFuncInvokeEx(
+            FunctionHandle fun,
+            NDArrayHandle[] use_vars,
+            mx_float[] scalar_args,
+            NDArrayHandle[] mutate_vars,
             int num_params,
-            out char[] param_keys,
-            out char[] param_vals);
+            string[] param_keys,
+            string[] param_vals
+        );
 
         // MXNET_DLL int MXImperativeInvoke(AtomicSymbolCreator creator,
         //     int num_inputs,
@@ -549,14 +718,16 @@ namespace Horker.MXNet.Interop
         //     const char **param_keys,
         //     const char **param_vals);
         [DllImport(MXNetDll)]
-        public static extern int MXImperativeInvoke(AtomicSymbolCreator creator,
+        public static extern int MXImperativeInvoke(
+            AtomicSymbolCreator creator,
             int num_inputs,
-            out NDArrayHandle inputs,
+            NDArrayHandle[] inputs,
             out int num_outputs,
             out NDArrayHandle[] outputs,
             int num_params,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] param_keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] param_vals);
+            string[] param_keys,
+            string[] param_vals
+        );
 
         // MXNET_DLL int MXImperativeInvokeEx(AtomicSymbolCreator creator,
         //     int num_inputs,
@@ -568,65 +739,88 @@ namespace Horker.MXNet.Interop
         //     const char **param_vals,
         //     const int **out_stypes);
         [DllImport(MXNetDll)]
-        public static extern int MXImperativeInvokeEx(AtomicSymbolCreator creator,
+        public static extern int MXImperativeInvokeEx(
+            AtomicSymbolCreator creator,
             int num_inputs,
-            out NDArrayHandle inputs,
+            NDArrayHandle[] inputs,
             out int num_outputs,
             out NDArrayHandle[] outputs,
             int num_params,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] param_keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] param_vals,
-            out int[] out_stypes);
+            string[] param_keys,
+            string[] param_vals,
+            out int[] out_stypes
+        );
 
         // MXNET_DLL int MXAutogradSetIsRecording(int is_recording, int* prev);
         [DllImport(MXNetDll)]
-        public static extern int MXAutogradSetIsRecording(int is_recording, out int prev);
+        public static extern int MXAutogradSetIsRecording(
+            int is_recording,
+            int[] prev
+        );
 
         // MXNET_DLL int MXAutogradSetIsTraining(int is_training, int* prev);
         [DllImport(MXNetDll)]
-        public static extern int MXAutogradSetIsTraining(int is_training, out int prev);
+        public static extern int MXAutogradSetIsTraining(
+            int is_training,
+            int[] prev
+        );
 
         // MXNET_DLL int MXAutogradIsRecording(bool* curr);
         [DllImport(MXNetDll)]
-        public static extern int MXAutogradIsRecording(out bool curr);
+        public static extern int MXAutogradIsRecording(
+            bool[] curr
+        );
 
         // MXNET_DLL int MXAutogradIsTraining(bool* curr);
         [DllImport(MXNetDll)]
-        public static extern int MXAutogradIsTraining(out bool curr);
+        public static extern int MXAutogradIsTraining(
+            bool[] curr
+        );
 
         // MXNET_DLL int MXIsNumpyShape(bool* curr);
         [DllImport(MXNetDll)]
-        public static extern int MXIsNumpyShape(out bool curr);
+        public static extern int MXIsNumpyShape(
+            bool[] curr
+        );
 
         // MXNET_DLL int MXSetIsNumpyShape(int is_np_shape, int* prev);
         [DllImport(MXNetDll)]
-        public static extern int MXSetIsNumpyShape(int is_np_shape, out int prev);
+        public static extern int MXSetIsNumpyShape(
+            int is_np_shape,
+            int[] prev
+        );
 
         // MXNET_DLL int MXAutogradMarkVariables(mx_uint num_var,
         //     NDArrayHandle *var_handles,
         //     mx_uint *reqs_array,
         //     NDArrayHandle *grad_handles);
         [DllImport(MXNetDll)]
-        public static extern int MXAutogradMarkVariables(mx_uint num_var,
-            out NDArrayHandle var_handles,
-            out mx_uint reqs_array,
-            out NDArrayHandle grad_handles);
+        public static extern int MXAutogradMarkVariables(
+            int num_var,
+            NDArrayHandle[] var_handles,
+            int[] reqs_array,
+            NDArrayHandle[] grad_handles
+        );
 
         // MXNET_DLL int MXAutogradComputeGradient(mx_uint num_output,
         //     NDArrayHandle* output_handles);
         [DllImport(MXNetDll)]
-        public static extern int MXAutogradComputeGradient(mx_uint num_output,
-            out NDArrayHandle output_handles);
+        public static extern int MXAutogradComputeGradient(
+            out int num_output,
+            out NDArrayHandle output_handles
+        );
 
         // MXNET_DLL int MXAutogradBackward(mx_uint num_output,
         //     NDArrayHandle* output_handles,
         //     NDArrayHandle* ograd_handles,
         //     int retain_graph);
         [DllImport(MXNetDll)]
-        public static extern int MXAutogradBackward(mx_uint num_output,
+        public static extern int MXAutogradBackward(
+            out int num_output,
             out NDArrayHandle output_handles,
-            out NDArrayHandle ograd_handles,
-            int retain_graph);
+            NDArrayHandle[] ograd_handles,
+            int retain_graph
+        );
 
         // MXNET_DLL int MXAutogradBackwardEx(mx_uint num_output,
         //     NDArrayHandle *output_handles,
@@ -639,24 +833,32 @@ namespace Horker.MXNet.Interop
         //     NDArrayHandle **grad_handles,
         //     int **grad_stypes);
         [DllImport(MXNetDll)]
-        public static extern int MXAutogradBackwardEx(mx_uint num_output,
+        public static extern int MXAutogradBackwardEx(
+            out int num_output,
             out NDArrayHandle output_handles,
-            out NDArrayHandle ograd_handles,
-            mx_uint num_variables,
-            out NDArrayHandle var_handles,
+            NDArrayHandle[] ograd_handles,
+            int num_variables,
+            NDArrayHandle[] var_handles,
             int retain_graph,
             int create_graph,
             int is_train,
-            out NDArrayHandle[] grad_handles,
-            out int[] grad_stypes);
+            NDArrayHandle[][] grad_handles,
+            int[][] grad_stypes
+        );
 
         // MXNET_DLL int MXAutogradGetSymbol(NDArrayHandle handle, SymbolHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXAutogradGetSymbol(NDArrayHandle handle, out SymbolHandle @out);
+        public static extern int MXAutogradGetSymbol(
+            NDArrayHandle handle,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXCreateCachedOp(SymbolHandle handle, CachedOpHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXCreateCachedOp(SymbolHandle handle, out CachedOpHandle @out);
+        public static extern int MXCreateCachedOp(
+            SymbolHandle handle,
+            out CachedOpHandle @out
+        );
 
         // MXNET_DLL int MXCreateCachedOpEx(SymbolHandle handle,
         //     int num_flags,
@@ -664,15 +866,19 @@ namespace Horker.MXNet.Interop
         //     const char** vals,
         //     CachedOpHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXCreateCachedOpEx(SymbolHandle handle,
+        public static extern int MXCreateCachedOpEx(
+            SymbolHandle handle,
             int num_flags,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] vals,
-            out CachedOpHandle @out);
+            string[] keys,
+            string[] vals,
+            out CachedOpHandle @out
+        );
 
         // MXNET_DLL int MXFreeCachedOp(CachedOpHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXFreeCachedOp(CachedOpHandle handle);
+        public static extern int MXFreeCachedOp(
+            CachedOpHandle handle
+        );
 
         // MXNET_DLL int MXInvokeCachedOp(CachedOpHandle handle,
         //     int num_inputs,
@@ -680,11 +886,13 @@ namespace Horker.MXNet.Interop
         //     int *num_outputs,
         //     NDArrayHandle **outputs);
         [DllImport(MXNetDll)]
-        public static extern int MXInvokeCachedOp(CachedOpHandle handle,
+        public static extern int MXInvokeCachedOp(
+            CachedOpHandle handle,
             int num_inputs,
-            out NDArrayHandle inputs,
+            NDArrayHandle[] inputs,
             out int num_outputs,
-            out NDArrayHandle[] outputs);
+            out NDArrayHandle[] outputs
+        );
 
         // MXNET_DLL int MXInvokeCachedOpEx(CachedOpHandle handle,
         //     int num_inputs,
@@ -693,42 +901,56 @@ namespace Horker.MXNet.Interop
         //     NDArrayHandle **outputs,
         //     const int** out_stypes);
         [DllImport(MXNetDll)]
-        public static extern int MXInvokeCachedOpEx(CachedOpHandle handle,
+        public static extern int MXInvokeCachedOpEx(
+            CachedOpHandle handle,
             int num_inputs,
-            out NDArrayHandle inputs,
+            NDArrayHandle[] inputs,
             out int num_outputs,
             out NDArrayHandle[] outputs,
-            out int[] out_stypes);
+            out int[] out_stypes
+        );
 
         // MXNET_DLL int MXListAllOpNames(mx_uint *out_size,
         //     const char ***out_array);
         [DllImport(MXNetDll)]
-        public static extern int MXListAllOpNames(out mx_uint out_size,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] out_array);
+        public static extern int MXListAllOpNames(
+            out int out_size,
+            out string[] out_array
+        );
 
         // MXNET_DLL int MXSymbolListAtomicSymbolCreators(mx_uint *out_size,
         //     AtomicSymbolCreator **out_array);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolListAtomicSymbolCreators(out mx_uint out_size,
-            out AtomicSymbolCreator[] out_array);
+        public static extern int MXSymbolListAtomicSymbolCreators(
+            out int out_size,
+            out AtomicSymbolCreator[] out_array
+        );
 
         // MXNET_DLL int MXSymbolGetAtomicSymbolName(AtomicSymbolCreator creator,
         //     const char **name);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolGetAtomicSymbolName(AtomicSymbolCreator creator,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] name);
+        public static extern int MXSymbolGetAtomicSymbolName(
+            AtomicSymbolCreator creator,
+            string[] name
+        );
 
         // MXNET_DLL int MXSymbolGetInputSymbols(SymbolHandle sym, SymbolHandle **inputs,
         //     int *input_size);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolGetInputSymbols(SymbolHandle sym, out SymbolHandle[] inputs,
-            out int input_size);
+        public static extern int MXSymbolGetInputSymbols(
+            SymbolHandle sym,
+            SymbolHandle[][] inputs,
+            int[] input_size
+        );
 
         // MXNET_DLL int MXSymbolCutSubgraph(SymbolHandle sym, SymbolHandle **inputs,
         //     int *input_size);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolCutSubgraph(SymbolHandle sym, out SymbolHandle[] inputs,
-            out int input_size);
+        public static extern int MXSymbolCutSubgraph(
+            SymbolHandle sym,
+            SymbolHandle[][] inputs,
+            int[] input_size
+        );
 
         // MXNET_DLL int MXSymbolGetAtomicSymbolInfo(AtomicSymbolCreator creator,
         //     const char **name,
@@ -740,15 +962,17 @@ namespace Horker.MXNet.Interop
         //     const char **key_var_num_args,
         //     const char **return_type DEFAULT(NULL));
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolGetAtomicSymbolInfo(AtomicSymbolCreator creator,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] name,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] description,
-            out mx_uint num_args,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] arg_names,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] arg_type_infos,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] arg_descriptions,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] key_var_num_args,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] return_type );
+        public static extern int MXSymbolGetAtomicSymbolInfo(
+            AtomicSymbolCreator creator,
+            string[] name,
+            string[] description,
+            int[] num_args,
+            string[][] arg_names,
+            string[][] arg_type_infos,
+            string[][] arg_descriptions,
+            string[] key_var_num_args,
+            string[] return_type
+        );
 
         // MXNET_DLL int MXSymbolCreateAtomicSymbol(AtomicSymbolCreator creator,
         //     mx_uint num_param,
@@ -756,147 +980,201 @@ namespace Horker.MXNet.Interop
         //     const char **vals,
         //     SymbolHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolCreateAtomicSymbol(AtomicSymbolCreator creator,
-            mx_uint num_param,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] vals,
-            out SymbolHandle @out);
+        public static extern int MXSymbolCreateAtomicSymbol(
+            AtomicSymbolCreator creator,
+            int num_param,
+            string[] keys,
+            string[] vals,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXSymbolCreateVariable(const char *name, SymbolHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolCreateVariable([MarshalAs(UnmanagedType.LPUTF8Str)] string name, out SymbolHandle @out);
+        public static extern int MXSymbolCreateVariable(
+            char[] name,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXSymbolCreateGroup(mx_uint num_symbols,
         //     SymbolHandle *symbols,
         //     SymbolHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolCreateGroup(mx_uint num_symbols,
-            out SymbolHandle symbols,
-            out SymbolHandle @out);
+        public static extern int MXSymbolCreateGroup(
+            int num_symbols,
+            SymbolHandle[] symbols,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXSymbolCreateFromFile(const char *fname, SymbolHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolCreateFromFile([MarshalAs(UnmanagedType.LPUTF8Str)] string fname, out SymbolHandle @out);
+        public static extern int MXSymbolCreateFromFile(
+            char[] fname,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXSymbolCreateFromJSON(const char *json, SymbolHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolCreateFromJSON([MarshalAs(UnmanagedType.LPUTF8Str)] string json, out SymbolHandle @out);
+        public static extern int MXSymbolCreateFromJSON(
+            char[] json,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXSymbolRemoveAmpCast(SymbolHandle sym_handle, SymbolHandle* ret_sym_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolRemoveAmpCast(SymbolHandle sym_handle, out SymbolHandle ret_sym_handle);
+        public static extern int MXSymbolRemoveAmpCast(
+            SymbolHandle sym_handle,
+            SymbolHandle[] ret_sym_handle
+        );
 
         // MXNET_DLL int MXSymbolSaveToFile(SymbolHandle symbol, const char *fname);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolSaveToFile(SymbolHandle symbol, [MarshalAs(UnmanagedType.LPUTF8Str)] string fname);
+        public static extern int MXSymbolSaveToFile(
+            SymbolHandle symbol,
+            char[] fname
+        );
 
         // MXNET_DLL int MXSymbolSaveToJSON(SymbolHandle symbol, const char **out_json);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolSaveToJSON(SymbolHandle symbol, [MarshalAs(UnmanagedType.LPUTF8Str)] out string out_json);
+        public static extern int MXSymbolSaveToJSON(
+            SymbolHandle symbol,
+            out string out_json
+        );
 
         // MXNET_DLL int MXSymbolFree(SymbolHandle symbol);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolFree(SymbolHandle symbol);
+        public static extern int MXSymbolFree(
+            SymbolHandle symbol
+        );
 
         // MXNET_DLL int MXSymbolCopy(SymbolHandle symbol, SymbolHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolCopy(SymbolHandle symbol, out SymbolHandle @out);
+        public static extern int MXSymbolCopy(
+            SymbolHandle symbol,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXSymbolPrint(SymbolHandle symbol, const char **out_str);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolPrint(SymbolHandle symbol, [MarshalAs(UnmanagedType.LPUTF8Str)] out string out_str);
+        public static extern int MXSymbolPrint(
+            SymbolHandle symbol,
+            out string out_str
+        );
 
         // MXNET_DLL int MXSymbolGetName(SymbolHandle symbol,
         //     const char** out,
         //     int *success);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolGetName(SymbolHandle symbol,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] @out,
-            out int success);
+        public static extern int MXSymbolGetName(
+            SymbolHandle symbol,
+            out string @out,
+            int[] success
+        );
 
         // MXNET_DLL int MXSymbolGetAttr(SymbolHandle symbol,
         //     const char* key,
         //     const char** out,
         //     int *success);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolGetAttr(SymbolHandle symbol,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string key,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] @out,
-            out int success);
+        public static extern int MXSymbolGetAttr(
+            SymbolHandle symbol,
+            char[] key,
+            out string @out,
+            int[] success
+        );
 
         // MXNET_DLL int MXSymbolSetAttr(SymbolHandle symbol,
         //     const char* key,
         //     const char* value);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolSetAttr(SymbolHandle symbol,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string key,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
+        public static extern int MXSymbolSetAttr(
+            SymbolHandle symbol,
+            char[] key,
+            char[] value
+        );
 
         // MXNET_DLL int MXSymbolListAttr(SymbolHandle symbol,
         //     mx_uint *out_size,
         //     const char*** out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolListAttr(SymbolHandle symbol,
-            out mx_uint out_size,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] @out);
+        public static extern int MXSymbolListAttr(
+            SymbolHandle symbol,
+            out int out_size,
+            out string[] @out
+        );
 
         // MXNET_DLL int MXSymbolListAttrShallow(SymbolHandle symbol,
         //     mx_uint *out_size,
         //     const char*** out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolListAttrShallow(SymbolHandle symbol,
-            out mx_uint out_size,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] @out);
+        public static extern int MXSymbolListAttrShallow(
+            SymbolHandle symbol,
+            out int out_size,
+            out string[] @out
+        );
 
         // MXNET_DLL int MXSymbolListArguments(SymbolHandle symbol,
         //     mx_uint *out_size,
         //     const char ***out_str_array);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolListArguments(SymbolHandle symbol,
-            out mx_uint out_size,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] out_str_array);
+        public static extern int MXSymbolListArguments(
+            SymbolHandle symbol,
+            out int out_size,
+            out string[] out_str_array
+        );
 
         // MXNET_DLL int MXSymbolListOutputs(SymbolHandle symbol,
         //     mx_uint *out_size,
         //     const char ***out_str_array);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolListOutputs(SymbolHandle symbol,
-            out mx_uint out_size,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] out_str_array);
+        public static extern int MXSymbolListOutputs(
+            SymbolHandle symbol,
+            out int out_size,
+            out string[] out_str_array
+        );
 
         // MXNET_DLL int MXSymbolGetNumOutputs(SymbolHandle symbol,
         //     mx_uint *output_count);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolGetNumOutputs(SymbolHandle symbol,
-            out mx_uint output_count);
+        public static extern int MXSymbolGetNumOutputs(
+            SymbolHandle symbol,
+            out int output_count
+        );
 
         // MXNET_DLL int MXSymbolGetInternals(SymbolHandle symbol,
         //     SymbolHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolGetInternals(SymbolHandle symbol,
-            out SymbolHandle @out);
+        public static extern int MXSymbolGetInternals(
+            SymbolHandle symbol,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXSymbolGetChildren(SymbolHandle symbol,
         //     SymbolHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolGetChildren(SymbolHandle symbol,
-            out SymbolHandle @out);
+        public static extern int MXSymbolGetChildren(
+            SymbolHandle symbol,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXSymbolGetOutput(SymbolHandle symbol,
         //     mx_uint index,
         //     SymbolHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolGetOutput(SymbolHandle symbol,
-            mx_uint index,
-            out SymbolHandle @out);
+        public static extern int MXSymbolGetOutput(
+            SymbolHandle symbol,
+            int index,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXSymbolListAuxiliaryStates(SymbolHandle symbol,
         //     mx_uint *out_size,
         //     const char ***out_str_array);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolListAuxiliaryStates(SymbolHandle symbol,
-            out mx_uint out_size,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] out_str_array);
+        public static extern int MXSymbolListAuxiliaryStates(
+            SymbolHandle symbol,
+            out int out_size,
+            out string[] out_str_array
+        );
 
         // MXNET_DLL int MXSymbolCompose(SymbolHandle sym,
         //     const char *name,
@@ -904,21 +1182,25 @@ namespace Horker.MXNet.Interop
         //     const char** keys,
         //     SymbolHandle* args);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolCompose(SymbolHandle sym,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-            mx_uint num_args,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
-            out SymbolHandle args);
+        public static extern int MXSymbolCompose(
+            SymbolHandle sym,
+            char[] name,
+            int num_args,
+            string[] keys,
+            SymbolHandle[] args
+        );
 
         // MXNET_DLL int MXSymbolGrad(SymbolHandle sym,
         //     mx_uint num_wrt,
         //     const char** wrt,
         //     SymbolHandle* out);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolGrad(SymbolHandle sym,
-            mx_uint num_wrt,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] wrt,
-            out SymbolHandle @out);
+        public static extern int MXSymbolGrad(
+            SymbolHandle sym,
+            int num_wrt,
+            string[] wrt,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXSymbolInferShape(SymbolHandle sym,
         //     mx_uint num_args,
@@ -1013,17 +1295,19 @@ namespace Horker.MXNet.Interop
         //     const int **aux_type_data,
         //     int *complete);
         [DllImport(MXNetDll)]
-        public static extern int MXSymbolInferTypePartial(SymbolHandle sym,
-            mx_uint num_args,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
+        public static extern int MXSymbolInferTypePartial(
+            SymbolHandle sym,
+            int num_args,
+            string[] keys,
             int[] arg_type_data,
-            out mx_uint in_type_size,
-            out int[] in_type_data,
-            out mx_uint out_type_size,
+            int[] in_type_size,
+            int[][] in_type_data,
+            out int out_type_size,
             out int[] out_type_data,
-            out mx_uint aux_type_size,
-            out int[] aux_type_data,
-            out int complete);
+            int[] aux_type_size,
+            int[][] aux_type_data,
+            int[] complete
+        );
 
         // MXNET_DLL int MXQuantizeSymbol(SymbolHandle sym_handle, SymbolHandle *ret_sym_handle,
         //     const mx_uint num_excluded_symbols,
@@ -1031,11 +1315,16 @@ namespace Horker.MXNet.Interop
         //     const mx_uint num_offline, const char **offline_params,
         //     const char *quantized_dtype, const bool calib_quantize);
         [DllImport(MXNetDll)]
-        public static extern int MXQuantizeSymbol(SymbolHandle sym_handle, out SymbolHandle ret_sym_handle,
-            mx_uint num_excluded_symbols,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] excluded_symbols,
-            mx_uint num_offline, [MarshalAs(UnmanagedType.LPUTF8Str)] string[] offline_params,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string quantized_dtype, bool calib_quantize);
+        public static extern int MXQuantizeSymbol(
+            SymbolHandle sym_handle,
+            SymbolHandle[] ret_sym_handle,
+            int num_excluded_symbols,
+            string[] excluded_symbols,
+            int num_offline,
+            string[] offline_params,
+            char[] quantized_dtype,
+            bool calib_quantize
+        );
 
         // MXNET_DLL int MXSetCalibTableToQuantizedSymbol(SymbolHandle qsym_handle,
         //     const mx_uint num_layers,
@@ -1044,60 +1333,82 @@ namespace Horker.MXNet.Interop
         //     const float* high_quantiles,
         //     SymbolHandle* ret_sym_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXSetCalibTableToQuantizedSymbol(SymbolHandle qsym_handle,
-            mx_uint num_layers,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] layer_names,
-            out float low_quantiles,
-            out float high_quantiles,
-            out SymbolHandle ret_sym_handle);
+        public static extern int MXSetCalibTableToQuantizedSymbol(
+            SymbolHandle qsym_handle,
+            int num_layers,
+            string[] layer_names,
+            float[] low_quantiles,
+            float[] high_quantiles,
+            SymbolHandle[] ret_sym_handle
+        );
 
         // MXNET_DLL int MXGenBackendSubgraph(SymbolHandle sym_handle, const char *backend,
         //     SymbolHandle *ret_sym_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXGenBackendSubgraph(SymbolHandle sym_handle, [MarshalAs(UnmanagedType.LPUTF8Str)] string backend,
-            out SymbolHandle ret_sym_handle);
+        public static extern int MXGenBackendSubgraph(
+            SymbolHandle sym_handle,
+            char[] backend,
+            SymbolHandle[] ret_sym_handle
+        );
 
         // MXNET_DLL int MXGenAtomicSymbolFromSymbol(SymbolHandle sym_handle, SymbolHandle *ret_sym_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXGenAtomicSymbolFromSymbol(SymbolHandle sym_handle, out SymbolHandle ret_sym_handle);
+        public static extern int MXGenAtomicSymbolFromSymbol(
+            SymbolHandle sym_handle,
+            SymbolHandle[] ret_sym_handle
+        );
 
         // MXNET_DLL int MXExecutorFree(ExecutorHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorFree(ExecutorHandle handle);
+        public static extern int MXExecutorFree(
+            ExecutorHandle handle
+        );
 
         // MXNET_DLL int MXExecutorPrint(ExecutorHandle handle, const char **out_str);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorPrint(ExecutorHandle handle, [MarshalAs(UnmanagedType.LPUTF8Str)] out string out_str);
+        public static extern int MXExecutorPrint(
+            ExecutorHandle handle,
+            out string out_str
+        );
 
         // MXNET_DLL int MXExecutorForward(ExecutorHandle handle, int is_train);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorForward(ExecutorHandle handle, int is_train);
+        public static extern int MXExecutorForward(
+            ExecutorHandle handle,
+            int is_train
+        );
 
         // MXNET_DLL int MXExecutorBackward(ExecutorHandle handle,
         //     mx_uint len,
         //     NDArrayHandle *head_grads);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorBackward(ExecutorHandle handle,
-            mx_uint len,
-            out NDArrayHandle head_grads);
+        public static extern int MXExecutorBackward(
+            ExecutorHandle handle,
+            int len,
+            NDArrayHandle[] head_grads
+        );
 
         // MXNET_DLL int MXExecutorBackwardEx(ExecutorHandle handle,
         //     mx_uint len,
         //     NDArrayHandle *head_grads,
         //     int is_train);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorBackwardEx(ExecutorHandle handle,
-            mx_uint len,
-            out NDArrayHandle head_grads,
-            int is_train);
+        public static extern int MXExecutorBackwardEx(
+            ExecutorHandle handle,
+            int len,
+            NDArrayHandle[] head_grads,
+            int is_train
+        );
 
         // MXNET_DLL int MXExecutorOutputs(ExecutorHandle handle,
         //     mx_uint *out_size,
         //     NDArrayHandle **out);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorOutputs(ExecutorHandle handle,
-            out mx_uint out_size,
-            out NDArrayHandle[] @out);
+        public static extern int MXExecutorOutputs(
+            ExecutorHandle handle,
+            out int out_size,
+            out NDArrayHandle[] @out
+        );
 
         // MXNET_DLL int MXExecutorBind(SymbolHandle symbol_handle,
         //     int dev_type,
@@ -1110,16 +1421,18 @@ namespace Horker.MXNet.Interop
         //     NDArrayHandle *aux_states,
         //     ExecutorHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorBind(SymbolHandle symbol_handle,
+        public static extern int MXExecutorBind(
+            SymbolHandle symbol_handle,
             int dev_type,
             int dev_id,
-            mx_uint len,
-            out NDArrayHandle in_args,
-            out NDArrayHandle arg_grad_store,
-            out mx_uint grad_req_type,
-            mx_uint aux_states_len,
-            out NDArrayHandle aux_states,
-            out ExecutorHandle @out);
+            int len,
+            NDArrayHandle[] in_args,
+            NDArrayHandle[] arg_grad_store,
+            int[] grad_req_type,
+            int aux_states_len,
+            NDArrayHandle[] aux_states,
+            out ExecutorHandle @out
+        );
 
         // MXNET_DLL int MXExecutorBindX(SymbolHandle symbol_handle,
         //     int dev_type,
@@ -1136,20 +1449,22 @@ namespace Horker.MXNet.Interop
         //     NDArrayHandle *aux_states,
         //     ExecutorHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorBindX(SymbolHandle symbol_handle,
+        public static extern int MXExecutorBindX(
+            SymbolHandle symbol_handle,
             int dev_type,
             int dev_id,
-            mx_uint num_map_keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] map_keys,
+            int num_map_keys,
+            string[] map_keys,
             int[] map_dev_types,
             int[] map_dev_ids,
-            mx_uint len,
-            out NDArrayHandle in_args,
-            out NDArrayHandle arg_grad_store,
-            out mx_uint grad_req_type,
-            mx_uint aux_states_len,
-            out NDArrayHandle aux_states,
-            out ExecutorHandle @out);
+            int len,
+            NDArrayHandle[] in_args,
+            NDArrayHandle[] arg_grad_store,
+            int[] grad_req_type,
+            int aux_states_len,
+            NDArrayHandle[] aux_states,
+            out ExecutorHandle @out
+        );
 
         // MXNET_DLL int MXExecutorBindEX(SymbolHandle symbol_handle,
         //     int dev_type,
@@ -1167,21 +1482,23 @@ namespace Horker.MXNet.Interop
         //     ExecutorHandle shared_exec,
         //     ExecutorHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorBindEX(SymbolHandle symbol_handle,
+        public static extern int MXExecutorBindEX(
+            SymbolHandle symbol_handle,
             int dev_type,
             int dev_id,
-            mx_uint num_map_keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] map_keys,
+            int num_map_keys,
+            string[] map_keys,
             int[] map_dev_types,
             int[] map_dev_ids,
-            mx_uint len,
-            out NDArrayHandle in_args,
-            out NDArrayHandle arg_grad_store,
-            out mx_uint grad_req_type,
-            mx_uint aux_states_len,
-            out NDArrayHandle aux_states,
+            int len,
+            NDArrayHandle[] in_args,
+            NDArrayHandle[] arg_grad_store,
+            int[] grad_req_type,
+            int aux_states_len,
+            NDArrayHandle[] aux_states,
             ExecutorHandle shared_exec,
-            out ExecutorHandle @out);
+            out ExecutorHandle @out
+        );
 
         // MXNET_DLL int MXExecutorSimpleBind(SymbolHandle symbol_handle,
         //     int dev_type,
@@ -1218,40 +1535,42 @@ namespace Horker.MXNet.Interop
         //     ExecutorHandle shared_exec_handle,
         //     ExecutorHandle* out);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorSimpleBind(SymbolHandle symbol_handle,
+        public static extern int MXExecutorSimpleBind(
+            SymbolHandle symbol_handle,
             int dev_type,
             int dev_id,
-            mx_uint num_g2c_keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] g2c_keys,
+            int num_g2c_keys,
+            string[] g2c_keys,
             int[] g2c_dev_types,
             int[] g2c_dev_ids,
-            mx_uint provided_grad_req_list_len,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_grad_req_names,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_grad_req_types,
-            mx_uint num_provided_arg_shapes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_arg_shape_names,
-            mx_uint[] provided_arg_shape_data,
-            mx_uint[] provided_arg_shape_idx,
-            mx_uint num_provided_arg_dtypes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_arg_dtype_names,
+            int provided_grad_req_list_len,
+            string[] provided_grad_req_names,
+            string[] provided_grad_req_types,
+            int num_provided_arg_shapes,
+            string[] provided_arg_shape_names,
+            int[] provided_arg_shape_data,
+            int[] provided_arg_shape_idx,
+            int num_provided_arg_dtypes,
+            string[] provided_arg_dtype_names,
             int[] provided_arg_dtypes,
-            mx_uint num_provided_arg_stypes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_arg_stype_names,
+            int num_provided_arg_stypes,
+            string[] provided_arg_stype_names,
             int[] provided_arg_stypes,
-            mx_uint num_shared_arg_names,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] shared_arg_name_list,
-            out int shared_buffer_len,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] shared_buffer_name_list,
-            out NDArrayHandle shared_buffer_handle_list,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] updated_shared_buffer_name_list,
-            out NDArrayHandle[] updated_shared_buffer_handle_list,
-            out mx_uint num_in_args,
-            out NDArrayHandle[] in_args,
-            out NDArrayHandle[] arg_grads,
-            out mx_uint num_aux_states,
-            out NDArrayHandle[] aux_states,
+            int num_shared_arg_names,
+            string[] shared_arg_name_list,
+            int[] shared_buffer_len,
+            string[] shared_buffer_name_list,
+            NDArrayHandle[] shared_buffer_handle_list,
+            string[][] updated_shared_buffer_name_list,
+            NDArrayHandle[][] updated_shared_buffer_handle_list,
+            int[] num_in_args,
+            NDArrayHandle[][] in_args,
+            NDArrayHandle[][] arg_grads,
+            int[] num_aux_states,
+            NDArrayHandle[][] aux_states,
             ExecutorHandle shared_exec_handle,
-            out ExecutorHandle @out);
+            out ExecutorHandle @out
+        );
 
         // MXNET_DLL int MXExecutorSimpleBindEx(SymbolHandle symbol_handle,
         //     int dev_type,
@@ -1288,40 +1607,42 @@ namespace Horker.MXNet.Interop
         //     ExecutorHandle shared_exec_handle,
         //     ExecutorHandle* out);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorSimpleBindEx(SymbolHandle symbol_handle,
+        public static extern int MXExecutorSimpleBindEx(
+            SymbolHandle symbol_handle,
             int dev_type,
             int dev_id,
-            mx_uint num_g2c_keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] g2c_keys,
+            int num_g2c_keys,
+            string[] g2c_keys,
             int[] g2c_dev_types,
             int[] g2c_dev_ids,
-            mx_uint provided_grad_req_list_len,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_grad_req_names,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_grad_req_types,
-            mx_uint num_provided_arg_shapes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_arg_shape_names,
+            int provided_grad_req_list_len,
+            string[] provided_grad_req_names,
+            string[] provided_grad_req_types,
+            int num_provided_arg_shapes,
+            string[] provided_arg_shape_names,
             int[] provided_arg_shape_data,
-            mx_uint[] provided_arg_shape_idx,
-            mx_uint num_provided_arg_dtypes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_arg_dtype_names,
+            int[] provided_arg_shape_idx,
+            int num_provided_arg_dtypes,
+            string[] provided_arg_dtype_names,
             int[] provided_arg_dtypes,
-            mx_uint num_provided_arg_stypes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_arg_stype_names,
+            int num_provided_arg_stypes,
+            string[] provided_arg_stype_names,
             int[] provided_arg_stypes,
-            mx_uint num_shared_arg_names,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] shared_arg_name_list,
-            out int shared_buffer_len,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] shared_buffer_name_list,
-            out NDArrayHandle shared_buffer_handle_list,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] updated_shared_buffer_name_list,
-            out NDArrayHandle[] updated_shared_buffer_handle_list,
-            out mx_uint num_in_args,
-            out NDArrayHandle[] in_args,
-            out NDArrayHandle[] arg_grads,
-            out mx_uint num_aux_states,
-            out NDArrayHandle[] aux_states,
+            int num_shared_arg_names,
+            string[] shared_arg_name_list,
+            int[] shared_buffer_len,
+            string[] shared_buffer_name_list,
+            NDArrayHandle[] shared_buffer_handle_list,
+            string[][] updated_shared_buffer_name_list,
+            NDArrayHandle[][] updated_shared_buffer_handle_list,
+            int[] num_in_args,
+            NDArrayHandle[][] in_args,
+            NDArrayHandle[][] arg_grads,
+            int[] num_aux_states,
+            NDArrayHandle[][] aux_states,
             ExecutorHandle shared_exec_handle,
-            out ExecutorHandle @out);
+            out ExecutorHandle @out
+        );
 
         // MXNET_DLL int MXExecutorReshape(int partial_shaping,
         //     int allow_up_sizing,
@@ -1343,25 +1664,27 @@ namespace Horker.MXNet.Interop
         //     ExecutorHandle shared_exec,
         //     ExecutorHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorReshape(int partial_shaping,
+        public static extern int MXExecutorReshape(
+            int partial_shaping,
             int allow_up_sizing,
             int dev_type,
             int dev_id,
-            mx_uint num_map_keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] map_keys,
+            int num_map_keys,
+            string[] map_keys,
             int[] map_dev_types,
             int[] map_dev_ids,
-            mx_uint num_provided_arg_shapes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_arg_shape_names,
-            mx_uint[] provided_arg_shape_data,
-            mx_uint[] provided_arg_shape_idx,
-            out mx_uint num_in_args,
-            out NDArrayHandle[] in_args,
-            out NDArrayHandle[] arg_grads,
-            out mx_uint num_aux_states,
-            out NDArrayHandle[] aux_states,
+            int num_provided_arg_shapes,
+            string[] provided_arg_shape_names,
+            int[] provided_arg_shape_data,
+            int[] provided_arg_shape_idx,
+            int[] num_in_args,
+            NDArrayHandle[][] in_args,
+            NDArrayHandle[][] arg_grads,
+            int[] num_aux_states,
+            NDArrayHandle[][] aux_states,
             ExecutorHandle shared_exec,
-            out ExecutorHandle @out);
+            out ExecutorHandle @out
+        );
 
         // MXNET_DLL int MXExecutorReshapeEx(int partial_shaping,
         //     int allow_up_sizing,
@@ -1383,53 +1706,64 @@ namespace Horker.MXNet.Interop
         //     ExecutorHandle shared_exec,
         //     ExecutorHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorReshapeEx(int partial_shaping,
+        public static extern int MXExecutorReshapeEx(
+            int partial_shaping,
             int allow_up_sizing,
             int dev_type,
             int dev_id,
-            mx_uint num_map_keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] map_keys,
+            int num_map_keys,
+            string[] map_keys,
             int[] map_dev_types,
             int[] map_dev_ids,
-            mx_uint num_provided_arg_shapes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] provided_arg_shape_names,
+            int num_provided_arg_shapes,
+            string[] provided_arg_shape_names,
             int[] provided_arg_shape_data,
-            mx_uint[] provided_arg_shape_idx,
-            out mx_uint num_in_args,
-            out NDArrayHandle[] in_args,
-            out NDArrayHandle[] arg_grads,
-            out mx_uint num_aux_states,
-            out NDArrayHandle[] aux_states,
+            int[] provided_arg_shape_idx,
+            int[] num_in_args,
+            NDArrayHandle[][] in_args,
+            NDArrayHandle[][] arg_grads,
+            int[] num_aux_states,
+            NDArrayHandle[][] aux_states,
             ExecutorHandle shared_exec,
-            out ExecutorHandle @out);
+            out ExecutorHandle @out
+        );
 
         // MXNET_DLL int MXExecutorGetOptimizedSymbol(ExecutorHandle handle,
         //     SymbolHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorGetOptimizedSymbol(ExecutorHandle handle,
-            out SymbolHandle @out);
+        public static extern int MXExecutorGetOptimizedSymbol(
+            ExecutorHandle handle,
+            out SymbolHandle @out
+        );
 
         // MXNET_DLL int MXExecutorSetMonitorCallback(ExecutorHandle handle,
         //     ExecutorMonitorCallback callback,
         //     void* callback_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorSetMonitorCallback(ExecutorHandle handle,
+        public static extern int MXExecutorSetMonitorCallback(
+            ExecutorHandle handle,
             ExecutorMonitorCallback callback,
-            IntPtr callback_handle);
+            IntPtr callback_handle
+        );
 
         // MXNET_DLL int MXExecutorSetMonitorCallbackEX(ExecutorHandle handle,
         //     ExecutorMonitorCallback callback,
         //     void *callback_handle, bool monitor_all);
         [DllImport(MXNetDll)]
-        public static extern int MXExecutorSetMonitorCallbackEX(ExecutorHandle handle,
+        public static extern int MXExecutorSetMonitorCallbackEX(
+            ExecutorHandle handle,
             ExecutorMonitorCallback callback,
-            IntPtr callback_handle, bool monitor_all);
+            IntPtr callback_handle,
+            bool monitor_all
+        );
 
         // MXNET_DLL int MXListDataIters(mx_uint *out_size,
         //     DataIterCreator **out_array);
         [DllImport(MXNetDll)]
-        public static extern int MXListDataIters(out mx_uint out_size,
-            out DataIterCreator[] out_array);
+        public static extern int MXListDataIters(
+            out int out_size,
+            out DataIterCreator[] out_array
+        );
 
         // MXNET_DLL int MXDataIterCreateIter(DataIterCreator handle,
         //     mx_uint num_param,
@@ -1437,11 +1771,13 @@ namespace Horker.MXNet.Interop
         //     const char **vals,
         //     DataIterHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXDataIterCreateIter(DataIterCreator handle,
-            mx_uint num_param,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] vals,
-            out DataIterHandle @out);
+        public static extern int MXDataIterCreateIter(
+            DataIterCreator handle,
+            int num_param,
+            string[] keys,
+            string[] vals,
+            out DataIterHandle @out
+        );
 
         // MXNET_DLL int MXDataIterGetIterInfo(DataIterCreator creator,
         //     const char **name,
@@ -1451,101 +1787,129 @@ namespace Horker.MXNet.Interop
         //     const char ***arg_type_infos,
         //     const char ***arg_descriptions);
         [DllImport(MXNetDll)]
-        public static extern int MXDataIterGetIterInfo(DataIterCreator creator,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] name,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] description,
-            out mx_uint num_args,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] arg_names,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] arg_type_infos,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[] arg_descriptions);
+        public static extern int MXDataIterGetIterInfo(
+            DataIterCreator creator,
+            string[] name,
+            string[] description,
+            int[] num_args,
+            string[][] arg_names,
+            string[][] arg_type_infos,
+            string[][] arg_descriptions
+        );
 
         // MXNET_DLL int MXDataIterFree(DataIterHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXDataIterFree(DataIterHandle handle);
+        public static extern int MXDataIterFree(
+            DataIterHandle handle
+        );
 
         // MXNET_DLL int MXDataIterNext(DataIterHandle handle,
         //     int *out);
         [DllImport(MXNetDll)]
-        public static extern int MXDataIterNext(DataIterHandle handle,
-            out int @out);
+        public static extern int MXDataIterNext(
+            DataIterHandle handle,
+            out int @out
+        );
 
         // MXNET_DLL int MXDataIterBeforeFirst(DataIterHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXDataIterBeforeFirst(DataIterHandle handle);
+        public static extern int MXDataIterBeforeFirst(
+            DataIterHandle handle
+        );
 
         // MXNET_DLL int MXDataIterGetData(DataIterHandle handle,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXDataIterGetData(DataIterHandle handle,
-            out NDArrayHandle @out);
+        public static extern int MXDataIterGetData(
+            DataIterHandle handle,
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXDataIterGetIndex(DataIterHandle handle,
         //     uint64_t **out_index,
         //     uint64_t *out_size);
         [DllImport(MXNetDll)]
-        public static extern int MXDataIterGetIndex(DataIterHandle handle,
-            out uint64_t[] out_index,
-            out uint64_t out_size);
+        public static extern int MXDataIterGetIndex(
+            DataIterHandle handle,
+            out int64_t[] out_index,
+            out int64_t out_size
+        );
 
         // MXNET_DLL int MXDataIterGetPadNum(DataIterHandle handle,
         //     int *pad);
         [DllImport(MXNetDll)]
-        public static extern int MXDataIterGetPadNum(DataIterHandle handle,
-            out int pad);
+        public static extern int MXDataIterGetPadNum(
+            DataIterHandle handle,
+            int[] pad
+        );
 
         // MXNET_DLL int MXDataIterGetLabel(DataIterHandle handle,
         //     NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXDataIterGetLabel(DataIterHandle handle,
-            out NDArrayHandle @out);
+        public static extern int MXDataIterGetLabel(
+            DataIterHandle handle,
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXInitPSEnv(mx_uint num_vars,
         //     const char **keys,
         //     const char **vals);
         [DllImport(MXNetDll)]
-        public static extern int MXInitPSEnv(mx_uint num_vars,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] vals);
+        public static extern int MXInitPSEnv(
+            int num_vars,
+            string[] keys,
+            string[] vals
+        );
 
         // MXNET_DLL int MXKVStoreCreate(const char *type,
         //     KVStoreHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreCreate([MarshalAs(UnmanagedType.LPUTF8Str)] string type,
-            out KVStoreHandle @out);
+        public static extern int MXKVStoreCreate(
+            char[] type,
+            out KVStoreHandle @out
+        );
 
         // MXNET_DLL int MXKVStoreSetGradientCompression(KVStoreHandle handle,
         //     mx_uint num_params,
         //     const char** keys,
         //     const char** vals);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreSetGradientCompression(KVStoreHandle handle,
-            mx_uint num_params,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] vals);
+        public static extern int MXKVStoreSetGradientCompression(
+            KVStoreHandle handle,
+            int num_params,
+            string[] keys,
+            string[] vals
+        );
 
         // MXNET_DLL int MXKVStoreFree(KVStoreHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreFree(KVStoreHandle handle);
+        public static extern int MXKVStoreFree(
+            KVStoreHandle handle
+        );
 
         // MXNET_DLL int MXKVStoreInit(KVStoreHandle handle,
         //     mx_uint num,
         //     const int* keys,
         //     NDArrayHandle* vals);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreInit(KVStoreHandle handle,
-            mx_uint num,
+        public static extern int MXKVStoreInit(
+            KVStoreHandle handle,
+            int num,
             int[] keys,
-            out NDArrayHandle vals);
+            NDArrayHandle[] vals
+        );
 
         // MXNET_DLL int MXKVStoreInitEx(KVStoreHandle handle,
         //     mx_uint num,
         //     const char** keys,
         //     NDArrayHandle* vals);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreInitEx(KVStoreHandle handle,
-            mx_uint num,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
-            out NDArrayHandle vals);
+        public static extern int MXKVStoreInitEx(
+            KVStoreHandle handle,
+            int num,
+            string[] keys,
+            NDArrayHandle[] vals
+        );
 
         // MXNET_DLL int MXKVStorePush(KVStoreHandle handle,
         //     mx_uint num,
@@ -1553,11 +1917,13 @@ namespace Horker.MXNet.Interop
         //     NDArrayHandle* vals,
         //     int priority);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStorePush(KVStoreHandle handle,
-            mx_uint num,
+        public static extern int MXKVStorePush(
+            KVStoreHandle handle,
+            int num,
             int[] keys,
-            out NDArrayHandle vals,
-            int priority);
+            NDArrayHandle[] vals,
+            int priority
+        );
 
         // MXNET_DLL int MXKVStorePushEx(KVStoreHandle handle,
         //     mx_uint num,
@@ -1565,11 +1931,13 @@ namespace Horker.MXNet.Interop
         //     NDArrayHandle* vals,
         //     int priority);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStorePushEx(KVStoreHandle handle,
-            mx_uint num,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
-            out NDArrayHandle vals,
-            int priority);
+        public static extern int MXKVStorePushEx(
+            KVStoreHandle handle,
+            int num,
+            string[] keys,
+            NDArrayHandle[] vals,
+            int priority
+        );
 
         // MXNET_DLL int MXKVStorePullWithSparse(KVStoreHandle handle,
         //     mx_uint num,
@@ -1578,12 +1946,14 @@ namespace Horker.MXNet.Interop
         //     int priority,
         //     bool ignore_sparse);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStorePullWithSparse(KVStoreHandle handle,
-            mx_uint num,
+        public static extern int MXKVStorePullWithSparse(
+            KVStoreHandle handle,
+            int num,
             int[] keys,
-            out NDArrayHandle vals,
+            NDArrayHandle[] vals,
             int priority,
-            bool ignore_sparse);
+            bool ignore_sparse
+        );
 
         // MXNET_DLL int MXKVStorePullWithSparseEx(KVStoreHandle handle,
         //     mx_uint num,
@@ -1592,12 +1962,14 @@ namespace Horker.MXNet.Interop
         //     int priority,
         //     bool ignore_sparse);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStorePullWithSparseEx(KVStoreHandle handle,
-            mx_uint num,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
-            out NDArrayHandle vals,
+        public static extern int MXKVStorePullWithSparseEx(
+            KVStoreHandle handle,
+            int num,
+            string[] keys,
+            NDArrayHandle[] vals,
             int priority,
-            bool ignore_sparse);
+            bool ignore_sparse
+        );
 
         // MXNET_DLL int MXKVStorePull(KVStoreHandle handle,
         //     mx_uint num,
@@ -1605,11 +1977,13 @@ namespace Horker.MXNet.Interop
         //     NDArrayHandle* vals,
         //     int priority);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStorePull(KVStoreHandle handle,
-            mx_uint num,
+        public static extern int MXKVStorePull(
+            KVStoreHandle handle,
+            int num,
             int[] keys,
-            out NDArrayHandle vals,
-            int priority);
+            NDArrayHandle[] vals,
+            int priority
+        );
 
         // MXNET_DLL int MXKVStorePullEx(KVStoreHandle handle,
         //     mx_uint num,
@@ -1617,11 +1991,13 @@ namespace Horker.MXNet.Interop
         //     NDArrayHandle* vals,
         //     int priority);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStorePullEx(KVStoreHandle handle,
-            mx_uint num,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
-            out NDArrayHandle vals,
-            int priority);
+        public static extern int MXKVStorePullEx(
+            KVStoreHandle handle,
+            int num,
+            string[] keys,
+            NDArrayHandle[] vals,
+            int priority
+        );
 
         // MXNET_DLL int MXKVStorePullRowSparse(KVStoreHandle handle,
         //     mx_uint num,
@@ -1630,12 +2006,14 @@ namespace Horker.MXNet.Interop
         //     const NDArrayHandle* row_ids,
         //     int priority);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStorePullRowSparse(KVStoreHandle handle,
-            mx_uint num,
+        public static extern int MXKVStorePullRowSparse(
+            KVStoreHandle handle,
+            int num,
             int[] keys,
-            out NDArrayHandle vals,
-            out NDArrayHandle row_ids,
-            int priority);
+            NDArrayHandle[] vals,
+            NDArrayHandle[] row_ids,
+            int priority
+        );
 
         // MXNET_DLL int MXKVStorePullRowSparseEx(KVStoreHandle handle,
         //     mx_uint num,
@@ -1644,146 +2022,206 @@ namespace Horker.MXNet.Interop
         //     const NDArrayHandle* row_ids,
         //     int priority);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStorePullRowSparseEx(KVStoreHandle handle,
-            mx_uint num,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] keys,
-            out NDArrayHandle vals,
-            out NDArrayHandle row_ids,
-            int priority);
+        public static extern int MXKVStorePullRowSparseEx(
+            KVStoreHandle handle,
+            int num,
+            string[] keys,
+            NDArrayHandle[] vals,
+            NDArrayHandle[] row_ids,
+            int priority
+        );
 
         // MXNET_DLL int MXKVStoreSetUpdater(KVStoreHandle handle,
         //     MXKVStoreUpdater updater,
         //     void *updater_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreSetUpdater(KVStoreHandle handle,
+        public static extern int MXKVStoreSetUpdater(
+            KVStoreHandle handle,
             MXKVStoreUpdater updater,
-            IntPtr updater_handle);
+            IntPtr updater_handle
+        );
 
         // MXNET_DLL int MXKVStoreSetUpdaterEx(KVStoreHandle handle,
         //     MXKVStoreUpdater updater,
         //     MXKVStoreStrUpdater str_updater,
         //     void *updater_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreSetUpdaterEx(KVStoreHandle handle,
+        public static extern int MXKVStoreSetUpdaterEx(
+            KVStoreHandle handle,
             MXKVStoreUpdater updater,
             MXKVStoreStrUpdater str_updater,
-            IntPtr updater_handle);
+            IntPtr updater_handle
+        );
 
         // MXNET_DLL int MXKVStoreGetType(KVStoreHandle handle,
         //     const char** type);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreGetType(KVStoreHandle handle,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] type);
+        public static extern int MXKVStoreGetType(
+            KVStoreHandle handle,
+            string[] type
+        );
 
         // MXNET_DLL int MXKVStoreGetRank(KVStoreHandle handle,
         //     int *ret);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreGetRank(KVStoreHandle handle,
-            out int ret);
+        public static extern int MXKVStoreGetRank(
+            KVStoreHandle handle,
+            int[] ret
+        );
 
         // MXNET_DLL int MXKVStoreGetGroupSize(KVStoreHandle handle,
         //     int *ret);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreGetGroupSize(KVStoreHandle handle,
-            out int ret);
+        public static extern int MXKVStoreGetGroupSize(
+            KVStoreHandle handle,
+            int[] ret
+        );
 
         // MXNET_DLL int MXKVStoreIsWorkerNode(int *ret);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreIsWorkerNode(out int ret);
+        public static extern int MXKVStoreIsWorkerNode(
+            int[] ret
+        );
 
         // MXNET_DLL int MXKVStoreIsServerNode(int *ret);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreIsServerNode(out int ret);
+        public static extern int MXKVStoreIsServerNode(
+            int[] ret
+        );
 
         // MXNET_DLL int MXKVStoreIsSchedulerNode(int *ret);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreIsSchedulerNode(out int ret);
+        public static extern int MXKVStoreIsSchedulerNode(
+            int[] ret
+        );
 
         // MXNET_DLL int MXKVStoreBarrier(KVStoreHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreBarrier(KVStoreHandle handle);
+        public static extern int MXKVStoreBarrier(
+            KVStoreHandle handle
+        );
 
         // MXNET_DLL int MXKVStoreSetBarrierBeforeExit(KVStoreHandle handle,
         //     const int barrier_before_exit);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreSetBarrierBeforeExit(KVStoreHandle handle,
-            int barrier_before_exit);
+        public static extern int MXKVStoreSetBarrierBeforeExit(
+            KVStoreHandle handle,
+            int barrier_before_exit
+        );
 
         // MXNET_DLL int MXKVStoreRunServer(KVStoreHandle handle,
         //     MXKVStoreServerController controller,
         //     void *controller_handle);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreRunServer(KVStoreHandle handle,
+        public static extern int MXKVStoreRunServer(
+            KVStoreHandle handle,
             MXKVStoreServerController controller,
-            IntPtr controller_handle);
+            IntPtr controller_handle
+        );
 
         // MXNET_DLL int MXKVStoreSendCommmandToServers(KVStoreHandle handle,
         //     int cmd_id,
         //     const char* cmd_body);
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreSendCommmandToServers(KVStoreHandle handle,
+        public static extern int MXKVStoreSendCommmandToServers(
+            KVStoreHandle handle,
             int cmd_id,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string cmd_body);
+            char[] cmd_body
+        );
 
         // MXNET_DLL int MXKVStoreGetNumDeadNode(KVStoreHandle handle,
         //     const int node_id,
         //     int *number,
         //     const int timeout_sec DEFAULT(60));
         [DllImport(MXNetDll)]
-        public static extern int MXKVStoreGetNumDeadNode(KVStoreHandle handle,
+        public static extern int MXKVStoreGetNumDeadNode(
+            KVStoreHandle handle,
             int node_id,
-            out int number,
-            int timeout_sec );
+            int[] number,
+            out int timeout_sec
+        );
 
         // MXNET_DLL int MXRecordIOWriterCreate(const char *uri, RecordIOHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXRecordIOWriterCreate([MarshalAs(UnmanagedType.LPUTF8Str)] string uri, out RecordIOHandle @out);
+        public static extern int MXRecordIOWriterCreate(
+            char[] uri,
+            out RecordIOHandle @out
+        );
 
         // MXNET_DLL int MXRecordIOWriterFree(RecordIOHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXRecordIOWriterFree(RecordIOHandle handle);
+        public static extern int MXRecordIOWriterFree(
+            RecordIOHandle handle
+        );
 
         // MXNET_DLL int MXRecordIOWriterWriteRecord(RecordIOHandle handle,
         //     const char *buf, size_t size);
         [DllImport(MXNetDll)]
-        public static extern int MXRecordIOWriterWriteRecord(RecordIOHandle handle,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string buf, size_t size);
+        public static extern int MXRecordIOWriterWriteRecord(
+            RecordIOHandle handle,
+            char[] buf,
+            size_t size
+        );
 
         // MXNET_DLL int MXRecordIOWriterTell(RecordIOHandle handle, size_t *pos);
         [DllImport(MXNetDll)]
-        public static extern int MXRecordIOWriterTell(RecordIOHandle handle, out size_t pos);
+        public static extern int MXRecordIOWriterTell(
+            RecordIOHandle handle,
+            size_t[] pos
+        );
 
         // MXNET_DLL int MXRecordIOReaderCreate(const char *uri, RecordIOHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXRecordIOReaderCreate([MarshalAs(UnmanagedType.LPUTF8Str)] string uri, out RecordIOHandle @out);
+        public static extern int MXRecordIOReaderCreate(
+            char[] uri,
+            out RecordIOHandle @out
+        );
 
         // MXNET_DLL int MXRecordIOReaderFree(RecordIOHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXRecordIOReaderFree(RecordIOHandle handle);
+        public static extern int MXRecordIOReaderFree(
+            RecordIOHandle handle
+        );
 
         // MXNET_DLL int MXRecordIOReaderReadRecord(RecordIOHandle handle,
         //     char const **buf, size_t *size);
         [DllImport(MXNetDll)]
-        public static extern int MXRecordIOReaderReadRecord(RecordIOHandle handle,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] buf, out size_t size);
+        public static extern int MXRecordIOReaderReadRecord(
+            RecordIOHandle handle,
+            string[] buf,
+            size_t[] size
+        );
 
         // MXNET_DLL int MXRecordIOReaderSeek(RecordIOHandle handle, size_t pos);
         [DllImport(MXNetDll)]
-        public static extern int MXRecordIOReaderSeek(RecordIOHandle handle, size_t pos);
+        public static extern int MXRecordIOReaderSeek(
+            RecordIOHandle handle,
+            size_t pos
+        );
 
         // MXNET_DLL int MXRecordIOReaderTell(RecordIOHandle handle, size_t *pos);
         [DllImport(MXNetDll)]
-        public static extern int MXRecordIOReaderTell(RecordIOHandle handle, out size_t pos);
+        public static extern int MXRecordIOReaderTell(
+            RecordIOHandle handle,
+            size_t[] pos
+        );
 
         // MXNET_DLL int MXRtcCreate(char* name, mx_uint num_input, mx_uint num_output,
         //     char** input_names, char** output_names,
         //     NDArrayHandle* inputs, NDArrayHandle* outputs,
         //     char* kernel, RtcHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXRtcCreate(out char name, mx_uint num_input, mx_uint num_output,
-            out char[] input_names, out char[] output_names,
-            out NDArrayHandle inputs, out NDArrayHandle outputs,
-            out char kernel, out RtcHandle @out);
+        public static extern int MXRtcCreate(
+            char[] name,
+            int num_input,
+            out int num_output,
+            string[] input_names,
+            out string output_names,
+            NDArrayHandle[] inputs,
+            out NDArrayHandle outputs,
+            char[] kernel,
+            out RtcHandle @out
+        );
 
         // MXNET_DLL int MXRtcPush(RtcHandle handle, mx_uint num_input, mx_uint num_output,
         //     NDArrayHandle* inputs, NDArrayHandle* outputs,
@@ -1794,54 +2232,83 @@ namespace Horker.MXNet.Interop
         //     mx_uint blockDimY,
         //     mx_uint blockDimZ);
         [DllImport(MXNetDll)]
-        public static extern int MXRtcPush(RtcHandle handle, mx_uint num_input, mx_uint num_output,
-            out NDArrayHandle inputs, out NDArrayHandle outputs,
-            mx_uint gridDimX,
-            mx_uint gridDimY,
-            mx_uint gridDimZ,
-            mx_uint blockDimX,
-            mx_uint blockDimY,
-            mx_uint blockDimZ);
+        public static extern int MXRtcPush(
+            RtcHandle handle,
+            int num_input,
+            out int num_output,
+            NDArrayHandle[] inputs,
+            out NDArrayHandle outputs,
+            int gridDimX,
+            int gridDimY,
+            int gridDimZ,
+            int blockDimX,
+            int blockDimY,
+            int blockDimZ
+        );
 
         // MXNET_DLL int MXRtcFree(RtcHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXRtcFree(RtcHandle handle);
+        public static extern int MXRtcFree(
+            RtcHandle handle
+        );
 
         // MXNET_DLL int MXCustomOpRegister(const char* op_type, CustomOpPropCreator creator);
         [DllImport(MXNetDll)]
-        public static extern int MXCustomOpRegister([MarshalAs(UnmanagedType.LPUTF8Str)] string op_type, CustomOpPropCreator creator);
+        public static extern int MXCustomOpRegister(
+            char[] op_type,
+            CustomOpPropCreator creator
+        );
 
         // MXNET_DLL int MXCustomFunctionRecord(int num_inputs, NDArrayHandle *inputs,
         //     int num_outputs, NDArrayHandle *outputs,
         //     struct MXCallbackList *callbacks);
         [DllImport(MXNetDll)]
-        public static extern int MXCustomFunctionRecord(int num_inputs, out NDArrayHandle inputs,
-            int num_outputs, out NDArrayHandle outputs,
-            out MXCallbackList callbacks);
+        public static extern int MXCustomFunctionRecord(
+            int num_inputs,
+            NDArrayHandle[] inputs,
+            out int num_outputs,
+            out NDArrayHandle outputs,
+            MXCallbackList[] callbacks
+        );
 
         // MXNET_DLL int MXRtcCudaModuleCreate(const char* source, int num_options,
         //     const char** options, int num_exports,
         //     const char** exports, CudaModuleHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXRtcCudaModuleCreate([MarshalAs(UnmanagedType.LPUTF8Str)] string source, int num_options,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] options, int num_exports,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] exports, out CudaModuleHandle @out);
+        public static extern int MXRtcCudaModuleCreate(
+            char[] source,
+            int num_options,
+            string[] options,
+            int num_exports,
+            string[] exports,
+            out CudaModuleHandle @out
+        );
 
         // MXNET_DLL int MXRtcCudaModuleFree(CudaModuleHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXRtcCudaModuleFree(CudaModuleHandle handle);
+        public static extern int MXRtcCudaModuleFree(
+            CudaModuleHandle handle
+        );
 
         // MXNET_DLL int MXRtcCudaKernelCreate(CudaModuleHandle handle, const char* name,
         //     int num_args, int* is_ndarray, int* is_const,
         //     int* arg_types, CudaKernelHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXRtcCudaKernelCreate(CudaModuleHandle handle, [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-            int num_args, out int is_ndarray, out int is_,
-            out int arg_types, out CudaKernelHandle @out);
+        public static extern int MXRtcCudaKernelCreate(
+            CudaModuleHandle handle,
+            char[] name,
+            int num_args,
+            int[] is_ndarray,
+            int[] is_const,
+            int[] arg_types,
+            out CudaKernelHandle @out
+        );
 
         // MXNET_DLL int MXRtcCudaKernelFree(CudaKernelHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXRtcCudaKernelFree(CudaKernelHandle handle);
+        public static extern int MXRtcCudaKernelFree(
+            CudaKernelHandle handle
+        );
 
         // MXNET_DLL int MXRtcCudaKernelCall(CudaKernelHandle handle, int dev_id, void** args,
         //     mx_uint grid_dim_x, mx_uint grid_dim_y,
@@ -1849,33 +2316,58 @@ namespace Horker.MXNet.Interop
         //     mx_uint block_dim_y, mx_uint block_dim_z,
         //     mx_uint shared_mem);
         [DllImport(MXNetDll)]
-        public static extern int MXRtcCudaKernelCall(CudaKernelHandle handle, int dev_id, out IntPtr args,
-            mx_uint grid_dim_x, mx_uint grid_dim_y,
-            mx_uint grid_dim_z, mx_uint block_dim_x,
-            mx_uint block_dim_y, mx_uint block_dim_z,
-            mx_uint shared_mem);
+        public static extern int MXRtcCudaKernelCall(
+            CudaKernelHandle handle,
+            int dev_id,
+            IntPtr[] args,
+            int grid_dim_x,
+            int grid_dim_y,
+            int grid_dim_z,
+            int block_dim_x,
+            int block_dim_y,
+            int block_dim_z,
+            int shared_mem
+        );
 
         // MXNET_DLL int MXNDArrayGetSharedMemHandle(NDArrayHandle handle, int* shared_pid,
         //     int* shared_id);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayGetSharedMemHandle(NDArrayHandle handle, out int shared_pid,
-            out int shared_id);
+        public static extern int MXNDArrayGetSharedMemHandle(
+            NDArrayHandle handle,
+            int[] shared_pid,
+            int[] shared_id
+        );
 
         // MXNET_DLL int MXNDArrayCreateFromSharedMem(int shared_pid, int shared_id, const mx_uint *shape,
         //     mx_uint ndim, int dtype, NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayCreateFromSharedMem(int shared_pid, int shared_id, mx_uint[] shape,
-            mx_uint ndim, int dtype, out NDArrayHandle @out);
+        public static extern int MXNDArrayCreateFromSharedMem(
+            int shared_pid,
+            int shared_id,
+            int[] shape,
+            int ndim,
+            int dtype,
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXStorageEmptyCache(int dev_type, int dev_id);
         [DllImport(MXNetDll)]
-        public static extern int MXStorageEmptyCache(int dev_type, int dev_id);
+        public static extern int MXStorageEmptyCache(
+            int dev_type,
+            int dev_id
+        );
 
         // MXNET_DLL int MXNDArrayCreateFromSharedMemEx(int shared_pid, int shared_id, const int *shape,
         //     int ndim, int dtype, NDArrayHandle *out);
         [DllImport(MXNetDll)]
-        public static extern int MXNDArrayCreateFromSharedMemEx(int shared_pid, int shared_id, int[] shape,
-            int ndim, int dtype, out NDArrayHandle @out);
+        public static extern int MXNDArrayCreateFromSharedMemEx(
+            int shared_pid,
+            int shared_id,
+            int[] shape,
+            int ndim,
+            int dtype,
+            out NDArrayHandle @out
+        );
 
         // MXNET_DLL int MXEnginePushAsync(EngineAsyncFunc async_func, void* func_param,
         //     EngineFuncParamDeleter deleter, ContextHandle ctx_handle,
@@ -1885,13 +2377,20 @@ namespace Horker.MXNet.Interop
         //     int priority DEFAULT(0), const char* opr_name DEFAULT(NULL),
         //     bool wait DEFAULT(false));
         [DllImport(MXNetDll)]
-        public static extern int MXEnginePushAsync(EngineAsyncFunc async_func, IntPtr func_param,
-            EngineFuncParamDeleter deleter, ContextHandle ctx_handle,
-            EngineVarHandle _vars_handle, int num__vars,
-            EngineVarHandle mutable_vars_handle, int num_mutable_vars,
-            EngineFnPropertyHandle prop_handle ,
-            int priority , [MarshalAs(UnmanagedType.LPUTF8Str)] string opr_name ,
-            bool wait );
+        public static extern int MXEnginePushAsync(
+            EngineAsyncFunc async_func,
+            IntPtr func_param,
+            EngineFuncParamDeleter deleter,
+            ContextHandle ctx_handle,
+            EngineVarHandle const_vars_handle,
+            int num_const_vars,
+            EngineVarHandle mutable_vars_handle,
+            int num_mutable_vars,
+            EngineFnPropertyHandle prop_handle,
+            int priority,
+            char[] opr_name,
+            bool wait
+        );
 
         // MXNET_DLL int MXEnginePushSync(EngineSyncFunc sync_func, void* func_param,
         //     EngineFuncParamDeleter deleter, ContextHandle ctx_handle,
@@ -1900,12 +2399,19 @@ namespace Horker.MXNet.Interop
         //     EngineFnPropertyHandle prop_handle DEFAULT(NULL),
         //     int priority DEFAULT(0), const char* opr_name DEFAULT(NULL));
         [DllImport(MXNetDll)]
-        public static extern int MXEnginePushSync(EngineSyncFunc sync_func, IntPtr func_param,
-            EngineFuncParamDeleter deleter, ContextHandle ctx_handle,
-            EngineVarHandle _vars_handle, int num__vars,
-            EngineVarHandle mutable_vars_handle, int num_mutable_vars,
-            EngineFnPropertyHandle prop_handle ,
-            int priority , [MarshalAs(UnmanagedType.LPUTF8Str)] string opr_name );
+        public static extern int MXEnginePushSync(
+            EngineSyncFunc sync_func,
+            IntPtr func_param,
+            EngineFuncParamDeleter deleter,
+            ContextHandle ctx_handle,
+            EngineVarHandle const_vars_handle,
+            int num_const_vars,
+            EngineVarHandle mutable_vars_handle,
+            int num_mutable_vars,
+            EngineFnPropertyHandle prop_handle,
+            int priority,
+            char[] opr_name
+        );
 
         // MXNET_DLL int MXEnginePushAsyncND(EngineAsyncFunc async_func, void* func_param,
         //     EngineFuncParamDeleter deleter, ContextHandle ctx_handle,
@@ -1915,13 +2421,20 @@ namespace Horker.MXNet.Interop
         //     int priority DEFAULT(0), const char* opr_name DEFAULT(NULL),
         //     bool wait DEFAULT(false));
         [DllImport(MXNetDll)]
-        public static extern int MXEnginePushAsyncND(EngineAsyncFunc async_func, IntPtr func_param,
-            EngineFuncParamDeleter deleter, ContextHandle ctx_handle,
-            NDArrayHandle _nds_handle, int num__nds,
-            NDArrayHandle mutable_nds_handle, int num_mutable_nds,
-            EngineFnPropertyHandle prop_handle ,
-            int priority , [MarshalAs(UnmanagedType.LPUTF8Str)] string opr_name ,
-            bool wait );
+        public static extern int MXEnginePushAsyncND(
+            EngineAsyncFunc async_func,
+            IntPtr func_param,
+            EngineFuncParamDeleter deleter,
+            ContextHandle ctx_handle,
+            NDArrayHandle const_nds_handle,
+            int num_const_nds,
+            NDArrayHandle mutable_nds_handle,
+            int num_mutable_nds,
+            EngineFnPropertyHandle prop_handle,
+            int priority,
+            char[] opr_name,
+            bool wait
+        );
 
         // MXNET_DLL int MXEnginePushSyncND(EngineSyncFunc sync_func, void* func_param,
         //     EngineFuncParamDeleter deleter, ContextHandle ctx_handle,
@@ -1930,11 +2443,18 @@ namespace Horker.MXNet.Interop
         //     EngineFnPropertyHandle prop_handle DEFAULT(NULL),
         //     int priority DEFAULT(0), const char* opr_name DEFAULT(NULL));
         [DllImport(MXNetDll)]
-        public static extern int MXEnginePushSyncND(EngineSyncFunc sync_func, IntPtr func_param,
-            EngineFuncParamDeleter deleter, ContextHandle ctx_handle,
-            NDArrayHandle _nds_handle, int num__nds,
-            NDArrayHandle mutable_nds_handle, int num_mutable_nds,
-            EngineFnPropertyHandle prop_handle ,
-            int priority , [MarshalAs(UnmanagedType.LPUTF8Str)] string opr_name );
+        public static extern int MXEnginePushSyncND(
+            EngineSyncFunc sync_func,
+            IntPtr func_param,
+            EngineFuncParamDeleter deleter,
+            ContextHandle ctx_handle,
+            NDArrayHandle const_nds_handle,
+            int num_const_nds,
+            NDArrayHandle mutable_nds_handle,
+            int num_mutable_nds,
+            EngineFnPropertyHandle prop_handle,
+            int priority,
+            char[] opr_name
+        );
     }
 }

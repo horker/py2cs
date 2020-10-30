@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "MXNetOpLoader": {
+      "commandName": "Project",
+      "commandLineArgs": "symbol_infos.json",
+      "workingDirectory": "C:\\Users\\msumi\\work\\py2cs\\src"
+    }
+  }
+}

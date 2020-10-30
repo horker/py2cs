@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Python2CSharp", "Python2CSh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Horker.MXNet", "Horker.MXNet\Horker.MXNet.csproj", "{84853B8A-9A02-4E5D-9BFC-2B48364030DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{B72D8B71-FF9D-4B68-9CFB-18F80FBF5DD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{B72D8B71-FF9D-4B68-9CFB-18F80FBF5DD5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SymbolInfoLoader", "SymbolInfoLoader\SymbolInfoLoader.csproj", "{4E808691-5EA2-481F-9882-140F65477241}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{B72D8B71-FF9D-4B68-9CFB-18F80FBF5DD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B72D8B71-FF9D-4B68-9CFB-18F80FBF5DD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B72D8B71-FF9D-4B68-9CFB-18F80FBF5DD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E808691-5EA2-481F-9882-140F65477241}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E808691-5EA2-481F-9882-140F65477241}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E808691-5EA2-481F-9882-140F65477241}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E808691-5EA2-481F-9882-140F65477241}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

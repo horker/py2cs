@@ -59,15 +59,18 @@ namespace Horker.MXNet.Interop
         //     const mx_uint* input_shape_data,
         //     PredictorHandle* out);
         [DllImport(MXNetDll)]
-        public static extern int MXPredCreate([MarshalAs(UnmanagedType.LPUTF8Str)] string symbol_json_str,
+        public static extern int MXPredCreate(
+            char[] symbol_json_str,
             IntPtr param_bytes,
             int param_size,
-            int dev_type, int dev_id,
-            mx_uint num_input_nodes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] input_keys,
-            mx_uint[] input_shape_indptr,
-            mx_uint[] input_shape_data,
-            out PredictorHandle @out);
+            int dev_type,
+            int dev_id,
+            int num_input_nodes,
+            string[] input_keys,
+            int[] input_shape_indptr,
+            int[] input_shape_data,
+            out PredictorHandle @out
+        );
 
         // MXNET_DLL int MXPredCreatePartialOut(const char* symbol_json_str,
         //     const void* param_bytes,
@@ -81,17 +84,20 @@ namespace Horker.MXNet.Interop
         //     const char** output_keys,
         //     PredictorHandle* out);
         [DllImport(MXNetDll)]
-        public static extern int MXPredCreatePartialOut([MarshalAs(UnmanagedType.LPUTF8Str)] string symbol_json_str,
+        public static extern int MXPredCreatePartialOut(
+            char[] symbol_json_str,
             IntPtr param_bytes,
             int param_size,
-            int dev_type, int dev_id,
-            mx_uint num_input_nodes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] input_keys,
-            mx_uint[] input_shape_indptr,
-            mx_uint[] input_shape_data,
-            mx_uint num_output_nodes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] out string output_keys,
-            out PredictorHandle @out);
+            int dev_type,
+            int dev_id,
+            int num_input_nodes,
+            string[] input_keys,
+            int[] input_shape_indptr,
+            int[] input_shape_data,
+            out int num_output_nodes,
+            out string output_keys,
+            out PredictorHandle @out
+        );
 
         // MXNET_DLL int MXPredCreateMultiThread(const char* symbol_json_str,
         //     const void* param_bytes,
@@ -104,16 +110,19 @@ namespace Horker.MXNet.Interop
         //     int num_threads,
         //     PredictorHandle* out);
         [DllImport(MXNetDll)]
-        public static extern int MXPredCreateMultiThread([MarshalAs(UnmanagedType.LPUTF8Str)] string symbol_json_str,
+        public static extern int MXPredCreateMultiThread(
+            char[] symbol_json_str,
             IntPtr param_bytes,
             int param_size,
-            int dev_type, int dev_id,
-            mx_uint num_input_nodes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] input_keys,
-            mx_uint[] input_shape_indptr,
-            mx_uint[] input_shape_data,
+            int dev_type,
+            int dev_id,
+            int num_input_nodes,
+            string[] input_keys,
+            int[] input_shape_indptr,
+            int[] input_shape_data,
             int num_threads,
-            out PredictorHandle @out);
+            out PredictorHandle @out
+        );
 
         // MXNET_DLL int MXPredReshape(mx_uint num_input_nodes,
         //     const char** input_keys,
@@ -122,64 +131,82 @@ namespace Horker.MXNet.Interop
         //     PredictorHandle handle,
         //     PredictorHandle* out);
         [DllImport(MXNetDll)]
-        public static extern int MXPredReshape(mx_uint num_input_nodes,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string[] input_keys,
-            mx_uint[] input_shape_indptr,
-            mx_uint[] input_shape_data,
+        public static extern int MXPredReshape(
+            int num_input_nodes,
+            string[] input_keys,
+            int[] input_shape_indptr,
+            int[] input_shape_data,
             PredictorHandle handle,
-            out PredictorHandle @out);
+            out PredictorHandle @out
+        );
 
         // MXNET_DLL int MXPredGetOutputShape(PredictorHandle handle,
         //     mx_uint index,
         //     mx_uint** shape_data,
         //     mx_uint* shape_ndim);
         [DllImport(MXNetDll)]
-        public static extern int MXPredGetOutputShape(PredictorHandle handle,
-            mx_uint index,
-            out mx_uint[] shape_data,
-            mx_uint[] shape_ndim);
+        public static extern int MXPredGetOutputShape(
+            PredictorHandle handle,
+            int index,
+            int[][] shape_data,
+            int[] shape_ndim
+        );
 
         // MXNET_DLL int MXPredSetInput(PredictorHandle handle,
         //     const char* key,
         //     const mx_float* data,
         //     mx_uint size);
         [DllImport(MXNetDll)]
-        public static extern int MXPredSetInput(PredictorHandle handle,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] string key,
-            out mx_float data,
-            mx_uint size);
+        public static extern int MXPredSetInput(
+            PredictorHandle handle,
+            char[] key,
+            mx_float[] data,
+            int size
+        );
 
         // MXNET_DLL int MXPredForward(PredictorHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXPredForward(PredictorHandle handle);
+        public static extern int MXPredForward(
+            PredictorHandle handle
+        );
 
         // MXNET_DLL int MXPredPartialForward(PredictorHandle handle, int step, int* step_left);
         [DllImport(MXNetDll)]
-        public static extern int MXPredPartialForward(PredictorHandle handle, int step, out int step_left);
+        public static extern int MXPredPartialForward(
+            PredictorHandle handle,
+            int step,
+            int[] step_left
+        );
 
         // MXNET_DLL int MXPredGetOutput(PredictorHandle handle,
         //     mx_uint index,
         //     mx_float* data,
         //     mx_uint size);
         [DllImport(MXNetDll)]
-        public static extern int MXPredGetOutput(PredictorHandle handle,
-            mx_uint index,
-            out mx_float data,
-            mx_uint size);
+        public static extern int MXPredGetOutput(
+            PredictorHandle handle,
+            int index,
+            mx_float[] data,
+            int size
+        );
 
         // MXNET_DLL int MXPredFree(PredictorHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXPredFree(PredictorHandle handle);
+        public static extern int MXPredFree(
+            PredictorHandle handle
+        );
 
         // MXNET_DLL int MXNDListCreate(const char* nd_file_bytes,
         //     int nd_file_size,
         //     NDListHandle *out,
         //     mx_uint* out_length);
         [DllImport(MXNetDll)]
-        public static extern int MXNDListCreate([MarshalAs(UnmanagedType.LPUTF8Str)] string nd_file_bytes,
+        public static extern int MXNDListCreate(
+            char[] nd_file_bytes,
             int nd_file_size,
             out NDListHandle @out,
-            out mx_uint out_length);
+            out int out_length
+        );
 
         // MXNET_DLL int MXNDListGet(NDListHandle handle,
         //     mx_uint index,
@@ -188,15 +215,19 @@ namespace Horker.MXNet.Interop
         //     const mx_uint** out_shape,
         //     mx_uint* out_ndim);
         [DllImport(MXNetDll)]
-        public static extern int MXNDListGet(NDListHandle handle,
-            mx_uint index,
-            [MarshalAs(UnmanagedType.LPUTF8Str)] out string out_key,
+        public static extern int MXNDListGet(
+            NDListHandle handle,
+            int index,
+            out string out_key,
             out mx_float[] out_data,
-            out mx_uint[] out_shape,
-            out mx_uint out_ndim);
+            out int[] out_shape,
+            out int out_ndim
+        );
 
         // MXNET_DLL int MXNDListFree(NDListHandle handle);
         [DllImport(MXNetDll)]
-        public static extern int MXNDListFree(NDListHandle handle);
+        public static extern int MXNDListFree(
+            NDListHandle handle
+        );
     }
 }
