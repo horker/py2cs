@@ -122,7 +122,8 @@ namespace Python2CSharp
         public string Signature { get; set; } = string.Empty;
         public string SignatureSetter { get; set; } = string.Empty;
         public List<string> Reassigned { get; set; } = new List<string>();
-        public List<string> KeywordArguments { get; set; } = new List<string>(); // ??
+        public List<string> VariadicArguments { get; set; } = new List<string>();
+        public List<string> KeywordArguments { get; set; } = new List<string>();
         public List<string> Prologue { get; set; } = new List<string>();
         public Dictionary<string, LocalConfig> Locals { get; set; } = new Dictionary<string, LocalConfig>();
         public Dictionary<string, string> LocalAliases { get; set; } = new Dictionary<string, string>();

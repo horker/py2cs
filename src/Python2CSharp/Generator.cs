@@ -405,7 +405,6 @@ namespace Python2CSharp
                 // Subitems
 
                 case "keyword": result = GenerateKeyword(node, ctx); break; // NOTICE: starts with lowercase letter
-                case "Starred": result = GenerateStarred(node, ctx); break;
 
                 default:
                     _out.WriteLine("// " + name);
@@ -540,6 +539,11 @@ namespace Python2CSharp
                 _out.WriteOpening("{");
             }
 
+            var vararg = node["args"]["vararg"];
+            var varargName = string.Empty;
+            if (vararg.Type == JTokenType.Object && ObjectNameOf(vararg) == "arg")
+                varargName = GetNameProperty(vararg, "arg");
+
             var kwarg = node["args"]["kwarg"];
             var kwargName = string.Empty;
             if (kwarg.Type == JTokenType.Object && ObjectNameOf(kwarg) == "arg")
@@ -562,7 +566,7 @@ namespace Python2CSharp
             var args = node["args"]["args"];
             var body = node["body"];
 
-            ctx = ctx.EnterFunction(funcName, kwargName, mc, isSetterDef);
+            ctx = ctx.EnterFunction(funcName, varargName, kwargName, mc, isSetterDef);
 
             foreach (var a in analysis.ParamTypes.Keys)
                 ctx.AddLocal(ConvertToSnakeCase(a));
@@ -625,7 +629,7 @@ namespace Python2CSharp
             if (analysis.IsProperty)
                 _out.WriteOpening("get {");
 
-            if (!string.IsNullOrEmpty(kwargName) && !HasLocalOrParam(kwargName, ctx, mc))
+            if (!string.IsNullOrEmpty(kwargName) && !HasLocalOrParam(kwargName, ctx, mc) && mc.KeywordArguments.Count > 0)
             {
                 ctx.TryAddLocal(kwargName);
                 _out.WriteLine($"var {ConvertAsLocal(kwargName)} = new Dictionary<string, string>();");
@@ -1547,24 +1551,6 @@ namespace Python2CSharp
                 return ValueConstraint.Any;
             }
 
-            // Special case: getattr(obj, "prop", default)
-
-//            if (ObjectNameOf(func) == "Name" && GetNameProperty(func, "id") == "getattr" &&
-//                ObjectNameOf(args[1]) == "Constant")
-//            {
-//                _out.Write("(");
-//                GenerateExpression(args[0], ctx);
-//                _out.Write(")?.");
-//                _out.Write(ConvertToCamelCase(GetNameProperty(args[1], "value"), true));
-//                if (args.Count() == 3)
-//                {
-//                    _out.Write(" ?? ");
-//                    GenerateExpression(args[2], ctx);
-//                }
-//
-//                return ValueConstraint.Any;
-//            }
-
             // Special case: super()
 
             if (ObjectNameOf(func) == "Name" && GetNameProperty(func, "id") == "super")
@@ -1593,21 +1579,34 @@ namespace Python2CSharp
 
             _out.Write("(");
 
-//            if (ObjectNameOf(func) == "Name" && GetNameProperty(func, "id") == "isinstance" && args.Count() == 2)
-//            {
-//                GenerateExpression(args[0], ctx);
-//                _out.Write(", ");
-//                if (ObjectNameOf(args[1]) == "Name" || ObjectNameOf(args[1]) == "Tuple")
-//                {
-//                    _out.Write("typeof(");
-//                    GenerateExpression(args[1], ctx);
-//                    _out.Write(")");
-//                }
-//            }
-//            else
-//            {
-                GenerateCommaSeparated(args, ctx);
-//            }
+            // positional and variadic arguments
+
+            var first = true;
+            foreach (var a in args)
+            {
+                if (!first)
+                    _out.Write(", ");
+                first = false;
+
+                if (ObjectNameOf(a) == "Starred")
+                {
+                    var mc = ctx.MethodConfig;
+                    if (mc.VariadicArguments.Count == 0)
+                    {
+                        GenerateToplevelExpression(a["value"], ctx);
+                    }
+                    else
+                    {
+                        _out.Write(string.Join(", ", mc.VariadicArguments.Select(ConvertAsLocal)));
+                    }
+                }
+                else
+                {
+                    GenerateToplevelExpression(a, ctx);
+                }
+            }
+
+            // keyword arguments
 
             bool hasArgs = args.Count() > 0;
             foreach (var keyword in keywords)
@@ -1857,13 +1856,6 @@ namespace Python2CSharp
                 _out.Write(": ");
                 GenerateExpression(node["value"], ctx);
             }
-
-            return ValueConstraint.Any;
-        }
-
-        public ValueConstraint GenerateStarred(JToken node, Context ctx)
-        {
-            GenerateExpression(node["value"], ctx);
 
             return ValueConstraint.Any;
         }

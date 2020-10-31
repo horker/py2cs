@@ -107,5 +107,17 @@ namespace Horker.MXNet
         {
             return new SymbolList(syms);
         }
+
+        public static implicit operator Symbol(SymbolList list)
+        {
+            if (list.Count != 1)
+                throw new ArgumentException("Attempted to convert a SymbolList into a Symbol when its length is not one");
+            return list[0];
+        }
+
+        public static implicit operator SymbolList(Symbol ndarray)
+        {
+            return new SymbolList(ndarray);
+        }
     }
 }

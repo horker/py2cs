@@ -233,7 +233,6 @@ namespace Horker.MXNet
         
         internal Symbol __Call__(SymbolList args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             var s = this.__Copy__();
             s._compose(args);

@@ -8,7 +8,7 @@ namespace Horker.MXNet
     {
         public static class Op
         {
-        public static NDArrayList BatchNormV1(NDArray data, NDArray gamma, NDArray beta, float eps, float momentum, bool fixGamma, bool useGlobalStats, bool outputMeanVar, NDArrayList @out = null)
+        public static NDArrayList BatchNormV1(NDArray data, NDArray gamma, NDArray beta, float? eps = null, float? momentum = null, bool fixGamma = true, bool useGlobalStats = false, bool outputMeanVar = false, NDArrayList @out = null)
         {
             return new Operator("BatchNorm_v1")
                 .SetInput(data)
@@ -16,26 +16,26 @@ namespace Horker.MXNet
                 .SetInput(beta)
                 .SetParam("eps", eps)
                 .SetParam("momentum", momentum)
-                .SetParam("fixGamma", fixGamma)
-                .SetParam("useGlobalStats", useGlobalStats)
-                .SetParam("outputMeanVar", outputMeanVar)
+                .SetParam("fix_gamma", fixGamma)
+                .SetParam("use_global_stats", useGlobalStats)
+                .SetParam("output_mean_var", outputMeanVar)
                 .Invoke(@out);
         }
 
-        public static NDArrayList AllFinite(NDArray data, bool initOutput, NDArrayList @out = null)
+        public static NDArrayList AllFinite(NDArray data, bool initOutput = true, NDArrayList @out = null)
         {
             return new Operator("all_finite")
                 .SetInput(data)
-                .SetParam("initOutput", initOutput)
+                .SetParam("init_output", initOutput)
                 .Invoke(@out);
         }
 
-        public static NDArrayList MultiAllFinite(NDArrayList data, int numArrays, bool initOutput, NDArrayList @out = null)
+        public static NDArrayList MultiAllFinite(NDArrayList data, int? numArrays = null, bool initOutput = true, NDArrayList @out = null)
         {
             return new Operator("multi_all_finite")
                 .SetInput(data)
-                .SetParam("numArrays", numArrays)
-                .SetParam("initOutput", initOutput)
+                .SetParam("num_arrays", numArrays)
+                .SetParam("init_output", initOutput)
                 .Invoke(@out);
         }
 
@@ -50,29 +50,29 @@ namespace Horker.MXNet
         {
             return new Operator("Custom")
                 .SetInput(data)
-                .SetParam("opType", opType)
+                .SetParam("op_type", opType)
                 .Invoke(@out);
         }
 
-        public static NDArrayList IdentityAttachKLSparseReg(NDArray data, float sparsenessTarget, float penalty, float momentum, NDArrayList @out = null)
+        public static NDArrayList IdentityAttachKLSparseReg(NDArray data, float? sparsenessTarget = null, float? penalty = null, float? momentum = null, NDArrayList @out = null)
         {
             return new Operator("IdentityAttachKLSparseReg")
                 .SetInput(data)
-                .SetParam("sparsenessTarget", sparsenessTarget)
+                .SetParam("sparseness_target", sparsenessTarget)
                 .SetParam("penalty", penalty)
                 .SetParam("momentum", momentum)
                 .Invoke(@out);
         }
 
-        public static NDArrayList LeakyReLU(NDArray data, NDArray gamma, string actType, float slope, float lowerBound, float upperBound, NDArrayList @out = null)
+        public static NDArrayList LeakyReLU(NDArray data, NDArray gamma, string actType = "leaky", float? slope = null, float? lowerBound = null, float? upperBound = null, NDArrayList @out = null)
         {
             return new Operator("LeakyReLU")
                 .SetInput(data)
                 .SetInput(gamma)
-                .SetParam("actType", actType)
+                .SetParam("act_type", actType)
                 .SetParam("slope", slope)
-                .SetParam("lowerBound", lowerBound)
-                .SetParam("upperBound", upperBound)
+                .SetParam("lower_bound", lowerBound)
+                .SetParam("upper_bound", upperBound)
                 .Invoke(@out);
         }
 
@@ -88,11 +88,11 @@ namespace Horker.MXNet
         {
             return new Operator("Activation")
                 .SetInput(data)
-                .SetParam("actType", actType)
+                .SetParam("act_type", actType)
                 .Invoke(@out);
         }
 
-        public static NDArrayList BatchNorm(NDArray data, NDArray gamma, NDArray beta, NDArray movingMean, NDArray movingVar, double eps, float momentum, bool fixGamma, bool useGlobalStats, bool outputMeanVar, int axis, bool cudnnOff, NDArrayList @out = null)
+        public static NDArrayList BatchNorm(NDArray data, NDArray gamma, NDArray beta, NDArray movingMean, NDArray movingVar, double? eps = null, float? momentum = null, bool fixGamma = true, bool useGlobalStats = false, bool outputMeanVar = false, int? axis = null, bool cudnnOff = false, NDArrayList @out = null)
         {
             return new Operator("BatchNorm")
                 .SetInput(data)
@@ -102,25 +102,28 @@ namespace Horker.MXNet
                 .SetInput(movingVar)
                 .SetParam("eps", eps)
                 .SetParam("momentum", momentum)
-                .SetParam("fixGamma", fixGamma)
-                .SetParam("useGlobalStats", useGlobalStats)
-                .SetParam("outputMeanVar", outputMeanVar)
+                .SetParam("fix_gamma", fixGamma)
+                .SetParam("use_global_stats", useGlobalStats)
+                .SetParam("output_mean_var", outputMeanVar)
                 .SetParam("axis", axis)
-                .SetParam("cudnnOff", cudnnOff)
+                .SetParam("cudnn_off", cudnnOff)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Concat(NDArrayList data, int numArgs, int dim, NDArrayList @out = null)
+        public static NDArrayList Concat(NDArrayList data, int numArgs, int? dim = null, NDArrayList @out = null)
         {
             return new Operator("Concat")
                 .SetInput(data)
-                .SetParam("numArgs", numArgs)
+                .SetParam("num_args", numArgs)
                 .SetParam("dim", dim)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Convolution(NDArray data, NDArray weight, NDArray bias, Shape kernel, Shape stride, Shape dilate, Shape pad, int numFilter, int numGroup, long workspace, bool noBias, string cudnnTune, bool cudnnOff, string layout, NDArrayList @out = null)
+        public static NDArrayList Convolution(NDArray data, NDArray weight, NDArray bias, Shape kernel, Shape stride = null, Shape dilate = null, Shape pad = null, int? numFilter = null, int? numGroup = null, long? workspace = null, bool noBias = false, string cudnnTune = "None", bool cudnnOff = false, string layout = "None", NDArrayList @out = null)
         {
+            stride = new Shape();
+            dilate = new Shape();
+            pad = new Shape();
             return new Operator("Convolution")
                 .SetInput(data)
                 .SetInput(weight)
@@ -129,31 +132,36 @@ namespace Horker.MXNet
                 .SetParam("stride", stride)
                 .SetParam("dilate", dilate)
                 .SetParam("pad", pad)
-                .SetParam("numFilter", numFilter)
-                .SetParam("numGroup", numGroup)
+                .SetParam("num_filter", numFilter)
+                .SetParam("num_group", numGroup)
                 .SetParam("workspace", workspace)
-                .SetParam("noBias", noBias)
-                .SetParam("cudnnTune", cudnnTune)
-                .SetParam("cudnnOff", cudnnOff)
+                .SetParam("no_bias", noBias)
+                .SetParam("cudnn_tune", cudnnTune)
+                .SetParam("cudnn_off", cudnnOff)
                 .SetParam("layout", layout)
                 .Invoke(@out);
         }
 
-        public static NDArrayList CTCLoss(NDArray data, NDArray label, NDArray dataLengths, NDArray labelLengths, bool useDataLengths, bool useLabelLengths, string blankLabel, NDArrayList @out = null)
+        public static NDArrayList CTCLoss(NDArray data, NDArray label, NDArray dataLengths, NDArray labelLengths, bool useDataLengths = false, bool useLabelLengths = false, string blankLabel = "first", NDArrayList @out = null)
         {
             return new Operator("CTCLoss")
                 .SetInput(data)
                 .SetInput(label)
                 .SetInput(dataLengths)
                 .SetInput(labelLengths)
-                .SetParam("useDataLengths", useDataLengths)
-                .SetParam("useLabelLengths", useLabelLengths)
-                .SetParam("blankLabel", blankLabel)
+                .SetParam("use_data_lengths", useDataLengths)
+                .SetParam("use_label_lengths", useLabelLengths)
+                .SetParam("blank_label", blankLabel)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Deconvolution(NDArray data, NDArray weight, NDArray bias, Shape kernel, Shape stride, Shape dilate, Shape pad, Shape adj, Shape targetShape, int numFilter, int numGroup, long workspace, bool noBias, string cudnnTune, bool cudnnOff, string layout, NDArrayList @out = null)
+        public static NDArrayList Deconvolution(NDArray data, NDArray weight, NDArray bias, Shape kernel, Shape stride = null, Shape dilate = null, Shape pad = null, Shape adj = null, Shape targetShape = null, int? numFilter = null, int? numGroup = null, long? workspace = null, bool noBias = true, string cudnnTune = "None", bool cudnnOff = false, string layout = "None", NDArrayList @out = null)
         {
+            stride = new Shape();
+            dilate = new Shape();
+            pad = new Shape();
+            adj = new Shape();
+            targetShape = new Shape();
             return new Operator("Deconvolution")
                 .SetInput(data)
                 .SetInput(weight)
@@ -163,41 +171,42 @@ namespace Horker.MXNet
                 .SetParam("dilate", dilate)
                 .SetParam("pad", pad)
                 .SetParam("adj", adj)
-                .SetParam("targetShape", targetShape)
-                .SetParam("numFilter", numFilter)
-                .SetParam("numGroup", numGroup)
+                .SetParam("target_shape", targetShape)
+                .SetParam("num_filter", numFilter)
+                .SetParam("num_group", numGroup)
                 .SetParam("workspace", workspace)
-                .SetParam("noBias", noBias)
-                .SetParam("cudnnTune", cudnnTune)
-                .SetParam("cudnnOff", cudnnOff)
+                .SetParam("no_bias", noBias)
+                .SetParam("cudnn_tune", cudnnTune)
+                .SetParam("cudnn_off", cudnnOff)
                 .SetParam("layout", layout)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Dropout(NDArray data, float p, string mode, Shape axes, bool cudnnOff, NDArrayList @out = null)
+        public static NDArrayList Dropout(NDArray data, float? p = null, string mode = "training", Shape axes = null, bool cudnnOff = false, NDArrayList @out = null)
         {
+            axes = new Shape();
             return new Operator("Dropout")
                 .SetInput(data)
                 .SetParam("p", p)
                 .SetParam("mode", mode)
                 .SetParam("axes", axes)
-                .SetParam("cudnnOff", cudnnOff)
+                .SetParam("cudnn_off", cudnnOff)
                 .Invoke(@out);
         }
 
-        public static NDArrayList FullyConnected(NDArray data, NDArray weight, NDArray bias, int numHidden, bool noBias, bool flatten, NDArrayList @out = null)
+        public static NDArrayList FullyConnected(NDArray data, NDArray weight, NDArray bias, int numHidden, bool noBias = false, bool flatten = true, NDArrayList @out = null)
         {
             return new Operator("FullyConnected")
                 .SetInput(data)
                 .SetInput(weight)
                 .SetInput(bias)
-                .SetParam("numHidden", numHidden)
-                .SetParam("noBias", noBias)
+                .SetParam("num_hidden", numHidden)
+                .SetParam("no_bias", noBias)
                 .SetParam("flatten", flatten)
                 .Invoke(@out);
         }
 
-        public static NDArrayList LayerNorm(NDArray data, NDArray gamma, NDArray beta, int axis, float eps, bool outputMeanVar, NDArrayList @out = null)
+        public static NDArrayList LayerNorm(NDArray data, NDArray gamma, NDArray beta, int? axis = null, float? eps = null, bool outputMeanVar = false, NDArrayList @out = null)
         {
             return new Operator("LayerNorm")
                 .SetInput(data)
@@ -205,11 +214,11 @@ namespace Horker.MXNet
                 .SetInput(beta)
                 .SetParam("axis", axis)
                 .SetParam("eps", eps)
-                .SetParam("outputMeanVar", outputMeanVar)
+                .SetParam("output_mean_var", outputMeanVar)
                 .Invoke(@out);
         }
 
-        public static NDArrayList LRN(NDArray data, float alpha, float beta, float knorm, int nsize, NDArrayList @out = null)
+        public static NDArrayList LRN(NDArray data, float? alpha = null, float? beta = null, float? knorm = null, int? nsize = null, NDArrayList @out = null)
         {
             return new Operator("LRN")
                 .SetInput(data)
@@ -220,7 +229,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Moments(NDArray data, Shape axes, bool keepdims, NDArrayList @out = null)
+        public static NDArrayList Moments(NDArray data, Shape axes = null, bool keepdims = false, NDArrayList @out = null)
         {
             return new Operator("moments")
                 .SetInput(data)
@@ -229,24 +238,27 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Pooling(NDArray data, Shape kernel, string poolType, bool globalPool, bool cudnnOff, string poolingConvention, Shape stride, Shape pad, int pValue, bool countIncludePad, string layout, NDArrayList @out = null)
+        public static NDArrayList Pooling(NDArray data, Shape kernel = null, string poolType = "max", bool globalPool = false, bool cudnnOff = false, string poolingConvention = "valid", Shape stride = null, Shape pad = null, int? pValue = null, bool? countIncludePad = null, string layout = "None", NDArrayList @out = null)
         {
+            kernel = new Shape();
+            stride = new Shape();
+            pad = new Shape();
             return new Operator("Pooling")
                 .SetInput(data)
                 .SetParam("kernel", kernel)
-                .SetParam("poolType", poolType)
-                .SetParam("globalPool", globalPool)
-                .SetParam("cudnnOff", cudnnOff)
-                .SetParam("poolingConvention", poolingConvention)
+                .SetParam("pool_type", poolType)
+                .SetParam("global_pool", globalPool)
+                .SetParam("cudnn_off", cudnnOff)
+                .SetParam("pooling_convention", poolingConvention)
                 .SetParam("stride", stride)
                 .SetParam("pad", pad)
-                .SetParam("pValue", pValue)
-                .SetParam("countIncludePad", countIncludePad)
+                .SetParam("p_value", pValue)
+                .SetParam("count_include_pad", countIncludePad)
                 .SetParam("layout", layout)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Softmax(NDArray data, int axis, double temperature, string dtype, NDArrayList @out = null)
+        public static NDArrayList Softmax(NDArray data, int? axis = null, double? temperature = null, string dtype = "None", NDArrayList @out = null)
         {
             return new Operator("softmax")
                 .SetInput(data)
@@ -256,7 +268,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Softmin(NDArray data, int axis, double temperature, string dtype, NDArrayList @out = null)
+        public static NDArrayList Softmin(NDArray data, int? axis = null, double? temperature = null, string dtype = "None", NDArrayList @out = null)
         {
             return new Operator("softmin")
                 .SetInput(data)
@@ -266,7 +278,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList LogSoftmax(NDArray data, int axis, double temperature, string dtype, NDArrayList @out = null)
+        public static NDArrayList LogSoftmax(NDArray data, int? axis = null, double? temperature = null, string dtype = "None", NDArrayList @out = null)
         {
             return new Operator("log_softmax")
                 .SetInput(data)
@@ -276,7 +288,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList SoftmaxActivation(NDArray data, string mode, NDArrayList @out = null)
+        public static NDArrayList SoftmaxActivation(NDArray data, string mode = "instance", NDArrayList @out = null)
         {
             return new Operator("SoftmaxActivation")
                 .SetInput(data)
@@ -284,32 +296,32 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList UpSampling(NDArrayList data, int scale, int numFilter, string sampleType, string multiInputMode, int numArgs, long workspace, NDArrayList @out = null)
+        public static NDArrayList UpSampling(NDArrayList data, int scale, int? numFilter = null, string sampleType = "null", string multiInputMode = "concat", int? numArgs = null, long? workspace = null, NDArrayList @out = null)
         {
             return new Operator("UpSampling")
                 .SetInput(data)
                 .SetParam("scale", scale)
-                .SetParam("numFilter", numFilter)
-                .SetParam("sampleType", sampleType)
-                .SetParam("multiInputMode", multiInputMode)
-                .SetParam("numArgs", numArgs)
+                .SetParam("num_filter", numFilter)
+                .SetParam("sample_type", sampleType)
+                .SetParam("multi_input_mode", multiInputMode)
+                .SetParam("num_args", numArgs)
                 .SetParam("workspace", workspace)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SignsgdUpdate(NDArray weight, NDArray grad, float lr, float wd, float rescaleGrad, float clipGradient, NDArrayList @out = null)
+        public static NDArrayList SignsgdUpdate(NDArray weight, NDArray grad, float lr, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, NDArrayList @out = null)
         {
             return new Operator("signsgd_update")
                 .SetInput(weight)
                 .SetInput(grad)
                 .SetParam("lr", lr)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SignumUpdate(NDArray weight, NDArray grad, NDArray mom, float lr, float momentum, float wd, float rescaleGrad, float clipGradient, float wdLh, NDArrayList @out = null)
+        public static NDArrayList SignumUpdate(NDArray weight, NDArray grad, NDArray mom, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, float? wdLh = null, NDArrayList @out = null)
         {
             return new Operator("signum_update")
                 .SetInput(weight)
@@ -318,76 +330,76 @@ namespace Horker.MXNet
                 .SetParam("lr", lr)
                 .SetParam("momentum", momentum)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("wdLh", wdLh)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("wd_lh", wdLh)
                 .Invoke(@out);
         }
 
-        public static NDArrayList MultiSgdUpdate(NDArrayList data, object lrs, object wds, float rescaleGrad, float clipGradient, int numWeights, NDArrayList @out = null)
+        public static NDArrayList MultiSgdUpdate(NDArrayList data, object lrs, object wds, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, NDArrayList @out = null)
         {
             return new Operator("multi_sgd_update")
                 .SetInput(data)
                 .SetParam("lrs", lrs)
                 .SetParam("wds", wds)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("numWeights", numWeights)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("num_weights", numWeights)
                 .Invoke(@out);
         }
 
-        public static NDArrayList MultiSgdMomUpdate(NDArrayList data, object lrs, object wds, float momentum, float rescaleGrad, float clipGradient, int numWeights, NDArrayList @out = null)
+        public static NDArrayList MultiSgdMomUpdate(NDArrayList data, object lrs, object wds, float? momentum = null, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, NDArrayList @out = null)
         {
             return new Operator("multi_sgd_mom_update")
                 .SetInput(data)
                 .SetParam("lrs", lrs)
                 .SetParam("wds", wds)
                 .SetParam("momentum", momentum)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("numWeights", numWeights)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("num_weights", numWeights)
                 .Invoke(@out);
         }
 
-        public static NDArrayList MultiMpSgdUpdate(NDArrayList data, object lrs, object wds, float rescaleGrad, float clipGradient, int numWeights, NDArrayList @out = null)
+        public static NDArrayList MultiMpSgdUpdate(NDArrayList data, object lrs, object wds, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, NDArrayList @out = null)
         {
             return new Operator("multi_mp_sgd_update")
                 .SetInput(data)
                 .SetParam("lrs", lrs)
                 .SetParam("wds", wds)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("numWeights", numWeights)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("num_weights", numWeights)
                 .Invoke(@out);
         }
 
-        public static NDArrayList MultiMpSgdMomUpdate(NDArrayList data, object lrs, object wds, float momentum, float rescaleGrad, float clipGradient, int numWeights, NDArrayList @out = null)
+        public static NDArrayList MultiMpSgdMomUpdate(NDArrayList data, object lrs, object wds, float? momentum = null, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, NDArrayList @out = null)
         {
             return new Operator("multi_mp_sgd_mom_update")
                 .SetInput(data)
                 .SetParam("lrs", lrs)
                 .SetParam("wds", wds)
                 .SetParam("momentum", momentum)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("numWeights", numWeights)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("num_weights", numWeights)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SgdUpdate(NDArray weight, NDArray grad, float lr, float wd, float rescaleGrad, float clipGradient, bool lazyUpdate, NDArrayList @out = null)
+        public static NDArrayList SgdUpdate(NDArray weight, NDArray grad, float lr, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, NDArrayList @out = null)
         {
             return new Operator("sgd_update")
                 .SetInput(weight)
                 .SetInput(grad)
                 .SetParam("lr", lr)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("lazyUpdate", lazyUpdate)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("lazy_update", lazyUpdate)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SgdMomUpdate(NDArray weight, NDArray grad, NDArray mom, float lr, float momentum, float wd, float rescaleGrad, float clipGradient, bool lazyUpdate, NDArrayList @out = null)
+        public static NDArrayList SgdMomUpdate(NDArray weight, NDArray grad, NDArray mom, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, NDArrayList @out = null)
         {
             return new Operator("sgd_mom_update")
                 .SetInput(weight)
@@ -396,13 +408,13 @@ namespace Horker.MXNet
                 .SetParam("lr", lr)
                 .SetParam("momentum", momentum)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("lazyUpdate", lazyUpdate)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("lazy_update", lazyUpdate)
                 .Invoke(@out);
         }
 
-        public static NDArrayList MpSgdUpdate(NDArray weight, NDArray grad, NDArray weight32, float lr, float wd, float rescaleGrad, float clipGradient, bool lazyUpdate, NDArrayList @out = null)
+        public static NDArrayList MpSgdUpdate(NDArray weight, NDArray grad, NDArray weight32, float lr, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, NDArrayList @out = null)
         {
             return new Operator("mp_sgd_update")
                 .SetInput(weight)
@@ -410,13 +422,13 @@ namespace Horker.MXNet
                 .SetInput(weight32)
                 .SetParam("lr", lr)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("lazyUpdate", lazyUpdate)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("lazy_update", lazyUpdate)
                 .Invoke(@out);
         }
 
-        public static NDArrayList MpSgdMomUpdate(NDArray weight, NDArray grad, NDArray mom, NDArray weight32, float lr, float momentum, float wd, float rescaleGrad, float clipGradient, bool lazyUpdate, NDArrayList @out = null)
+        public static NDArrayList MpSgdMomUpdate(NDArray weight, NDArray grad, NDArray mom, NDArray weight32, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, NDArrayList @out = null)
         {
             return new Operator("mp_sgd_mom_update")
                 .SetInput(weight)
@@ -426,13 +438,13 @@ namespace Horker.MXNet
                 .SetParam("lr", lr)
                 .SetParam("momentum", momentum)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("lazyUpdate", lazyUpdate)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("lazy_update", lazyUpdate)
                 .Invoke(@out);
         }
 
-        public static NDArrayList FtmlUpdate(NDArray weight, NDArray grad, NDArray d, NDArray v, NDArray z, float lr, float beta1, float beta2, double epsilon, int t, float wd, float rescaleGrad, float clipGrad, NDArrayList @out = null)
+        public static NDArrayList FtmlUpdate(NDArray weight, NDArray grad, NDArray d, NDArray v, NDArray z, float lr, float? beta1 = null, float? beta2 = null, double? epsilon = null, int? t = null, float? wd = null, float? rescaleGrad = null, float? clipGrad = null, NDArrayList @out = null)
         {
             return new Operator("ftml_update")
                 .SetInput(weight)
@@ -446,12 +458,12 @@ namespace Horker.MXNet
                 .SetParam("epsilon", epsilon)
                 .SetParam("t", t)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGrad", clipGrad)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_grad", clipGrad)
                 .Invoke(@out);
         }
 
-        public static NDArrayList AdamUpdate(NDArray weight, NDArray grad, NDArray mean, NDArray var, float lr, float beta1, float beta2, float epsilon, float wd, float rescaleGrad, float clipGradient, bool lazyUpdate, NDArrayList @out = null)
+        public static NDArrayList AdamUpdate(NDArray weight, NDArray grad, NDArray mean, NDArray var, float lr, float? beta1 = null, float? beta2 = null, float? epsilon = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, NDArrayList @out = null)
         {
             return new Operator("adam_update")
                 .SetInput(weight)
@@ -463,13 +475,13 @@ namespace Horker.MXNet
                 .SetParam("beta2", beta2)
                 .SetParam("epsilon", epsilon)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("lazyUpdate", lazyUpdate)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("lazy_update", lazyUpdate)
                 .Invoke(@out);
         }
 
-        public static NDArrayList NagMomUpdate(NDArray weight, NDArray grad, NDArray mom, float lr, float momentum, float wd, float rescaleGrad, float clipGradient, NDArrayList @out = null)
+        public static NDArrayList NagMomUpdate(NDArray weight, NDArray grad, NDArray mom, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, NDArrayList @out = null)
         {
             return new Operator("nag_mom_update")
                 .SetInput(weight)
@@ -478,12 +490,12 @@ namespace Horker.MXNet
                 .SetParam("lr", lr)
                 .SetParam("momentum", momentum)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
                 .Invoke(@out);
         }
 
-        public static NDArrayList MpNagMomUpdate(NDArray weight, NDArray grad, NDArray mom, NDArray weight32, float lr, float momentum, float wd, float rescaleGrad, float clipGradient, NDArrayList @out = null)
+        public static NDArrayList MpNagMomUpdate(NDArray weight, NDArray grad, NDArray mom, NDArray weight32, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, NDArrayList @out = null)
         {
             return new Operator("mp_nag_mom_update")
                 .SetInput(weight)
@@ -493,12 +505,12 @@ namespace Horker.MXNet
                 .SetParam("lr", lr)
                 .SetParam("momentum", momentum)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
                 .Invoke(@out);
         }
 
-        public static NDArrayList RmspropUpdate(NDArray weight, NDArray grad, NDArray n, float lr, float gamma1, float epsilon, float wd, float rescaleGrad, float clipGradient, float clipWeights, NDArrayList @out = null)
+        public static NDArrayList RmspropUpdate(NDArray weight, NDArray grad, NDArray n, float lr, float? gamma1 = null, float? epsilon = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, float? clipWeights = null, NDArrayList @out = null)
         {
             return new Operator("rmsprop_update")
                 .SetInput(weight)
@@ -508,13 +520,13 @@ namespace Horker.MXNet
                 .SetParam("gamma1", gamma1)
                 .SetParam("epsilon", epsilon)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("clipWeights", clipWeights)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("clip_weights", clipWeights)
                 .Invoke(@out);
         }
 
-        public static NDArrayList RmspropalexUpdate(NDArray weight, NDArray grad, NDArray n, NDArray g, NDArray delta, float lr, float gamma1, float gamma2, float epsilon, float wd, float rescaleGrad, float clipGradient, float clipWeights, NDArrayList @out = null)
+        public static NDArrayList RmspropalexUpdate(NDArray weight, NDArray grad, NDArray n, NDArray g, NDArray delta, float lr, float? gamma1 = null, float? gamma2 = null, float? epsilon = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, float? clipWeights = null, NDArrayList @out = null)
         {
             return new Operator("rmspropalex_update")
                 .SetInput(weight)
@@ -527,13 +539,13 @@ namespace Horker.MXNet
                 .SetParam("gamma2", gamma2)
                 .SetParam("epsilon", epsilon)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
-                .SetParam("clipWeights", clipWeights)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
+                .SetParam("clip_weights", clipWeights)
                 .Invoke(@out);
         }
 
-        public static NDArrayList FtrlUpdate(NDArray weight, NDArray grad, NDArray z, NDArray n, float lr, float lamda1, float beta, float wd, float rescaleGrad, float clipGradient, NDArrayList @out = null)
+        public static NDArrayList FtrlUpdate(NDArray weight, NDArray grad, NDArray z, NDArray n, float lr, float? lamda1 = null, float? beta = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, NDArrayList @out = null)
         {
             return new Operator("ftrl_update")
                 .SetInput(weight)
@@ -544,18 +556,18 @@ namespace Horker.MXNet
                 .SetParam("lamda1", lamda1)
                 .SetParam("beta", beta)
                 .SetParam("wd", wd)
-                .SetParam("rescaleGrad", rescaleGrad)
-                .SetParam("clipGradient", clipGradient)
+                .SetParam("rescale_grad", rescaleGrad)
+                .SetParam("clip_gradient", clipGradient)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Pad(NDArray data, string mode, Shape padWidth, double constantValue, NDArrayList @out = null)
+        public static NDArrayList Pad(NDArray data, string mode, Shape padWidth, double? constantValue = null, NDArrayList @out = null)
         {
             return new Operator("Pad")
                 .SetInput(data)
                 .SetParam("mode", mode)
-                .SetParam("padWidth", padWidth)
-                .SetParam("constantValue", constantValue)
+                .SetParam("pad_width", padWidth)
+                .SetParam("constant_value", constantValue)
                 .Invoke(@out);
         }
 
@@ -566,34 +578,34 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList LinearRegressionOutput(NDArray data, NDArray label, float gradScale, NDArrayList @out = null)
+        public static NDArrayList LinearRegressionOutput(NDArray data, NDArray label, float? gradScale = null, NDArrayList @out = null)
         {
             return new Operator("LinearRegressionOutput")
                 .SetInput(data)
                 .SetInput(label)
-                .SetParam("gradScale", gradScale)
+                .SetParam("grad_scale", gradScale)
                 .Invoke(@out);
         }
 
-        public static NDArrayList MAERegressionOutput(NDArray data, NDArray label, float gradScale, NDArrayList @out = null)
+        public static NDArrayList MAERegressionOutput(NDArray data, NDArray label, float? gradScale = null, NDArrayList @out = null)
         {
             return new Operator("MAERegressionOutput")
                 .SetInput(data)
                 .SetInput(label)
-                .SetParam("gradScale", gradScale)
+                .SetParam("grad_scale", gradScale)
                 .Invoke(@out);
         }
 
-        public static NDArrayList LogisticRegressionOutput(NDArray data, NDArray label, float gradScale, NDArrayList @out = null)
+        public static NDArrayList LogisticRegressionOutput(NDArray data, NDArray label, float? gradScale = null, NDArrayList @out = null)
         {
             return new Operator("LogisticRegressionOutput")
                 .SetInput(data)
                 .SetInput(label)
-                .SetParam("gradScale", gradScale)
+                .SetParam("grad_scale", gradScale)
                 .Invoke(@out);
         }
 
-        public static NDArrayList RNN(NDArray data, NDArray parameters, NDArray state, NDArray stateCell, NDArray sequenceLength, int stateSize, int numLayers, bool bidirectional, string mode, float p, bool stateOutputs, int projectionSize, double lstmStateClipMin, double lstmStateClipMax, bool lstmStateClipNan, bool useSequenceLength, NDArrayList @out = null)
+        public static NDArrayList RNN(NDArray data, NDArray parameters, NDArray state, NDArray stateCell, NDArray sequenceLength, int stateSize, int numLayers, bool bidirectional = false, string mode = "null", float? p = null, bool stateOutputs = false, int? projectionSize = null, double? lstmStateClipMin = null, double? lstmStateClipMax = null, bool lstmStateClipNan = false, bool useSequenceLength = false, NDArrayList @out = null)
         {
             return new Operator("RNN")
                 .SetInput(data)
@@ -601,47 +613,47 @@ namespace Horker.MXNet
                 .SetInput(state)
                 .SetInput(stateCell)
                 .SetInput(sequenceLength)
-                .SetParam("stateSize", stateSize)
-                .SetParam("numLayers", numLayers)
+                .SetParam("state_size", stateSize)
+                .SetParam("num_layers", numLayers)
                 .SetParam("bidirectional", bidirectional)
                 .SetParam("mode", mode)
                 .SetParam("p", p)
-                .SetParam("stateOutputs", stateOutputs)
-                .SetParam("projectionSize", projectionSize)
-                .SetParam("lstmStateClipMin", lstmStateClipMin)
-                .SetParam("lstmStateClipMax", lstmStateClipMax)
-                .SetParam("lstmStateClipNan", lstmStateClipNan)
-                .SetParam("useSequenceLength", useSequenceLength)
+                .SetParam("state_outputs", stateOutputs)
+                .SetParam("projection_size", projectionSize)
+                .SetParam("lstm_state_clip_min", lstmStateClipMin)
+                .SetParam("lstm_state_clip_max", lstmStateClipMax)
+                .SetParam("lstm_state_clip_nan", lstmStateClipNan)
+                .SetParam("use_sequence_length", useSequenceLength)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SliceChannel(NDArray data, int numOutputs, int axis, bool squeezeAxis, NDArrayList @out = null)
+        public static NDArrayList SliceChannel(NDArray data, int numOutputs, int? axis = null, bool squeezeAxis = false, NDArrayList @out = null)
         {
             return new Operator("SliceChannel")
                 .SetInput(data)
-                .SetParam("numOutputs", numOutputs)
+                .SetParam("num_outputs", numOutputs)
                 .SetParam("axis", axis)
-                .SetParam("squeezeAxis", squeezeAxis)
+                .SetParam("squeeze_axis", squeezeAxis)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SoftmaxOutput(NDArray data, NDArray label, float gradScale, float ignoreLabel, bool multiOutput, bool useIgnore, bool preserveShape, string normalization, bool outGrad, float smoothAlpha, NDArrayList @out = null)
+        public static NDArrayList SoftmaxOutput(NDArray data, NDArray label, float? gradScale = null, float? ignoreLabel = null, bool multiOutput = false, bool useIgnore = false, bool preserveShape = false, string normalization = "null", bool outGrad = false, float? smoothAlpha = null, NDArrayList @out = null)
         {
             return new Operator("SoftmaxOutput")
                 .SetInput(data)
                 .SetInput(label)
-                .SetParam("gradScale", gradScale)
-                .SetParam("ignoreLabel", ignoreLabel)
-                .SetParam("multiOutput", multiOutput)
-                .SetParam("useIgnore", useIgnore)
-                .SetParam("preserveShape", preserveShape)
+                .SetParam("grad_scale", gradScale)
+                .SetParam("ignore_label", ignoreLabel)
+                .SetParam("multi_output", multiOutput)
+                .SetParam("use_ignore", useIgnore)
+                .SetParam("preserve_shape", preserveShape)
                 .SetParam("normalization", normalization)
-                .SetParam("outGrad", outGrad)
-                .SetParam("smoothAlpha", smoothAlpha)
+                .SetParam("out_grad", outGrad)
+                .SetParam("smooth_alpha", smoothAlpha)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SwapAxis(NDArray data, int dim1, int dim2, NDArrayList @out = null)
+        public static NDArrayList SwapAxis(NDArray data, int? dim1 = null, int? dim2 = null, NDArrayList @out = null)
         {
             return new Operator("SwapAxis")
                 .SetInput(data)
@@ -662,11 +674,11 @@ namespace Horker.MXNet
         {
             return new Operator("amp_multicast")
                 .SetInput(data)
-                .SetParam("numOutputs", numOutputs)
+                .SetParam("num_outputs", numOutputs)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Argmax(NDArray data, int axis, bool keepdims, NDArrayList @out = null)
+        public static NDArrayList Argmax(NDArray data, int? axis = null, bool keepdims = false, NDArrayList @out = null)
         {
             return new Operator("argmax")
                 .SetInput(data)
@@ -675,7 +687,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Argmin(NDArray data, int axis, bool keepdims, NDArrayList @out = null)
+        public static NDArrayList Argmin(NDArray data, int? axis = null, bool keepdims = false, NDArrayList @out = null)
         {
             return new Operator("argmin")
                 .SetInput(data)
@@ -691,7 +703,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Pick(NDArray data, NDArray index, int axis, bool keepdims, string mode, NDArrayList @out = null)
+        public static NDArrayList Pick(NDArray data, NDArray index, int? axis = null, bool keepdims = false, string mode = "clip", NDArrayList @out = null)
         {
             return new Operator("pick")
                 .SetInput(data)
@@ -702,7 +714,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Sum(NDArray data, Shape axis, bool keepdims, bool exclude, NDArrayList @out = null)
+        public static NDArrayList Sum(NDArray data, Shape axis = null, bool keepdims = false, bool exclude = false, NDArrayList @out = null)
         {
             return new Operator("sum")
                 .SetInput(data)
@@ -712,7 +724,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Mean(NDArray data, Shape axis, bool keepdims, bool exclude, NDArrayList @out = null)
+        public static NDArrayList Mean(NDArray data, Shape axis = null, bool keepdims = false, bool exclude = false, NDArrayList @out = null)
         {
             return new Operator("mean")
                 .SetInput(data)
@@ -722,7 +734,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Prod(NDArray data, Shape axis, bool keepdims, bool exclude, NDArrayList @out = null)
+        public static NDArrayList Prod(NDArray data, Shape axis = null, bool keepdims = false, bool exclude = false, NDArrayList @out = null)
         {
             return new Operator("prod")
                 .SetInput(data)
@@ -732,7 +744,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Nansum(NDArray data, Shape axis, bool keepdims, bool exclude, NDArrayList @out = null)
+        public static NDArrayList Nansum(NDArray data, Shape axis = null, bool keepdims = false, bool exclude = false, NDArrayList @out = null)
         {
             return new Operator("nansum")
                 .SetInput(data)
@@ -742,7 +754,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Nanprod(NDArray data, Shape axis, bool keepdims, bool exclude, NDArrayList @out = null)
+        public static NDArrayList Nanprod(NDArray data, Shape axis = null, bool keepdims = false, bool exclude = false, NDArrayList @out = null)
         {
             return new Operator("nanprod")
                 .SetInput(data)
@@ -752,7 +764,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Max(NDArray data, Shape axis, bool keepdims, bool exclude, NDArrayList @out = null)
+        public static NDArrayList Max(NDArray data, Shape axis = null, bool keepdims = false, bool exclude = false, NDArrayList @out = null)
         {
             return new Operator("max")
                 .SetInput(data)
@@ -762,7 +774,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Min(NDArray data, Shape axis, bool keepdims, bool exclude, NDArrayList @out = null)
+        public static NDArrayList Min(NDArray data, Shape axis = null, bool keepdims = false, bool exclude = false, NDArrayList @out = null)
         {
             return new Operator("min")
                 .SetInput(data)
@@ -772,8 +784,10 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList BroadcastAxis(NDArray data, Shape axis, Shape size, NDArrayList @out = null)
+        public static NDArrayList BroadcastAxis(NDArray data, Shape axis = null, Shape size = null, NDArrayList @out = null)
         {
+            axis = new Shape();
+            size = new Shape();
             return new Operator("broadcast_axis")
                 .SetInput(data)
                 .SetParam("axis", axis)
@@ -781,31 +795,32 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList BroadcastTo(NDArray data, Shape shape, NDArrayList @out = null)
+        public static NDArrayList BroadcastTo(NDArray data, Shape shape = null, NDArrayList @out = null)
         {
+            shape = new Shape();
             return new Operator("broadcast_to")
                 .SetInput(data)
                 .SetParam("shape", shape)
                 .Invoke(@out);
         }
 
-        public static NDArrayList BroadcastLike(NDArray lhs, NDArray rhs, Shape lhsAxes, Shape rhsAxes, NDArrayList @out = null)
+        public static NDArrayList BroadcastLike(NDArray lhs, NDArray rhs, Shape lhsAxes = null, Shape rhsAxes = null, NDArrayList @out = null)
         {
             return new Operator("broadcast_like")
                 .SetInput(lhs)
                 .SetInput(rhs)
-                .SetParam("lhsAxes", lhsAxes)
-                .SetParam("rhsAxes", rhsAxes)
+                .SetParam("lhs_axes", lhsAxes)
+                .SetParam("rhs_axes", rhsAxes)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Norm(NDArray data, int ord, Shape axis, string outDtype, bool keepdims, NDArrayList @out = null)
+        public static NDArrayList Norm(NDArray data, int? ord = null, Shape axis = null, string outDtype = "None", bool keepdims = false, NDArrayList @out = null)
         {
             return new Operator("norm")
                 .SetInput(data)
                 .SetParam("ord", ord)
                 .SetParam("axis", axis)
-                .SetParam("outDtype", outDtype)
+                .SetParam("out_dtype", outDtype)
                 .SetParam("keepdims", keepdims)
                 .Invoke(@out);
         }
@@ -827,7 +842,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Diag(NDArray data, int k, int axis1, int axis2, NDArrayList @out = null)
+        public static NDArrayList Diag(NDArray data, int? k = null, int? axis1 = null, int? axis2 = null, NDArrayList @out = null)
         {
             return new Operator("diag")
                 .SetInput(data)
@@ -837,25 +852,25 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Dot(NDArray lhs, NDArray rhs, bool transposea, bool transposeb, string forwardStype, NDArrayList @out = null)
+        public static NDArrayList Dot(NDArray lhs, NDArray rhs, bool transposea = false, bool transposeb = false, string forwardStype = "None", NDArrayList @out = null)
         {
             return new Operator("dot")
                 .SetInput(lhs)
                 .SetInput(rhs)
-                .SetParam("transposea", transposea)
-                .SetParam("transposeb", transposeb)
-                .SetParam("forwardStype", forwardStype)
+                .SetParam("transpose_a", transposea)
+                .SetParam("transpose_b", transposeb)
+                .SetParam("forward_stype", forwardStype)
                 .Invoke(@out);
         }
 
-        public static NDArrayList BatchDot(NDArray lhs, NDArray rhs, bool transposea, bool transposeb, string forwardStype, NDArrayList @out = null)
+        public static NDArrayList BatchDot(NDArray lhs, NDArray rhs, bool transposea = false, bool transposeb = false, string forwardStype = "None", NDArrayList @out = null)
         {
             return new Operator("batch_dot")
                 .SetInput(lhs)
                 .SetInput(rhs)
-                .SetParam("transposea", transposea)
-                .SetParam("transposeb", transposeb)
-                .SetParam("forwardStype", forwardStype)
+                .SetParam("transpose_a", transposea)
+                .SetParam("transpose_b", transposeb)
+                .SetParam("forward_stype", forwardStype)
                 .Invoke(@out);
         }
 
@@ -1064,7 +1079,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList HardSigmoid(NDArray data, float alpha, float beta, NDArrayList @out = null)
+        public static NDArrayList HardSigmoid(NDArray data, float? alpha = null, float? beta = null, NDArrayList @out = null)
         {
             return new Operator("hard_sigmoid")
                 .SetInput(data)
@@ -1102,14 +1117,14 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList ShapeArray(NDArray data, int lhsBegin, int lhsEnd, int rhsBegin, int rhsEnd, NDArrayList @out = null)
+        public static NDArrayList ShapeArray(NDArray data, int? lhsBegin = null, int? lhsEnd = null, int? rhsBegin = null, int? rhsEnd = null, NDArrayList @out = null)
         {
             return new Operator("shape_array")
                 .SetInput(data)
-                .SetParam("lhsBegin", lhsBegin)
-                .SetParam("lhsEnd", lhsEnd)
-                .SetParam("rhsBegin", rhsBegin)
-                .SetParam("rhsEnd", rhsEnd)
+                .SetParam("lhs_begin", lhsBegin)
+                .SetParam("lhs_end", lhsEnd)
+                .SetParam("rhs_begin", rhsBegin)
+                .SetParam("rhs_end", rhsEnd)
                 .Invoke(@out);
         }
 
@@ -1408,19 +1423,19 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Embedding(NDArray data, NDArray weight, int inputDim, int outputDim, string dtype, bool sparseGrad, NDArrayList @out = null)
+        public static NDArrayList Embedding(NDArray data, NDArray weight, int inputDim, int outputDim, string dtype = "float32", bool sparseGrad = false, NDArrayList @out = null)
         {
             return new Operator("Embedding")
                 .SetInput(data)
                 .SetInput(weight)
-                .SetParam("inputDim", inputDim)
-                .SetParam("outputDim", outputDim)
+                .SetParam("input_dim", inputDim)
+                .SetParam("output_dim", outputDim)
                 .SetParam("dtype", dtype)
-                .SetParam("sparseGrad", sparseGrad)
+                .SetParam("sparse_grad", sparseGrad)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Take(NDArray a, NDArray indices, int axis, string mode, NDArrayList @out = null)
+        public static NDArrayList Take(NDArray a, NDArray indices, int? axis = null, string mode = "clip", NDArrayList @out = null)
         {
             return new Operator("take")
                 .SetInput(a)
@@ -1438,13 +1453,13 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList OneHot(NDArray indices, int depth, double onValue, double offValue, string dtype, NDArrayList @out = null)
+        public static NDArrayList OneHot(NDArray indices, int depth, double? onValue = null, double? offValue = null, string dtype = "float32", NDArrayList @out = null)
         {
             return new Operator("one_hot")
                 .SetInput(indices)
                 .SetParam("depth", depth)
-                .SetParam("onValue", onValue)
-                .SetParam("offValue", offValue)
+                .SetParam("on_value", onValue)
+                .SetParam("off_value", offValue)
                 .SetParam("dtype", dtype)
                 .Invoke(@out);
         }
@@ -1480,19 +1495,22 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Reshape(NDArray data, Shape shape, bool reverse, Shape targetShape, bool keepHighest, NDArrayList @out = null)
+        public static NDArrayList Reshape(NDArray data, Shape shape = null, bool reverse = false, Shape targetShape = null, bool keepHighest = false, NDArrayList @out = null)
         {
+            shape = new Shape();
+            targetShape = new Shape();
             return new Operator("Reshape")
                 .SetInput(data)
                 .SetParam("shape", shape)
                 .SetParam("reverse", reverse)
-                .SetParam("targetShape", targetShape)
-                .SetParam("keepHighest", keepHighest)
+                .SetParam("target_shape", targetShape)
+                .SetParam("keep_highest", keepHighest)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Transpose(NDArray data, Shape axes, NDArrayList @out = null)
+        public static NDArrayList Transpose(NDArray data, Shape axes = null, NDArrayList @out = null)
         {
+            axes = new Shape();
             return new Operator("transpose")
                 .SetInput(data)
                 .SetParam("axes", axes)
@@ -1507,8 +1525,9 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Slice(NDArray data, Shape begin, Shape end, Shape step, NDArrayList @out = null)
+        public static NDArrayList Slice(NDArray data, Shape begin, Shape end, Shape step = null, NDArrayList @out = null)
         {
+            step = new Shape();
             return new Operator("slice")
                 .SetInput(data)
                 .SetParam("begin", begin)
@@ -1527,8 +1546,9 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList SliceLike(NDArray data, NDArray shapeLike, Shape axes, NDArrayList @out = null)
+        public static NDArrayList SliceLike(NDArray data, NDArray shapeLike, Shape axes = null, NDArrayList @out = null)
         {
+            axes = new Shape();
             return new Operator("slice_like")
                 .SetInput(data)
                 .SetInput(shapeLike)
@@ -1540,12 +1560,12 @@ namespace Horker.MXNet
         {
             return new Operator("clip")
                 .SetInput(data)
-                .SetParam("aMin", aMin)
-                .SetParam("aMax", aMax)
+                .SetParam("a_min", aMin)
+                .SetParam("a_max", aMax)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Repeat(NDArray data, int repeats, int axis, NDArrayList @out = null)
+        public static NDArrayList Repeat(NDArray data, int repeats, int? axis = null, NDArrayList @out = null)
         {
             return new Operator("repeat")
                 .SetInput(data)
@@ -1570,16 +1590,16 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList Stack(NDArrayList data, int axis, int numArgs, NDArrayList @out = null)
+        public static NDArrayList Stack(NDArrayList data, int? axis = null, int? numArgs = null, NDArrayList @out = null)
         {
             return new Operator("stack")
                 .SetInput(data)
                 .SetParam("axis", axis)
-                .SetParam("numArgs", numArgs)
+                .SetParam("num_args", numArgs)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Squeeze(NDArrayList data, Shape axis, NDArrayList @out = null)
+        public static NDArrayList Squeeze(NDArrayList data, Shape axis = null, NDArrayList @out = null)
         {
             return new Operator("squeeze")
                 .SetInput(data)
@@ -1591,7 +1611,7 @@ namespace Horker.MXNet
         {
             return new Operator("depth_to_space")
                 .SetInput(data)
-                .SetParam("blockSize", blockSize)
+                .SetParam("block_size", blockSize)
                 .Invoke(@out);
         }
 
@@ -1599,52 +1619,55 @@ namespace Horker.MXNet
         {
             return new Operator("space_to_depth")
                 .SetInput(data)
-                .SetParam("blockSize", blockSize)
+                .SetParam("block_size", blockSize)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Topk(NDArray data, int axis, int k, string retTyp, bool isAscend, string dtype, NDArrayList @out = null)
+        public static NDArrayList Topk(NDArray data, int? axis = null, int? k = null, string retTyp = "indices", bool isAscend = false, string dtype = "float32", NDArrayList @out = null)
         {
             return new Operator("topk")
                 .SetInput(data)
                 .SetParam("axis", axis)
                 .SetParam("k", k)
-                .SetParam("retTyp", retTyp)
-                .SetParam("isAscend", isAscend)
+                .SetParam("ret_typ", retTyp)
+                .SetParam("is_ascend", isAscend)
                 .SetParam("dtype", dtype)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Sort(NDArray data, int axis, bool isAscend, NDArrayList @out = null)
+        public static NDArrayList Sort(NDArray data, int? axis = null, bool isAscend = true, NDArrayList @out = null)
         {
             return new Operator("sort")
                 .SetInput(data)
                 .SetParam("axis", axis)
-                .SetParam("isAscend", isAscend)
+                .SetParam("is_ascend", isAscend)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Argsort(NDArray data, int axis, bool isAscend, string dtype, NDArrayList @out = null)
+        public static NDArrayList Argsort(NDArray data, int? axis = null, bool isAscend = true, string dtype = "float32", NDArrayList @out = null)
         {
             return new Operator("argsort")
                 .SetInput(data)
                 .SetParam("axis", axis)
-                .SetParam("isAscend", isAscend)
+                .SetParam("is_ascend", isAscend)
                 .SetParam("dtype", dtype)
                 .Invoke(@out);
         }
 
-        public static NDArrayList BilinearSampler(NDArray data, NDArray grid, bool cudnnOff, NDArrayList @out = null)
+        public static NDArrayList BilinearSampler(NDArray data, NDArray grid, bool? cudnnOff = null, NDArrayList @out = null)
         {
             return new Operator("BilinearSampler")
                 .SetInput(data)
                 .SetInput(grid)
-                .SetParam("cudnnOff", cudnnOff)
+                .SetParam("cudnn_off", cudnnOff)
                 .Invoke(@out);
         }
 
-        public static NDArrayList ConvolutionV1(NDArray data, NDArray weight, NDArray bias, Shape kernel, Shape stride, Shape dilate, Shape pad, int numFilter, int numGroup, long workspace, bool noBias, string cudnnTune, bool cudnnOff, string layout, NDArrayList @out = null)
+        public static NDArrayList ConvolutionV1(NDArray data, NDArray weight, NDArray bias, Shape kernel, Shape stride = null, Shape dilate = null, Shape pad = null, int? numFilter = null, int? numGroup = null, long? workspace = null, bool noBias = false, string cudnnTune = "None", bool cudnnOff = false, string layout = "None", NDArrayList @out = null)
         {
+            stride = new Shape();
+            dilate = new Shape();
+            pad = new Shape();
             return new Operator("Convolution_v1")
                 .SetInput(data)
                 .SetInput(weight)
@@ -1653,51 +1676,54 @@ namespace Horker.MXNet
                 .SetParam("stride", stride)
                 .SetParam("dilate", dilate)
                 .SetParam("pad", pad)
-                .SetParam("numFilter", numFilter)
-                .SetParam("numGroup", numGroup)
+                .SetParam("num_filter", numFilter)
+                .SetParam("num_group", numGroup)
                 .SetParam("workspace", workspace)
-                .SetParam("noBias", noBias)
-                .SetParam("cudnnTune", cudnnTune)
-                .SetParam("cudnnOff", cudnnOff)
+                .SetParam("no_bias", noBias)
+                .SetParam("cudnn_tune", cudnnTune)
+                .SetParam("cudnn_off", cudnnOff)
                 .SetParam("layout", layout)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Correlation(NDArray data1, NDArray data2, int kernelSize, int maxDisplacement, int stride1, int stride2, int padSize, bool isMultiply, NDArrayList @out = null)
+        public static NDArrayList Correlation(NDArray data1, NDArray data2, int? kernelSize = null, int? maxDisplacement = null, int? stride1 = null, int? stride2 = null, int? padSize = null, bool isMultiply = true, NDArrayList @out = null)
         {
             return new Operator("Correlation")
                 .SetInput(data1)
                 .SetInput(data2)
-                .SetParam("kernelSize", kernelSize)
-                .SetParam("maxDisplacement", maxDisplacement)
+                .SetParam("kernel_size", kernelSize)
+                .SetParam("max_displacement", maxDisplacement)
                 .SetParam("stride1", stride1)
                 .SetParam("stride2", stride2)
-                .SetParam("padSize", padSize)
-                .SetParam("isMultiply", isMultiply)
+                .SetParam("pad_size", padSize)
+                .SetParam("is_multiply", isMultiply)
                 .Invoke(@out);
         }
 
-        public static NDArrayList Crop(SymbolList data, int numArgs, Shape offset, Shape hw, bool centerCrop, NDArrayList @out = null)
+        public static NDArrayList Crop(SymbolList data, int numArgs, Shape offset = null, Shape hw = null, bool centerCrop = false, NDArrayList @out = null)
         {
+            offset = new [] {0,0};
+            hw = new [] {0,0};
             return new Operator("Crop")
                 .SetInput(data)
-                .SetParam("numArgs", numArgs)
+                .SetParam("num_args", numArgs)
                 .SetParam("offset", offset)
-                .SetParam("hw", hw)
-                .SetParam("centerCrop", centerCrop)
+                .SetParam("h_w", hw)
+                .SetParam("center_crop", centerCrop)
                 .Invoke(@out);
         }
 
-        public static NDArrayList GridGenerator(NDArray data, string transformType, Shape targetShape, NDArrayList @out = null)
+        public static NDArrayList GridGenerator(NDArray data, string transformType, Shape targetShape = null, NDArrayList @out = null)
         {
+            targetShape = new [] {0,0};
             return new Operator("GridGenerator")
                 .SetInput(data)
-                .SetParam("transformType", transformType)
-                .SetParam("targetShape", targetShape)
+                .SetParam("transform_type", transformType)
+                .SetParam("target_shape", targetShape)
                 .Invoke(@out);
         }
 
-        public static NDArrayList InstanceNorm(NDArray data, NDArray gamma, NDArray beta, float eps, NDArrayList @out = null)
+        public static NDArrayList InstanceNorm(NDArray data, NDArray gamma, NDArray beta, float? eps = null, NDArrayList @out = null)
         {
             return new Operator("InstanceNorm")
                 .SetInput(data)
@@ -1707,7 +1733,7 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList L2Normalization(NDArray data, float eps, string mode, NDArrayList @out = null)
+        public static NDArrayList L2Normalization(NDArray data, float? eps = null, string mode = "instance", NDArrayList @out = null)
         {
             return new Operator("L2Normalization")
                 .SetInput(data)
@@ -1716,24 +1742,27 @@ namespace Horker.MXNet
                 .Invoke(@out);
         }
 
-        public static NDArrayList MakeLoss(NDArray data, float gradScale, float validThresh, string normalization, NDArrayList @out = null)
+        public static NDArrayList MakeLoss(NDArray data, float? gradScale = null, float? validThresh = null, string normalization = "null", NDArrayList @out = null)
         {
             return new Operator("MakeLoss")
                 .SetInput(data)
-                .SetParam("gradScale", gradScale)
-                .SetParam("validThresh", validThresh)
+                .SetParam("grad_scale", gradScale)
+                .SetParam("valid_thresh", validThresh)
                 .SetParam("normalization", normalization)
                 .Invoke(@out);
         }
 
-        public static NDArrayList PoolingV1(NDArray data, Shape kernel, string poolType, bool globalPool, string poolingConvention, Shape stride, Shape pad, NDArrayList @out = null)
+        public static NDArrayList PoolingV1(NDArray data, Shape kernel = null, string poolType = "max", bool globalPool = false, string poolingConvention = "valid", Shape stride = null, Shape pad = null, NDArrayList @out = null)
         {
+            kernel = new Shape();
+            stride = new Shape();
+            pad = new Shape();
             return new Operator("Pooling_v1")
                 .SetInput(data)
                 .SetParam("kernel", kernel)
-                .SetParam("poolType", poolType)
-                .SetParam("globalPool", globalPool)
-                .SetParam("poolingConvention", poolingConvention)
+                .SetParam("pool_type", poolType)
+                .SetParam("global_pool", globalPool)
+                .SetParam("pooling_convention", poolingConvention)
                 .SetParam("stride", stride)
                 .SetParam("pad", pad)
                 .Invoke(@out);
@@ -1744,62 +1773,63 @@ namespace Horker.MXNet
             return new Operator("ROIPooling")
                 .SetInput(data)
                 .SetInput(rois)
-                .SetParam("pooledSize", pooledSize)
-                .SetParam("spatialScale", spatialScale)
+                .SetParam("pooled_size", pooledSize)
+                .SetParam("spatial_scale", spatialScale)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SequenceLast(NDArray data, NDArray sequenceLength, bool useSequenceLength, int axis, NDArrayList @out = null)
+        public static NDArrayList SequenceLast(NDArray data, NDArray sequenceLength, bool useSequenceLength = false, int? axis = null, NDArrayList @out = null)
         {
             return new Operator("SequenceLast")
                 .SetInput(data)
                 .SetInput(sequenceLength)
-                .SetParam("useSequenceLength", useSequenceLength)
+                .SetParam("use_sequence_length", useSequenceLength)
                 .SetParam("axis", axis)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SequenceMask(NDArray data, NDArray sequenceLength, bool useSequenceLength, float value, int axis, NDArrayList @out = null)
+        public static NDArrayList SequenceMask(NDArray data, NDArray sequenceLength, bool useSequenceLength = false, float? value = null, int? axis = null, NDArrayList @out = null)
         {
             return new Operator("SequenceMask")
                 .SetInput(data)
                 .SetInput(sequenceLength)
-                .SetParam("useSequenceLength", useSequenceLength)
+                .SetParam("use_sequence_length", useSequenceLength)
                 .SetParam("value", value)
                 .SetParam("axis", axis)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SequenceReverse(NDArray data, NDArray sequenceLength, bool useSequenceLength, int axis, NDArrayList @out = null)
+        public static NDArrayList SequenceReverse(NDArray data, NDArray sequenceLength, bool useSequenceLength = false, int? axis = null, NDArrayList @out = null)
         {
             return new Operator("SequenceReverse")
                 .SetInput(data)
                 .SetInput(sequenceLength)
-                .SetParam("useSequenceLength", useSequenceLength)
+                .SetParam("use_sequence_length", useSequenceLength)
                 .SetParam("axis", axis)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SpatialTransformer(NDArray data, NDArray loc, Shape targetShape, string transformType, string samplerType, bool cudnnOff, NDArrayList @out = null)
+        public static NDArrayList SpatialTransformer(NDArray data, NDArray loc, Shape targetShape = null, string transformType = "null", string samplerType = "null", bool? cudnnOff = null, NDArrayList @out = null)
         {
+            targetShape = new [] {0,0};
             return new Operator("SpatialTransformer")
                 .SetInput(data)
                 .SetInput(loc)
-                .SetParam("targetShape", targetShape)
-                .SetParam("transformType", transformType)
-                .SetParam("samplerType", samplerType)
-                .SetParam("cudnnOff", cudnnOff)
+                .SetParam("target_shape", targetShape)
+                .SetParam("transform_type", transformType)
+                .SetParam("sampler_type", samplerType)
+                .SetParam("cudnn_off", cudnnOff)
                 .Invoke(@out);
         }
 
-        public static NDArrayList SVMOutput(NDArray data, NDArray label, float margin, float regularizationCoefficient, bool useLinear, NDArrayList @out = null)
+        public static NDArrayList SVMOutput(NDArray data, NDArray label, float? margin = null, float? regularizationCoefficient = null, bool useLinear = false, NDArrayList @out = null)
         {
             return new Operator("SVMOutput")
                 .SetInput(data)
                 .SetInput(label)
                 .SetParam("margin", margin)
-                .SetParam("regularizationCoefficient", regularizationCoefficient)
-                .SetParam("useLinear", useLinear)
+                .SetParam("regularization_coefficient", regularizationCoefficient)
+                .SetParam("use_linear", useLinear)
                 .Invoke(@out);
         }
 

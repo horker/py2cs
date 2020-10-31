@@ -487,14 +487,30 @@ namespace Horker.MXNet
         
         // Drop: _get_index_nd
         
-        internal object _prepareValueNd(object value, object vshape)
+        internal object _prepareValueNd(float value, Shape vshape)
         {
             // Expr
-            if (IsTrue((ValueNd.Shape != vshape)))
+            var valueNd = Full(shape: vshape, val: value, ctx: this.Context, dtype: this.DType);
+            if (IsTrue((valueNd.Shape != vshape)))
             {
-                var valueNd = ValueNd.BroadcastTo(vshape);
+                valueNd = valueNd.BroadcastTo(vshape);
             }
-            return ValueNd;
+            return valueNd;
+        }
+        
+        internal object _prepareValueNd(NDArray value, Shape vshape)
+        {
+            // Expr
+            var valueNd = value.AsInContext(this.Context);
+            if (IsTrue((valueNd.DType != this.DType)))
+            {
+                valueNd = valueNd.Astype(this.DType);
+            }
+            if (IsTrue((valueNd.Shape != vshape)))
+            {
+                valueNd = valueNd.BroadcastTo(vshape);
+            }
+            return valueNd;
         }
         
         internal object _setNdBasicIndexing(object key, object value)
@@ -691,567 +707,471 @@ namespace Horker.MXNet
             return new NDArray(handle: handle, writable: this.Writable);
         }
         
-        public object ReshapeLike(object *args)
+        public NDArray ReshapeLike(NDArray rhs, NDArray @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.ReshapeLike(this, Args);
+            return Op.ReshapeLike(this, rhs, @out);
         }
         
-        public object ZerosLike(object *args)
+        public NDArray ZerosLike(NDArray @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.ZerosLike(this, Args);
+            return Op.ZerosLike(this, @out);
         }
         
-        public object OnesLike(object *args)
+        public NDArray OnesLike(NDArray @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.OnesLike(this, Args);
+            return Op.OnesLike(this, @out);
         }
         
-        public object BroadcastAxes(object *args)
+        // Drop: broadcast_axes
+        
+        public NDArray Repeat(int repeat, int axis, NDArray @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.BroadcastAxes(this, Args);
+            return Op.Repeat(this, repeat, axis);
         }
         
-        public object Repeat(object *args)
+        public NDArray Pad(string mode, Shape padWidth, double constantValue, NDArray @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.Repeat(this, Args);
+            return Op.Pad(this, mode, padWidth, constantValue, @out);
         }
         
-        public object Pad(object *args)
+        // Drop: swapaxes
+        
+        // Drop: split
+        
+        // Drop: split_v2
+        
+        public NDArray Slice(Shape begin, Shape end, Shape step, NDArrayList @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.Pad(this, Args);
+            return Op.Slice(this, begin, end, step, @out);
         }
         
-        public object Swapaxes(object *args)
+        public NDArray SliceAxis(int axis, int begin, int end, NDArrayList @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.Swapaxes(this, Args);
+            return Op.SliceAxis(this, axis, begin, end, @out);
         }
         
-        public object Split(object *args)
+        public NDArray SliceLike(NDArray shapeLike, Shape axes, NDArrayList @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.Split(this, Args);
+            return Op.SliceLike(this, shapeLike, axes, @out);
         }
         
-        public object SplitV2(object *args)
+        public NDArray Take(NDArray indices, int axis, string mode, NDArrayList @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return SplitV2(this, Args);
+            return Op.Take(this, indices, axis, mode, @out);
         }
         
-        public object Slice(object *args)
+        public NDArray OneHot(int depth, double onValue, double offValue, DType dtype, NDArrayList @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.Slice(this, Args);
+            return Op.OneHot(this, depth, onValue, offValue, dtype, @out);
         }
         
-        public object SliceAxis(object *args)
+        public NDArray Pick(NDArray index, int axis, bool keepdims, string mode, NDArrayList @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.SliceAxis(this, Args);
+            return Op.Pick(this, index, axis, keepdims, mode, @out);
         }
         
-        public object SliceLike(object *args)
+        public NDArray Sort(int axis, bool isAscend, NDArrayList @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.SliceLike(this, Args);
+            return Op.Sort(this, axis, isAscend, @out);
         }
         
-        public object Take(object *args)
+        public NDArray Topk(int axis, int k, string retTyp, bool isAscend, DType dtype, NDArrayList @out = null)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.Take(this, Args);
+            return Op.Topk(this, axis, k, retTyp, isAscend, dtype, @out);
         }
         
-        public object OneHot(object *args)
+        public NDArray Argsort(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
-            // Expr
-            return Op.OneHot(this, Args);
-        }
-        
-        public object Pick(object *args)
-        {
-            var kwargs = new Dictionary<string, string>();
-            // Expr
-            return Op.Pick(this, Args);
-        }
-        
-        public object Sort(object *args)
-        {
-            var kwargs = new Dictionary<string, string>();
-            // Expr
-            return Op.Sort(this, Args);
-        }
-        
-        public object Topk(object *args)
-        {
-            var kwargs = new Dictionary<string, string>();
-            // Expr
-            return Op.Topk(this, Args);
-        }
-        
-        public object Argsort(object *args)
-        {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Argsort(this, Args);
         }
         
-        public object Argmax(object *args)
+        public NDArray Argmax(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Argmax(this, Args);
         }
         
-        public object ArgmaxChannel(object *args)
+        public NDArray ArgmaxChannel(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ArgmaxChannel(this, Args);
         }
         
-        public object Argmin(object *args)
+        public NDArray Argmin(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Argmin(this, Args);
         }
         
-        public object Clip(object *args)
+        public NDArray Clip(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Clip(this, Args);
         }
         
-        public object Abs(object *args)
+        public NDArray Abs(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Abs(this, Args);
         }
         
-        public object Sign(object *args)
+        public NDArray Sign(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sign(this, Args);
         }
         
-        public object Flatten(object *args)
+        public NDArray Flatten(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Flatten(this, Args);
         }
         
-        public object ShapeArray(object *args)
+        public NDArray ShapeArray(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ShapeArray(this, Args);
         }
         
-        public object SizeArray(object *args)
+        public NDArray SizeArray(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.SizeArray(this, Args);
         }
         
-        public object ExpandDims(object *args)
+        public NDArray ExpandDims(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.ExpandDims(this, Args);
         }
         
-        public object Tile(object *args)
+        public NDArray Tile(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Tile(this, Args);
         }
         
         public object Transpose(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Transpose(this, Args);
         }
         
-        public object Flip(object *args)
+        public NDArray Flip(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Flip(this, Args);
         }
         
-        public object DepthToSpace(object *args)
+        public NDArray DepthToSpace(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.DepthToSpace(this, Args);
         }
         
-        public object SpaceToDepth(object *args)
+        public NDArray SpaceToDepth(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.SpaceToDepth(this, Args);
         }
         
-        public object Diag(int k = 0)
+        public NDArray Diag(int k = 0)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Diag(this, k);
         }
         
-        public object Sum(object *args)
+        public NDArray Sum(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sum(this, Args);
         }
         
-        public object Nansum(object *args)
+        public NDArray Nansum(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Nansum(this, Args);
         }
         
-        public object Prod(object *args)
+        public NDArray Prod(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Prod(this, Args);
         }
         
-        public object Nanprod(object *args)
+        public NDArray Nanprod(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Nanprod(this, Args);
         }
         
-        public object Mean(object *args)
+        public NDArray Mean(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Mean(this, Args);
         }
         
-        public object Max(object *args)
+        public NDArray Max(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Max(this, Args);
         }
         
-        public object Min(object *args)
+        public NDArray Min(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Min(this, Args);
         }
         
-        public object Norm(object *args)
+        public NDArray Norm(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Norm(this, Args);
         }
         
-        public object Round(object *args)
+        public NDArray Round(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Round(this, Args);
         }
         
-        public object Rint(object *args)
+        public NDArray Rint(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Rint(this, Args);
         }
         
-        public object Fix(object *args)
+        public NDArray Fix(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Fix(this, Args);
         }
         
-        public object Floor(object *args)
+        public NDArray Floor(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Floor(this, Args);
         }
         
-        public object Ceil(object *args)
+        public NDArray Ceil(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Ceil(this, Args);
         }
         
-        public object Trunc(object *args)
+        public NDArray Trunc(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Trunc(this, Args);
         }
         
-        public object Sin(object *args)
+        public NDArray Sin(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sin(this, Args);
         }
         
-        public object Cos(object *args)
+        public NDArray Cos(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Cos(this, Args);
         }
         
-        public object Tan(object *args)
+        public NDArray Tan(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Tan(this, Args);
         }
         
-        public object Arcsin(object *args)
+        public NDArray Arcsin(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arcsin(this, Args);
         }
         
-        public object Arccos(object *args)
+        public NDArray Arccos(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arccos(this, Args);
         }
         
-        public object Arctan(object *args)
+        public NDArray Arctan(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arctan(this, Args);
         }
         
-        public object Degrees(object *args)
+        public NDArray Degrees(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Degrees(this, Args);
         }
         
-        public object Radians(object *args)
+        public NDArray Radians(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Radians(this, Args);
         }
         
-        public object Sinh(object *args)
+        public NDArray Sinh(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sinh(this, Args);
         }
         
-        public object Cosh(object *args)
+        public NDArray Cosh(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Cosh(this, Args);
         }
         
-        public object Tanh(object *args)
+        public NDArray Tanh(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Tanh(this, Args);
         }
         
-        public object Arcsinh(object *args)
+        public NDArray Arcsinh(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arcsinh(this, Args);
         }
         
-        public object Arccosh(object *args)
+        public NDArray Arccosh(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arccosh(this, Args);
         }
         
-        public object Arctanh(object *args)
+        public NDArray Arctanh(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Arctanh(this, Args);
         }
         
-        public object Exp(object *args)
+        public NDArray Exp(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Exp(this, Args);
         }
         
-        public object Expm1(object *args)
+        public NDArray Expm1(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Expm1(this, Args);
         }
         
-        public object Log(object *args)
+        public NDArray Log(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log(this, Args);
         }
         
-        public object Log10(object *args)
+        public NDArray Log10(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log10(this, Args);
         }
         
-        public object Log2(object *args)
+        public NDArray Log2(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log2(this, Args);
         }
         
-        public object Log1p(object *args)
+        public NDArray Log1p(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Log1p(this, Args);
         }
         
-        public object Sqrt(object *args)
+        public NDArray Sqrt(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sqrt(this, Args);
         }
         
-        public object Rsqrt(object *args)
+        public NDArray Rsqrt(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Rsqrt(this, Args);
         }
         
-        public object Cbrt(object *args)
+        public NDArray Cbrt(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Cbrt(this, Args);
         }
         
-        public object Rcbrt(object *args)
+        public NDArray Rcbrt(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Rcbrt(this, Args);
         }
         
-        public object Square(object *args)
+        public NDArray Square(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Square(this, Args);
         }
         
-        public object Reciprocal(object *args)
+        public NDArray Reciprocal(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Reciprocal(this, Args);
         }
         
-        public object Relu(object *args)
+        public NDArray Relu(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Relu(this, Args);
         }
         
-        public object Sigmoid(object *args)
+        public NDArray Sigmoid(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Sigmoid(this, Args);
         }
         
-        public object Softmax(object *args)
+        public NDArray Softmax(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Softmax(this, Args);
         }
         
-        public object LogSoftmax(object *args)
+        public NDArray LogSoftmax(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.LogSoftmax(this, Args);
         }
         
-        public object Softmin(object *args)
+        public NDArray Softmin(object *args)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             return Op.Softmin(this, Args);
         }
         
-        public object Squeeze(object *args)
+        public NDArray Squeeze(Shape axis)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
-            return Op.Squeeze(this, Args);
+            return Op.Squeeze(this, axis);
         }
         
-        public object BroadcastTo(Shape shape)
+        public NDArray BroadcastTo(Shape shape)
         {
             // Expr
             var curShape = this.Shape;
@@ -1277,7 +1197,7 @@ namespace Horker.MXNet
             }
         }
         
-        public object BroadcastLike(NDArray other)
+        public NDArray BroadcastLike(NDArray other)
         {
             // Expr
             return this.BroadcastTo(other.Shape);
@@ -1700,7 +1620,6 @@ namespace Horker.MXNet
     {
         public static object Ones(Shape shape, Context ctx = null, DType dtype = default)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(ctx))))
             {
@@ -2502,7 +2421,6 @@ namespace Horker.MXNet
     {
         public static object Zeros(Shape shape, Context ctx = null, DType dtype = default)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(ctx))))
             {
@@ -2517,7 +2435,6 @@ namespace Horker.MXNet
     {
         public static object Eye(object N, int M = 0, int k = 0, Context ctx = null, DType dtype = default)
         {
-            var kwargs = new Dictionary<string, string>();
             // Expr
             if (IsTrue((IsNone(ctx))))
             {

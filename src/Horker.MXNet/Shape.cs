@@ -96,6 +96,16 @@ namespace Horker.MXNet
             return new Shape(d);
         }
 
+        public static implicit operator float[](Shape s)
+        {
+            return s.Dimensions.Cast<float>().ToArray();
+        }
+
+        public static implicit operator Shape(float[] d)
+        {
+            return new Shape(d.Cast<int>());
+        }
+
         public static implicit operator List<int>(Shape s)
         {
             return new List<int>(s.Dimensions);

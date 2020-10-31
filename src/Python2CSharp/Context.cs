@@ -30,6 +30,7 @@ namespace Python2CSharp
         private StatementContextEnum _statementContext;
         private string _name;
         private Dictionary<string, Local> _locals;
+        private string _variadicArgumentName;
         private string _keywordArgumentName;
         private string _typeConstraint;
         private MethodConfig _methodConfig;
@@ -46,18 +47,29 @@ namespace Python2CSharp
         public bool HasTypeConstraint() => !string.IsNullOrEmpty(_typeConstraint);
 
         public string Name => _name;
+        public string VariadicArgumentName => _variadicArgumentName;
         public string KeywordArgumentName => _keywordArgumentName;
         public string TypeConstraint => _typeConstraint;
         public MethodConfig MethodConfig => _methodConfig;
         public bool IsSetterDef => _isSetterDef;
 
-        public Context(Context parent = null, string name = null, ModuleContextEnum moduleContext = ModuleContextEnum.Namespace, StatementContextEnum statementContext = StatementContextEnum.Statement, Dictionary<string, Local> locals = null, string keywordArgumentName = null, string typeConstraint = null, MethodConfig methodConfing = null, bool isSetterDef = false)
+        public Context(Context parent = null,
+            string name = null,
+            ModuleContextEnum moduleContext = ModuleContextEnum.Namespace,
+            StatementContextEnum statementContext = StatementContextEnum.Statement,
+            Dictionary<string, Local> locals = null,
+            string variadicArgumentName = null,
+            string keywordArgumentName = null,
+            string typeConstraint = null,
+            MethodConfig methodConfing = null,
+            bool isSetterDef = false)
         {
             _parent = parent;
             _name = name;
             _moduleContext = moduleContext;
             _statementContext = statementContext;
             _locals = locals ?? new Dictionary<string, Local>();
+            _variadicArgumentName = variadicArgumentName;
             _keywordArgumentName = keywordArgumentName;
             _typeConstraint = typeConstraint;
             _methodConfig = methodConfing;
@@ -66,7 +78,7 @@ namespace Python2CSharp
 
         public Context GetCopy()
         {
-            return new Context(this, _name, _moduleContext, _statementContext, _locals, _keywordArgumentName, _typeConstraint, _methodConfig, _isSetterDef);
+            return new Context(this, _name, _moduleContext, _statementContext, _locals, _variadicArgumentName, _keywordArgumentName, _typeConstraint, _methodConfig, _isSetterDef);
         }
 
         public Context DeepCopy()
@@ -75,7 +87,7 @@ namespace Python2CSharp
             foreach (var l in _locals)
                 copyLocal.Add(l.Key, new Local(l.Value.Alias, l.Value.IsCtype));
 
-            return new Context(this, _name, _moduleContext, _statementContext, copyLocal, _keywordArgumentName, _typeConstraint, _methodConfig, _isSetterDef);
+            return new Context(this, _name, _moduleContext, _statementContext, copyLocal, _variadicArgumentName, _keywordArgumentName, _typeConstraint, _methodConfig, _isSetterDef);
         }
 
         public Context AsStatement()
@@ -108,9 +120,9 @@ namespace Python2CSharp
             return new Context(this, name, ModuleContextEnum.Class, StatementContextEnum.Statement);
         }
 
-        public Context EnterFunction(string name, string keywordArgumentName, MethodConfig mc, bool isSetterDef)
+        public Context EnterFunction(string name, string variadicArgumentName, string keywordArgumentName, MethodConfig mc, bool isSetterDef)
         {
-            return new Context(this, name, ModuleContextEnum.Function, StatementContextEnum.Statement, null, keywordArgumentName, null, mc, isSetterDef);
+            return new Context(this, name, ModuleContextEnum.Function, StatementContextEnum.Statement, null, variadicArgumentName, keywordArgumentName, null, mc, isSetterDef);
         }
 
         public Context WithTypeConstraint(string typeConstraint)

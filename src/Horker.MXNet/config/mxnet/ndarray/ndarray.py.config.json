@@ -714,7 +714,10 @@
         ],
         "_prepare_value_nd": [
           {
-            "Signature": "internal object _prepareValueNd(object value, object vshape)"
+            "Signature": "internal object _prepareValueNd(float value, Shape vshape)"
+          },
+          {
+            "Signature": "internal object _prepareValueNd(NDArray value, Shape vshape)"
           }
         ],
         "_set_nd_basic_indexing": [
@@ -805,147 +808,229 @@
         ],
         "reshape_like": [
           {
-            "Signature": "public object ReshapeLike(object *args)"
+            "Signature": "public NDArray ReshapeLike(NDArray rhs, NDArray @out = null)",
+            "VariadicArguments": [
+              "rhs",
+              "out"
+            ]
           }
         ],
         "zeros_like": [
           {
-            "Signature": "public object ZerosLike(object *args)"
+            "Signature": "public NDArray ZerosLike(NDArray @out = null)",
+            "VariadicArguments": [
+              "out"
+            ]
           }
         ],
         "ones_like": [
           {
-            "Signature": "public object OnesLike(object *args)"
+            "Signature": "public NDArray OnesLike(NDArray @out = null)",
+            "VariadicArguments": [
+              "out"
+            ]
           }
         ],
         "broadcast_axes": [
           {
-            "Signature": "public object BroadcastAxes(object *args)"
+            "Drop": true,
+            "Signature": "public NDArray BroadcastAxes(Shape axis, Shape size, NDArray @out = null)",
+            "VariadicArguments": [
+              "axis", "size", "out"
+            ]
           }
         ],
         "repeat": [
           {
-            "Signature": "public object Repeat(object *args)"
+            "Signature": "public NDArray Repeat(int repeat, int axis, NDArray @out = null)",
+            "VariadicArguments": [
+              "repeat",
+              "axis"
+            ]
           }
         ],
         "pad": [
           {
-            "Signature": "public object Pad(object *args)"
+            "Signature": "public NDArray Pad(string mode, Shape padWidth, double constantValue, NDArray @out = null)",
+            "VariadicArguments": [
+              "mode",
+              "pad_width",
+              "constant_value",
+              "out"
+            ]
           }
         ],
         "swapaxes": [
           {
-            "Signature": "public object Swapaxes(object *args)"
+            "Drop": true,
+            "Signature": "public NDArray Swapaxes(int dim1, int dim2, NDArrayList @out = null)",
+            "VariadicArguments": [
+              "dim1",
+              "dim2",
+              "out"
+            ]
           }
         ],
         "split": [
           {
-            "Signature": "public object Split(object *args)"
+            "Drop": true,
+            "Signature": "public NDArray Split(object *args)"
           }
         ],
         "split_v2": [
           {
-            "Signature": "public object SplitV2(object *args)"
+            "Drop": true,
+            "Signature": "public NDArray SplitV2(object *args)"
           }
         ],
         "slice": [
           {
-            "Signature": "public object Slice(object *args)"
+            "Signature": "public NDArray Slice(Shape begin, Shape end, Shape step, NDArrayList @out = null)",
+            "VariadicArguments": [
+              "begin",
+              "end",
+              "step",
+              "out"
+            ]
           }
         ],
         "slice_axis": [
           {
-            "Signature": "public object SliceAxis(object *args)"
+            "Signature": "public NDArray SliceAxis(int axis, int begin, int end, NDArrayList @out = null)",
+            "VariadicArguments": [
+              "axis",
+              "begin",
+              "end",
+              "out"
+            ]
           }
         ],
         "slice_like": [
           {
-            "Signature": "public object SliceLike(object *args)"
+            "Signature": "public NDArray SliceLike(NDArray shapeLike, Shape axes, NDArrayList @out = null)",
+            "VariadicArguments": [
+              "shape_like",
+              "axes",
+              "out"
+            ]
           }
         ],
         "take": [
           {
-            "Signature": "public object Take(object *args)"
+            "Signature": "public NDArray Take(NDArray indices, int axis, string mode, NDArrayList @out = null)",
+            "VariadicArguments": [
+              "indices",
+              "axis",
+              "mode",
+              "out"
+            ]
           }
         ],
         "one_hot": [
           {
-            "Signature": "public object OneHot(object *args)"
+            "Signature": "public NDArray OneHot(int depth, double onValue, double offValue, DType dtype, NDArrayList @out = null)",
+            "VariadicArguments": [
+              "depth",
+              "on_value",
+              "off_value",
+              "dtype",
+              "out"
+            ]
           }
         ],
         "pick": [
           {
-            "Signature": "public object Pick(object *args)"
+            "Signature": "public NDArray Pick(NDArray index, int axis, bool keepdims, string mode, NDArrayList @out = null)",
+            "VariadicArguments": [
+              "index",
+              "axis",
+              "keepdims",
+              "mode",
+              "out"
+            ]
           }
         ],
         "sort": [
           {
-            "Signature": "public object Sort(object *args)"
+            "Signature": "public NDArray Sort(int axis, bool isAscend, NDArrayList @out = null)",
+            "VariadicArguments": [
+              "axis",
+              "is_ascend",
+              "out"
+            ]
           }
         ],
         "topk": [
           {
-            "Signature": "public object Topk(object *args)"
+            "Signature": "public NDArray Topk(int axis, int k, string retTyp, bool isAscend, DType dtype, NDArrayList @out = null)",
+            "VariadicArguments": [
+              "axis",
+              "k",
+              "ret_typ",
+              "is_ascend",
+              "dtype",
+              "out"
+            ]
           }
         ],
         "argsort": [
           {
-            "Signature": "public object Argsort(object *args)"
+            "Signature": "public NDArray Argsort(object *args)"
           }
         ],
         "argmax": [
           {
-            "Signature": "public object Argmax(object *args)"
+            "Signature": "public NDArray Argmax(object *args)"
           }
         ],
         "argmax_channel": [
           {
-            "Signature": "public object ArgmaxChannel(object *args)"
+            "Signature": "public NDArray ArgmaxChannel(object *args)"
           }
         ],
         "argmin": [
           {
-            "Signature": "public object Argmin(object *args)"
+            "Signature": "public NDArray Argmin(object *args)"
           }
         ],
         "clip": [
           {
-            "Signature": "public object Clip(object *args)"
+            "Signature": "public NDArray Clip(object *args)"
           }
         ],
         "abs": [
           {
-            "Signature": "public object Abs(object *args)"
+            "Signature": "public NDArray Abs(object *args)"
           }
         ],
         "sign": [
           {
-            "Signature": "public object Sign(object *args)"
+            "Signature": "public NDArray Sign(object *args)"
           }
         ],
         "flatten": [
           {
-            "Signature": "public object Flatten(object *args)"
+            "Signature": "public NDArray Flatten(object *args)"
           }
         ],
         "shape_array": [
           {
-            "Signature": "public object ShapeArray(object *args)"
+            "Signature": "public NDArray ShapeArray(object *args)"
           }
         ],
         "size_array": [
           {
-            "Signature": "public object SizeArray(object *args)"
+            "Signature": "public NDArray SizeArray(object *args)"
           }
         ],
         "expand_dims": [
           {
-            "Signature": "public object ExpandDims(object *args)"
+            "Signature": "public NDArray ExpandDims(object *args)"
           }
         ],
         "tile": [
           {
-            "Signature": "public object Tile(object *args)"
+            "Signature": "public NDArray Tile(object *args)"
           }
         ],
         "transpose": [
@@ -955,262 +1040,265 @@
         ],
         "flip": [
           {
-            "Signature": "public object Flip(object *args)"
+            "Signature": "public NDArray Flip(object *args)"
           }
         ],
         "depth_to_space": [
           {
-            "Signature": "public object DepthToSpace(object *args)"
+            "Signature": "public NDArray DepthToSpace(object *args)"
           }
         ],
         "space_to_depth": [
           {
-            "Signature": "public object SpaceToDepth(object *args)"
+            "Signature": "public NDArray SpaceToDepth(object *args)"
           }
         ],
         "diag": [
           {
-            "Signature": "public object Diag(int k = 0)"
+            "Signature": "public NDArray Diag(int k = 0)"
           }
         ],
         "sum": [
           {
-            "Signature": "public object Sum(object *args)"
+            "Signature": "public NDArray Sum(object *args)"
           }
         ],
         "nansum": [
           {
-            "Signature": "public object Nansum(object *args)"
+            "Signature": "public NDArray Nansum(object *args)"
           }
         ],
         "prod": [
           {
-            "Signature": "public object Prod(object *args)"
+            "Signature": "public NDArray Prod(object *args)"
           }
         ],
         "nanprod": [
           {
-            "Signature": "public object Nanprod(object *args)"
+            "Signature": "public NDArray Nanprod(object *args)"
           }
         ],
         "mean": [
           {
-            "Signature": "public object Mean(object *args)"
+            "Signature": "public NDArray Mean(object *args)"
           }
         ],
         "max": [
           {
-            "Signature": "public object Max(object *args)"
+            "Signature": "public NDArray Max(object *args)"
           }
         ],
         "min": [
           {
-            "Signature": "public object Min(object *args)"
+            "Signature": "public NDArray Min(object *args)"
           }
         ],
         "norm": [
           {
-            "Signature": "public object Norm(object *args)"
+            "Signature": "public NDArray Norm(object *args)"
           }
         ],
         "round": [
           {
-            "Signature": "public object Round(object *args)"
+            "Signature": "public NDArray Round(object *args)"
           }
         ],
         "rint": [
           {
-            "Signature": "public object Rint(object *args)"
+            "Signature": "public NDArray Rint(object *args)"
           }
         ],
         "fix": [
           {
-            "Signature": "public object Fix(object *args)"
+            "Signature": "public NDArray Fix(object *args)"
           }
         ],
         "floor": [
           {
-            "Signature": "public object Floor(object *args)"
+            "Signature": "public NDArray Floor(object *args)"
           }
         ],
         "ceil": [
           {
-            "Signature": "public object Ceil(object *args)"
+            "Signature": "public NDArray Ceil(object *args)"
           }
         ],
         "trunc": [
           {
-            "Signature": "public object Trunc(object *args)"
+            "Signature": "public NDArray Trunc(object *args)"
           }
         ],
         "sin": [
           {
-            "Signature": "public object Sin(object *args)"
+            "Signature": "public NDArray Sin(object *args)"
           }
         ],
         "cos": [
           {
-            "Signature": "public object Cos(object *args)"
+            "Signature": "public NDArray Cos(object *args)"
           }
         ],
         "tan": [
           {
-            "Signature": "public object Tan(object *args)"
+            "Signature": "public NDArray Tan(object *args)"
           }
         ],
         "arcsin": [
           {
-            "Signature": "public object Arcsin(object *args)"
+            "Signature": "public NDArray Arcsin(object *args)"
           }
         ],
         "arccos": [
           {
-            "Signature": "public object Arccos(object *args)"
+            "Signature": "public NDArray Arccos(object *args)"
           }
         ],
         "arctan": [
           {
-            "Signature": "public object Arctan(object *args)"
+            "Signature": "public NDArray Arctan(object *args)"
           }
         ],
         "degrees": [
           {
-            "Signature": "public object Degrees(object *args)"
+            "Signature": "public NDArray Degrees(object *args)"
           }
         ],
         "radians": [
           {
-            "Signature": "public object Radians(object *args)"
+            "Signature": "public NDArray Radians(object *args)"
           }
         ],
         "sinh": [
           {
-            "Signature": "public object Sinh(object *args)"
+            "Signature": "public NDArray Sinh(object *args)"
           }
         ],
         "cosh": [
           {
-            "Signature": "public object Cosh(object *args)"
+            "Signature": "public NDArray Cosh(object *args)"
           }
         ],
         "tanh": [
           {
-            "Signature": "public object Tanh(object *args)"
+            "Signature": "public NDArray Tanh(object *args)"
           }
         ],
         "arcsinh": [
           {
-            "Signature": "public object Arcsinh(object *args)"
+            "Signature": "public NDArray Arcsinh(object *args)"
           }
         ],
         "arccosh": [
           {
-            "Signature": "public object Arccosh(object *args)"
+            "Signature": "public NDArray Arccosh(object *args)"
           }
         ],
         "arctanh": [
           {
-            "Signature": "public object Arctanh(object *args)"
+            "Signature": "public NDArray Arctanh(object *args)"
           }
         ],
         "exp": [
           {
-            "Signature": "public object Exp(object *args)"
+            "Signature": "public NDArray Exp(object *args)"
           }
         ],
         "expm1": [
           {
-            "Signature": "public object Expm1(object *args)"
+            "Signature": "public NDArray Expm1(object *args)"
           }
         ],
         "log": [
           {
-            "Signature": "public object Log(object *args)"
+            "Signature": "public NDArray Log(object *args)"
           }
         ],
         "log10": [
           {
-            "Signature": "public object Log10(object *args)"
+            "Signature": "public NDArray Log10(object *args)"
           }
         ],
         "log2": [
           {
-            "Signature": "public object Log2(object *args)"
+            "Signature": "public NDArray Log2(object *args)"
           }
         ],
         "log1p": [
           {
-            "Signature": "public object Log1p(object *args)"
+            "Signature": "public NDArray Log1p(object *args)"
           }
         ],
         "sqrt": [
           {
-            "Signature": "public object Sqrt(object *args)"
+            "Signature": "public NDArray Sqrt(object *args)"
           }
         ],
         "rsqrt": [
           {
-            "Signature": "public object Rsqrt(object *args)"
+            "Signature": "public NDArray Rsqrt(object *args)"
           }
         ],
         "cbrt": [
           {
-            "Signature": "public object Cbrt(object *args)"
+            "Signature": "public NDArray Cbrt(object *args)"
           }
         ],
         "rcbrt": [
           {
-            "Signature": "public object Rcbrt(object *args)"
+            "Signature": "public NDArray Rcbrt(object *args)"
           }
         ],
         "square": [
           {
-            "Signature": "public object Square(object *args)"
+            "Signature": "public NDArray Square(object *args)"
           }
         ],
         "reciprocal": [
           {
-            "Signature": "public object Reciprocal(object *args)"
+            "Signature": "public NDArray Reciprocal(object *args)"
           }
         ],
         "relu": [
           {
-            "Signature": "public object Relu(object *args)"
+            "Signature": "public NDArray Relu(object *args)"
           }
         ],
         "sigmoid": [
           {
-            "Signature": "public object Sigmoid(object *args)"
+            "Signature": "public NDArray Sigmoid(object *args)"
           }
         ],
         "softmax": [
           {
-            "Signature": "public object Softmax(object *args)"
+            "Signature": "public NDArray Softmax(object *args)"
           }
         ],
         "log_softmax": [
           {
-            "Signature": "public object LogSoftmax(object *args)"
+            "Signature": "public NDArray LogSoftmax(object *args)"
           }
         ],
         "softmin": [
           {
-            "Signature": "public object Softmin(object *args)"
+            "Signature": "public NDArray Softmin(object *args)"
           }
         ],
         "squeeze": [
           {
-            "Signature": "public object Squeeze(object *args)"
+            "Signature": "public NDArray Squeeze(Shape axis)",
+            "VariadicArguments": [
+              "axis"
+            ]
           }
         ],
         "broadcast_to": [
           {
-            "Signature": "public object BroadcastTo(Shape shape)"
+            "Signature": "public NDArray BroadcastTo(Shape shape)"
           }
         ],
         "broadcast_like": [
           {
-            "Signature": "public object BroadcastLike(NDArray other)"
+            "Signature": "public NDArray BroadcastLike(NDArray other)"
           }
         ],
         "wait_to_read": [
