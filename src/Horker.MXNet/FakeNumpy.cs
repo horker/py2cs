@@ -25,6 +25,32 @@ namespace Horker.MXNet
         }
 
         public class NDArray
-        { }
+        {
+            public Shape Shape { get; private set; }
+            public Array Data { get; private set; }
+
+            public float Item1 => (float)Data.GetValue(0);
+            public float Item2 => (float)Data.GetValue(1);
+            public float Item3 => (float)Data.GetValue(2);
+            public float Item4 => (float)Data.GetValue(3);
+            public float Item5 => (float)Data.GetValue(4);
+            public float Item6 => (float)Data.GetValue(5);
+
+            public NDArray(Array data)
+            {
+                Data = data;
+
+                var shape = new int[data.Rank];
+                for (var i = 0; i < data.Rank; ++i)
+                    shape[i] = data.GetLength(i);
+
+                Shape = shape;
+            }
+        }
+
+        public static NDArray Empty(Shape shape, DType dtype)
+        {
+            return new NDArray(Array.CreateInstance(dtype, (int[])shape));
+        }
     }
 }

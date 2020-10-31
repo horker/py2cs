@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Horker.MXNet.Compat;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Text;
 
 namespace Horker.MXNet
 {
-    public class Shape : IEnumerable<int>
+    public class Shape : IEnumerable<int>, IEquatable<Shape>
     {
         public List<int> Dimensions { get; private set; }
 
@@ -33,6 +35,56 @@ namespace Horker.MXNet
         {
             Dimensions = new List<int>(d);
         }
+
+        // Enumerators
+
+        public IEnumerator<int> GetEnumerator()
+        {
+            foreach (var i in Dimensions)
+                yield return i;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        // Equality
+
+        public bool Equals(Shape other)
+        {
+            if (Dimensions.Count != other.Dimensions.Count)
+                return false;
+
+            for (var i = 0; i < Dimensions.Count; ++i)
+                if (Dimensions[i] != other.Dimensions[i])
+                    return false;
+
+            return true;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is Shape s)
+                return Equals(s);
+
+            if (other is ValueTuple<int> t)
+                return Dimensions.Count == 1 && Dimensions[0] == t.Item1;
+
+            return false;
+        }
+
+        public static bool operator ==(Shape self, object other)
+        {
+            return self.Equals(other);
+        }
+
+        public static bool operator !=(Shape self, object other)
+        {
+            return !self.Equals(other);
+        }
+
+        // Converters
 
         public static implicit operator int[](Shape s)
         {
@@ -112,17 +164,6 @@ namespace Horker.MXNet
         public static implicit operator Shape(ValueTuple<int, int, int, int> d)
         {
             return new Shape(d.Item1, d.Item2, d.Item3, d.Item4);
-        }
-
-        public IEnumerator<int> GetEnumerator()
-        {
-            foreach (var i in Dimensions)
-                yield return i;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }

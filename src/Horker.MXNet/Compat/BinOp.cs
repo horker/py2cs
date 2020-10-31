@@ -11,16 +11,18 @@ namespace Horker.MXNet.Compat
         public static double Add(double a, double b) => a + b;
         public static string Add(string a, string b) => a + b;
 
-        public static IEnumerable<T> Add<T>(IEnumerable<T> a, IEnumerable<T> b)
+        public static List<T> Add<T>(IEnumerable<T> a, IEnumerable<T> b)
         {
-            foreach (var i in a) yield return i;
-            foreach (var i in b) yield return i;
+            var result = new List<T>(a);
+            result.AddRange(b);
+            return result;
         }
 
-        public static IEnumerable<T> Add<T>(IEnumerable<T> a, ValueTuple<T> b)
+        public static List<T> Add<T>(IEnumerable<T> a, ValueTuple<T> b)
         {
-            foreach (var i in a) yield return i;
-            yield return b.Item1;
+            var result = new List<T>(a);
+            result.Add(b.Item1);
+            return result;
         }
 
         public static int Mult(int a, int b) => a * b;

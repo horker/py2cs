@@ -1,5 +1,7 @@
 {
   "UsingNamespaces": [
+    "using Op = Horker.MXNet.NDArray.Op;",
+    "using _internal = Horker.MXNet.NDArray._internal;"
   ],
   "Namespace": "Horker.MXNet",
   "Replacements": {
@@ -79,7 +81,7 @@
         ],
         "onehot_encode": [
           {
-            "Signature": "public static object OnehotEncode(object indices, object @out)"
+            "Signature": "public static NDArray OnehotEncode(NDArray indices, NDArray @out)"
           }
         ],
         "ones": [
@@ -99,7 +101,7 @@
         ],
         "moveaxis": [
           {
-            "Signature": "public static object Moveaxis(object tensor, object source, object destination)"
+            "Signature": "public static object Moveaxis(NDArray tensor, Shape source, Shape destination)"
           }
         ],
         "arange": [
@@ -534,37 +536,37 @@
         ],
         "__add__": [
           {
-            "Signature": "internal object __Add__(object other)"
+            "Signature": "internal object __Add__(NDArray other)"
           }
         ],
         "__iadd__": [
           {
-            "Signature": "internal object __Iadd__(object other)"
+            "Signature": "internal object __Iadd__(NDArray other)"
           }
         ],
         "__radd__": [
           {
-            "Signature": "internal object __Radd__(object other)"
+            "Signature": "internal object __Radd__(NDArray other)"
           }
         ],
         "__sub__": [
           {
-            "Signature": "internal object __Sub__(object other)"
+            "Signature": "internal object __Sub__(NDArray other)"
           }
         ],
         "__isub__": [
           {
-            "Signature": "internal object __Isub__(object other)"
+            "Signature": "internal object __Isub__(NDArray other)"
           }
         ],
         "__rsub__": [
           {
-            "Signature": "internal object __Rsub__(object other)"
+            "Signature": "internal object __Rsub__(NDArray other)"
           }
         ],
         "__mul__": [
           {
-            "Signature": "internal object __Mul__(object other)"
+            "Signature": "internal object __Mul__(NDArray other)"
           }
         ],
         "__neg__": [
@@ -574,72 +576,72 @@
         ],
         "__imul__": [
           {
-            "Signature": "internal object __Imul__(object other)"
+            "Signature": "internal object __Imul__(NDArray other)"
           }
         ],
         "__rmul__": [
           {
-            "Signature": "internal object __Rmul__(object other)"
+            "Signature": "internal object __Rmul__(NDArray other)"
           }
         ],
         "__div__": [
           {
-            "Signature": "internal object __Div__(object other)"
+            "Signature": "internal object __Div__(NDArray other)"
           }
         ],
         "__rdiv__": [
           {
-            "Signature": "internal object __Rdiv__(object other)"
+            "Signature": "internal object __Rdiv__(NDArray other)"
           }
         ],
         "__idiv__": [
           {
-            "Signature": "internal object __Idiv__(object other)"
+            "Signature": "internal object __Idiv__(NDArray other)"
           }
         ],
         "__truediv__": [
           {
-            "Signature": "internal object __Truediv__(object other)"
+            "Signature": "internal object __Truediv__(NDArray other)"
           }
         ],
         "__rtruediv__": [
           {
-            "Signature": "internal object __Rtruediv__(object other)"
+            "Signature": "internal object __Rtruediv__(NDArray other)"
           }
         ],
         "__itruediv__": [
           {
-            "Signature": "internal object __Itruediv__(object other)"
+            "Signature": "internal object __Itruediv__(NDArray other)"
           }
         ],
         "__mod__": [
           {
-            "Signature": "internal object __Mod__(object other)"
+            "Signature": "internal object __Mod__(NDArray other)"
           }
         ],
         "__rmod__": [
           {
-            "Signature": "internal object __Rmod__(object other)"
+            "Signature": "internal object __Rmod__(NDArray other)"
           }
         ],
         "__imod__": [
           {
-            "Signature": "internal object __Imod__(object other)"
+            "Signature": "internal object __Imod__(NDArray other)"
           }
         ],
         "__pow__": [
           {
-            "Signature": "internal object __Pow__(object other)"
+            "Signature": "internal object __Pow__(NDArray other)"
           }
         ],
         "__rpow__": [
           {
-            "Signature": "internal object __Rpow__(object other)"
+            "Signature": "internal object __Rpow__(NDArray other)"
           }
         ],
         "__eq__": [
           {
-            "Signature": "internal object __Eq__(object other)"
+            "Signature": "internal object __Eq__(NDArray other)"
           }
         ],
         "__hash__": [
@@ -649,27 +651,27 @@
         ],
         "__ne__": [
           {
-            "Signature": "internal object __Ne__(object other)"
+            "Signature": "internal object __Ne__(NDArray other)"
           }
         ],
         "__gt__": [
           {
-            "Signature": "internal object __Gt__(object other)"
+            "Signature": "internal object __Gt__(NDArray other)"
           }
         ],
         "__ge__": [
           {
-            "Signature": "internal object __Ge__(object other)"
+            "Signature": "internal object __Ge__(NDArray other)"
           }
         ],
         "__lt__": [
           {
-            "Signature": "internal object __Lt__(object other)"
+            "Signature": "internal object __Lt__(NDArray other)"
           }
         ],
         "__le__": [
           {
-            "Signature": "internal object __Le__(object other)"
+            "Signature": "internal object __Le__(NDArray other)"
           }
         ],
         "__bool__": [
@@ -1208,7 +1210,7 @@
         ],
         "broadcast_like": [
           {
-            "Signature": "public object BroadcastLike(object other)"
+            "Signature": "public object BroadcastLike(NDArray other)"
           }
         ],
         "wait_to_read": [
@@ -1218,7 +1220,7 @@
         ],
         "ndim": [
           {
-            "Signature": "public object Ndim"
+            "Signature": "public int Ndim"
           }
         ],
         "shape": [
@@ -1228,7 +1230,7 @@
         ],
         "size": [
           {
-            "Signature": "public object Size"
+            "Signature": "public int Size"
           }
         ],
         "context": [
@@ -1258,37 +1260,46 @@
         ],
         "asnumpy": [
           {
-            "Signature": "public object Asnumpy()"
+            "Signature": "public Np.NDArray Asnumpy()"
           }
         ],
         "asscalar": [
           {
-            "Signature": "public object Asscalar()"
+            "Signature": "public float Asscalar()"
           }
         ],
         "astype": [
           {
-            "Signature": "public string Astype(DType dtype, bool copy = true)"
+            "Signature": "public NDArray Astype(DType dtype, bool copy = true)"
           }
         ],
         "copyto": [
           {
-            "Signature": "public object Copyto(object other)"
+            "Signature": "public NDArray Copyto(NDArray other)"
           }
         ],
         "copy": [
           {
-            "Signature": "public object Copy()"
+            "Signature": "public NDArray Copy()"
           }
         ],
         "as_in_context": [
           {
-            "Signature": "public object AsInContext(object context)"
+            "Signature": "public NDArray AsInContext(Context context)"
           }
         ],
         "attach_grad": [
           {
-            "Signature": "public object AttachGrad(string gradReq = \"write\", string stype = null)"
+            "Signature": "public void AttachGrad(string gradReq = \"write\", string stype = null)",
+            "Reassigned": [
+              "grad_req"
+            ],
+            "Locals": {
+              "grad": {
+                "Type": "NDArray",
+                "Definition": "NDArray grad;"
+              }
+            }
           }
         ],
         "grad": [
@@ -1303,7 +1314,7 @@
         ],
         "backward": [
           {
-            "Signature": "public object Backward(NDArray outGrad = null, bool retainGraph = false, bool trainMode = true)",
+            "Signature": "public void Backward(NDArray outGrad = null, bool retainGraph = false, bool trainMode = true)",
             "Locals": {
               "ograd_handles": {
                 "Type": "NDArrayHandle[]",
@@ -1314,7 +1325,7 @@
         ],
         "tostype": [
           {
-            "Signature": "public string Tostype(string stype)"
+            "Signature": "public NDArray Tostype(string stype)"
           }
         ],
         "to_dlpack_for_read": [
@@ -1329,6 +1340,11 @@
             "Signature": "public object ToDlpackForWrite()"
           }
         ]
+      },
+      "StaticFields": {
+        "__nonzero__": {
+          "Drop": true
+        }
       }
     },
     "DLContext": {

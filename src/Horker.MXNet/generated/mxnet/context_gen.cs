@@ -5,12 +5,24 @@ using System.Collections.Generic;
 using System.Threading;
 using Horker.MXNet;
 using Horker.MXNet.Compat;
-using Horker.MXNet.Interop;
+using static Horker.MXNet.Base;
 using static Horker.MXNet.Compat.Compat;
 using static Horker.MXNet.Compat.Coercing;
-using static Horker.MXNet.MXNetCompat;
+using static Horker.MXNet.Compat.Array;
 using static Horker.MXNet.MXNetCoercing;
+using static Horker.MXNet.MXNetCompat;
 using static Horker.MXNet.DType;
+using NDArrayHandle = System.IntPtr;
+using SymbolHandle = System.IntPtr;
+using DisposableObject = Horker.MXNet.Interop.DisposableObject;
+using _LIB = Horker.MXNet.Interop._LIB;
+using MxInt = System.Int32;
+using MxUint = System.Int32;
+using MxInt64 = System.Int64;
+using PySlice = Horker.MXNet.Compat.Slice;
+using Tuple = System.Collections.ICollection;
+using List = System.Collections.ICollection;
+using _numpy = Horker.MXNet.Np;
 
 namespace Horker.MXNet
 {
@@ -28,7 +40,7 @@ namespace Horker.MXNet
     // ImportFrom
     // ImportFrom
     
-    public partial class Context : PythonObject, IEquatable<Context>
+    public partial class Context : IEquatable<Context>
     {
         public int DeviceTypeid { get; set; }
         public int DeviceId { get; set; }
@@ -53,20 +65,12 @@ namespace Horker.MXNet
         
         public Context(string deviceType, int deviceId = 0)
         {
-            if (IsTrue(Isinstance(deviceType, typeof(Context)))){
-                var local0 = (Context)deviceType;
-                this.DeviceTypeid = local0.DeviceTypeid;
-                this.DeviceId = local0.DeviceId;
-            }
-            else
-            {
-                this.DeviceTypeid = Context.Devstr2type[deviceType];
-                this.DeviceId = deviceId;
-            }
+            this.DeviceTypeid = Context.Devstr2type[deviceType];
+            this.DeviceId = deviceId;
             this._oldCtx = CoerceIntoContext(null);
         }
         
-        public string DeviceType
+        public object DeviceType
         {
             get {
                 // Expr
@@ -76,25 +80,22 @@ namespace Horker.MXNet
         
         // Drop: __hash__
         
-        public bool Equals(Context other)
-        {
-            // Expr
-            return (IsTrue(Isinstance(other, typeof(Context))) && IsTrue((this.DeviceTypeid == other.DeviceTypeid)) && IsTrue((this.DeviceId == other.DeviceId)));
-        }
+        // Drop: __eq__
         
-        private string Str()
+        internal string __Str__()
         {
             return ("%s(%d)".PyFormat(ValueTuple.Create(this.DeviceType, this.DeviceId)));
         }
         
-        private string Repr()
+        internal object __Repr__()
         {
-            return this.Str();
+            return this.__Str__();
         }
         
-        private Context Enter()
+        internal Context __Enter__()
         {
-            if (IsTrue((!IsTrue(Hasattr(Context._defaultCtx, "value"))))){
+            if (IsTrue((!IsTrue(Hasattr(Context._defaultCtx, "value")))))
+            {
                 Context._defaultCtx.Value = new Context("cpu", 0);
             }
             this._oldCtx = CoerceIntoContext(Context._defaultCtx.Value);
@@ -102,7 +103,7 @@ namespace Horker.MXNet
             return this;
         }
         
-        private void Exit(object ptype, object value, object trace)
+        internal void __Exit__(object ptype, object value, object trace)
         {
             Context._defaultCtx.Value = this._oldCtx;
         }
@@ -111,10 +112,11 @@ namespace Horker.MXNet
         {
             get {
                 Warnings.Warn("Context.default_ctx has been deprecated. Please use Context.current_context() instead. Please use test_utils.set_default_context to set a default context", typeof(DeprecationWarning));
-                if (IsTrue((!IsTrue(Hasattr(Context._defaultCtx, "value"))))){
-                    Context._defaultCtx.Value = new Context("cpu", 0);
+                if (IsTrue((!IsTrue(Hasattr(Context._defaultCtx, "value")))))
+                {
+                    Cls._defaultCtx.Value = new Context("cpu", 0);
                 }
-                return Context._defaultCtx.Value;
+                return Cls._defaultCtx.Value;
             }
             set => SetDefaultCtx(value);
         }
@@ -122,22 +124,23 @@ namespace Horker.MXNet
         public static void SetDefaultCtx(Context val)
         {
             Warnings.Warn("Context.default_ctx has been deprecated. Please use Context.current_context() instead. Please use test_utils.set_default_context to set a default context", typeof(DeprecationWarning));
-            Context._defaultCtx.Value = val;
+            Cls._defaultCtx.Value = val;
         }
         
         public void EmptyCache()
         {
             // Expr
-            var devType = Compat.CTypes.CInt(this.DeviceTypeid);
-            var devId = Compat.CTypes.CInt(this.DeviceId);
-            CheckCall(LIB.MXStorageEmptyCache(devType, devId));
+            var devType = CTypes.CInt(this.DeviceTypeid);
+            var devId = CTypes.CInt(this.DeviceId);
+            CheckCall(_LIB.MXStorageEmptyCache(devType, devId));
         }
     }
+    
     // Assignment of attribute
     
     public static partial class Helper
     {
-        public static Context Cpu(int deviceId = 0)
+        public static object Cpu(int deviceId = 0)
         {
             // Expr
             return new Context("cpu", deviceId);
@@ -146,7 +149,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        public static Context CpuPinned(int deviceId = 0)
+        public static object CpuPinned(int deviceId = 0)
         {
             // Expr
             return new Context("cpu_pinned", deviceId);
@@ -155,7 +158,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        public static Context Gpu(int deviceId = 0)
+        public static object Gpu(int deviceId = 0)
         {
             // Expr
             return new Context("gpu", deviceId);
@@ -164,11 +167,11 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        public static int NumGpus()
+        public static object NumGpus()
         {
             // Expr
-            var count = Compat.CTypes.CInt();
-            CheckCall(LIB.MXGetGPUCount(ref count));
+            var count = CTypes.CInt();
+            CheckCall(_LIB.MXGetGPUCount(out count));
             return count;
         }
     }
@@ -178,10 +181,10 @@ namespace Horker.MXNet
         public static ValueTuple<long, long> GpuMemoryInfo(int deviceId = 0)
         {
             // Expr
-            var free = Compat.CTypes.CUint64();
-            var total = Compat.CTypes.CUint64();
-            var devId = Compat.CTypes.CInt(deviceId);
-            CheckCall(LIB.MXGetGPUMemoryInformation64(devId, ref free, ref total));
+            var free = CTypes.CUint64();
+            var total = CTypes.CUint64();
+            var devId = CTypes.CInt(deviceId);
+            CheckCall(_LIB.MXGetGPUMemoryInformation64(devId, out free, out total));
             return ValueTuple.Create(free, total);
         }
     }
@@ -191,7 +194,8 @@ namespace Horker.MXNet
         public static Context CurrentContext()
         {
             // Expr
-            if (IsTrue((!IsTrue(Hasattr(Context._defaultCtx, "value"))))){
+            if (IsTrue((!IsTrue(Hasattr(Context._defaultCtx, "value")))))
+            {
                 Context._defaultCtx.Value = new Context("cpu", 0);
             }
             return Context._defaultCtx.Value;

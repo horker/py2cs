@@ -18,5 +18,10 @@ namespace Horker.MXNet
         public NDArray(NDArrayHandle handle, bool writable = true)
             : base(handle, writable)
         { }
+
+        public static implicit operator NDArray(float value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

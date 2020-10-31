@@ -87,6 +87,9 @@
     ],
     "DeprecationWarning": [
       "DeprecationWarning"
+    ],
+    "RuntimeWarning": [
+      "RuntimeWarning"
     ]
   }
 }

@@ -23,6 +23,8 @@ using PySlice = Horker.MXNet.Compat.Slice;
 using Tuple = System.Collections.ICollection;
 using List = System.Collections.ICollection;
 using _numpy = Horker.MXNet.Np;
+using Op = Horker.MXNet.NDArray.Op;
+using _internal = Horker.MXNet.NDArray._internal;
 
 namespace Horker.MXNet
 {
@@ -204,7 +206,7 @@ namespace Horker.MXNet
         
         // Expr
         public static object __Slots__ = CoerceIntoObject(null);
-        public static object __ArrayPriority__ = CoerceIntoObject(1000.0);
+        public static object __ArrayPriority__ = CoerceIntoObject(1000.0f);
         public static object _tvmTcode = CoerceIntoObject(19);
         
         // Drop: _tvm_handle
@@ -226,50 +228,50 @@ namespace Horker.MXNet
             return ValueTuple.Create(sharedPid, sharedId, this.Shape, this.DType);
         }
         
-        internal object __Add__(object other)
+        internal object __Add__(NDArray other)
         {
             // Expr
             return Add(this, other);
         }
         
-        internal object __Iadd__(object other)
+        internal object __Iadd__(NDArray other)
         {
             // Expr
             if (IsTrue((!IsTrue(this.Writable))))
             {
                 throw new ValueError("trying to add to a readonly NDArray");
             }
-            throw new TypeError(("type %s not supported".PyFormat(Str(Type(other)))));
+            return Op.BroadcastAdd(this, other, @out: this);
         }
         
-        internal object __Radd__(object other)
+        internal object __Radd__(NDArray other)
         {
             return this.__Add__(other);
         }
         
-        internal object __Sub__(object other)
+        internal object __Sub__(NDArray other)
         {
             // Expr
             return Subtract(this, other);
         }
         
-        internal object __Isub__(object other)
+        internal object __Isub__(NDArray other)
         {
             // Expr
             if (IsTrue((!IsTrue(this.Writable))))
             {
                 throw new ValueError("trying to subtract from a readonly NDArray");
             }
-            throw new TypeError(("type %s not supported".PyFormat(Str(Type(other)))));
+            return Op.BroadcastSub(this, other, @out: this);
         }
         
-        internal object __Rsub__(object other)
+        internal object __Rsub__(NDArray other)
         {
             // Expr
             return Subtract(other, this);
         }
         
-        internal object __Mul__(object other)
+        internal object __Mul__(NDArray other)
         {
             // Expr
             return Multiply(this, other);
@@ -278,96 +280,96 @@ namespace Horker.MXNet
         internal object __Neg__()
         {
             // Expr
-            return _internal._mulScalar(this, (-1.0));
+            return _internal._mulScalar(this, (-1.0f));
         }
         
-        internal object __Imul__(object other)
+        internal object __Imul__(NDArray other)
         {
             // Expr
             if (IsTrue((!IsTrue(this.Writable))))
             {
                 throw new ValueError("trying to multiply to a readonly NDArray");
             }
-            throw new TypeError(("type %s not supported".PyFormat(Str(Type(other)))));
+            return Op.BroadcastMul(this, other, @out: this);
         }
         
-        internal object __Rmul__(object other)
+        internal object __Rmul__(NDArray other)
         {
             return this.__Mul__(other);
         }
         
-        internal object __Div__(object other)
+        internal object __Div__(NDArray other)
         {
             // Expr
             return Divide(this, other);
         }
         
-        internal object __Rdiv__(object other)
+        internal object __Rdiv__(NDArray other)
         {
             // Expr
             return Divide(other, this);
         }
         
-        internal object __Idiv__(object other)
+        internal object __Idiv__(NDArray other)
         {
             // Expr
             if (IsTrue((!IsTrue(this.Writable))))
             {
                 throw new ValueError("trying to divide from a readonly NDArray");
             }
-            throw new TypeError(("type %s not supported".PyFormat(Str(Type(other)))));
+            return Op.BroadcastDiv(this, other, @out: this);
         }
         
-        internal object __Truediv__(object other)
+        internal object __Truediv__(NDArray other)
         {
             return Divide(this, other);
         }
         
-        internal object __Rtruediv__(object other)
+        internal object __Rtruediv__(NDArray other)
         {
             return Divide(other, this);
         }
         
-        internal object __Itruediv__(object other)
+        internal object __Itruediv__(NDArray other)
         {
             return this.__Idiv__(other);
         }
         
-        internal object __Mod__(object other)
+        internal object __Mod__(NDArray other)
         {
             // Expr
             return Modulo(this, other);
         }
         
-        internal object __Rmod__(object other)
+        internal object __Rmod__(NDArray other)
         {
             // Expr
             return Modulo(other, this);
         }
         
-        internal object __Imod__(object other)
+        internal object __Imod__(NDArray other)
         {
             // Expr
             if (IsTrue((!IsTrue(this.Writable))))
             {
                 throw new ValueError("trying to take modulo from a readonly NDArray");
             }
-            throw new TypeError(("type %s not supported".PyFormat(Str(Type(other)))));
+            return Op.BroadcastMod(this, other, @out: this);
         }
         
-        internal object __Pow__(object other)
+        internal object __Pow__(NDArray other)
         {
             // Expr
             return Power(this, other);
         }
         
-        internal object __Rpow__(object other)
+        internal object __Rpow__(NDArray other)
         {
             // Expr
             return Power(other, this);
         }
         
-        internal object __Eq__(object other)
+        internal object __Eq__(NDArray other)
         {
             // Expr
             return Equal(this, other);
@@ -379,31 +381,31 @@ namespace Horker.MXNet
             return (Id(this) / 16);
         }
         
-        internal object __Ne__(object other)
+        internal object __Ne__(NDArray other)
         {
             // Expr
             return NotEqual(this, other);
         }
         
-        internal object __Gt__(object other)
+        internal object __Gt__(NDArray other)
         {
             // Expr
             return Greater(this, other);
         }
         
-        internal object __Ge__(object other)
+        internal object __Ge__(NDArray other)
         {
             // Expr
             return GreaterEqual(this, other);
         }
         
-        internal object __Lt__(object other)
+        internal object __Lt__(NDArray other)
         {
             // Expr
             return Lesser(this, other);
         }
         
-        internal object __Le__(object other)
+        internal object __Le__(NDArray other)
         {
             // Expr
             return LesserEqual(this, other);
@@ -428,7 +430,8 @@ namespace Horker.MXNet
                 }
             }
         }
-        public static object __Nonzero__ = CoerceIntoObject(__Bool__);
+        
+        // Drop: __nonzero__
         
         internal object __Len__()
         {
@@ -1274,7 +1277,7 @@ namespace Horker.MXNet
             }
         }
         
-        public object BroadcastLike(object other)
+        public object BroadcastLike(NDArray other)
         {
             // Expr
             return this.BroadcastTo(other.Shape);
@@ -1286,7 +1289,7 @@ namespace Horker.MXNet
             CheckCall(_LIB.MXNDArrayWaitToRead(this.Handle));
         }
         
-        public object Ndim
+        public int Ndim
         {
             get {
                 // Expr
@@ -1312,7 +1315,7 @@ namespace Horker.MXNet
             }
         }
         
-        public object Size
+        public int Size
         {
             get {
                 // Expr
@@ -1379,7 +1382,7 @@ namespace Horker.MXNet
             CheckCall(_LIB.MXNDArraySetGradState(this.Handle, CTypes.CInt(state)));
         }
         
-        public object Asnumpy()
+        public Np.NDArray Asnumpy()
         {
             // Expr
             var data = Np.Empty(this.Shape, dtype: this.DType);
@@ -1387,7 +1390,7 @@ namespace Horker.MXNet
             return data;
         }
         
-        public object Asscalar()
+        public float Asscalar()
         {
             // Expr
             if (IsTrue((this.Shape != ValueTuple.Create(1))))
@@ -1397,7 +1400,7 @@ namespace Horker.MXNet
             return this.Asnumpy().Item1;
         }
         
-        public string Astype(DType dtype, bool copy = true)
+        public NDArray Astype(DType dtype, bool copy = true)
         {
             // Expr
             if (IsTrue((IsTrue((!IsTrue(copy))) && IsTrue((Np.DType(dtype) == this.DType)))))
@@ -1409,19 +1412,24 @@ namespace Horker.MXNet
             return res;
         }
         
-        public object Copyto(object other)
+        public NDArray Copyto(NDArray other)
         {
             // Expr
-            throw new TypeError(BinOp.Add("copyto does not support type ", Str(Type(other))));
+            if (IsTrue(((other.Handle is this.Handle))))
+            {
+                Warnings.Warn("You are attempting to copy an array to itself", typeof(RuntimeWarning));
+                return false;
+            }
+            return _internal._copyto(this, @out: other);
         }
         
-        public object Copy()
+        public NDArray Copy()
         {
             // Expr
             return this.Copyto(this.Context);
         }
         
-        public object AsInContext(object context)
+        public NDArray AsInContext(Context context)
         {
             // Expr
             if (IsTrue((this.Context == context)))
@@ -1431,20 +1439,21 @@ namespace Horker.MXNet
             return this.Copyto(context);
         }
         
-        public object AttachGrad(string gradReq = "write", string stype = null)
+        public void AttachGrad(string gradReq = "write", string stype = null)
         {
+            NDArray grad;
             // Expr
             // ImportFrom
             if (IsTrue((!IsNone(stype))))
             {
-                var grad = _zeros(this.Shape, stype: stype);
+                grad = CoerceIntoNDArray(_zeros(this.Shape, stype: stype));
             }
             else
             {
-                var grad = Op.ZerosLike(this);
+                grad = CoerceIntoNDArray(Op.ZerosLike(this));
             }
-            gradReq = _GRAD_REQ_MAP[gradReq];
-            CheckCall(_LIB.MXAutogradMarkVariables(1, CTypes.Pointer(this.Handle), CTypes.Pointer(MxUint(gradReq)), CTypes.Pointer(Grad.Handle)));
+            var gradReqReassigned = _GRAD_REQ_MAP[gradReq];
+            CheckCall(_LIB.MXAutogradMarkVariables(1, CTypes.Pointer(this.Handle), CTypes.Pointer(MxUint(gradReqReassigned)), CTypes.Pointer(grad.Handle)));
         }
         
         public object Grad
@@ -1471,7 +1480,7 @@ namespace Horker.MXNet
             return _ndarrayCls(hdl);
         }
         
-        public object Backward(NDArray outGrad = null, bool retainGraph = false, bool trainMode = true)
+        public void Backward(NDArray outGrad = null, bool retainGraph = false, bool trainMode = true)
         {
             NDArrayHandle[] ogradHandles = null;
             // Expr
@@ -1486,7 +1495,7 @@ namespace Horker.MXNet
             CheckCall(_LIB.MXAutogradBackwardEx(1, CHandleArray(new [] { this }), CArray(typeof(NDArrayHandle), ogradHandles), 0, CTypes.CVoidP(0), CTypes.CInt(retainGraph), CTypes.CInt(0), CTypes.CInt(trainMode), CTypes.CVoidP(0), CTypes.CVoidP(0)));
         }
         
-        public string Tostype(string stype)
+        public NDArray Tostype(string stype)
         {
             // Expr
             return Op.CastStorage(this, stype: stype);
@@ -1680,7 +1689,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        public static object OnehotEncode(object indices, object @out)
+        public static NDArray OnehotEncode(NDArray indices, NDArray @out)
         {
             // Expr
             return _internal._onehotEncode(indices, @out, @out: @out);
@@ -1727,7 +1736,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        public static object Moveaxis(object tensor, object source, object destination)
+        public static object Moveaxis(NDArray tensor, Shape source, Shape destination)
         {
             // Expr
             if (IsTrue((Len(source) != Len(destination))))

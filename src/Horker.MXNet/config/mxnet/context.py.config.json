@@ -1,0 +1,126 @@
+{
+  "UsingNamespaces": [],
+  "Namespace": "Horker.MXNet",
+  "Replacements": {},
+  "TypeNames": {},
+  "Classes": {
+    "Context": {
+      "Name": "Context",
+      "BaseClasses": [ "IEquatable<Context>" ],
+      "Fields": {
+        "device_typeid": {
+          "Signature": "public int DeviceTypeid { get; set; }"
+        },
+        "device_id": {
+          "Signature": "public int DeviceId { get; set; }"
+        },
+        "_old_ctx": {
+          "Signature": "private Context _oldCtx;"
+        }
+      },
+      "Methods": {
+        "__init__": [
+          {
+            "Signature": "public Context(string deviceType, int deviceId = 0)"
+          }
+        ],
+        "device_type": [
+          {
+            "Signature": "public object DeviceType"
+          }
+        ],
+        "__hash__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Hash__()"
+          }
+        ],
+        "__eq__": [
+          {
+            "Drop": true,
+            "Signature": "internal object __Eq__(object other)"
+          }
+        ],
+        "__str__": [
+          {
+            "Signature": "internal string __Str__()"
+          }
+        ],
+        "__repr__": [
+          {
+            "Signature": "internal object __Repr__()"
+          }
+        ],
+        "__enter__": [
+          {
+            "Signature": "internal Context __Enter__()"
+          }
+        ],
+        "__exit__": [
+          {
+            "Signature": "internal void __Exit__(object ptype, object value, object trace)"
+          }
+        ],
+        "default_ctx": [
+          {
+            "Signature": "public static Context DefaultCtx",
+            "SignatureSetter": "public static void SetDefaultCtx(Context val)"
+          }
+        ],
+        "empty_cache": [
+          {
+            "Signature": "public void EmptyCache()"
+          }
+        ]
+      },
+      "StaticFields": {
+        "_default_ctx": {
+          "Type": "ThreadLocal<Context>"
+        },
+        "devtype2str": {
+          "Type": "Dictionary<int, string>"
+        },
+        "devstr2type": {
+          "Type": "Dictionary<string, int>"
+        }
+      }
+    },
+    "Helper": {
+      "Name": "Helper",
+      "BaseClasses": null,
+      "Fields": {},
+      "Methods": {
+        "cpu": [
+          {
+            "Signature": "public static object Cpu(int deviceId = 0)"
+          }
+        ],
+        "cpu_pinned": [
+          {
+            "Signature": "public static object CpuPinned(int deviceId = 0)"
+          }
+        ],
+        "gpu": [
+          {
+            "Signature": "public static object Gpu(int deviceId = 0)"
+          }
+        ],
+        "num_gpus": [
+          {
+            "Signature": "public static object NumGpus()"
+          }
+        ],
+        "gpu_memory_info": [
+          {
+            "Signature": "public static ValueTuple<long, long> GpuMemoryInfo(int deviceId = 0)"
+          }
+        ],
+        "current_context": [
+          {
+            "Signature": "public static Context CurrentContext()"
+          }
+        ]
+      }
+    }
+  }
+}

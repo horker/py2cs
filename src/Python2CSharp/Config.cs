@@ -72,7 +72,7 @@ namespace Python2CSharp
             if (string.IsNullOrWhiteSpace(Signature))
                 return;
 
-            var signatureRe = new Regex(@"^(?:(?:public|protected|internal|private|static|override|virtual)\s*)*\s+(?:(\w+(?:<[^>]+>+)?(?:\[\])?)\s+)?(\w+)(\(.*\))?$");
+            var signatureRe = new Regex(@"^(?:(?:public|protected|internal|private|static|override|virtual)\s*)*\s+(?:([\w.]+(?:<[^>]+>+)?(?:\[\])?)\s+)?(\w+)(\(.*\))?$");
             var match = signatureRe.Match(Signature);
             if (!match.Success)
                 throw new ArgumentException($"Signature analysis failed: {Signature}");

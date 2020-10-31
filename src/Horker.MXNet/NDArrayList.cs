@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using NDArrayHandle = System.IntPtr;
 
@@ -90,6 +91,18 @@ namespace Horker.MXNet
         IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
+        }
+
+        public static implicit operator NDArray(NDArrayList list)
+        {
+            if (list.Count != 1)
+                throw new ArgumentException("Attempted to convert a NDArrayList into a NDArray when its length is not one");
+            return list[0];
+        }
+
+        public static implicit operator NDArrayList(NDArray ndarray)
+        {
+            return new NDArrayList(ndarray);
         }
     }
 }

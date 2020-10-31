@@ -9,13 +9,13 @@ namespace Horker.MXNet
     internal class DTypeInternal
     {
         public string Name { get; }
-        public Type BaseType { get; }
+        public Type ClrType { get; }
         public int Index { get; }
 
         internal DTypeInternal(string name, Type type, int index)
         {
             Name = name;
-            BaseType = type;
+            ClrType = type;
             Index = index;
         }
     }
@@ -45,7 +45,7 @@ namespace Horker.MXNet
         private int _index;
 
         public string Name => _internals[_index].Name;
-        public Type BaseType => _internals[_index].BaseType;
+        public Type BaseType => _internals[_index].ClrType;
         public int Index => _internals[_index].Index;
 
         public DType Type => this;
@@ -101,6 +101,16 @@ namespace Horker.MXNet
         public static implicit operator DType(string name)
         {
             return Get(name);
+        }
+
+        public static implicit operator Type(DType dtype)
+        {
+            return _internals[dtype.Index].ClrType;
+        }
+
+        public static implicit operator string(DType dtype)
+        {
+            return _internals[dtype.Index].Name;
         }
     }
 }

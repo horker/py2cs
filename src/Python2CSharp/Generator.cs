@@ -1674,6 +1674,8 @@ namespace Python2CSharp
             }
             else if (value == "None")
                 value = "null";
+            else if (Regex.IsMatch(value, @"[+-]?\d*\.\d+([eE][+-]\d+)?"))
+                value = value + "f";
 
             _out.Write(value);
 

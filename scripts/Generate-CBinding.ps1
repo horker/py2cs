@@ -24,8 +24,8 @@ function Get-Declarations([string]$HeaderFile, [Hashtable]$Methods) {
             }
         }
 
-        $def = $Methods[$funcName]
-        if ($def -and $def["Drop"]) {
+        $def = $Methods[$funcName] ?? @{}
+        if ($def["Drop"]) {
             @{
                 Original = $orig
                 Decl = "// (Dropped)"
@@ -33,7 +33,7 @@ function Get-Declarations([string]$HeaderFile, [Hashtable]$Methods) {
             continue
         }
 
-        $outParams = $def -and $def["Params"] ?? @{}
+        $paramDefs = $def["Params"] ?? @{}
 
         $paramMap = [ordered]@{}
 
@@ -41,7 +41,7 @@ function Get-Declarations([string]$HeaderFile, [Hashtable]$Methods) {
             $m = ([regex]"^(.+\s+\**)(\w+)(?:\s+DEFAULT\([^)]+\))?$").Match($p)
             $type = $m.Groups[1].Value.Trim()
             $name = $m.Groups[2].Value.Trim()
-            $isOut = $outParams -contains $name -or $name -match "out"
+            $isOut = ($paramDefs[$name] -and $paramDefs[$name]["IsOut"]) -or $name -match "out"
 
             $csType = $type -Replace "\s*const\s*", ""
             $csType = $csType -Replace "void\s*\*", "IntPtr"
@@ -88,67 +88,6 @@ function Get-Declarations([string]$HeaderFile, [Hashtable]$Methods) {
             }
         }
         $decl += ");"
-
-#        # Return types
-#
-#        $d = $d -Replace "MXNET_DLL\s+const char(\s*)\*(\s*)", "MXNET_DLL string`$1`$2"
-#
-#        # keywords
-#
-#        $d = $d -Replace "\b(out|params|this)\b", "@`$1"
-#
-#        # Attribute
-#
-#        $d = $d -Replace "MXNET_DLL\s+", "[DllImport(MXNetDll)]`npublic static extern "
-#
-#        # Default values
-#
-#        $d = $d -Replace "DEFAULT\(([^)]+)\)", ""
-#
-#        # Parameters (string)
-#
-#        $d = $d -Replace "const char(\s*)\*(\s*)\*(\s*)\*(\s*)", "[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] out string[]`$1`$2`$3`$4"
-#        $d = $d -Replace "const char(\s*)\*(\s*)\*(\s*)(\w*out\w*)", "[MarshalAs(UnmanagedType.LPUTF8Str)] out string`$1`$2`$3`$4"
-#        $d = $d -Replace "const char(\s*)\*(\s*)\*(\s*)", "[MarshalAs(UnmanagedType.LPUTF8Str)] string[]`$1`$2`$3"
-#        $d = $d -Replace "char const(\s*)\*(\s*)\*(\s*)(\w*out\w*)", "[MarshalAs(UnmanagedType.LPUTF8Str)] out string`$1`$2`$3`$4"
-#        $d = $d -Replace "char const(\s*)\*(\s*)\*(\s*)", "[MarshalAs(UnmanagedType.LPUTF8Str)] string[]`$1`$2`$3"
-#        $d = $d -Replace "const char\*\s*const\*", "[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[]"
-#        $d = $d -Replace "const char(\s*)\*", "[MarshalAs(UnmanagedType.LPUTF8Str)] string`$1"
-#
-#        # Parameters (inters)
-#
-#        $d = $d -Replace "const mx_uint(\s*)\*(\s*)\*(\s*)", "out mx_uint[]`$1`$2`$3"
-#        $d = $d -Replace "const mx_int(\s*)\*(\s*)\*(\s*)", "out mx_int[]`$1`$2`$3"
-#        $d = $d -Replace "const int(\s*)\*(\s*)\*(\s*)", "out int[]`$1`$2`$3"
-#        $d = $d -Replace "const mx_uint(\s*)\*(\s*)", "mx_uint[]`$1`$2"
-#        $d = $d -Replace "const mx_int(\s*)\*(\s*)", "mx_int[]`$1`$2"
-#        $d = $d -Replace "const int(\s*)\*(\s*)", "int[]`$1`$2"
-#
-#        $d = $d -Replace "mx_uint(\s*)\*(\s*)\*(\s*)", "out mx_uint[]`$1`$2`$3"
-#        $d = $d -Replace "mx_int(\s*)\*(\s*)\*(\s*)", "out mx_int[]`$1`$2`$3"
-#        $d = $d -Replace "int(\s*)\*(\s*)\*(\s*)", "out int[]`$1`$2`$3"
-#        $d = $d -Replace "int(\s*)\*(\s*)(dims|shape)", "int[]`$1`$2`$3"
-#        $d = $d -Replace "dim_t(\s*)\*(\s*)(dims|shape)", "int[]`$1`$2`$3"
-#        $d = $d -Replace "mx_uint\*", "out mx_uint"
-#        $d = $d -Replace "mx_int\*", "out mx_int"
-#        $d = $d -Replace "int\*", "out int"
-#
-#        # Parameters (void*)
-#
-#        $d = $d -Replace "const void(\s*)\*(\s*)", "IntPtr`$1`$2"
-#        $d = $d -Replace "void(\s*)\*(\s*)", "IntPtr`$1`$2"
-#
-#        # Parameters (generic out)
-#
-#        $d = $d -Replace "(?!const\s+)(\w+)\s*\*\s*(@?\w+)", "out `$1 `$2"
-#        $d = $d -Replace "(?!const\s+)(\w+)\s*\*\s*\*\s*(@?\w+)", "out `$1[] `$2"
-#
-#        # Cleanup
-#
-#        $d = $d -Replace "const\s*", ""
-#        $d = $d -Replace "struct\s*", ""
-#
-        ######
 
         @{
             Original = $orig
@@ -256,6 +195,18 @@ namespace Horker.MXNet.Interop
             "MXSymbolInferShapePartial" = @{ Drop = $true }
             "MXSymbolInferShapePartialEx" = @{ Drop = $true }
             "MXSymbolInferType" = @{ Drop = $true }
+            "MXNDArrayGetSharedMemHandle" = @{
+                Params = @{
+                    "shared_pid" = @{ IsOut = $true }
+                    "shared_id" = @{ IsOut = $true }
+                }
+            }
+            "MXGetGPUMemoryInformation64" = @{
+                Params = @{
+                    "free_mem" = @{ IsOut = $true }
+                    "total_mem" = @{ IsOut = $true }
+                }
+            }
         }
     }
     @{

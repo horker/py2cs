@@ -146,7 +146,7 @@ namespace Horker.MXNet.Interop
             Invoke(outputs);
         }
 
-        public void Invoke(NDArrayList outputs)
+        public NDArrayList Invoke(NDArrayList outputs)
         {
             var paramKeys = new List<string>();
             var paramValues = new List<string>();
@@ -180,7 +180,7 @@ namespace Horker.MXNet.Interop
                 if (outputs.Count > 0)
                 {
                     gcHandle?.Free();
-                    return;
+                    return outputs;
                 }
 
                 outputHandles = new NDArrayHandle[numOutputs];
@@ -199,6 +199,8 @@ namespace Horker.MXNet.Interop
             {
                 gcHandle?.Free();
             }
+
+            return outputs;
         }
 
         public void PushInput(Symbol symbol)
@@ -260,6 +262,13 @@ namespace Horker.MXNet.Interop
 
             _inputKeys.Add(name);
             _inputNDArrays.Add(ndarray.Handle);
+            return this;
+        }
+
+        public Operator SetInput(NDArray ndarray)
+        {
+            _inputNDArrays.Add(ndarray.Handle);
+
             return this;
         }
 

@@ -274,8 +274,8 @@ namespace Horker.MXNet.Interop
         [DllImport(MXNetDll)]
         public static extern int MXGetGPUMemoryInformation64(
             int dev,
-            int64_t[] free_mem,
-            int64_t[] total_mem
+            out int64_t free_mem,
+            out int64_t total_mem
         );
 
         // MXNET_DLL int MXGetVersion(int *out);
@@ -2334,8 +2334,8 @@ namespace Horker.MXNet.Interop
         [DllImport(MXNetDll)]
         public static extern int MXNDArrayGetSharedMemHandle(
             NDArrayHandle handle,
-            int[] shared_pid,
-            int[] shared_id
+            out int shared_pid,
+            out int shared_id
         );
 
         // MXNET_DLL int MXNDArrayCreateFromSharedMem(int shared_pid, int shared_id, const mx_uint *shape,

@@ -9,4 +9,7 @@ namespace Horker.MXNet.Compat
 
     public class DeprecationWarning : Warning
     { }
+
+    public class RuntimeWarning : Warning
+    { }
 }

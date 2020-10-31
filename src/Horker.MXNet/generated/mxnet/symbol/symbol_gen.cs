@@ -60,7 +60,7 @@ namespace Horker.MXNet
         
         // Expr
         public static object __Slots__ = CoerceIntoObject(null);
-        public static object __ArrayPriority__ = CoerceIntoObject(1000.0);
+        public static object __ArrayPriority__ = CoerceIntoObject(1000.0f);
         
         internal object __Repr__()
         {
@@ -175,7 +175,7 @@ namespace Horker.MXNet
         internal object __Neg__()
         {
             // Expr
-            return this.__Mul__((-1.0));
+            return this.__Mul__((-1.0f));
         }
         
         internal Symbol __Copy__()

@@ -6,7 +6,7 @@ using NDArrayHandle = System.IntPtr;
 namespace Horker.MXNet
 {
     // Defined in mxnet/_ctypes/ndarray.py
-    public partial class NDArrayBase : DisposableObject
+    public partial class NDArrayBase : NDArrayOrSymbol
     {
         public NDArrayHandle Handle { get; protected set; }
         public bool Writable { get; protected set; }

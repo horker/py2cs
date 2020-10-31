@@ -31,6 +31,11 @@ namespace Horker.MXNet
             return (DType)obj;
         }
 
+        public static NDArray CoerceIntoNDArray(NDArray ndarray)
+        {
+            return ndarray;
+        }
+
         public static NDArrayHandle CoerceIntoNDArrayHandle(NDArrayHandle handle)
         {
             return handle;

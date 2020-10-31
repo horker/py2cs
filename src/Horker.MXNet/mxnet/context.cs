@@ -6,13 +6,19 @@ using System.Text;
 namespace Horker.MXNet
 {
     // Defined in mxnet/context.py
-    public partial class Context : PythonObject, IEquatable<Context>
+    public partial class Context : IEquatable<Context>
     {
+        public bool Equals(Context obj)
+        {
+            return DeviceTypeid == obj.DeviceTypeid &&
+                   DeviceId == obj.DeviceId;
+        }
+
         public override bool Equals(object obj)
         {
-            return obj is Context context &&
-                   DeviceTypeid == context.DeviceTypeid &&
-                   DeviceId == context.DeviceId;
+            return obj is Context ctx &&
+                   DeviceTypeid == ctx.DeviceTypeid &&
+                   DeviceId == ctx.DeviceId;
         }
 
         public override int GetHashCode()
@@ -20,9 +26,19 @@ namespace Horker.MXNet
             return HashCode.Combine(DeviceTypeid, DeviceId);
         }
 
-        public static explicit operator Context(string deviceType)
+        public override string ToString()
+        {
+            return __Str__();
+        }
+
+        public static implicit operator Context(string deviceType)
         {
             return new Context(deviceType, 0);
+        }
+
+        public static implicit operator string(Context context)
+        {
+            return context.ToString();
         }
     }
 }

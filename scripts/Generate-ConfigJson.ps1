@@ -5,6 +5,15 @@ param(
 
 Set-StrictMode -Version Latest
 
+. "$PSScriptRoot\common.ps1"
+
+############################################################
+
+$InPathBase = Join-Path (Get-Item $PSScriptRoot\..).FullName "pip\mxnet_cu101mkl-1.5.0-py2.py3-none-win_amd64\mxnet"
+$OutPathBase = "src\Horker.MXNet\generated\mxnet\{0}.config.json"
+
+############################################################
+
 $ClassRe = "^class (\w+)(?:\((\w+)\))?"
 $DefRe = "^( {0,4})def (\w+)\(((?:[^:]|\r|\n)*)\):"
 $PropertyRe = "^ {4}@property"
@@ -12,6 +21,8 @@ $SetterRe = "^ {4}@(\w+)\.setter"
 $ClassPropertyRe = "^ {4}@classproperty"
 $FieldRe = "^ *self\.([a-z\d_]+)\s*=\s*(.+)"
 $LineRe = "(" + ($ClassRe, $DefRe, $PropertyRe, $SetterRe, $ClassPropertyRe, $FieldRe -join ")|(") + ")"
+
+############################################################
 
 $Classes = [ordered]@{}
 
@@ -28,34 +39,6 @@ function Get-ClassObject([string]$name, [string[]]$bases)
         $Classes[$name] = $class
     }
     $class
-}
-
-function ConvertTo-CamelCase([string]$s, [bool]$upper = $true)
-{
-    if ($s -eq "_") {
-        return $s
-    }
-
-    if ($s -match "^[A-Z0-9_]+$") {
-        return $s
-    }
-
-    $special = $false
-    if ($s -match "^__(.+)__$") {
-        $special = $true
-        $s = $matces.Groups[1].Value
-    }
-
-    $s = $s -replace "^(?:__)?(.+)(?:__)?$", '$1'
-
-    $words = $s -split "(?<=.)_"
-    $result = ($words | foreach { $i = 0 } { ++$i; ($upper -or $i -gt 1) -and $_.Length -gt 1 ? [char]::ToUpper($_[0]) + $_.Substring(1) : $_ }) -join ""
-
-    if ($special) {
-        $result = "__" + $result + "__"
-    }
-
-    $result
 }
 
 function Infer-Type([string]$Name, [string]$DefaultValue = "") {
@@ -199,7 +182,12 @@ function Build-ClassDef([string[]]$lines) {
                 $static = "static "
             }
 
-            $params = @(($params -split "\s*,\s*") | where { -not [string]::IsNullOrWhitespace($_) -and $_ -ne "self" -and ($defType -ne "classProperty" -or $_ -ne "cls" -or -$_ -match "\*\*") })
+            $params = @(($params -split "\s*,\s*") | where {
+                -not [string]::IsNullOrWhitespace($_) -and
+                "self" -ne $_ -and
+                ($defType -ne "classProperty" -or $_ -ne "cls") -and
+                $_ -notmatch "\*\*" })
+
             $params.Count
             $paramString = ($params | foreach {
                 $name, $defaultValue = $_ -split "\s*=\s*"
@@ -303,24 +291,27 @@ $TypeNames = [ordered]@{
 
 ############################################################
 
-function Get-OutPath([string]$pythonFile)
+function Get-OutPath([string]$inPpath)
 {
-    $basePath = (Get-Item $PSScriptRoot\..).FullName
-    $inPath = (Get-Item $pythonFile).FullName
-    $inPath = $inPath.Substring($basePath.Length) -Replace "incubator-mxnet\\python\\"
-    $outPath = "src\Horker.MXNet\generated\$inPath.config.json"
+    $inPath = $inPath.Substring($InPathBase.Length)
+    $outPath = "src\Horker.MXNet\config\mxnet\{0}.config.json" -f $inPath
     $outPath
 }
 
 ############################################################
 
-$outPath = Get-OutPath $PythonFile
+$inPath = (Get-Item (Join-Path $InPathBase $pythonFile)).FullName
+$outPath = Get-OutPath $inPath
+
+Write-Host "Input: $inPath"
+Write-Host "Output: $outPath"
+
 if (-not $Clobber -and (Test-Path $outPath)) {
     Write-Error "output file already exists: $outPath"
     exit
 }
 
-$doc = Get-Content -Raw -Encoding utf8 $PythonFile
+$doc = Get-Content -Raw -Encoding utf8 $inPath
 
 $m = (New-Object Regex $LineRe, "Multiline").Matches($doc)
 
@@ -329,10 +320,10 @@ $lines
 Build-ClassDef $lines
 
 $out = [ordered]@{
-    UsingNamespaces = $UsingNamespaces
+    UsingNamespaces = @()
     Namespace = $Namespace
-    Replacements = $Replacements
-    TypeNames = $TypeNames
+    Replacements = @{}
+    TypeNames = @{}
     Classes = $Classes
 }
 
