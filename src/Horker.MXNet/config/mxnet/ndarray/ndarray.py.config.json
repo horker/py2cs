@@ -106,12 +106,12 @@
         ],
         "arange": [
           {
-            "Signature": "public static object Arange(object start, object stop = null, float step = 1.0f, int repeat = 1, object inferRange = null, Context ctx = null, DType dtype = default)"
+            "Signature": "public static NDArray Arange(double start, double stop = double.NaN, double step = 1.0, int repeat = 1, bool inferRange = false, Context ctx = null, DType dtype = default)"
           }
         ],
         "linspace": [
           {
-            "Signature": "public static object Linspace(object start, object stop, object num, bool endpoint = true, Context ctx = null, DType dtype = default)"
+            "Signature": "public static NDArray Linspace(double start, double stop, int num, bool endpoint = true, Context ctx = null, DType dtype = default)"
           }
         ],
         "_ufunc_helper": [
@@ -698,7 +698,7 @@
         ],
         "__setitem__": [
           {
-            "Signature": "internal object __Setitem__(object key, object value)"
+            "Signature": "internal void __Setitem__(NDArray key, NDArray value)"
           }
         ],
         "__getitem__": [

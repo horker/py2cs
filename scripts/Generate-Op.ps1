@@ -58,7 +58,7 @@ $SymbolInternalPrologue = $Prologue -f "Horker.MXNet", "Symbol", "SymbolBase", "
 
 function Parse-Argument($Argument, [bool]$IsNDArray) {
 
-    $name = $Argument.Name
+    $name = ConvertTo-CamelCase $Argument.Name $false
     if (("param", "this", "out", "base") -contains $name) {
         $name = "@" + $name
     }

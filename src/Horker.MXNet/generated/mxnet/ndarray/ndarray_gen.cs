@@ -443,7 +443,7 @@ namespace Horker.MXNet
         
         // Drop: __setstate__
         
-        internal object __Setitem__(object key, object value)
+        internal void __Setitem__(NDArray key, NDArray value)
         {
             // Expr
             var indexingDispatchCode = _getIndexingDispatchCode(key);
@@ -1754,7 +1754,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        public static object Arange(object start, object stop = null, float step = 1.0f, int repeat = 1, object inferRange = null, Context ctx = null, DType dtype = default)
+        public static NDArray Arange(double start, double stop = double.NaN, double step = 1.0, int repeat = 1, bool inferRange = false, Context ctx = null, DType dtype = default)
         {
             // Expr
             if (IsTrue((!IsNone(inferRange))))
@@ -1771,7 +1771,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        public static object Linspace(object start, object stop, object num, bool endpoint = true, Context ctx = null, DType dtype = default)
+        public static NDArray Linspace(double start, double stop, int num, bool endpoint = true, Context ctx = null, DType dtype = default)
         {
             // Expr
             if (IsTrue((IsNone(ctx))))
@@ -1789,7 +1789,7 @@ namespace Horker.MXNet
         public static NDArray Add(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastAdd(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastAdd(lhs, rhs);
         }
     }
     
@@ -1798,7 +1798,7 @@ namespace Horker.MXNet
         public static NDArray Add(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._plusScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._plusScalar(lhs, rhs);
         }
     }
     
@@ -1807,7 +1807,7 @@ namespace Horker.MXNet
         public static NDArray Add(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._plusScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._plusScalar(rhs, lhs);
         }
     }
     
@@ -1816,7 +1816,7 @@ namespace Horker.MXNet
         public static float Add(float lhs, float rhs)
         {
             // Expr
-            return Operator.Add(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Operator.Add(lhs, rhs);
         }
     }
     
@@ -1825,7 +1825,7 @@ namespace Horker.MXNet
         public static NDArray Subtract(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastSub(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastSub(lhs, rhs);
         }
     }
     
@@ -1834,7 +1834,7 @@ namespace Horker.MXNet
         public static NDArray Subtract(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._minusScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._minusScalar(lhs, rhs);
         }
     }
     
@@ -1843,7 +1843,7 @@ namespace Horker.MXNet
         public static NDArray Subtract(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._rminusScalar(rhs, lhs);;
+            return /* _ufunc_helper expanded */ _internal._rminusScalar(rhs, lhs);
         }
     }
     
@@ -1852,7 +1852,7 @@ namespace Horker.MXNet
         public static float Subtract(float lhs, float rhs)
         {
             // Expr
-            return Operator.Sub(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Operator.Sub(lhs, rhs);
         }
     }
     
@@ -1861,7 +1861,7 @@ namespace Horker.MXNet
         public static NDArray Multiply(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastMul(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastMul(lhs, rhs);
         }
     }
     
@@ -1870,7 +1870,7 @@ namespace Horker.MXNet
         public static NDArray Multiply(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._mulScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._mulScalar(lhs, rhs);
         }
     }
     
@@ -1879,7 +1879,7 @@ namespace Horker.MXNet
         public static NDArray Multiply(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._mulScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._mulScalar(rhs, lhs);
         }
     }
     
@@ -1888,7 +1888,7 @@ namespace Horker.MXNet
         public static float Multiply(float lhs, float rhs)
         {
             // Expr
-            return Operator.Mul(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Operator.Mul(lhs, rhs);
         }
     }
     
@@ -1897,7 +1897,7 @@ namespace Horker.MXNet
         public static NDArray Divide(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastDiv(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastDiv(lhs, rhs);
         }
     }
     
@@ -1906,7 +1906,7 @@ namespace Horker.MXNet
         public static NDArray Divide(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._divScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._divScalar(lhs, rhs);
         }
     }
     
@@ -1915,7 +1915,7 @@ namespace Horker.MXNet
         public static NDArray Divide(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._rdivScalar(rhs, lhs);;
+            return /* _ufunc_helper expanded */ _internal._rdivScalar(rhs, lhs);
         }
     }
     
@@ -1924,7 +1924,7 @@ namespace Horker.MXNet
         public static float Divide(float lhs, float rhs)
         {
             // Expr
-            return Operator.Truediv(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Operator.Truediv(lhs, rhs);
         }
     }
     
@@ -1933,7 +1933,7 @@ namespace Horker.MXNet
         public static NDArray Modulo(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastMod(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastMod(lhs, rhs);
         }
     }
     
@@ -1942,7 +1942,7 @@ namespace Horker.MXNet
         public static NDArray Modulo(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._modScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._modScalar(lhs, rhs);
         }
     }
     
@@ -1951,7 +1951,7 @@ namespace Horker.MXNet
         public static NDArray Modulo(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._rmodScalar(rhs, lhs);;
+            return /* _ufunc_helper expanded */ _internal._rmodScalar(rhs, lhs);
         }
     }
     
@@ -1960,7 +1960,7 @@ namespace Horker.MXNet
         public static float Modulo(float lhs, float rhs)
         {
             // Expr
-            return Operator.Mod(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Operator.Mod(lhs, rhs);
         }
     }
     
@@ -1969,7 +1969,7 @@ namespace Horker.MXNet
         public static NDArray Power(NDArray @base, NDArray exp)
         {
             // Expr
-            return Op.BroadcastPower(base, exp);;
+            return /* _ufunc_helper expanded */ Op.BroadcastPower(@base, exp);
         }
     }
     
@@ -1978,7 +1978,7 @@ namespace Horker.MXNet
         public static NDArray Power(NDArray @base, float exp)
         {
             // Expr
-            return _internal._powerScalar(base, exp);;
+            return /* _ufunc_helper expanded */ _internal._powerScalar(@base, exp);
         }
     }
     
@@ -1987,7 +1987,7 @@ namespace Horker.MXNet
         public static NDArray Power(float @base, NDArray exp)
         {
             // Expr
-            return _internal._rpowerScalar(exp, base);;
+            return /* _ufunc_helper expanded */ _internal._rpowerScalar(exp, @base);
         }
     }
     
@@ -1996,7 +1996,7 @@ namespace Horker.MXNet
         public static float Power(float @base, float exp)
         {
             // Expr
-            return Operator.Pow(base, exp);;
+            return /* _ufunc_helper expanded */ Operator.Pow(@base, exp);
         }
     }
     
@@ -2005,7 +2005,7 @@ namespace Horker.MXNet
         public static NDArray Maximum(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastMaximum(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastMaximum(lhs, rhs);
         }
     }
     
@@ -2014,7 +2014,7 @@ namespace Horker.MXNet
         public static NDArray Maximum(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._maximumScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._maximumScalar(lhs, rhs);
         }
     }
     
@@ -2023,7 +2023,7 @@ namespace Horker.MXNet
         public static NDArray Maximum(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._maximumScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._maximumScalar(rhs, lhs);
         }
     }
     
@@ -2032,7 +2032,7 @@ namespace Horker.MXNet
         public static float Maximum(float lhs, float rhs)
         {
             // Expr
-            return (IsTrue((lhs > rhs)) ? lhs : rhs);
+            return /* _ufunc_helper expanded */ (IsTrue((lhs > rhs)) ? lhs : rhs);
         }
     }
     
@@ -2041,7 +2041,7 @@ namespace Horker.MXNet
         public static NDArray Minimum(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastMinimum(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastMinimum(lhs, rhs);
         }
     }
     
@@ -2050,7 +2050,7 @@ namespace Horker.MXNet
         public static NDArray Minimum(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._minimumScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._minimumScalar(lhs, rhs);
         }
     }
     
@@ -2059,7 +2059,7 @@ namespace Horker.MXNet
         public static NDArray Minimum(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._minimumScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._minimumScalar(rhs, lhs);
         }
     }
     
@@ -2068,7 +2068,7 @@ namespace Horker.MXNet
         public static float Minimum(float lhs, float rhs)
         {
             // Expr
-            return (IsTrue((lhs < rhs)) ? lhs : rhs);
+            return /* _ufunc_helper expanded */ (IsTrue((lhs < rhs)) ? lhs : rhs);
         }
     }
     
@@ -2077,7 +2077,7 @@ namespace Horker.MXNet
         public static NDArray Equal(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastEqual(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastEqual(lhs, rhs);
         }
     }
     
@@ -2086,7 +2086,7 @@ namespace Horker.MXNet
         public static NDArray Equal(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._equalScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._equalScalar(lhs, rhs);
         }
     }
     
@@ -2095,7 +2095,7 @@ namespace Horker.MXNet
         public static NDArray Equal(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._equalScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._equalScalar(rhs, lhs);
         }
     }
     
@@ -2104,7 +2104,7 @@ namespace Horker.MXNet
         public static float Equal(float lhs, float rhs)
         {
             // Expr
-            return (IsTrue((lhs == rhs)) ? 1 : 0);
+            return /* _ufunc_helper expanded */ (IsTrue((lhs == rhs)) ? 1 : 0);
         }
     }
     
@@ -2113,7 +2113,7 @@ namespace Horker.MXNet
         public static NDArray NotEqual(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastNotEqual(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastNotEqual(lhs, rhs);
         }
     }
     
@@ -2122,7 +2122,7 @@ namespace Horker.MXNet
         public static NDArray NotEqual(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._notEqualScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._notEqualScalar(lhs, rhs);
         }
     }
     
@@ -2131,7 +2131,7 @@ namespace Horker.MXNet
         public static NDArray NotEqual(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._notEqualScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._notEqualScalar(rhs, lhs);
         }
     }
     
@@ -2140,7 +2140,7 @@ namespace Horker.MXNet
         public static float NotEqual(float lhs, float rhs)
         {
             // Expr
-            return (IsTrue((lhs != rhs)) ? 1 : 0);
+            return /* _ufunc_helper expanded */ (IsTrue((lhs != rhs)) ? 1 : 0);
         }
     }
     
@@ -2149,7 +2149,7 @@ namespace Horker.MXNet
         public static NDArray Greater(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastGreater(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastGreater(lhs, rhs);
         }
     }
     
@@ -2158,7 +2158,7 @@ namespace Horker.MXNet
         public static NDArray Greater(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._greaterScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._greaterScalar(lhs, rhs);
         }
     }
     
@@ -2167,7 +2167,7 @@ namespace Horker.MXNet
         public static NDArray Greater(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._lesserScalar(rhs, lhs);;
+            return /* _ufunc_helper expanded */ _internal._lesserScalar(rhs, lhs);
         }
     }
     
@@ -2176,7 +2176,7 @@ namespace Horker.MXNet
         public static float Greater(float lhs, float rhs)
         {
             // Expr
-            return (IsTrue((lhs > rhs)) ? 1 : 0);
+            return /* _ufunc_helper expanded */ (IsTrue((lhs > rhs)) ? 1 : 0);
         }
     }
     
@@ -2185,7 +2185,7 @@ namespace Horker.MXNet
         public static NDArray GreaterEqual(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastGreaterEqual(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastGreaterEqual(lhs, rhs);
         }
     }
     
@@ -2194,7 +2194,7 @@ namespace Horker.MXNet
         public static NDArray GreaterEqual(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._greaterEqualScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._greaterEqualScalar(lhs, rhs);
         }
     }
     
@@ -2203,7 +2203,7 @@ namespace Horker.MXNet
         public static NDArray GreaterEqual(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._lesserEqualScalar(rhs, lhs);;
+            return /* _ufunc_helper expanded */ _internal._lesserEqualScalar(rhs, lhs);
         }
     }
     
@@ -2212,7 +2212,7 @@ namespace Horker.MXNet
         public static float GreaterEqual(float lhs, float rhs)
         {
             // Expr
-            return (IsTrue((lhs >= rhs)) ? 1 : 0);
+            return /* _ufunc_helper expanded */ (IsTrue((lhs >= rhs)) ? 1 : 0);
         }
     }
     
@@ -2221,7 +2221,7 @@ namespace Horker.MXNet
         public static NDArray Lesser(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastLesser(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastLesser(lhs, rhs);
         }
     }
     
@@ -2230,7 +2230,7 @@ namespace Horker.MXNet
         public static NDArray Lesser(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._lesserScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._lesserScalar(lhs, rhs);
         }
     }
     
@@ -2239,7 +2239,7 @@ namespace Horker.MXNet
         public static NDArray Lesser(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._greaterScalar(rhs, lhs);;
+            return /* _ufunc_helper expanded */ _internal._greaterScalar(rhs, lhs);
         }
     }
     
@@ -2248,7 +2248,7 @@ namespace Horker.MXNet
         public static float Lesser(float lhs, float rhs)
         {
             // Expr
-            return (IsTrue((lhs < rhs)) ? 1 : 0);
+            return /* _ufunc_helper expanded */ (IsTrue((lhs < rhs)) ? 1 : 0);
         }
     }
     
@@ -2257,7 +2257,7 @@ namespace Horker.MXNet
         public static NDArray LesserEqual(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastLesserEqual(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastLesserEqual(lhs, rhs);
         }
     }
     
@@ -2266,7 +2266,7 @@ namespace Horker.MXNet
         public static NDArray LesserEqual(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._lesserEqualScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._lesserEqualScalar(lhs, rhs);
         }
     }
     
@@ -2275,7 +2275,7 @@ namespace Horker.MXNet
         public static NDArray LesserEqual(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._greaterEqualScalar(rhs, lhs);;
+            return /* _ufunc_helper expanded */ _internal._greaterEqualScalar(rhs, lhs);
         }
     }
     
@@ -2284,7 +2284,7 @@ namespace Horker.MXNet
         public static float LesserEqual(float lhs, float rhs)
         {
             // Expr
-            return (IsTrue((lhs <= rhs)) ? 1 : 0);
+            return /* _ufunc_helper expanded */ (IsTrue((lhs <= rhs)) ? 1 : 0);
         }
     }
     
@@ -2293,7 +2293,7 @@ namespace Horker.MXNet
         public static NDArray LogicalAnd(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastLogicalAnd(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastLogicalAnd(lhs, rhs);
         }
     }
     
@@ -2302,7 +2302,7 @@ namespace Horker.MXNet
         public static NDArray LogicalAnd(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._logicalAndScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._logicalAndScalar(lhs, rhs);
         }
     }
     
@@ -2311,7 +2311,7 @@ namespace Horker.MXNet
         public static NDArray LogicalAnd(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._logicalAndScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._logicalAndScalar(rhs, lhs);
         }
     }
     
@@ -2320,7 +2320,7 @@ namespace Horker.MXNet
         public static float LogicalAnd(float lhs, float rhs)
         {
             // Expr
-            return (IsTrue((IsTrue(lhs) && IsTrue(rhs))) ? 1 : 0);
+            return /* _ufunc_helper expanded */ (IsTrue((IsTrue(lhs) && IsTrue(rhs))) ? 1 : 0);
         }
     }
     
@@ -2329,7 +2329,7 @@ namespace Horker.MXNet
         public static NDArray LogicalOr(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastLogicalOr(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastLogicalOr(lhs, rhs);
         }
     }
     
@@ -2338,7 +2338,7 @@ namespace Horker.MXNet
         public static NDArray LogicalOr(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._logicalOrScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._logicalOrScalar(lhs, rhs);
         }
     }
     
@@ -2347,7 +2347,7 @@ namespace Horker.MXNet
         public static NDArray LogicalOr(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._logicalOrScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._logicalOrScalar(rhs, lhs);
         }
     }
     
@@ -2356,7 +2356,7 @@ namespace Horker.MXNet
         public static float LogicalOr(float lhs, float rhs)
         {
             // Expr
-            return (IsTrue((IsTrue(lhs) || IsTrue(rhs))) ? 1 : 0);
+            return /* _ufunc_helper expanded */ (IsTrue((IsTrue(lhs) || IsTrue(rhs))) ? 1 : 0);
         }
     }
     
@@ -2365,7 +2365,7 @@ namespace Horker.MXNet
         public static NDArray LogicalXor(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return Op.BroadcastLogicalXor(lhs, rhs);;
+            return /* _ufunc_helper expanded */ Op.BroadcastLogicalXor(lhs, rhs);
         }
     }
     
@@ -2374,7 +2374,7 @@ namespace Horker.MXNet
         public static NDArray LogicalXor(NDArray lhs, float rhs)
         {
             // Expr
-            return _internal._logicalXorScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._logicalXorScalar(lhs, rhs);
         }
     }
     
@@ -2383,7 +2383,7 @@ namespace Horker.MXNet
         public static NDArray LogicalXor(float lhs, NDArray rhs)
         {
             // Expr
-            return _internal._logicalXorScalar(lhs, rhs);;
+            return /* _ufunc_helper expanded */ _internal._logicalXorScalar(rhs, lhs);
         }
     }
     
@@ -2392,7 +2392,7 @@ namespace Horker.MXNet
         public static float LogicalXor(float lhs, float rhs)
         {
             // Expr
-            return (IsTrue((Bool(lhs) ^ Bool(rhs))) ? 1 : 0);
+            return /* _ufunc_helper expanded */ (IsTrue((Bool(lhs) ^ Bool(rhs))) ? 1 : 0);
         }
     }
     

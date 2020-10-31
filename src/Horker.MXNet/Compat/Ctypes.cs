@@ -33,5 +33,7 @@ namespace Horker.MXNet.Compat
 
         public static IntPtr CVoidP() => default;
         public static IntPtr CVoidP(int obj) => (IntPtr)obj;
+
+        public static T[] Pointer<T>(T value) => new T[] { value };
     }
 }

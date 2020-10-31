@@ -8,7 +8,7 @@ namespace Horker.MXNet
     {
         public static class Op
         {
-        public static SymbolList BatchNormV1(Symbol data, Symbol gamma, Symbol beta, float eps, float momentum, bool fix_gamma, bool use_global_stats, bool output_mean_var, string symbol_name = null)
+        public static SymbolList BatchNormV1(Symbol data, Symbol gamma, Symbol beta, float eps, float momentum, bool fixGamma, bool useGlobalStats, bool outputMeanVar, string symbol_name = null)
         {
             return new Operator("BatchNorm_v1")
                 .SetInput(data)
@@ -16,28 +16,28 @@ namespace Horker.MXNet
                 .SetInput(beta)
                 .SetParam("eps", eps)
                 .SetParam("momentum", momentum)
-                .SetParam("fix_gamma", fix_gamma)
-                .SetParam("use_global_stats", use_global_stats)
-                .SetParam("output_mean_var", output_mean_var)
+                .SetParam("fixGamma", fixGamma)
+                .SetParam("useGlobalStats", useGlobalStats)
+                .SetParam("outputMeanVar", outputMeanVar)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList AllFinite(NDArray data, bool init_output, string symbol_name = null)
+        public static SymbolList AllFinite(NDArray data, bool initOutput, string symbol_name = null)
         {
             return new Operator("all_finite")
                 .SetInput(data)
-                .SetParam("init_output", init_output)
+                .SetParam("initOutput", initOutput)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList MultiAllFinite(SymbolList data, int num_arrays, bool init_output, string symbol_name = null)
+        public static SymbolList MultiAllFinite(SymbolList data, int numArrays, bool initOutput, string symbol_name = null)
         {
             return new Operator("multi_all_finite")
                 .SetInput(data)
-                .SetParam("num_arrays", num_arrays)
-                .SetParam("init_output", init_output)
+                .SetParam("numArrays", numArrays)
+                .SetParam("initOutput", initOutput)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -50,35 +50,35 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Custom(SymbolList data, string op_type, string symbol_name = null)
+        public static SymbolList Custom(SymbolList data, string opType, string symbol_name = null)
         {
             return new Operator("Custom")
                 .SetInput(data)
-                .SetParam("op_type", op_type)
+                .SetParam("opType", opType)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList IdentityAttachKLSparseReg(Symbol data, float sparseness_target, float penalty, float momentum, string symbol_name = null)
+        public static SymbolList IdentityAttachKLSparseReg(Symbol data, float sparsenessTarget, float penalty, float momentum, string symbol_name = null)
         {
             return new Operator("IdentityAttachKLSparseReg")
                 .SetInput(data)
-                .SetParam("sparseness_target", sparseness_target)
+                .SetParam("sparsenessTarget", sparsenessTarget)
                 .SetParam("penalty", penalty)
                 .SetParam("momentum", momentum)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList LeakyReLU(Symbol data, Symbol gamma, string act_type, float slope, float lower_bound, float upper_bound, string symbol_name = null)
+        public static SymbolList LeakyReLU(Symbol data, Symbol gamma, string actType, float slope, float lowerBound, float upperBound, string symbol_name = null)
         {
             return new Operator("LeakyReLU")
                 .SetInput(data)
                 .SetInput(gamma)
-                .SetParam("act_type", act_type)
+                .SetParam("actType", actType)
                 .SetParam("slope", slope)
-                .SetParam("lower_bound", lower_bound)
-                .SetParam("upper_bound", upper_bound)
+                .SetParam("lowerBound", lowerBound)
+                .SetParam("upperBound", upperBound)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -92,45 +92,45 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Activation(Symbol data, string act_type, string symbol_name = null)
+        public static SymbolList Activation(Symbol data, string actType, string symbol_name = null)
         {
             return new Operator("Activation")
                 .SetInput(data)
-                .SetParam("act_type", act_type)
+                .SetParam("actType", actType)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList BatchNorm(Symbol data, Symbol gamma, Symbol beta, Symbol moving_mean, Symbol moving_var, double eps, float momentum, bool fix_gamma, bool use_global_stats, bool output_mean_var, int axis, bool cudnn_off, string symbol_name = null)
+        public static SymbolList BatchNorm(Symbol data, Symbol gamma, Symbol beta, Symbol movingMean, Symbol movingVar, double eps, float momentum, bool fixGamma, bool useGlobalStats, bool outputMeanVar, int axis, bool cudnnOff, string symbol_name = null)
         {
             return new Operator("BatchNorm")
                 .SetInput(data)
                 .SetInput(gamma)
                 .SetInput(beta)
-                .SetInput(moving_mean)
-                .SetInput(moving_var)
+                .SetInput(movingMean)
+                .SetInput(movingVar)
                 .SetParam("eps", eps)
                 .SetParam("momentum", momentum)
-                .SetParam("fix_gamma", fix_gamma)
-                .SetParam("use_global_stats", use_global_stats)
-                .SetParam("output_mean_var", output_mean_var)
+                .SetParam("fixGamma", fixGamma)
+                .SetParam("useGlobalStats", useGlobalStats)
+                .SetParam("outputMeanVar", outputMeanVar)
                 .SetParam("axis", axis)
-                .SetParam("cudnn_off", cudnn_off)
+                .SetParam("cudnnOff", cudnnOff)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Concat(SymbolList data, int num_args, int dim, string symbol_name = null)
+        public static SymbolList Concat(SymbolList data, int numArgs, int dim, string symbol_name = null)
         {
             return new Operator("Concat")
                 .SetInput(data)
-                .SetParam("num_args", num_args)
+                .SetParam("numArgs", numArgs)
                 .SetParam("dim", dim)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Convolution(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride, Shape dilate, Shape pad, int num_filter, int num_group, long workspace, bool no_bias, string cudnn_tune, bool cudnn_off, string layout, string symbol_name = null)
+        public static SymbolList Convolution(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride, Shape dilate, Shape pad, int numFilter, int numGroup, long workspace, bool noBias, string cudnnTune, bool cudnnOff, string layout, string symbol_name = null)
         {
             return new Operator("Convolution")
                 .SetInput(data)
@@ -140,32 +140,32 @@ namespace Horker.MXNet
                 .SetParam("stride", stride)
                 .SetParam("dilate", dilate)
                 .SetParam("pad", pad)
-                .SetParam("num_filter", num_filter)
-                .SetParam("num_group", num_group)
+                .SetParam("numFilter", numFilter)
+                .SetParam("numGroup", numGroup)
                 .SetParam("workspace", workspace)
-                .SetParam("no_bias", no_bias)
-                .SetParam("cudnn_tune", cudnn_tune)
-                .SetParam("cudnn_off", cudnn_off)
+                .SetParam("noBias", noBias)
+                .SetParam("cudnnTune", cudnnTune)
+                .SetParam("cudnnOff", cudnnOff)
                 .SetParam("layout", layout)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList CTCLoss(Symbol data, Symbol label, Symbol data_lengths, Symbol label_lengths, bool use_data_lengths, bool use_label_lengths, string blank_label, string symbol_name = null)
+        public static SymbolList CTCLoss(Symbol data, Symbol label, Symbol dataLengths, Symbol labelLengths, bool useDataLengths, bool useLabelLengths, string blankLabel, string symbol_name = null)
         {
             return new Operator("CTCLoss")
                 .SetInput(data)
                 .SetInput(label)
-                .SetInput(data_lengths)
-                .SetInput(label_lengths)
-                .SetParam("use_data_lengths", use_data_lengths)
-                .SetParam("use_label_lengths", use_label_lengths)
-                .SetParam("blank_label", blank_label)
+                .SetInput(dataLengths)
+                .SetInput(labelLengths)
+                .SetParam("useDataLengths", useDataLengths)
+                .SetParam("useLabelLengths", useLabelLengths)
+                .SetParam("blankLabel", blankLabel)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Deconvolution(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride, Shape dilate, Shape pad, Shape adj, Shape target_shape, int num_filter, int num_group, long workspace, bool no_bias, string cudnn_tune, bool cudnn_off, string layout, string symbol_name = null)
+        public static SymbolList Deconvolution(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride, Shape dilate, Shape pad, Shape adj, Shape targetShape, int numFilter, int numGroup, long workspace, bool noBias, string cudnnTune, bool cudnnOff, string layout, string symbol_name = null)
         {
             return new Operator("Deconvolution")
                 .SetInput(data)
@@ -176,44 +176,44 @@ namespace Horker.MXNet
                 .SetParam("dilate", dilate)
                 .SetParam("pad", pad)
                 .SetParam("adj", adj)
-                .SetParam("target_shape", target_shape)
-                .SetParam("num_filter", num_filter)
-                .SetParam("num_group", num_group)
+                .SetParam("targetShape", targetShape)
+                .SetParam("numFilter", numFilter)
+                .SetParam("numGroup", numGroup)
                 .SetParam("workspace", workspace)
-                .SetParam("no_bias", no_bias)
-                .SetParam("cudnn_tune", cudnn_tune)
-                .SetParam("cudnn_off", cudnn_off)
+                .SetParam("noBias", noBias)
+                .SetParam("cudnnTune", cudnnTune)
+                .SetParam("cudnnOff", cudnnOff)
                 .SetParam("layout", layout)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Dropout(Symbol data, float p, string mode, Shape axes, bool cudnn_off, string symbol_name = null)
+        public static SymbolList Dropout(Symbol data, float p, string mode, Shape axes, bool cudnnOff, string symbol_name = null)
         {
             return new Operator("Dropout")
                 .SetInput(data)
                 .SetParam("p", p)
                 .SetParam("mode", mode)
                 .SetParam("axes", axes)
-                .SetParam("cudnn_off", cudnn_off)
+                .SetParam("cudnnOff", cudnnOff)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList FullyConnected(Symbol data, Symbol weight, Symbol bias, int num_hidden, bool no_bias, bool flatten, string symbol_name = null)
+        public static SymbolList FullyConnected(Symbol data, Symbol weight, Symbol bias, int numHidden, bool noBias, bool flatten, string symbol_name = null)
         {
             return new Operator("FullyConnected")
                 .SetInput(data)
                 .SetInput(weight)
                 .SetInput(bias)
-                .SetParam("num_hidden", num_hidden)
-                .SetParam("no_bias", no_bias)
+                .SetParam("numHidden", numHidden)
+                .SetParam("noBias", noBias)
                 .SetParam("flatten", flatten)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList LayerNorm(Symbol data, Symbol gamma, Symbol beta, int axis, float eps, bool output_mean_var, string symbol_name = null)
+        public static SymbolList LayerNorm(Symbol data, Symbol gamma, Symbol beta, int axis, float eps, bool outputMeanVar, string symbol_name = null)
         {
             return new Operator("LayerNorm")
                 .SetInput(data)
@@ -221,7 +221,7 @@ namespace Horker.MXNet
                 .SetInput(beta)
                 .SetParam("axis", axis)
                 .SetParam("eps", eps)
-                .SetParam("output_mean_var", output_mean_var)
+                .SetParam("outputMeanVar", outputMeanVar)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -248,19 +248,19 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Pooling(Symbol data, Shape kernel, string pool_type, bool global_pool, bool cudnn_off, string pooling_convention, Shape stride, Shape pad, int p_value, bool count_include_pad, string layout, string symbol_name = null)
+        public static SymbolList Pooling(Symbol data, Shape kernel, string poolType, bool globalPool, bool cudnnOff, string poolingConvention, Shape stride, Shape pad, int pValue, bool countIncludePad, string layout, string symbol_name = null)
         {
             return new Operator("Pooling")
                 .SetInput(data)
                 .SetParam("kernel", kernel)
-                .SetParam("pool_type", pool_type)
-                .SetParam("global_pool", global_pool)
-                .SetParam("cudnn_off", cudnn_off)
-                .SetParam("pooling_convention", pooling_convention)
+                .SetParam("poolType", poolType)
+                .SetParam("globalPool", globalPool)
+                .SetParam("cudnnOff", cudnnOff)
+                .SetParam("poolingConvention", poolingConvention)
                 .SetParam("stride", stride)
                 .SetParam("pad", pad)
-                .SetParam("p_value", p_value)
-                .SetParam("count_include_pad", count_include_pad)
+                .SetParam("pValue", pValue)
+                .SetParam("countIncludePad", countIncludePad)
                 .SetParam("layout", layout)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
@@ -308,34 +308,34 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList UpSampling(SymbolList data, int scale, int num_filter, string sample_type, string multi_input_mode, int num_args, long workspace, string symbol_name = null)
+        public static SymbolList UpSampling(SymbolList data, int scale, int numFilter, string sampleType, string multiInputMode, int numArgs, long workspace, string symbol_name = null)
         {
             return new Operator("UpSampling")
                 .SetInput(data)
                 .SetParam("scale", scale)
-                .SetParam("num_filter", num_filter)
-                .SetParam("sample_type", sample_type)
-                .SetParam("multi_input_mode", multi_input_mode)
-                .SetParam("num_args", num_args)
+                .SetParam("numFilter", numFilter)
+                .SetParam("sampleType", sampleType)
+                .SetParam("multiInputMode", multiInputMode)
+                .SetParam("numArgs", numArgs)
                 .SetParam("workspace", workspace)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SignsgdUpdate(Symbol weight, Symbol grad, float lr, float wd, float rescale_grad, float clip_gradient, string symbol_name = null)
+        public static SymbolList SignsgdUpdate(Symbol weight, Symbol grad, float lr, float wd, float rescaleGrad, float clipGradient, string symbol_name = null)
         {
             return new Operator("signsgd_update")
                 .SetInput(weight)
                 .SetInput(grad)
                 .SetParam("lr", lr)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SignumUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float momentum, float wd, float rescale_grad, float clip_gradient, float wd_lh, string symbol_name = null)
+        public static SymbolList SignumUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float momentum, float wd, float rescaleGrad, float clipGradient, float wdLh, string symbol_name = null)
         {
             return new Operator("signum_update")
                 .SetInput(weight)
@@ -344,82 +344,82 @@ namespace Horker.MXNet
                 .SetParam("lr", lr)
                 .SetParam("momentum", momentum)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("wd_lh", wd_lh)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("wdLh", wdLh)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList MultiSgdUpdate(SymbolList data, object lrs, object wds, float rescale_grad, float clip_gradient, int num_weights, string symbol_name = null)
+        public static SymbolList MultiSgdUpdate(SymbolList data, object lrs, object wds, float rescaleGrad, float clipGradient, int numWeights, string symbol_name = null)
         {
             return new Operator("multi_sgd_update")
                 .SetInput(data)
                 .SetParam("lrs", lrs)
                 .SetParam("wds", wds)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("num_weights", num_weights)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("numWeights", numWeights)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList MultiSgdMomUpdate(SymbolList data, object lrs, object wds, float momentum, float rescale_grad, float clip_gradient, int num_weights, string symbol_name = null)
+        public static SymbolList MultiSgdMomUpdate(SymbolList data, object lrs, object wds, float momentum, float rescaleGrad, float clipGradient, int numWeights, string symbol_name = null)
         {
             return new Operator("multi_sgd_mom_update")
                 .SetInput(data)
                 .SetParam("lrs", lrs)
                 .SetParam("wds", wds)
                 .SetParam("momentum", momentum)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("num_weights", num_weights)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("numWeights", numWeights)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList MultiMpSgdUpdate(SymbolList data, object lrs, object wds, float rescale_grad, float clip_gradient, int num_weights, string symbol_name = null)
+        public static SymbolList MultiMpSgdUpdate(SymbolList data, object lrs, object wds, float rescaleGrad, float clipGradient, int numWeights, string symbol_name = null)
         {
             return new Operator("multi_mp_sgd_update")
                 .SetInput(data)
                 .SetParam("lrs", lrs)
                 .SetParam("wds", wds)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("num_weights", num_weights)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("numWeights", numWeights)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList MultiMpSgdMomUpdate(SymbolList data, object lrs, object wds, float momentum, float rescale_grad, float clip_gradient, int num_weights, string symbol_name = null)
+        public static SymbolList MultiMpSgdMomUpdate(SymbolList data, object lrs, object wds, float momentum, float rescaleGrad, float clipGradient, int numWeights, string symbol_name = null)
         {
             return new Operator("multi_mp_sgd_mom_update")
                 .SetInput(data)
                 .SetParam("lrs", lrs)
                 .SetParam("wds", wds)
                 .SetParam("momentum", momentum)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("num_weights", num_weights)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("numWeights", numWeights)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SgdUpdate(Symbol weight, Symbol grad, float lr, float wd, float rescale_grad, float clip_gradient, bool lazy_update, string symbol_name = null)
+        public static SymbolList SgdUpdate(Symbol weight, Symbol grad, float lr, float wd, float rescaleGrad, float clipGradient, bool lazyUpdate, string symbol_name = null)
         {
             return new Operator("sgd_update")
                 .SetInput(weight)
                 .SetInput(grad)
                 .SetParam("lr", lr)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("lazy_update", lazy_update)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("lazyUpdate", lazyUpdate)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SgdMomUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float momentum, float wd, float rescale_grad, float clip_gradient, bool lazy_update, string symbol_name = null)
+        public static SymbolList SgdMomUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float momentum, float wd, float rescaleGrad, float clipGradient, bool lazyUpdate, string symbol_name = null)
         {
             return new Operator("sgd_mom_update")
                 .SetInput(weight)
@@ -428,14 +428,14 @@ namespace Horker.MXNet
                 .SetParam("lr", lr)
                 .SetParam("momentum", momentum)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("lazy_update", lazy_update)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("lazyUpdate", lazyUpdate)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList MpSgdUpdate(Symbol weight, Symbol grad, Symbol weight32, float lr, float wd, float rescale_grad, float clip_gradient, bool lazy_update, string symbol_name = null)
+        public static SymbolList MpSgdUpdate(Symbol weight, Symbol grad, Symbol weight32, float lr, float wd, float rescaleGrad, float clipGradient, bool lazyUpdate, string symbol_name = null)
         {
             return new Operator("mp_sgd_update")
                 .SetInput(weight)
@@ -443,14 +443,14 @@ namespace Horker.MXNet
                 .SetInput(weight32)
                 .SetParam("lr", lr)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("lazy_update", lazy_update)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("lazyUpdate", lazyUpdate)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList MpSgdMomUpdate(Symbol weight, Symbol grad, Symbol mom, Symbol weight32, float lr, float momentum, float wd, float rescale_grad, float clip_gradient, bool lazy_update, string symbol_name = null)
+        public static SymbolList MpSgdMomUpdate(Symbol weight, Symbol grad, Symbol mom, Symbol weight32, float lr, float momentum, float wd, float rescaleGrad, float clipGradient, bool lazyUpdate, string symbol_name = null)
         {
             return new Operator("mp_sgd_mom_update")
                 .SetInput(weight)
@@ -460,14 +460,14 @@ namespace Horker.MXNet
                 .SetParam("lr", lr)
                 .SetParam("momentum", momentum)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("lazy_update", lazy_update)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("lazyUpdate", lazyUpdate)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList FtmlUpdate(Symbol weight, Symbol grad, Symbol d, Symbol v, Symbol z, float lr, float beta1, float beta2, double epsilon, int t, float wd, float rescale_grad, float clip_grad, string symbol_name = null)
+        public static SymbolList FtmlUpdate(Symbol weight, Symbol grad, Symbol d, Symbol v, Symbol z, float lr, float beta1, float beta2, double epsilon, int t, float wd, float rescaleGrad, float clipGrad, string symbol_name = null)
         {
             return new Operator("ftml_update")
                 .SetInput(weight)
@@ -481,13 +481,13 @@ namespace Horker.MXNet
                 .SetParam("epsilon", epsilon)
                 .SetParam("t", t)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_grad", clip_grad)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGrad", clipGrad)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList AdamUpdate(Symbol weight, Symbol grad, Symbol mean, Symbol var, float lr, float beta1, float beta2, float epsilon, float wd, float rescale_grad, float clip_gradient, bool lazy_update, string symbol_name = null)
+        public static SymbolList AdamUpdate(Symbol weight, Symbol grad, Symbol mean, Symbol var, float lr, float beta1, float beta2, float epsilon, float wd, float rescaleGrad, float clipGradient, bool lazyUpdate, string symbol_name = null)
         {
             return new Operator("adam_update")
                 .SetInput(weight)
@@ -499,14 +499,14 @@ namespace Horker.MXNet
                 .SetParam("beta2", beta2)
                 .SetParam("epsilon", epsilon)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("lazy_update", lazy_update)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("lazyUpdate", lazyUpdate)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList NagMomUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float momentum, float wd, float rescale_grad, float clip_gradient, string symbol_name = null)
+        public static SymbolList NagMomUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float momentum, float wd, float rescaleGrad, float clipGradient, string symbol_name = null)
         {
             return new Operator("nag_mom_update")
                 .SetInput(weight)
@@ -515,13 +515,13 @@ namespace Horker.MXNet
                 .SetParam("lr", lr)
                 .SetParam("momentum", momentum)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList MpNagMomUpdate(Symbol weight, Symbol grad, Symbol mom, Symbol weight32, float lr, float momentum, float wd, float rescale_grad, float clip_gradient, string symbol_name = null)
+        public static SymbolList MpNagMomUpdate(Symbol weight, Symbol grad, Symbol mom, Symbol weight32, float lr, float momentum, float wd, float rescaleGrad, float clipGradient, string symbol_name = null)
         {
             return new Operator("mp_nag_mom_update")
                 .SetInput(weight)
@@ -531,13 +531,13 @@ namespace Horker.MXNet
                 .SetParam("lr", lr)
                 .SetParam("momentum", momentum)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList RmspropUpdate(Symbol weight, Symbol grad, Symbol n, float lr, float gamma1, float epsilon, float wd, float rescale_grad, float clip_gradient, float clip_weights, string symbol_name = null)
+        public static SymbolList RmspropUpdate(Symbol weight, Symbol grad, Symbol n, float lr, float gamma1, float epsilon, float wd, float rescaleGrad, float clipGradient, float clipWeights, string symbol_name = null)
         {
             return new Operator("rmsprop_update")
                 .SetInput(weight)
@@ -547,14 +547,14 @@ namespace Horker.MXNet
                 .SetParam("gamma1", gamma1)
                 .SetParam("epsilon", epsilon)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("clip_weights", clip_weights)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("clipWeights", clipWeights)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList RmspropalexUpdate(Symbol weight, Symbol grad, Symbol n, Symbol g, Symbol delta, float lr, float gamma1, float gamma2, float epsilon, float wd, float rescale_grad, float clip_gradient, float clip_weights, string symbol_name = null)
+        public static SymbolList RmspropalexUpdate(Symbol weight, Symbol grad, Symbol n, Symbol g, Symbol delta, float lr, float gamma1, float gamma2, float epsilon, float wd, float rescaleGrad, float clipGradient, float clipWeights, string symbol_name = null)
         {
             return new Operator("rmspropalex_update")
                 .SetInput(weight)
@@ -567,14 +567,14 @@ namespace Horker.MXNet
                 .SetParam("gamma2", gamma2)
                 .SetParam("epsilon", epsilon)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
-                .SetParam("clip_weights", clip_weights)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
+                .SetParam("clipWeights", clipWeights)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList FtrlUpdate(Symbol weight, Symbol grad, Symbol z, Symbol n, float lr, float lamda1, float beta, float wd, float rescale_grad, float clip_gradient, string symbol_name = null)
+        public static SymbolList FtrlUpdate(Symbol weight, Symbol grad, Symbol z, Symbol n, float lr, float lamda1, float beta, float wd, float rescaleGrad, float clipGradient, string symbol_name = null)
         {
             return new Operator("ftrl_update")
                 .SetInput(weight)
@@ -585,19 +585,19 @@ namespace Horker.MXNet
                 .SetParam("lamda1", lamda1)
                 .SetParam("beta", beta)
                 .SetParam("wd", wd)
-                .SetParam("rescale_grad", rescale_grad)
-                .SetParam("clip_gradient", clip_gradient)
+                .SetParam("rescaleGrad", rescaleGrad)
+                .SetParam("clipGradient", clipGradient)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Pad(Symbol data, string mode, Shape pad_width, double constant_value, string symbol_name = null)
+        public static SymbolList Pad(Symbol data, string mode, Shape padWidth, double constantValue, string symbol_name = null)
         {
             return new Operator("Pad")
                 .SetInput(data)
                 .SetParam("mode", mode)
-                .SetParam("pad_width", pad_width)
-                .SetParam("constant_value", constant_value)
+                .SetParam("padWidth", padWidth)
+                .SetParam("constantValue", constantValue)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -610,83 +610,83 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList LinearRegressionOutput(Symbol data, Symbol label, float grad_scale, string symbol_name = null)
+        public static SymbolList LinearRegressionOutput(Symbol data, Symbol label, float gradScale, string symbol_name = null)
         {
             return new Operator("LinearRegressionOutput")
                 .SetInput(data)
                 .SetInput(label)
-                .SetParam("grad_scale", grad_scale)
+                .SetParam("gradScale", gradScale)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList MAERegressionOutput(Symbol data, Symbol label, float grad_scale, string symbol_name = null)
+        public static SymbolList MAERegressionOutput(Symbol data, Symbol label, float gradScale, string symbol_name = null)
         {
             return new Operator("MAERegressionOutput")
                 .SetInput(data)
                 .SetInput(label)
-                .SetParam("grad_scale", grad_scale)
+                .SetParam("gradScale", gradScale)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList LogisticRegressionOutput(Symbol data, Symbol label, float grad_scale, string symbol_name = null)
+        public static SymbolList LogisticRegressionOutput(Symbol data, Symbol label, float gradScale, string symbol_name = null)
         {
             return new Operator("LogisticRegressionOutput")
                 .SetInput(data)
                 .SetInput(label)
-                .SetParam("grad_scale", grad_scale)
+                .SetParam("gradScale", gradScale)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList RNN(Symbol data, Symbol parameters, Symbol state, Symbol state_cell, Symbol sequence_length, int state_size, int num_layers, bool bidirectional, string mode, float p, bool state_outputs, int projection_size, double lstm_state_clip_min, double lstm_state_clip_max, bool lstm_state_clip_nan, bool use_sequence_length, string symbol_name = null)
+        public static SymbolList RNN(Symbol data, Symbol parameters, Symbol state, Symbol stateCell, Symbol sequenceLength, int stateSize, int numLayers, bool bidirectional, string mode, float p, bool stateOutputs, int projectionSize, double lstmStateClipMin, double lstmStateClipMax, bool lstmStateClipNan, bool useSequenceLength, string symbol_name = null)
         {
             return new Operator("RNN")
                 .SetInput(data)
                 .SetInput(parameters)
                 .SetInput(state)
-                .SetInput(state_cell)
-                .SetInput(sequence_length)
-                .SetParam("state_size", state_size)
-                .SetParam("num_layers", num_layers)
+                .SetInput(stateCell)
+                .SetInput(sequenceLength)
+                .SetParam("stateSize", stateSize)
+                .SetParam("numLayers", numLayers)
                 .SetParam("bidirectional", bidirectional)
                 .SetParam("mode", mode)
                 .SetParam("p", p)
-                .SetParam("state_outputs", state_outputs)
-                .SetParam("projection_size", projection_size)
-                .SetParam("lstm_state_clip_min", lstm_state_clip_min)
-                .SetParam("lstm_state_clip_max", lstm_state_clip_max)
-                .SetParam("lstm_state_clip_nan", lstm_state_clip_nan)
-                .SetParam("use_sequence_length", use_sequence_length)
+                .SetParam("stateOutputs", stateOutputs)
+                .SetParam("projectionSize", projectionSize)
+                .SetParam("lstmStateClipMin", lstmStateClipMin)
+                .SetParam("lstmStateClipMax", lstmStateClipMax)
+                .SetParam("lstmStateClipNan", lstmStateClipNan)
+                .SetParam("useSequenceLength", useSequenceLength)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SliceChannel(Symbol data, int num_outputs, int axis, bool squeeze_axis, string symbol_name = null)
+        public static SymbolList SliceChannel(Symbol data, int numOutputs, int axis, bool squeezeAxis, string symbol_name = null)
         {
             return new Operator("SliceChannel")
                 .SetInput(data)
-                .SetParam("num_outputs", num_outputs)
+                .SetParam("numOutputs", numOutputs)
                 .SetParam("axis", axis)
-                .SetParam("squeeze_axis", squeeze_axis)
+                .SetParam("squeezeAxis", squeezeAxis)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SoftmaxOutput(Symbol data, Symbol label, float grad_scale, float ignore_label, bool multi_output, bool use_ignore, bool preserve_shape, string normalization, bool out_grad, float smooth_alpha, string symbol_name = null)
+        public static SymbolList SoftmaxOutput(Symbol data, Symbol label, float gradScale, float ignoreLabel, bool multiOutput, bool useIgnore, bool preserveShape, string normalization, bool outGrad, float smoothAlpha, string symbol_name = null)
         {
             return new Operator("SoftmaxOutput")
                 .SetInput(data)
                 .SetInput(label)
-                .SetParam("grad_scale", grad_scale)
-                .SetParam("ignore_label", ignore_label)
-                .SetParam("multi_output", multi_output)
-                .SetParam("use_ignore", use_ignore)
-                .SetParam("preserve_shape", preserve_shape)
+                .SetParam("gradScale", gradScale)
+                .SetParam("ignoreLabel", ignoreLabel)
+                .SetParam("multiOutput", multiOutput)
+                .SetParam("useIgnore", useIgnore)
+                .SetParam("preserveShape", preserveShape)
                 .SetParam("normalization", normalization)
-                .SetParam("out_grad", out_grad)
-                .SetParam("smooth_alpha", smooth_alpha)
+                .SetParam("outGrad", outGrad)
+                .SetParam("smoothAlpha", smoothAlpha)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -710,11 +710,11 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList AmpMulticast(SymbolList data, int num_outputs, string symbol_name = null)
+        public static SymbolList AmpMulticast(SymbolList data, int numOutputs, string symbol_name = null)
         {
             return new Operator("amp_multicast")
                 .SetInput(data)
-                .SetParam("num_outputs", num_outputs)
+                .SetParam("numOutputs", numOutputs)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -855,24 +855,24 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList BroadcastLike(Symbol lhs, Symbol rhs, Shape lhs_axes, Shape rhs_axes, string symbol_name = null)
+        public static SymbolList BroadcastLike(Symbol lhs, Symbol rhs, Shape lhsAxes, Shape rhsAxes, string symbol_name = null)
         {
             return new Operator("broadcast_like")
                 .SetInput(lhs)
                 .SetInput(rhs)
-                .SetParam("lhs_axes", lhs_axes)
-                .SetParam("rhs_axes", rhs_axes)
+                .SetParam("lhsAxes", lhsAxes)
+                .SetParam("rhsAxes", rhsAxes)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Norm(Symbol data, int ord, Shape axis, string out_dtype, bool keepdims, string symbol_name = null)
+        public static SymbolList Norm(Symbol data, int ord, Shape axis, string outDtype, bool keepdims, string symbol_name = null)
         {
             return new Operator("norm")
                 .SetInput(data)
                 .SetParam("ord", ord)
                 .SetParam("axis", axis)
-                .SetParam("out_dtype", out_dtype)
+                .SetParam("outDtype", outDtype)
                 .SetParam("keepdims", keepdims)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
@@ -908,26 +908,26 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Dot(Symbol lhs, Symbol rhs, bool transpose_a, bool transpose_b, string forward_stype, string symbol_name = null)
+        public static SymbolList Dot(Symbol lhs, Symbol rhs, bool transposea, bool transposeb, string forwardStype, string symbol_name = null)
         {
             return new Operator("dot")
                 .SetInput(lhs)
                 .SetInput(rhs)
-                .SetParam("transpose_a", transpose_a)
-                .SetParam("transpose_b", transpose_b)
-                .SetParam("forward_stype", forward_stype)
+                .SetParam("transposea", transposea)
+                .SetParam("transposeb", transposeb)
+                .SetParam("forwardStype", forwardStype)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList BatchDot(Symbol lhs, Symbol rhs, bool transpose_a, bool transpose_b, string forward_stype, string symbol_name = null)
+        public static SymbolList BatchDot(Symbol lhs, Symbol rhs, bool transposea, bool transposeb, string forwardStype, string symbol_name = null)
         {
             return new Operator("batch_dot")
                 .SetInput(lhs)
                 .SetInput(rhs)
-                .SetParam("transpose_a", transpose_a)
-                .SetParam("transpose_b", transpose_b)
-                .SetParam("forward_stype", forward_stype)
+                .SetParam("transposea", transposea)
+                .SetParam("transposeb", transposeb)
+                .SetParam("forwardStype", forwardStype)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -1206,14 +1206,14 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList ShapeArray(Symbol data, int lhs_begin, int lhs_end, int rhs_begin, int rhs_end, string symbol_name = null)
+        public static SymbolList ShapeArray(Symbol data, int lhsBegin, int lhsEnd, int rhsBegin, int rhsEnd, string symbol_name = null)
         {
             return new Operator("shape_array")
                 .SetInput(data)
-                .SetParam("lhs_begin", lhs_begin)
-                .SetParam("lhs_end", lhs_end)
-                .SetParam("rhs_begin", rhs_begin)
-                .SetParam("rhs_end", rhs_end)
+                .SetParam("lhsBegin", lhsBegin)
+                .SetParam("lhsEnd", lhsEnd)
+                .SetParam("rhsBegin", rhsBegin)
+                .SetParam("rhsEnd", rhsEnd)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -1555,15 +1555,15 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Embedding(Symbol data, Symbol weight, int input_dim, int output_dim, string dtype, bool sparse_grad, string symbol_name = null)
+        public static SymbolList Embedding(Symbol data, Symbol weight, int inputDim, int outputDim, string dtype, bool sparseGrad, string symbol_name = null)
         {
             return new Operator("Embedding")
                 .SetInput(data)
                 .SetInput(weight)
-                .SetParam("input_dim", input_dim)
-                .SetParam("output_dim", output_dim)
+                .SetParam("inputDim", inputDim)
+                .SetParam("outputDim", outputDim)
                 .SetParam("dtype", dtype)
-                .SetParam("sparse_grad", sparse_grad)
+                .SetParam("sparseGrad", sparseGrad)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -1588,13 +1588,13 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList OneHot(Symbol indices, int depth, double on_value, double off_value, string dtype, string symbol_name = null)
+        public static SymbolList OneHot(Symbol indices, int depth, double onValue, double offValue, string dtype, string symbol_name = null)
         {
             return new Operator("one_hot")
                 .SetInput(indices)
                 .SetParam("depth", depth)
-                .SetParam("on_value", on_value)
-                .SetParam("off_value", off_value)
+                .SetParam("onValue", onValue)
+                .SetParam("offValue", offValue)
                 .SetParam("dtype", dtype)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
@@ -1635,14 +1635,14 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Reshape(Symbol data, Shape shape, bool reverse, Shape target_shape, bool keep_highest, string symbol_name = null)
+        public static SymbolList Reshape(Symbol data, Shape shape, bool reverse, Shape targetShape, bool keepHighest, string symbol_name = null)
         {
             return new Operator("Reshape")
                 .SetInput(data)
                 .SetParam("shape", shape)
                 .SetParam("reverse", reverse)
-                .SetParam("target_shape", target_shape)
-                .SetParam("keep_highest", keep_highest)
+                .SetParam("targetShape", targetShape)
+                .SetParam("keepHighest", keepHighest)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -1687,22 +1687,22 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SliceLike(Symbol data, Symbol shape_like, Shape axes, string symbol_name = null)
+        public static SymbolList SliceLike(Symbol data, Symbol shapeLike, Shape axes, string symbol_name = null)
         {
             return new Operator("slice_like")
                 .SetInput(data)
-                .SetInput(shape_like)
+                .SetInput(shapeLike)
                 .SetParam("axes", axes)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Clip(Symbol data, float a_min, float a_max, string symbol_name = null)
+        public static SymbolList Clip(Symbol data, float aMin, float aMax, string symbol_name = null)
         {
             return new Operator("clip")
                 .SetInput(data)
-                .SetParam("a_min", a_min)
-                .SetParam("a_max", a_max)
+                .SetParam("aMin", aMin)
+                .SetParam("aMax", aMax)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -1735,12 +1735,12 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Stack(SymbolList data, int axis, int num_args, string symbol_name = null)
+        public static SymbolList Stack(SymbolList data, int axis, int numArgs, string symbol_name = null)
         {
             return new Operator("stack")
                 .SetInput(data)
                 .SetParam("axis", axis)
-                .SetParam("num_args", num_args)
+                .SetParam("numArgs", numArgs)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -1754,69 +1754,69 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList DepthToSpace(Symbol data, int block_size, string symbol_name = null)
+        public static SymbolList DepthToSpace(Symbol data, int blockSize, string symbol_name = null)
         {
             return new Operator("depth_to_space")
                 .SetInput(data)
-                .SetParam("block_size", block_size)
+                .SetParam("blockSize", blockSize)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SpaceToDepth(Symbol data, int block_size, string symbol_name = null)
+        public static SymbolList SpaceToDepth(Symbol data, int blockSize, string symbol_name = null)
         {
             return new Operator("space_to_depth")
                 .SetInput(data)
-                .SetParam("block_size", block_size)
+                .SetParam("blockSize", blockSize)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Topk(Symbol data, int axis, int k, string ret_typ, bool is_ascend, string dtype, string symbol_name = null)
+        public static SymbolList Topk(Symbol data, int axis, int k, string retTyp, bool isAscend, string dtype, string symbol_name = null)
         {
             return new Operator("topk")
                 .SetInput(data)
                 .SetParam("axis", axis)
                 .SetParam("k", k)
-                .SetParam("ret_typ", ret_typ)
-                .SetParam("is_ascend", is_ascend)
+                .SetParam("retTyp", retTyp)
+                .SetParam("isAscend", isAscend)
                 .SetParam("dtype", dtype)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Sort(Symbol data, int axis, bool is_ascend, string symbol_name = null)
+        public static SymbolList Sort(Symbol data, int axis, bool isAscend, string symbol_name = null)
         {
             return new Operator("sort")
                 .SetInput(data)
                 .SetParam("axis", axis)
-                .SetParam("is_ascend", is_ascend)
+                .SetParam("isAscend", isAscend)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Argsort(Symbol data, int axis, bool is_ascend, string dtype, string symbol_name = null)
+        public static SymbolList Argsort(Symbol data, int axis, bool isAscend, string dtype, string symbol_name = null)
         {
             return new Operator("argsort")
                 .SetInput(data)
                 .SetParam("axis", axis)
-                .SetParam("is_ascend", is_ascend)
+                .SetParam("isAscend", isAscend)
                 .SetParam("dtype", dtype)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList BilinearSampler(Symbol data, Symbol grid, bool cudnn_off, string symbol_name = null)
+        public static SymbolList BilinearSampler(Symbol data, Symbol grid, bool cudnnOff, string symbol_name = null)
         {
             return new Operator("BilinearSampler")
                 .SetInput(data)
                 .SetInput(grid)
-                .SetParam("cudnn_off", cudnn_off)
+                .SetParam("cudnnOff", cudnnOff)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList ConvolutionV1(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride, Shape dilate, Shape pad, int num_filter, int num_group, long workspace, bool no_bias, string cudnn_tune, bool cudnn_off, string layout, string symbol_name = null)
+        public static SymbolList ConvolutionV1(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride, Shape dilate, Shape pad, int numFilter, int numGroup, long workspace, bool noBias, string cudnnTune, bool cudnnOff, string layout, string symbol_name = null)
         {
             return new Operator("Convolution_v1")
                 .SetInput(data)
@@ -1826,50 +1826,50 @@ namespace Horker.MXNet
                 .SetParam("stride", stride)
                 .SetParam("dilate", dilate)
                 .SetParam("pad", pad)
-                .SetParam("num_filter", num_filter)
-                .SetParam("num_group", num_group)
+                .SetParam("numFilter", numFilter)
+                .SetParam("numGroup", numGroup)
                 .SetParam("workspace", workspace)
-                .SetParam("no_bias", no_bias)
-                .SetParam("cudnn_tune", cudnn_tune)
-                .SetParam("cudnn_off", cudnn_off)
+                .SetParam("noBias", noBias)
+                .SetParam("cudnnTune", cudnnTune)
+                .SetParam("cudnnOff", cudnnOff)
                 .SetParam("layout", layout)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Correlation(Symbol data1, Symbol data2, int kernel_size, int max_displacement, int stride1, int stride2, int pad_size, bool is_multiply, string symbol_name = null)
+        public static SymbolList Correlation(Symbol data1, Symbol data2, int kernelSize, int maxDisplacement, int stride1, int stride2, int padSize, bool isMultiply, string symbol_name = null)
         {
             return new Operator("Correlation")
                 .SetInput(data1)
                 .SetInput(data2)
-                .SetParam("kernel_size", kernel_size)
-                .SetParam("max_displacement", max_displacement)
+                .SetParam("kernelSize", kernelSize)
+                .SetParam("maxDisplacement", maxDisplacement)
                 .SetParam("stride1", stride1)
                 .SetParam("stride2", stride2)
-                .SetParam("pad_size", pad_size)
-                .SetParam("is_multiply", is_multiply)
+                .SetParam("padSize", padSize)
+                .SetParam("isMultiply", isMultiply)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList Crop(SymbolList data, int num_args, Shape offset, Shape h_w, bool center_crop, string symbol_name = null)
+        public static SymbolList Crop(SymbolList data, int numArgs, Shape offset, Shape hw, bool centerCrop, string symbol_name = null)
         {
             return new Operator("Crop")
                 .SetInput(data)
-                .SetParam("num_args", num_args)
+                .SetParam("numArgs", numArgs)
                 .SetParam("offset", offset)
-                .SetParam("h_w", h_w)
-                .SetParam("center_crop", center_crop)
+                .SetParam("hw", hw)
+                .SetParam("centerCrop", centerCrop)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList GridGenerator(Symbol data, string transform_type, Shape target_shape, string symbol_name = null)
+        public static SymbolList GridGenerator(Symbol data, string transformType, Shape targetShape, string symbol_name = null)
         {
             return new Operator("GridGenerator")
                 .SetInput(data)
-                .SetParam("transform_type", transform_type)
-                .SetParam("target_shape", target_shape)
+                .SetParam("transformType", transformType)
+                .SetParam("targetShape", targetShape)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
@@ -1895,97 +1895,97 @@ namespace Horker.MXNet
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList MakeLoss(Symbol data, float grad_scale, float valid_thresh, string normalization, string symbol_name = null)
+        public static SymbolList MakeLoss(Symbol data, float gradScale, float validThresh, string normalization, string symbol_name = null)
         {
             return new Operator("MakeLoss")
                 .SetInput(data)
-                .SetParam("grad_scale", grad_scale)
-                .SetParam("valid_thresh", valid_thresh)
+                .SetParam("gradScale", gradScale)
+                .SetParam("validThresh", validThresh)
                 .SetParam("normalization", normalization)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList PoolingV1(Symbol data, Shape kernel, string pool_type, bool global_pool, string pooling_convention, Shape stride, Shape pad, string symbol_name = null)
+        public static SymbolList PoolingV1(Symbol data, Shape kernel, string poolType, bool globalPool, string poolingConvention, Shape stride, Shape pad, string symbol_name = null)
         {
             return new Operator("Pooling_v1")
                 .SetInput(data)
                 .SetParam("kernel", kernel)
-                .SetParam("pool_type", pool_type)
-                .SetParam("global_pool", global_pool)
-                .SetParam("pooling_convention", pooling_convention)
+                .SetParam("poolType", poolType)
+                .SetParam("globalPool", globalPool)
+                .SetParam("poolingConvention", poolingConvention)
                 .SetParam("stride", stride)
                 .SetParam("pad", pad)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList ROIPooling(Symbol data, Symbol rois, Shape pooled_size, float spatial_scale, string symbol_name = null)
+        public static SymbolList ROIPooling(Symbol data, Symbol rois, Shape pooledSize, float spatialScale, string symbol_name = null)
         {
             return new Operator("ROIPooling")
                 .SetInput(data)
                 .SetInput(rois)
-                .SetParam("pooled_size", pooled_size)
-                .SetParam("spatial_scale", spatial_scale)
+                .SetParam("pooledSize", pooledSize)
+                .SetParam("spatialScale", spatialScale)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SequenceLast(Symbol data, Symbol sequence_length, bool use_sequence_length, int axis, string symbol_name = null)
+        public static SymbolList SequenceLast(Symbol data, Symbol sequenceLength, bool useSequenceLength, int axis, string symbol_name = null)
         {
             return new Operator("SequenceLast")
                 .SetInput(data)
-                .SetInput(sequence_length)
-                .SetParam("use_sequence_length", use_sequence_length)
+                .SetInput(sequenceLength)
+                .SetParam("useSequenceLength", useSequenceLength)
                 .SetParam("axis", axis)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SequenceMask(Symbol data, Symbol sequence_length, bool use_sequence_length, float value, int axis, string symbol_name = null)
+        public static SymbolList SequenceMask(Symbol data, Symbol sequenceLength, bool useSequenceLength, float value, int axis, string symbol_name = null)
         {
             return new Operator("SequenceMask")
                 .SetInput(data)
-                .SetInput(sequence_length)
-                .SetParam("use_sequence_length", use_sequence_length)
+                .SetInput(sequenceLength)
+                .SetParam("useSequenceLength", useSequenceLength)
                 .SetParam("value", value)
                 .SetParam("axis", axis)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SequenceReverse(Symbol data, Symbol sequence_length, bool use_sequence_length, int axis, string symbol_name = null)
+        public static SymbolList SequenceReverse(Symbol data, Symbol sequenceLength, bool useSequenceLength, int axis, string symbol_name = null)
         {
             return new Operator("SequenceReverse")
                 .SetInput(data)
-                .SetInput(sequence_length)
-                .SetParam("use_sequence_length", use_sequence_length)
+                .SetInput(sequenceLength)
+                .SetParam("useSequenceLength", useSequenceLength)
                 .SetParam("axis", axis)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SpatialTransformer(Symbol data, Symbol loc, Shape target_shape, string transform_type, string sampler_type, bool cudnn_off, string symbol_name = null)
+        public static SymbolList SpatialTransformer(Symbol data, Symbol loc, Shape targetShape, string transformType, string samplerType, bool cudnnOff, string symbol_name = null)
         {
             return new Operator("SpatialTransformer")
                 .SetInput(data)
                 .SetInput(loc)
-                .SetParam("target_shape", target_shape)
-                .SetParam("transform_type", transform_type)
-                .SetParam("sampler_type", sampler_type)
-                .SetParam("cudnn_off", cudnn_off)
+                .SetParam("targetShape", targetShape)
+                .SetParam("transformType", transformType)
+                .SetParam("samplerType", samplerType)
+                .SetParam("cudnnOff", cudnnOff)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }
 
-        public static SymbolList SVMOutput(Symbol data, Symbol label, float margin, float regularization_coefficient, bool use_linear, string symbol_name = null)
+        public static SymbolList SVMOutput(Symbol data, Symbol label, float margin, float regularizationCoefficient, bool useLinear, string symbol_name = null)
         {
             return new Operator("SVMOutput")
                 .SetInput(data)
                 .SetInput(label)
                 .SetParam("margin", margin)
-                .SetParam("regularization_coefficient", regularization_coefficient)
-                .SetParam("use_linear", use_linear)
+                .SetParam("regularizationCoefficient", regularizationCoefficient)
+                .SetParam("useLinear", useLinear)
                 .SetParam("symbol_name", symbol_name)
                 .CreateSymbol(symbol_name);
         }

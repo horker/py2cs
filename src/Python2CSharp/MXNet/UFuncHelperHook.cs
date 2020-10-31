@@ -18,7 +18,7 @@ namespace Python2CSharp.MXNet
             if (ObjectNameOf(arg) != "Lambda")
             {
                 Generate(arg, ctx);
-                _out.Write($"({lhs}, {rhs});");
+                _out.Write($"({ConvertAsLocal(lhs)}, {ConvertAsLocal(rhs)})");
             }
             else
             {
@@ -47,6 +47,7 @@ namespace Python2CSharp.MXNet
             if (string.IsNullOrEmpty(rhs))
                 return ValueConstraint.NotApplicable;
 
+            _out.Write("/* _ufunc_helper expanded */ ");
             if (lhsType == "NDArray")
             {
                 if (rhsType == "NDArray")
@@ -58,7 +59,7 @@ namespace Python2CSharp.MXNet
                 if (rhsType == "NDArray")
                 {
                     if (IsConstantNone(args[5]))
-                        GenerateFanctor(args[4], ctx, lhs, rhs);
+                        GenerateFanctor(args[4], ctx, rhs, lhs);
                     else
                         GenerateFanctor(args[5], ctx, rhs, lhs);
                 }
