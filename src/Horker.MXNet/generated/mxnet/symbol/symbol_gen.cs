@@ -468,7 +468,7 @@ namespace Horker.MXNet
             var sdata = null;
             if (IsTrue((Len(Args) != 0)))
             {
-                var keys = CArray(CTypes.CCharP, null);
+                var keys = null.Cast<string>().ToArray();
                 foreach (var s in Args)
                 {
                     if (IsTrue((!IsNone(s))))
@@ -551,7 +551,7 @@ namespace Horker.MXNet
             var indptr = new [] { 0 };
             if (IsTrue((Len(Args) != 0)))
             {
-                var keys = CArray(CTypes.CCharP, null);
+                var keys = null.Cast<string>().ToArray();
                 foreach (var (i, s) in Enumerate(Args))
                 {
                     if (IsTrue((!IsNone(s))))
@@ -739,8 +739,8 @@ namespace Horker.MXNet
                 }
                 numCtxMapKeys = MxUint(Len(ctxMapKeys));
                 ctxMapKeys = CStrArray(ctxMapKeys);
-                ctxMapDevTypes = CArray(CTypes.CInt, Array("i", ctxMapDevTypes));
-                ctxMapDevIds = CArray(CTypes.CInt, Array("i", ctxMapDevIds));
+                ctxMapDevTypes = Array("i", ctxMapDevTypes).Cast<int>().ToArray();
+                ctxMapDevIds = Array("i", ctxMapDevIds).Cast<int>().ToArray();
             }
             var sharedArgNameList = null;
             if (IsTrue((!IsNone(sharedArgNames))))
@@ -793,7 +793,7 @@ namespace Horker.MXNet
             args = local0;
             if (IsTrue((IsNone(argsGrad))))
             {
-                var argsGradHandle = CArray(typeof(NDArrayHandle), BinOp.Mult(new [] { null }, Len(args)));
+                var argsGradHandle = BinOp.Mult(new [] { null }, Len(args)).Cast<NDArrayHandle>().ToArray();
             }
             else
             {

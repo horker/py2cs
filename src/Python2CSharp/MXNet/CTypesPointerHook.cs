@@ -15,7 +15,10 @@ namespace Python2CSharp.MXNet
             { "c_uint", "int" },
             { "mx_int", "int" },
             { "mx_uint", "int" },
-            { "NDArrayHandle", "NDArrayHandle" }
+            { "NDArrayHandle", "NDArrayHandle" },
+            { "ctypes.c_int", "int" },
+            { "ctypes.c_int64", "long" },
+            { "ctypes.c_char_p", "string" }
         };
 
         public CTypesPointerHook(Formatter @out, Config config)
@@ -40,24 +43,54 @@ namespace Python2CSharp.MXNet
             throw new ArgumentException("Unsupported ctypes.POINTER syntax");
         }
 
+        private string GetClrTypeName(JToken node, Context ctx)
+        {
+            string type = null;
+            if (ObjectNameOf(node) == "Name")
+            {
+                type = GetNameProperty(node, "id");
+            }
+            else if (ObjectNameOf(node) == "Attribute")
+            {
+                type = GetNameProperty(node["value"], "id") + "." + GetNameProperty(node, "attr");
+            }
+
+            return _typeMap[type];
+        }
+
         public ValueConstraint TryGenerate(JToken node, Context ctx)
         {
             // p = ctypes.POINTER(ctypes.c_char_p)()
 
-            if (IsNone(node) ||
-                ObjectNameOf(node) != "Call" ||
-                !IsNone(node["args"]) ||
-                ObjectNameOf(node["func"]) != "Call" ||
-                ObjectNameOf(node["func"]["func"]) != "Attribute" ||
-                GetNameId(node["func"]["func"]["value"]) != "ctypes" ||
-                GetNameProperty(node["func"]["func"], "attr") != "POINTER" ||
-                node["func"]["args"].Count() != 1)
-                return ValueConstraint.NotApplicable;
+            if (!IsNone(node) &&
+                ObjectNameOf(node) == "Call" &&
+                IsNone(node["args"]) &&
+                ObjectNameOf(node["func"]) == "Call" &&
+                ObjectNameOf(node["func"]["func"]) == "Attribute" &&
+                GetNameId(node["func"]["func"]["value"]) == "ctypes" &&
+                GetNameProperty(node["func"]["func"], "attr") == "POINTER" &&
+                node["func"]["args"].Count() == 1)
+            {
+                var type = GetPointerString(node["func"]);
+                _out.Write($"new {type})");
+                return ValueConstraint.Any;
+            }
 
-            var type = GetPointerString(node["func"]);
-            _out.Write($"new {type})");
+            // c_array(ctypes.cint64, data)
 
-            return ValueConstraint.Any;
+            if (!IsNone(node) &&
+                ObjectNameOf(node) == "Call" &&
+                GetNameId(node["func"]) == "c_array" &&
+                node["args"].Count() == 2 &&
+                (ObjectNameOf(node["args"][0]) == "Name" || (ObjectNameOf(node["args"][0]) == "Attribute" && ObjectNameOf(node["args"][0]["value"]) == "Name")))
+            {
+                GenerateExpression(node["args"][1], ctx);
+                var type = GetClrTypeName(node["args"][0], ctx);
+                _out.Write($".Cast<{type}>().ToArray()");
+                return ValueConstraint.Any;
+            }
+
+            return ValueConstraint.NotApplicable;
         }
     }
 }

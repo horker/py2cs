@@ -189,7 +189,7 @@ function Get-MethodString($MethodInfo, [bool]$IsNDArray) {
         $name = $method.Name
         $methodName = ConvertTo-CamelCase $method.Name $true
 
-        $returnType = $IsNDArray ? "NDArrayList" : "SymbolList"
+        $returnType = $IsNDArray ? "NDArray" : "Symbol"
 
         $args = Parse-Arguments $method.Arguments $IsNDArray
 

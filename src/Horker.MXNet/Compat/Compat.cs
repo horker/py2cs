@@ -68,6 +68,16 @@ namespace Horker.MXNet.Compat
             return fallback;
         }
 
+        public static void InsertToSlice<T>(IList<T> lhs, int? lower, int? upper, int? step, T rhs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void InsertToSlice<T>(IList<T> lhs, int? lower, int? upper, int? step, IEnumerable<T> rhs)
+        {
+            throw new NotImplementedException();
+        }
+
         public static bool Isinstance(object obj, Type type) => obj.GetType() == type || obj.GetType().IsSubclassOf(type);
         public static bool Isinstance(object obj, ValueTuple<Type, Type> types) => Isinstance(obj, types.Item1) || Isinstance(obj, types.Item2);
         public static bool Isinstance(object obj, ValueTuple<Type, Type, Type> types) => Isinstance(obj, types.Item1) || Isinstance(obj, types.Item2) || Isinstance(obj, types.Item3);
@@ -91,7 +101,6 @@ namespace Horker.MXNet.Compat
         public static int Len(string s) => s.Length;
         public static int Len<T>(IEnumerable<T> items) => items.Count();
         public static int Len<K, V>(IDictionary<K, V> items) => items.Count;
-        public static int Len(System.Array items) => items.Length;
         public static int Len<T>(IList<T> items) => items.Count;
 
         public static List<T> List<T>(IEnumerable<T> items)
@@ -151,6 +160,11 @@ namespace Horker.MXNet.Compat
             return string.Format(ConvertFormatString(f), values.Item1, values.Item2, values.Item3, values.Item4);
         }
 
+        public static Slice PySlice(int start, int stop, int step = 1)
+        {
+            return new Slice(start, stop, step);
+        }
+
         public static IEnumerable<int> Range(int stop)
         {
             return new Range(stop);
@@ -159,6 +173,11 @@ namespace Horker.MXNet.Compat
         public static IEnumerable<int> Range(int start, int stop, int step = 1)
         {
             return new Range(start, stop, step);
+        }
+
+        public static T Reduce<T>(Func<T, T, T> f, IEnumerable<T> self, T initial)
+        {
+            return self.Aggregate(initial, f);
         }
 
         public static HashSet<T> Set<T>(IEnumerable<T> items)

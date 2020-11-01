@@ -14,6 +14,16 @@ namespace Horker.MXNet
             return format;
         }
 
+        public static void InsertToSlice(NDArray lhs, int? lower, int? upper, int? step, NDArray rhs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void InsertToSlice(NDArray lhs, int? lower, int? upper, int? step, float rhs)
+        {
+            throw new NotImplementedException();
+        }
+
         public static bool IsNone(DType dtype)
         {
             // In our implementation DType is struct and never becomes null.
@@ -22,7 +32,6 @@ namespace Horker.MXNet
 
         public static int Len(NDArrayList list) => list.Count;
         public static int Len(SymbolList list) => list.Count;
-        public static int Len(Shape shape) => shape.Length;
 
         public static List<int> List(Shape shape)
         {

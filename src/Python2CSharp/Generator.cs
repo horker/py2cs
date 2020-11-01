@@ -315,12 +315,15 @@ namespace Python2CSharp
             if (ObjectNameOf(typeArg) == "Tuple")
             {
                 var elts = typeArg["elts"];
-                if (elts.Any(x => ObjectNameOf(x) != "Name"))
-                    return ValueConstraint.Any;
-
                 foreach (var e in elts)
                 {
-                    var testType = GetNameProperty(e, "id");
+                    string testType;
+                    if (ObjectNameOf(e) == "Name")
+                        testType = GetNameProperty(e, "id");
+                    else if (ObjectNameOf(e) == "Attribute")
+                        testType = FormatExpression(e, ctx);
+                    else
+                        return ValueConstraint.Any;
                     if (_config.TypeNames.TryGetValue(testType, out var testTypes))
                     {
                         if (testTypes.Contains(type))
@@ -418,11 +421,21 @@ namespace Python2CSharp
         {
             if (ObjectNameOf(node) == "Name")
             {
-                var id = GetNameProperty(node, "id");
-                if (_config.TypeNames.Keys.Contains(id))
-//                    char.IsUpper(id[0]) || id.Length >= 2 && id[0] == '_' && char.IsUpper(id[1]))
+                var t = GetNameProperty(node, "id");
+                if (_config.TypeNames.Keys.Contains(t))
                 {
-                    _out.Write($"typeof({ConvertAsMethodOrClassName(id)})");
+                    _out.Write($"typeof({ConvertAsMethodOrClassName(t)})");
+                    return ValueConstraint.Any;
+                }
+            }
+            else if (ObjectNameOf(node) == "Attribute" && ObjectNameOf(node["value"]) == "Name")
+            {
+                var t = GetNameProperty(node["value"], "id") + "." + GetNameProperty(node, "attr");
+                if (_config.TypeNames.Keys.Contains(t))
+                {
+                    _out.Write("typeof(");
+                    GenerateAttribute(node, ctx);
+                    _out.Write(")");
                     return ValueConstraint.Any;
                 }
             }
@@ -810,6 +823,24 @@ namespace Python2CSharp
 
                 if (withinNamespace)
                     _out.WriteClosing("}");
+
+                return ValueConstraint.Any;
+            }
+
+            if (targets.Count() == 1 && ObjectNameOf(targets[0]) == "Subscript" &&
+                ObjectNameOf(targets[0]["slice"]) =="Slice")
+            {
+                _out.Write("InsertToSlice(");
+                GenerateExpression(targets[0]["value"], ctx);
+                _out.Write(", ");
+                GenerateExpression(targets[0]["slice"]["lower"], ctx);
+                _out.Write(", ");
+                GenerateExpression(targets[0]["slice"]["upper"], ctx);
+                _out.Write(", ");
+                GenerateExpression(targets[0]["slice"]["step"], ctx);
+                _out.Write(", ");
+                GenerateExpression(node["value"], ctx);
+                _out.WriteLine(");");
 
                 return ValueConstraint.Any;
             }

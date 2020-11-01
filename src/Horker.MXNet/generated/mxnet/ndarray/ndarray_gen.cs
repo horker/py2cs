@@ -177,7 +177,7 @@ namespace Horker.MXNet
         internal static NDArrayHandle _newFromSharedMem(int sharedPid, int sharedId, Shape shape, DType dtype)
         {
             var hdl = new NDArrayHandle();
-            CheckCall(_LIB.MXNDArrayCreateFromSharedMemEx(CTypes.CInt(sharedPid), CTypes.CInt(sharedId), CArray(typeof(MxInt), shape), MxInt(Len(shape)), CTypes.CInt(Int(_DTYPE_NP_TO_MX[Np.DType(dtype).Type])), out hdl));
+            CheckCall(_LIB.MXNDArrayCreateFromSharedMemEx(CTypes.CInt(sharedPid), CTypes.CInt(sharedId), shape.Cast<int>().ToArray(), MxInt(Len(shape)), CTypes.CInt(Int(_DTYPE_NP_TO_MX[Np.DType(dtype).Type])), out hdl));
             return hdl;
         }
     }
@@ -443,7 +443,28 @@ namespace Horker.MXNet
         
         // Drop: __setstate__
         
-        internal void __Setitem__(NDArray key, NDArray value)
+        internal void __Setitem__(int key, NDArray value)
+        {
+            // Expr
+            var indexingDispatchCode = _getIndexingDispatchCode(key);
+            if (IsTrue((indexingDispatchCode == _NDARRAY_BASIC_INDEXING)))
+            {
+                this._setNdBasicIndexing(key, value);
+            }
+            else
+            {
+                if (IsTrue((indexingDispatchCode == _NDARRAY_ADVANCED_INDEXING)))
+                {
+                    this._setNdAdvancedIndexing(key, value);
+                }
+                else
+                {
+                    throw new ValueError(("Indexing NDArray with index=%s and type=%s is not supported".PyFormat(ValueTuple.Create(Str(key), Str(Type(key))))));
+                }
+            }
+        }
+        
+        internal void __Setitem__(PySlice key, NDArray value)
         {
             // Expr
             var indexingDispatchCode = _getIndexingDispatchCode(key);
@@ -513,44 +534,36 @@ namespace Horker.MXNet
             return valueNd;
         }
         
-        internal object _setNdBasicIndexing(object key, object value)
+        internal void _setNdBasicIndexing(int key, NDArray value)
         {
             // Expr
             var shape = this.Shape;
+            if (IsTrue((key < 0)))
+            {
+                key = BinOp.Add(key, shape.Item1);
+            }
+            if (IsTrue((IsTrue((key < 0)) || IsTrue((key >= shape.Item1)))))
+            {
+                if (IsTrue((key < 0)))
+                {
+                    key = (key - shape.Item1);
+                }
+                throw new IndexError(("index %d is out of bounds for axis 0 with size %d".PyFormat(ValueTuple.Create(key, shape.Item1))));
+            }
+            key = PySlice(key, BinOp.Add(key, 1));
             Assert(IsTrue(Isinstance(key, typeof(Tuple))), "Isinstance(key, typeof(Tuple))");
             Assert(IsTrue((Len(key) <= Len(shape))), "(Len(key) <= Len(shape))");
-            var begin = null;
-            var end = null;
-            var steps = null;
-            var oshape = null;
-            var vshape = null;
+            var begin = CoerceIntoShape(null);
+            var end = CoerceIntoShape(null);
+            var steps = CoerceIntoShape(null);
+            var oshape = CoerceIntoShape(null);
+            var vshape = CoerceIntoShape(null);
             foreach (var (i, sliceI) in Enumerate(key))
             {
                 var dimSize = 1;
-                if (IsTrue(Isinstance(sliceI, typeof(PySlice))))
-                {
-                    var local0 = (py_slice)sliceI;
-                    begin.Append(local0.Start);
-                    end.Append(local0.Stop);
-                    steps.Append(local0.Step);
-                    var (start, stop, step) = _getIndexRange(local0.Start, local0.Stop, shape[i], local0.Step);
-                    dimSize = _getDimSize(start, stop, step);
-                    vshape.Append(dimSize);
-                }
-                else
-                {
-                    if (IsTrue(Isinstance(sliceI, typeof(IntegerTypes))))
-                    {
-                        var local0 = (integer_types)sliceI;
-                        begin.Append(local0);
-                        end.Append((IsTrue((local0 != (-1))) ? BinOp.Add(local0, 1) : this.Shape[i]));
-                        steps.Append(1);
-                    }
-                    else
-                    {
-                        throw new ValueError(("basic indexing does not support index=%s of type=%s".PyFormat(ValueTuple.Create(Str(sliceI), Str(Type(sliceI))))));
-                    }
-                }
+                begin.Append(sliceI);
+                end.Append((IsTrue((sliceI != (-1))) ? BinOp.Add(sliceI, 1) : this.Shape[i]));
+                steps.Append(1);
                 oshape.Append(dimSize);
             }
             oshape.Extend(shape.Slice(Len(key), null, null));
@@ -559,8 +572,8 @@ namespace Horker.MXNet
             {
                 vshape.Append(1);
             }
-            oshape = Tuple(oshape);
-            vshape = Tuple(vshape);
+            oshape = CoerceIntoShape(Tuple(oshape));
+            vshape = CoerceIntoShape(Tuple(vshape));
             var valueNd = this._prepareValueNd(value, vshape);
             if (IsTrue((vshape != oshape)))
             {
@@ -569,14 +582,61 @@ namespace Horker.MXNet
             _internal._sliceAssign(this, valueNd, begin, end, steps, @out: this);
         }
         
-        internal object _setNdAdvancedIndexing(object key, object value)
+        internal void _setNdBasicIndexing(PySlice key, NDArray value)
         {
             // Expr
-            var indices = this._getIndexNd(key);
-            var vshape = _getOshapeOfGatherNdOp(this.Shape, indices.Shape);
+            var shape = this.Shape;
+            var assignToSelf = (IsTrue((IsNone(key.Step))) || IsTrue((key.Step == 1)));
+            assignToSelf = (assignToSelf & (IsTrue((IsNone(key.Start))) || IsTrue((key.Start == 0))));
+            assignToSelf = (assignToSelf & (IsTrue((IsNone(key.Stop))) || IsTrue((key.Stop == shape.Item1))));
+            if (IsTrue(assignToSelf))
+            {
+                if (IsTrue((!(value.Handle is this.Handle))))
+                {
+                    if (IsTrue((value.Shape != shape)))
+                    {
+                        value = value.BroadcastTo(shape);
+                    }
+                    value.Copyto(this);
+                }
+                return;
+            }
+            else
+            {
+                key = ValueTuple.Create(key);
+            }
+            Assert(IsTrue(Isinstance(key, typeof(Tuple))), "Isinstance(key, typeof(Tuple))");
+            Assert(IsTrue((Len(key) <= Len(shape))), "(Len(key) <= Len(shape))");
+            var begin = CoerceIntoShape(null);
+            var end = CoerceIntoShape(null);
+            var steps = CoerceIntoShape(null);
+            var oshape = CoerceIntoShape(null);
+            var vshape = CoerceIntoShape(null);
+            foreach (var (i, sliceI) in Enumerate(key))
+            {
+                var dimSize = 1;
+                begin.Append(sliceI);
+                end.Append((IsTrue((sliceI != (-1))) ? BinOp.Add(sliceI, 1) : this.Shape[i]));
+                steps.Append(1);
+                oshape.Append(dimSize);
+            }
+            oshape.Extend(shape.Slice(Len(key), null, null));
+            vshape.Extend(shape.Slice(Len(key), null, null));
+            if (IsTrue((Len(vshape) == 0)))
+            {
+                vshape.Append(1);
+            }
+            oshape = CoerceIntoShape(Tuple(oshape));
+            vshape = CoerceIntoShape(Tuple(vshape));
             var valueNd = this._prepareValueNd(value, vshape);
-            _internal._scatterSetNd(lhs: this, rhs: valueNd, indices: indices, shape: this.Shape, @out: this);
+            if (IsTrue((vshape != oshape)))
+            {
+                valueNd = valueNd.Reshape(oshape);
+            }
+            _internal._sliceAssign(this, valueNd, begin, end, steps, @out: this);
         }
+        
+        // Drop: _set_nd_advanced_indexing
         
         internal NDArray _getNdBasicIndexing(int key)
         {
@@ -589,21 +649,63 @@ namespace Horker.MXNet
             return this._at(key);
         }
         
-        internal NDArray _getNdBasicIndexing(IEnumerable<int> key)
+        internal NDArray _getNdBasicIndexing(PySlice key)
         {
             // Expr
             var shape = this.Shape;
+            if (IsTrue((IsTrue((!IsNone(key.Step))) && IsTrue((key.Step != 1)))))
+            {
+                if (IsTrue((key.Step == 0)))
+                {
+                    throw new ValueError("slice step cannot be zero");
+                }
+                return Op.Slice(this, begin: ValueTuple.Create(key.Start), end: ValueTuple.Create(key.Stop), step: ValueTuple.Create(key.Step));
+            }
+            else
+            {
+                if (IsTrue((IsTrue((!IsNone(key.Start))) || IsTrue((!IsNone(key.Stop))))))
+                {
+                    return this._slice(key.Start, key.Stop);
+                }
+                else
+                {
+                    return this;
+                }
+            }
             Assert(IsTrue((Len(key) != 0)), "(Len(key) != 0)");
-            var begin = CoerceIntoList<int>(null);
-            var end = CoerceIntoList<int>(null);
-            var step = CoerceIntoList<int>(null);
-            var keptAxes = CoerceIntoList<int>(null);
+            var begin = null;
+            var end = null;
+            var step = null;
+            var keptAxes = null;
             var i = (-1);
             foreach (var (i, sliceI) in Enumerate(key))
             {
-                begin.Append(sliceI);
-                end.Append((IsTrue((sliceI != (-1))) ? BinOp.Add(sliceI, 1) : this.Shape[i]));
-                step.Append(1);
+                if (IsTrue(Isinstance(sliceI, typeof(IntegerTypes))))
+                {
+                    var local0 = (integer_types)sliceI;
+                    begin.Append(local0);
+                    end.Append((IsTrue((local0 != (-1))) ? BinOp.Add(local0, 1) : this.Shape[i]));
+                    step.Append(1);
+                }
+                else
+                {
+                    if (IsTrue(Isinstance(sliceI, typeof(PySlice))))
+                    {
+                        var local0 = (py_slice)sliceI;
+                        if (IsTrue((local0.Step == 0)))
+                        {
+                            throw new ValueError(("basic index=%s cannot have slice=%s with step = 0".PyFormat(ValueTuple.Create(Str(key), Str(local0)))));
+                        }
+                        begin.Append(local0.Start);
+                        end.Append(local0.Stop);
+                        step.Append(local0.Step);
+                        keptAxes.Append(i);
+                    }
+                    else
+                    {
+                        throw new ValueError(("basic_indexing does not support slicing with index=%s of type=%s.".PyFormat(ValueTuple.Create(Str(sliceI), Str(Type(sliceI))))));
+                    }
+                }
             }
             keptAxes.Extend(Range(BinOp.Add(i, 1), Len(shape)));
             var slicedNd = Op.Slice(this, begin, end, step);
@@ -626,23 +728,12 @@ namespace Horker.MXNet
             return slicedNd.Reshape(oshape);
         }
         
-        internal NDArray _getNdBasicIndexing(IEnumerable<PySlice> key)
-        {
-            // Expr
-            var shape = this.Shape;
-            throw new ValueError(("index=%s must be a slice, or an ineger, or a tuple of slices and integers to use basic indexing, received type=%s".PyFormat(ValueTuple.Create(Str(key), Str(Type(key))))));
-        }
-        
-        internal object _getNdAdvancedIndexing(object key)
-        {
-            // Expr
-            return Op.GatherNd(this, this._getIndexNd(key));
-        }
+        // Drop: _get_nd_advanced_indexing
         
         internal object _syncCopyfrom(object sourceArray)
         {
             // Expr
-            if (IsTrue((!IsTrue(Isinstance(sourceArray, Np.NDArray)))))
+            if (IsTrue((!IsTrue(Isinstance(sourceArray, typeof(Np.NDArray))))))
             {
             }
             sourceArray = Np.Asarray(sourceArray, dtype: this.DType, order: "C");
@@ -681,7 +772,7 @@ namespace Horker.MXNet
             return new NDArray(handle: handle, writable: this.Writable);
         }
         
-        public NDArray Reshape(Shape shape, bool reverse)
+        public NDArray Reshape(Shape shape, bool reverse = false)
         {
             var kwargs = new string[0];
             // Expr
@@ -703,7 +794,7 @@ namespace Horker.MXNet
             }
             reverse = reverse;
             var handle = new NDArrayHandle();
-            CheckCall(_LIB.MXNDArrayReshape64(this.Handle, Len(shape), CArray(CTypes.CInt64, shape), reverse, out handle));
+            CheckCall(_LIB.MXNDArrayReshape64(this.Handle, Len(shape), shape.Cast<long>().ToArray(), reverse, out handle));
             return new NDArray(handle: handle, writable: this.Writable);
         }
         
@@ -1412,7 +1503,7 @@ namespace Horker.MXNet
             {
                 ogradHandles = CoerceIntoNDArrayHandleArray(new [] { outGrad.Handle });
             }
-            CheckCall(_LIB.MXAutogradBackwardEx(1, CHandleArray(new [] { this }), CArray(typeof(NDArrayHandle), ogradHandles), 0, CTypes.CVoidP(0), CTypes.CInt(retainGraph), CTypes.CInt(0), CTypes.CInt(trainMode), CTypes.CVoidP(0), CTypes.CVoidP(0)));
+            CheckCall(_LIB.MXAutogradBackwardEx(1, CHandleArray(new [] { this }), ogradHandles.Cast<NDArrayHandle>().ToArray(), 0, CTypes.CVoidP(0), CTypes.CInt(retainGraph), CTypes.CInt(0), CTypes.CInt(trainMode), CTypes.CVoidP(0), CTypes.CVoidP(0)));
         }
         
         public NDArray Tostype(string stype)
@@ -1428,17 +1519,19 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        internal static int _getIndexingDispatchCode(NDArray key)
+        internal static int _getIndexingDispatchCode(int key)
         {
             // Expr
-            if (IsTrue(Isinstance(key, ValueTuple.Create(typeof(NDArray), Np.NDArray))))
-            {
-                return _NDARRAY_ADVANCED_INDEXING;
-            }
-            else
-            {
-                return _NDARRAY_UNSUPPORTED_INDEXING;
-            }
+            return _NDARRAY_BASIC_INDEXING;
+        }
+    }
+    
+    public static partial class Helper
+    {
+        internal static int _getIndexingDispatchCode(PySlice key)
+        {
+            // Expr
+            return _NDARRAY_BASIC_INDEXING;
         }
     }
     
@@ -1447,14 +1540,7 @@ namespace Horker.MXNet
         internal static int _getIndexingDispatchCode(object key)
         {
             // Expr
-            if (IsTrue(Isinstance(key, ValueTuple.Create(typeof(NDArray), Np.NDArray))))
-            {
-                return _NDARRAY_ADVANCED_INDEXING;
-            }
-            else
-            {
-                return _NDARRAY_UNSUPPORTED_INDEXING;
-            }
+            return _NDARRAY_UNSUPPORTED_INDEXING;
         }
     }
     
@@ -1539,7 +1625,7 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        internal static object _getOshapeOfGatherNdOp(Shape dshape, Shape ishape)
+        internal static Shape _getOshapeOfGatherNdOp(Shape dshape, Shape ishape)
         {
             // Expr
             Assert(IsTrue((IsTrue((Len(dshape) > 0)) && IsTrue((Len(ishape) > 0)))), "(IsTrue((Len(dshape) > 0)) && IsTrue((Len(ishape) > 0)))");
@@ -1632,11 +1718,11 @@ namespace Horker.MXNet
     
     public static partial class Helper
     {
-        public static NDArray Full(Shape shape, object val, Context ctx = null, DType dtype = default, NDArray @out = null)
+        public static NDArray Full(Shape shape, float val, Context ctx = null, DType dtype = default, NDArray @out = null)
         {
             // Expr
             @out = (IsTrue((IsNone(@out))) ? Empty(shape, ctx, dtype) : @out);
-            @out.Slice(null, null, null) = val;
+            InsertToSlice(@out, null, null, null, val);
             return @out;
         }
     }
@@ -1648,7 +1734,7 @@ namespace Horker.MXNet
             // Expr
             dtype = (IsTrue((IsNone(dtype))) ? sourceArray.DType : dtype);
             var arr = Empty(sourceArray.Shape, ctx, dtype);
-            arr.Slice(null, null, null) = sourceArray;
+            InsertToSlice(arr, null, null, null, sourceArray);
             return arr;
         }
     }
@@ -2383,7 +2469,7 @@ namespace Horker.MXNet
             {
                 if (IsTrue((axis == 0)))
                 {
-                    ret.Slice(idx, BinOp.Add(idx, arr.Shape.Item1), null) = arr;
+                    InsertToSlice(ret, idx, BinOp.Add(idx, arr.Shape.Item1), null, arr);
                 }
                 else
                 {
@@ -2462,20 +2548,7 @@ namespace Horker.MXNet
         }
     }
     
-    public static partial class Helper
-    {
-        public static object Histogram(object a, int bins = 10, object range = null)
-        {
-            // Expr
-            if (IsTrue((IsNone(range))))
-            {
-                Warnings.Warn("range is not specified, using numpy's result to ensure consistency with numpy");
-                var (res, binBounds) = Np.Histogram(a.Asnumpy(), bins: bins);
-                return ValueTuple.Create(Array(res), Array(binBounds));
-            }
-            return _internal._histogram(data: a, binCnt: bins, range: range);
-        }
-    }
+    // Drop: histogram
     
     public static partial class Helper
     {
@@ -2502,8 +2575,7 @@ namespace Horker.MXNet
             // Expr
             var indices = CoerceIntoList<int>(null);
             var axisSize = ary.Shape[axis];
-            indices = CoerceIntoList<int>(BinOp.Add(new [] { 0 }, List(indicesOrSections)));
-            return _internal._splitV2(ary, indices, axis, squeezeAxis);
+            throw new ValueError("indices_or_sections must either int or tuple of ints");
         }
     }
     

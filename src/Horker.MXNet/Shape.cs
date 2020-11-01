@@ -84,6 +84,13 @@ namespace Horker.MXNet
             return !self.Equals(other);
         }
 
+        // Shape specific methods
+
+        public void Extend(IEnumerable<int> values)
+        {
+            Dimensions.AddRange(values);
+        }
+
         // Converters
 
         public static implicit operator int[](Shape s)

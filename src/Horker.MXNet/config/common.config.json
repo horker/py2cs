@@ -53,13 +53,14 @@
     "tuple": [
       "Tuple",
       "List<int>",
-      "IEnumerable<int>"
+      "int[]",
+      "PySlice"
     ],
     "list": [
       "List<int>",
       "List<PySlice>",
       "IEnumerable<int>",
-      "IEnumerable<PySlice>"
+      "IEnumerable<PySlice>",
     ],
     "int": [
       "int"
@@ -72,6 +73,9 @@
     ],
     "mx_uint": [
       "mx_uint"
+    ],
+    "np.ndarray": [
+      "Np.NDArray"
     ],
     "integer_types": [
       "int",

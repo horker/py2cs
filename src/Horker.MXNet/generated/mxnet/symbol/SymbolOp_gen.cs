@@ -8,7 +8,7 @@ namespace Horker.MXNet
     {
         public static class Op
         {
-        public static SymbolList BatchNormV1(Symbol data, Symbol gamma, Symbol beta, float? eps = null, float? momentum = null, bool fixGamma = true, bool useGlobalStats = false, bool outputMeanVar = false, string symbolName = "null")
+        public static Symbol BatchNormV1(Symbol data, Symbol gamma, Symbol beta, float? eps = null, float? momentum = null, bool fixGamma = true, bool useGlobalStats = false, bool outputMeanVar = false, string symbolName = "null")
         {
             return new Operator("BatchNorm_v1")
                 .SetInput(data)
@@ -23,7 +23,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList AllFinite(NDArray data, bool initOutput = true, string symbolName = "null")
+        public static Symbol AllFinite(NDArray data, bool initOutput = true, string symbolName = "null")
         {
             return new Operator("all_finite")
                 .SetInput(data)
@@ -32,7 +32,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList MultiAllFinite(SymbolList data, int? numArrays = null, bool initOutput = true, string symbolName = "null")
+        public static Symbol MultiAllFinite(SymbolList data, int? numArrays = null, bool initOutput = true, string symbolName = "null")
         {
             return new Operator("multi_all_finite")
                 .SetInput(data)
@@ -42,7 +42,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList KhatriRao(SymbolList args, string symbolName = "null")
+        public static Symbol KhatriRao(SymbolList args, string symbolName = "null")
         {
             return new Operator("khatri_rao")
                 .SetInput(args)
@@ -50,7 +50,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Custom(SymbolList data, string opType, string symbolName = "null")
+        public static Symbol Custom(SymbolList data, string opType, string symbolName = "null")
         {
             return new Operator("Custom")
                 .SetInput(data)
@@ -59,7 +59,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList IdentityAttachKLSparseReg(Symbol data, float? sparsenessTarget = null, float? penalty = null, float? momentum = null, string symbolName = "null")
+        public static Symbol IdentityAttachKLSparseReg(Symbol data, float? sparsenessTarget = null, float? penalty = null, float? momentum = null, string symbolName = "null")
         {
             return new Operator("IdentityAttachKLSparseReg")
                 .SetInput(data)
@@ -70,7 +70,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList LeakyReLU(Symbol data, Symbol gamma, string actType = "leaky", float? slope = null, float? lowerBound = null, float? upperBound = null, string symbolName = "null")
+        public static Symbol LeakyReLU(Symbol data, Symbol gamma, string actType = "leaky", float? slope = null, float? lowerBound = null, float? upperBound = null, string symbolName = "null")
         {
             return new Operator("LeakyReLU")
                 .SetInput(data)
@@ -83,7 +83,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SoftmaxCrossEntropy(Symbol data, Symbol label, string symbolName = "null")
+        public static Symbol SoftmaxCrossEntropy(Symbol data, Symbol label, string symbolName = "null")
         {
             return new Operator("softmax_cross_entropy")
                 .SetInput(data)
@@ -92,7 +92,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Activation(Symbol data, string actType, string symbolName = "null")
+        public static Symbol Activation(Symbol data, string actType, string symbolName = "null")
         {
             return new Operator("Activation")
                 .SetInput(data)
@@ -101,7 +101,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BatchNorm(Symbol data, Symbol gamma, Symbol beta, Symbol movingMean, Symbol movingVar, double? eps = null, float? momentum = null, bool fixGamma = true, bool useGlobalStats = false, bool outputMeanVar = false, int? axis = null, bool cudnnOff = false, string symbolName = "null")
+        public static Symbol BatchNorm(Symbol data, Symbol gamma, Symbol beta, Symbol movingMean, Symbol movingVar, double? eps = null, float? momentum = null, bool fixGamma = true, bool useGlobalStats = false, bool outputMeanVar = false, int? axis = null, bool cudnnOff = false, string symbolName = "null")
         {
             return new Operator("BatchNorm")
                 .SetInput(data)
@@ -120,7 +120,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Concat(SymbolList data, int numArgs, int? dim = null, string symbolName = "null")
+        public static Symbol Concat(SymbolList data, int numArgs, int? dim = null, string symbolName = "null")
         {
             return new Operator("Concat")
                 .SetInput(data)
@@ -130,7 +130,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Convolution(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride = null, Shape dilate = null, Shape pad = null, int? numFilter = null, int? numGroup = null, long? workspace = null, bool noBias = false, string cudnnTune = "None", bool cudnnOff = false, string layout = "None", string symbolName = "null")
+        public static Symbol Convolution(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride = null, Shape dilate = null, Shape pad = null, int? numFilter = null, int? numGroup = null, long? workspace = null, bool noBias = false, string cudnnTune = "None", bool cudnnOff = false, string layout = "None", string symbolName = "null")
         {
             stride = new Shape();
             dilate = new Shape();
@@ -154,7 +154,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList CTCLoss(Symbol data, Symbol label, Symbol dataLengths, Symbol labelLengths, bool useDataLengths = false, bool useLabelLengths = false, string blankLabel = "first", string symbolName = "null")
+        public static Symbol CTCLoss(Symbol data, Symbol label, Symbol dataLengths, Symbol labelLengths, bool useDataLengths = false, bool useLabelLengths = false, string blankLabel = "first", string symbolName = "null")
         {
             return new Operator("CTCLoss")
                 .SetInput(data)
@@ -168,7 +168,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Deconvolution(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride = null, Shape dilate = null, Shape pad = null, Shape adj = null, Shape targetShape = null, int? numFilter = null, int? numGroup = null, long? workspace = null, bool noBias = true, string cudnnTune = "None", bool cudnnOff = false, string layout = "None", string symbolName = "null")
+        public static Symbol Deconvolution(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride = null, Shape dilate = null, Shape pad = null, Shape adj = null, Shape targetShape = null, int? numFilter = null, int? numGroup = null, long? workspace = null, bool noBias = true, string cudnnTune = "None", bool cudnnOff = false, string layout = "None", string symbolName = "null")
         {
             stride = new Shape();
             dilate = new Shape();
@@ -196,7 +196,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Dropout(Symbol data, float? p = null, string mode = "training", Shape axes = null, bool cudnnOff = false, string symbolName = "null")
+        public static Symbol Dropout(Symbol data, float? p = null, string mode = "training", Shape axes = null, bool cudnnOff = false, string symbolName = "null")
         {
             axes = new Shape();
             return new Operator("Dropout")
@@ -209,7 +209,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList FullyConnected(Symbol data, Symbol weight, Symbol bias, int numHidden, bool noBias = false, bool flatten = true, string symbolName = "null")
+        public static Symbol FullyConnected(Symbol data, Symbol weight, Symbol bias, int numHidden, bool noBias = false, bool flatten = true, string symbolName = "null")
         {
             return new Operator("FullyConnected")
                 .SetInput(data)
@@ -222,7 +222,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList LayerNorm(Symbol data, Symbol gamma, Symbol beta, int? axis = null, float? eps = null, bool outputMeanVar = false, string symbolName = "null")
+        public static Symbol LayerNorm(Symbol data, Symbol gamma, Symbol beta, int? axis = null, float? eps = null, bool outputMeanVar = false, string symbolName = "null")
         {
             return new Operator("LayerNorm")
                 .SetInput(data)
@@ -235,7 +235,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList LRN(Symbol data, float? alpha = null, float? beta = null, float? knorm = null, int? nsize = null, string symbolName = "null")
+        public static Symbol LRN(Symbol data, float? alpha = null, float? beta = null, float? knorm = null, int? nsize = null, string symbolName = "null")
         {
             return new Operator("LRN")
                 .SetInput(data)
@@ -247,7 +247,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Moments(Symbol data, Shape axes = null, bool keepdims = false, string symbolName = "null")
+        public static Symbol Moments(Symbol data, Shape axes = null, bool keepdims = false, string symbolName = "null")
         {
             return new Operator("moments")
                 .SetInput(data)
@@ -257,7 +257,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Pooling(Symbol data, Shape kernel = null, string poolType = "max", bool globalPool = false, bool cudnnOff = false, string poolingConvention = "valid", Shape stride = null, Shape pad = null, int? pValue = null, bool? countIncludePad = null, string layout = "None", string symbolName = "null")
+        public static Symbol Pooling(Symbol data, Shape kernel = null, string poolType = "max", bool globalPool = false, bool cudnnOff = false, string poolingConvention = "valid", Shape stride = null, Shape pad = null, int? pValue = null, bool? countIncludePad = null, string layout = "None", string symbolName = "null")
         {
             kernel = new Shape();
             stride = new Shape();
@@ -278,7 +278,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Softmax(Symbol data, int? axis = null, double? temperature = null, string dtype = "None", string symbolName = "null")
+        public static Symbol Softmax(Symbol data, int? axis = null, double? temperature = null, string dtype = "None", string symbolName = "null")
         {
             return new Operator("softmax")
                 .SetInput(data)
@@ -289,7 +289,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Softmin(Symbol data, int? axis = null, double? temperature = null, string dtype = "None", string symbolName = "null")
+        public static Symbol Softmin(Symbol data, int? axis = null, double? temperature = null, string dtype = "None", string symbolName = "null")
         {
             return new Operator("softmin")
                 .SetInput(data)
@@ -300,7 +300,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList LogSoftmax(Symbol data, int? axis = null, double? temperature = null, string dtype = "None", string symbolName = "null")
+        public static Symbol LogSoftmax(Symbol data, int? axis = null, double? temperature = null, string dtype = "None", string symbolName = "null")
         {
             return new Operator("log_softmax")
                 .SetInput(data)
@@ -311,7 +311,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SoftmaxActivation(Symbol data, string mode = "instance", string symbolName = "null")
+        public static Symbol SoftmaxActivation(Symbol data, string mode = "instance", string symbolName = "null")
         {
             return new Operator("SoftmaxActivation")
                 .SetInput(data)
@@ -320,7 +320,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList UpSampling(SymbolList data, int scale, int? numFilter = null, string sampleType = "null", string multiInputMode = "concat", int? numArgs = null, long? workspace = null, string symbolName = "null")
+        public static Symbol UpSampling(SymbolList data, int scale, int? numFilter = null, string sampleType = "null", string multiInputMode = "concat", int? numArgs = null, long? workspace = null, string symbolName = "null")
         {
             return new Operator("UpSampling")
                 .SetInput(data)
@@ -334,7 +334,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SignsgdUpdate(Symbol weight, Symbol grad, float lr, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, string symbolName = "null")
+        public static Symbol SignsgdUpdate(Symbol weight, Symbol grad, float lr, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, string symbolName = "null")
         {
             return new Operator("signsgd_update")
                 .SetInput(weight)
@@ -347,7 +347,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SignumUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, float? wdLh = null, string symbolName = "null")
+        public static Symbol SignumUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, float? wdLh = null, string symbolName = "null")
         {
             return new Operator("signum_update")
                 .SetInput(weight)
@@ -363,7 +363,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList MultiSgdUpdate(SymbolList data, object lrs, object wds, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, string symbolName = "null")
+        public static Symbol MultiSgdUpdate(SymbolList data, object lrs, object wds, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, string symbolName = "null")
         {
             return new Operator("multi_sgd_update")
                 .SetInput(data)
@@ -376,7 +376,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList MultiSgdMomUpdate(SymbolList data, object lrs, object wds, float? momentum = null, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, string symbolName = "null")
+        public static Symbol MultiSgdMomUpdate(SymbolList data, object lrs, object wds, float? momentum = null, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, string symbolName = "null")
         {
             return new Operator("multi_sgd_mom_update")
                 .SetInput(data)
@@ -390,7 +390,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList MultiMpSgdUpdate(SymbolList data, object lrs, object wds, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, string symbolName = "null")
+        public static Symbol MultiMpSgdUpdate(SymbolList data, object lrs, object wds, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, string symbolName = "null")
         {
             return new Operator("multi_mp_sgd_update")
                 .SetInput(data)
@@ -403,7 +403,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList MultiMpSgdMomUpdate(SymbolList data, object lrs, object wds, float? momentum = null, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, string symbolName = "null")
+        public static Symbol MultiMpSgdMomUpdate(SymbolList data, object lrs, object wds, float? momentum = null, float? rescaleGrad = null, float? clipGradient = null, int? numWeights = null, string symbolName = "null")
         {
             return new Operator("multi_mp_sgd_mom_update")
                 .SetInput(data)
@@ -417,7 +417,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SgdUpdate(Symbol weight, Symbol grad, float lr, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, string symbolName = "null")
+        public static Symbol SgdUpdate(Symbol weight, Symbol grad, float lr, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, string symbolName = "null")
         {
             return new Operator("sgd_update")
                 .SetInput(weight)
@@ -431,7 +431,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SgdMomUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, string symbolName = "null")
+        public static Symbol SgdMomUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, string symbolName = "null")
         {
             return new Operator("sgd_mom_update")
                 .SetInput(weight)
@@ -447,7 +447,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList MpSgdUpdate(Symbol weight, Symbol grad, Symbol weight32, float lr, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, string symbolName = "null")
+        public static Symbol MpSgdUpdate(Symbol weight, Symbol grad, Symbol weight32, float lr, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, string symbolName = "null")
         {
             return new Operator("mp_sgd_update")
                 .SetInput(weight)
@@ -462,7 +462,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList MpSgdMomUpdate(Symbol weight, Symbol grad, Symbol mom, Symbol weight32, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, string symbolName = "null")
+        public static Symbol MpSgdMomUpdate(Symbol weight, Symbol grad, Symbol mom, Symbol weight32, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, string symbolName = "null")
         {
             return new Operator("mp_sgd_mom_update")
                 .SetInput(weight)
@@ -479,7 +479,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList FtmlUpdate(Symbol weight, Symbol grad, Symbol d, Symbol v, Symbol z, float lr, float? beta1 = null, float? beta2 = null, double? epsilon = null, int? t = null, float? wd = null, float? rescaleGrad = null, float? clipGrad = null, string symbolName = "null")
+        public static Symbol FtmlUpdate(Symbol weight, Symbol grad, Symbol d, Symbol v, Symbol z, float lr, float? beta1 = null, float? beta2 = null, double? epsilon = null, int? t = null, float? wd = null, float? rescaleGrad = null, float? clipGrad = null, string symbolName = "null")
         {
             return new Operator("ftml_update")
                 .SetInput(weight)
@@ -499,7 +499,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList AdamUpdate(Symbol weight, Symbol grad, Symbol mean, Symbol var, float lr, float? beta1 = null, float? beta2 = null, float? epsilon = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, string symbolName = "null")
+        public static Symbol AdamUpdate(Symbol weight, Symbol grad, Symbol mean, Symbol var, float lr, float? beta1 = null, float? beta2 = null, float? epsilon = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, bool lazyUpdate = true, string symbolName = "null")
         {
             return new Operator("adam_update")
                 .SetInput(weight)
@@ -518,7 +518,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList NagMomUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, string symbolName = "null")
+        public static Symbol NagMomUpdate(Symbol weight, Symbol grad, Symbol mom, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, string symbolName = "null")
         {
             return new Operator("nag_mom_update")
                 .SetInput(weight)
@@ -533,7 +533,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList MpNagMomUpdate(Symbol weight, Symbol grad, Symbol mom, Symbol weight32, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, string symbolName = "null")
+        public static Symbol MpNagMomUpdate(Symbol weight, Symbol grad, Symbol mom, Symbol weight32, float lr, float? momentum = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, string symbolName = "null")
         {
             return new Operator("mp_nag_mom_update")
                 .SetInput(weight)
@@ -549,7 +549,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList RmspropUpdate(Symbol weight, Symbol grad, Symbol n, float lr, float? gamma1 = null, float? epsilon = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, float? clipWeights = null, string symbolName = "null")
+        public static Symbol RmspropUpdate(Symbol weight, Symbol grad, Symbol n, float lr, float? gamma1 = null, float? epsilon = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, float? clipWeights = null, string symbolName = "null")
         {
             return new Operator("rmsprop_update")
                 .SetInput(weight)
@@ -566,7 +566,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList RmspropalexUpdate(Symbol weight, Symbol grad, Symbol n, Symbol g, Symbol delta, float lr, float? gamma1 = null, float? gamma2 = null, float? epsilon = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, float? clipWeights = null, string symbolName = "null")
+        public static Symbol RmspropalexUpdate(Symbol weight, Symbol grad, Symbol n, Symbol g, Symbol delta, float lr, float? gamma1 = null, float? gamma2 = null, float? epsilon = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, float? clipWeights = null, string symbolName = "null")
         {
             return new Operator("rmspropalex_update")
                 .SetInput(weight)
@@ -586,7 +586,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList FtrlUpdate(Symbol weight, Symbol grad, Symbol z, Symbol n, float lr, float? lamda1 = null, float? beta = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, string symbolName = "null")
+        public static Symbol FtrlUpdate(Symbol weight, Symbol grad, Symbol z, Symbol n, float lr, float? lamda1 = null, float? beta = null, float? wd = null, float? rescaleGrad = null, float? clipGradient = null, string symbolName = "null")
         {
             return new Operator("ftrl_update")
                 .SetInput(weight)
@@ -603,7 +603,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Pad(Symbol data, string mode, Shape padWidth, double? constantValue = null, string symbolName = "null")
+        public static Symbol Pad(Symbol data, string mode, Shape padWidth, double? constantValue = null, string symbolName = "null")
         {
             return new Operator("Pad")
                 .SetInput(data)
@@ -614,7 +614,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Flatten(Symbol data, string symbolName = "null")
+        public static Symbol Flatten(Symbol data, string symbolName = "null")
         {
             return new Operator("Flatten")
                 .SetInput(data)
@@ -622,7 +622,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList LinearRegressionOutput(Symbol data, Symbol label, float? gradScale = null, string symbolName = "null")
+        public static Symbol LinearRegressionOutput(Symbol data, Symbol label, float? gradScale = null, string symbolName = "null")
         {
             return new Operator("LinearRegressionOutput")
                 .SetInput(data)
@@ -632,7 +632,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList MAERegressionOutput(Symbol data, Symbol label, float? gradScale = null, string symbolName = "null")
+        public static Symbol MAERegressionOutput(Symbol data, Symbol label, float? gradScale = null, string symbolName = "null")
         {
             return new Operator("MAERegressionOutput")
                 .SetInput(data)
@@ -642,7 +642,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList LogisticRegressionOutput(Symbol data, Symbol label, float? gradScale = null, string symbolName = "null")
+        public static Symbol LogisticRegressionOutput(Symbol data, Symbol label, float? gradScale = null, string symbolName = "null")
         {
             return new Operator("LogisticRegressionOutput")
                 .SetInput(data)
@@ -652,7 +652,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList RNN(Symbol data, Symbol parameters, Symbol state, Symbol stateCell, Symbol sequenceLength, int stateSize, int numLayers, bool bidirectional = false, string mode = "null", float? p = null, bool stateOutputs = false, int? projectionSize = null, double? lstmStateClipMin = null, double? lstmStateClipMax = null, bool lstmStateClipNan = false, bool useSequenceLength = false, string symbolName = "null")
+        public static Symbol RNN(Symbol data, Symbol parameters, Symbol state, Symbol stateCell, Symbol sequenceLength, int stateSize, int numLayers, bool bidirectional = false, string mode = "null", float? p = null, bool stateOutputs = false, int? projectionSize = null, double? lstmStateClipMin = null, double? lstmStateClipMax = null, bool lstmStateClipNan = false, bool useSequenceLength = false, string symbolName = "null")
         {
             return new Operator("RNN")
                 .SetInput(data)
@@ -675,7 +675,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SliceChannel(Symbol data, int numOutputs, int? axis = null, bool squeezeAxis = false, string symbolName = "null")
+        public static Symbol SliceChannel(Symbol data, int numOutputs, int? axis = null, bool squeezeAxis = false, string symbolName = "null")
         {
             return new Operator("SliceChannel")
                 .SetInput(data)
@@ -686,7 +686,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SoftmaxOutput(Symbol data, Symbol label, float? gradScale = null, float? ignoreLabel = null, bool multiOutput = false, bool useIgnore = false, bool preserveShape = false, string normalization = "null", bool outGrad = false, float? smoothAlpha = null, string symbolName = "null")
+        public static Symbol SoftmaxOutput(Symbol data, Symbol label, float? gradScale = null, float? ignoreLabel = null, bool multiOutput = false, bool useIgnore = false, bool preserveShape = false, string normalization = "null", bool outGrad = false, float? smoothAlpha = null, string symbolName = "null")
         {
             return new Operator("SoftmaxOutput")
                 .SetInput(data)
@@ -703,7 +703,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SwapAxis(Symbol data, int? dim1 = null, int? dim2 = null, string symbolName = "null")
+        public static Symbol SwapAxis(Symbol data, int? dim1 = null, int? dim2 = null, string symbolName = "null")
         {
             return new Operator("SwapAxis")
                 .SetInput(data)
@@ -713,7 +713,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList AmpCast(Symbol data, string dtype, string symbolName = "null")
+        public static Symbol AmpCast(Symbol data, string dtype, string symbolName = "null")
         {
             return new Operator("amp_cast")
                 .SetInput(data)
@@ -722,7 +722,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList AmpMulticast(SymbolList data, int numOutputs, string symbolName = "null")
+        public static Symbol AmpMulticast(SymbolList data, int numOutputs, string symbolName = "null")
         {
             return new Operator("amp_multicast")
                 .SetInput(data)
@@ -731,7 +731,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Argmax(Symbol data, int? axis = null, bool keepdims = false, string symbolName = "null")
+        public static Symbol Argmax(Symbol data, int? axis = null, bool keepdims = false, string symbolName = "null")
         {
             return new Operator("argmax")
                 .SetInput(data)
@@ -741,7 +741,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Argmin(Symbol data, int? axis = null, bool keepdims = false, string symbolName = "null")
+        public static Symbol Argmin(Symbol data, int? axis = null, bool keepdims = false, string symbolName = "null")
         {
             return new Operator("argmin")
                 .SetInput(data)
@@ -751,7 +751,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ArgmaxChannel(Symbol data, string symbolName = "null")
+        public static Symbol ArgmaxChannel(Symbol data, string symbolName = "null")
         {
             return new Operator("argmax_channel")
                 .SetInput(data)
@@ -759,7 +759,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Pick(Symbol data, Symbol index, int? axis = null, bool keepdims = false, string mode = "clip", string symbolName = "null")
+        public static Symbol Pick(Symbol data, Symbol index, int? axis = null, bool keepdims = false, string mode = "clip", string symbolName = "null")
         {
             return new Operator("pick")
                 .SetInput(data)
@@ -771,7 +771,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Sum(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
+        public static Symbol Sum(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
         {
             return new Operator("sum")
                 .SetInput(data)
@@ -782,7 +782,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Mean(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
+        public static Symbol Mean(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
         {
             return new Operator("mean")
                 .SetInput(data)
@@ -793,7 +793,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Prod(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
+        public static Symbol Prod(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
         {
             return new Operator("prod")
                 .SetInput(data)
@@ -804,7 +804,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Nansum(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
+        public static Symbol Nansum(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
         {
             return new Operator("nansum")
                 .SetInput(data)
@@ -815,7 +815,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Nanprod(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
+        public static Symbol Nanprod(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
         {
             return new Operator("nanprod")
                 .SetInput(data)
@@ -826,7 +826,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Max(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
+        public static Symbol Max(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
         {
             return new Operator("max")
                 .SetInput(data)
@@ -837,7 +837,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Min(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
+        public static Symbol Min(Symbol data, Shape axis = null, bool keepdims = false, bool exclude = false, string symbolName = "null")
         {
             return new Operator("min")
                 .SetInput(data)
@@ -848,7 +848,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastAxis(Symbol data, Shape axis = null, Shape size = null, string symbolName = "null")
+        public static Symbol BroadcastAxis(Symbol data, Shape axis = null, Shape size = null, string symbolName = "null")
         {
             axis = new Shape();
             size = new Shape();
@@ -860,7 +860,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastTo(Symbol data, Shape shape = null, string symbolName = "null")
+        public static Symbol BroadcastTo(Symbol data, Shape shape = null, string symbolName = "null")
         {
             shape = new Shape();
             return new Operator("broadcast_to")
@@ -870,7 +870,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastLike(Symbol lhs, Symbol rhs, Shape lhsAxes = null, Shape rhsAxes = null, string symbolName = "null")
+        public static Symbol BroadcastLike(Symbol lhs, Symbol rhs, Shape lhsAxes = null, Shape rhsAxes = null, string symbolName = "null")
         {
             return new Operator("broadcast_like")
                 .SetInput(lhs)
@@ -881,7 +881,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Norm(Symbol data, int? ord = null, Shape axis = null, string outDtype = "None", bool keepdims = false, string symbolName = "null")
+        public static Symbol Norm(Symbol data, int? ord = null, Shape axis = null, string outDtype = "None", bool keepdims = false, string symbolName = "null")
         {
             return new Operator("norm")
                 .SetInput(data)
@@ -893,7 +893,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList CastStorage(Symbol data, string stype, string symbolName = "null")
+        public static Symbol CastStorage(Symbol data, string stype, string symbolName = "null")
         {
             return new Operator("cast_storage")
                 .SetInput(data)
@@ -902,7 +902,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Where(Symbol condition, Symbol x, Symbol y, string symbolName = "null")
+        public static Symbol Where(Symbol condition, Symbol x, Symbol y, string symbolName = "null")
         {
             return new Operator("where")
                 .SetInput(condition)
@@ -912,7 +912,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Diag(Symbol data, int? k = null, int? axis1 = null, int? axis2 = null, string symbolName = "null")
+        public static Symbol Diag(Symbol data, int? k = null, int? axis1 = null, int? axis2 = null, string symbolName = "null")
         {
             return new Operator("diag")
                 .SetInput(data)
@@ -923,7 +923,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Dot(Symbol lhs, Symbol rhs, bool transposea = false, bool transposeb = false, string forwardStype = "None", string symbolName = "null")
+        public static Symbol Dot(Symbol lhs, Symbol rhs, bool transposea = false, bool transposeb = false, string forwardStype = "None", string symbolName = "null")
         {
             return new Operator("dot")
                 .SetInput(lhs)
@@ -935,7 +935,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BatchDot(Symbol lhs, Symbol rhs, bool transposea = false, bool transposeb = false, string forwardStype = "None", string symbolName = "null")
+        public static Symbol BatchDot(Symbol lhs, Symbol rhs, bool transposea = false, bool transposeb = false, string forwardStype = "None", string symbolName = "null")
         {
             return new Operator("batch_dot")
                 .SetInput(lhs)
@@ -947,7 +947,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastAdd(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastAdd(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_add")
                 .SetInput(lhs)
@@ -956,7 +956,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastSub(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastSub(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_sub")
                 .SetInput(lhs)
@@ -965,7 +965,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastMul(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastMul(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_mul")
                 .SetInput(lhs)
@@ -974,7 +974,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastDiv(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastDiv(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_div")
                 .SetInput(lhs)
@@ -983,7 +983,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastMod(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastMod(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_mod")
                 .SetInput(lhs)
@@ -992,7 +992,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastPower(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastPower(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_power")
                 .SetInput(lhs)
@@ -1001,7 +1001,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastMaximum(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastMaximum(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_maximum")
                 .SetInput(lhs)
@@ -1010,7 +1010,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastMinimum(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastMinimum(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_minimum")
                 .SetInput(lhs)
@@ -1019,7 +1019,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastHypot(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastHypot(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_hypot")
                 .SetInput(lhs)
@@ -1028,7 +1028,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastEqual(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastEqual(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_equal")
                 .SetInput(lhs)
@@ -1037,7 +1037,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastNotEqual(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastNotEqual(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_not_equal")
                 .SetInput(lhs)
@@ -1046,7 +1046,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastGreater(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastGreater(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_greater")
                 .SetInput(lhs)
@@ -1055,7 +1055,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastGreaterEqual(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastGreaterEqual(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_greater_equal")
                 .SetInput(lhs)
@@ -1064,7 +1064,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastLesser(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastLesser(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_lesser")
                 .SetInput(lhs)
@@ -1073,7 +1073,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastLesserEqual(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastLesserEqual(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_lesser_equal")
                 .SetInput(lhs)
@@ -1082,7 +1082,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastLogicalAnd(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastLogicalAnd(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_logical_and")
                 .SetInput(lhs)
@@ -1091,7 +1091,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastLogicalOr(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastLogicalOr(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_logical_or")
                 .SetInput(lhs)
@@ -1100,7 +1100,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BroadcastLogicalXor(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol BroadcastLogicalXor(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("broadcast_logical_xor")
                 .SetInput(lhs)
@@ -1109,7 +1109,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ElemwiseAdd(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol ElemwiseAdd(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("elemwise_add")
                 .SetInput(lhs)
@@ -1118,7 +1118,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ElemwiseSub(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol ElemwiseSub(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("elemwise_sub")
                 .SetInput(lhs)
@@ -1127,7 +1127,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ElemwiseMul(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol ElemwiseMul(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("elemwise_mul")
                 .SetInput(lhs)
@@ -1136,7 +1136,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ElemwiseDiv(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol ElemwiseDiv(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("elemwise_div")
                 .SetInput(lhs)
@@ -1145,7 +1145,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SmoothL1(Symbol data, float scalar, string symbolName = "null")
+        public static Symbol SmoothL1(Symbol data, float scalar, string symbolName = "null")
         {
             return new Operator("smooth_l1")
                 .SetInput(data)
@@ -1154,7 +1154,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Addn(SymbolList args, string symbolName = "null")
+        public static Symbol Addn(SymbolList args, string symbolName = "null")
         {
             return new Operator("add_n")
                 .SetInput(args)
@@ -1162,7 +1162,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Relu(Symbol data, string symbolName = "null")
+        public static Symbol Relu(Symbol data, string symbolName = "null")
         {
             return new Operator("relu")
                 .SetInput(data)
@@ -1170,7 +1170,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Sigmoid(Symbol data, string symbolName = "null")
+        public static Symbol Sigmoid(Symbol data, string symbolName = "null")
         {
             return new Operator("sigmoid")
                 .SetInput(data)
@@ -1178,7 +1178,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList HardSigmoid(Symbol data, float? alpha = null, float? beta = null, string symbolName = "null")
+        public static Symbol HardSigmoid(Symbol data, float? alpha = null, float? beta = null, string symbolName = "null")
         {
             return new Operator("hard_sigmoid")
                 .SetInput(data)
@@ -1188,7 +1188,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Softsign(Symbol data, string symbolName = "null")
+        public static Symbol Softsign(Symbol data, string symbolName = "null")
         {
             return new Operator("softsign")
                 .SetInput(data)
@@ -1196,7 +1196,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BlockGrad(Symbol data, string symbolName = "null")
+        public static Symbol BlockGrad(Symbol data, string symbolName = "null")
         {
             return new Operator("BlockGrad")
                 .SetInput(data)
@@ -1204,7 +1204,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList MakeLoss(Symbol data, string symbolName = "null")
+        public static Symbol MakeLoss(Symbol data, string symbolName = "null")
         {
             return new Operator("make_loss")
                 .SetInput(data)
@@ -1212,7 +1212,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ReshapeLike(Symbol lhs, Symbol rhs, string symbolName = "null")
+        public static Symbol ReshapeLike(Symbol lhs, Symbol rhs, string symbolName = "null")
         {
             return new Operator("reshape_like")
                 .SetInput(lhs)
@@ -1221,7 +1221,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ShapeArray(Symbol data, int? lhsBegin = null, int? lhsEnd = null, int? rhsBegin = null, int? rhsEnd = null, string symbolName = "null")
+        public static Symbol ShapeArray(Symbol data, int? lhsBegin = null, int? lhsEnd = null, int? rhsBegin = null, int? rhsEnd = null, string symbolName = "null")
         {
             return new Operator("shape_array")
                 .SetInput(data)
@@ -1233,7 +1233,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SizeArray(Symbol data, string symbolName = "null")
+        public static Symbol SizeArray(Symbol data, string symbolName = "null")
         {
             return new Operator("size_array")
                 .SetInput(data)
@@ -1241,7 +1241,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Cast(Symbol data, string dtype, string symbolName = "null")
+        public static Symbol Cast(Symbol data, string dtype, string symbolName = "null")
         {
             return new Operator("Cast")
                 .SetInput(data)
@@ -1250,7 +1250,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Negative(Symbol data, string symbolName = "null")
+        public static Symbol Negative(Symbol data, string symbolName = "null")
         {
             return new Operator("negative")
                 .SetInput(data)
@@ -1258,7 +1258,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Reciprocal(Symbol data, string symbolName = "null")
+        public static Symbol Reciprocal(Symbol data, string symbolName = "null")
         {
             return new Operator("reciprocal")
                 .SetInput(data)
@@ -1266,7 +1266,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Abs(Symbol data, string symbolName = "null")
+        public static Symbol Abs(Symbol data, string symbolName = "null")
         {
             return new Operator("abs")
                 .SetInput(data)
@@ -1274,7 +1274,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Sign(Symbol data, string symbolName = "null")
+        public static Symbol Sign(Symbol data, string symbolName = "null")
         {
             return new Operator("sign")
                 .SetInput(data)
@@ -1282,7 +1282,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Round(Symbol data, string symbolName = "null")
+        public static Symbol Round(Symbol data, string symbolName = "null")
         {
             return new Operator("round")
                 .SetInput(data)
@@ -1290,7 +1290,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Rint(Symbol data, string symbolName = "null")
+        public static Symbol Rint(Symbol data, string symbolName = "null")
         {
             return new Operator("rint")
                 .SetInput(data)
@@ -1298,7 +1298,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Ceil(Symbol data, string symbolName = "null")
+        public static Symbol Ceil(Symbol data, string symbolName = "null")
         {
             return new Operator("ceil")
                 .SetInput(data)
@@ -1306,7 +1306,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Floor(Symbol data, string symbolName = "null")
+        public static Symbol Floor(Symbol data, string symbolName = "null")
         {
             return new Operator("floor")
                 .SetInput(data)
@@ -1314,7 +1314,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Trunc(Symbol data, string symbolName = "null")
+        public static Symbol Trunc(Symbol data, string symbolName = "null")
         {
             return new Operator("trunc")
                 .SetInput(data)
@@ -1322,7 +1322,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Fix(Symbol data, string symbolName = "null")
+        public static Symbol Fix(Symbol data, string symbolName = "null")
         {
             return new Operator("fix")
                 .SetInput(data)
@@ -1330,7 +1330,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Square(Symbol data, string symbolName = "null")
+        public static Symbol Square(Symbol data, string symbolName = "null")
         {
             return new Operator("square")
                 .SetInput(data)
@@ -1338,7 +1338,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Sqrt(Symbol data, string symbolName = "null")
+        public static Symbol Sqrt(Symbol data, string symbolName = "null")
         {
             return new Operator("sqrt")
                 .SetInput(data)
@@ -1346,7 +1346,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Rsqrt(Symbol data, string symbolName = "null")
+        public static Symbol Rsqrt(Symbol data, string symbolName = "null")
         {
             return new Operator("rsqrt")
                 .SetInput(data)
@@ -1354,7 +1354,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Cbrt(Symbol data, string symbolName = "null")
+        public static Symbol Cbrt(Symbol data, string symbolName = "null")
         {
             return new Operator("cbrt")
                 .SetInput(data)
@@ -1362,7 +1362,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Erf(Symbol data, string symbolName = "null")
+        public static Symbol Erf(Symbol data, string symbolName = "null")
         {
             return new Operator("erf")
                 .SetInput(data)
@@ -1370,7 +1370,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Erfinv(Symbol data, string symbolName = "null")
+        public static Symbol Erfinv(Symbol data, string symbolName = "null")
         {
             return new Operator("erfinv")
                 .SetInput(data)
@@ -1378,7 +1378,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Rcbrt(Symbol data, string symbolName = "null")
+        public static Symbol Rcbrt(Symbol data, string symbolName = "null")
         {
             return new Operator("rcbrt")
                 .SetInput(data)
@@ -1386,7 +1386,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Exp(Symbol data, string symbolName = "null")
+        public static Symbol Exp(Symbol data, string symbolName = "null")
         {
             return new Operator("exp")
                 .SetInput(data)
@@ -1394,7 +1394,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Log(Symbol data, string symbolName = "null")
+        public static Symbol Log(Symbol data, string symbolName = "null")
         {
             return new Operator("log")
                 .SetInput(data)
@@ -1402,7 +1402,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Log10(Symbol data, string symbolName = "null")
+        public static Symbol Log10(Symbol data, string symbolName = "null")
         {
             return new Operator("log10")
                 .SetInput(data)
@@ -1410,7 +1410,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Log2(Symbol data, string symbolName = "null")
+        public static Symbol Log2(Symbol data, string symbolName = "null")
         {
             return new Operator("log2")
                 .SetInput(data)
@@ -1418,7 +1418,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Log1p(Symbol data, string symbolName = "null")
+        public static Symbol Log1p(Symbol data, string symbolName = "null")
         {
             return new Operator("log1p")
                 .SetInput(data)
@@ -1426,7 +1426,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Expm1(Symbol data, string symbolName = "null")
+        public static Symbol Expm1(Symbol data, string symbolName = "null")
         {
             return new Operator("expm1")
                 .SetInput(data)
@@ -1434,7 +1434,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Gamma(Symbol data, string symbolName = "null")
+        public static Symbol Gamma(Symbol data, string symbolName = "null")
         {
             return new Operator("gamma")
                 .SetInput(data)
@@ -1442,7 +1442,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Gammaln(Symbol data, string symbolName = "null")
+        public static Symbol Gammaln(Symbol data, string symbolName = "null")
         {
             return new Operator("gammaln")
                 .SetInput(data)
@@ -1450,7 +1450,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList LogicalNot(Symbol data, string symbolName = "null")
+        public static Symbol LogicalNot(Symbol data, string symbolName = "null")
         {
             return new Operator("logical_not")
                 .SetInput(data)
@@ -1458,7 +1458,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Sin(Symbol data, string symbolName = "null")
+        public static Symbol Sin(Symbol data, string symbolName = "null")
         {
             return new Operator("sin")
                 .SetInput(data)
@@ -1466,7 +1466,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Cos(Symbol data, string symbolName = "null")
+        public static Symbol Cos(Symbol data, string symbolName = "null")
         {
             return new Operator("cos")
                 .SetInput(data)
@@ -1474,7 +1474,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Tan(Symbol data, string symbolName = "null")
+        public static Symbol Tan(Symbol data, string symbolName = "null")
         {
             return new Operator("tan")
                 .SetInput(data)
@@ -1482,7 +1482,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Arcsin(Symbol data, string symbolName = "null")
+        public static Symbol Arcsin(Symbol data, string symbolName = "null")
         {
             return new Operator("arcsin")
                 .SetInput(data)
@@ -1490,7 +1490,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Arccos(Symbol data, string symbolName = "null")
+        public static Symbol Arccos(Symbol data, string symbolName = "null")
         {
             return new Operator("arccos")
                 .SetInput(data)
@@ -1498,7 +1498,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Arctan(Symbol data, string symbolName = "null")
+        public static Symbol Arctan(Symbol data, string symbolName = "null")
         {
             return new Operator("arctan")
                 .SetInput(data)
@@ -1506,7 +1506,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Degrees(Symbol data, string symbolName = "null")
+        public static Symbol Degrees(Symbol data, string symbolName = "null")
         {
             return new Operator("degrees")
                 .SetInput(data)
@@ -1514,7 +1514,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Radians(Symbol data, string symbolName = "null")
+        public static Symbol Radians(Symbol data, string symbolName = "null")
         {
             return new Operator("radians")
                 .SetInput(data)
@@ -1522,7 +1522,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Sinh(Symbol data, string symbolName = "null")
+        public static Symbol Sinh(Symbol data, string symbolName = "null")
         {
             return new Operator("sinh")
                 .SetInput(data)
@@ -1530,7 +1530,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Cosh(Symbol data, string symbolName = "null")
+        public static Symbol Cosh(Symbol data, string symbolName = "null")
         {
             return new Operator("cosh")
                 .SetInput(data)
@@ -1538,7 +1538,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Tanh(Symbol data, string symbolName = "null")
+        public static Symbol Tanh(Symbol data, string symbolName = "null")
         {
             return new Operator("tanh")
                 .SetInput(data)
@@ -1546,7 +1546,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Arcsinh(Symbol data, string symbolName = "null")
+        public static Symbol Arcsinh(Symbol data, string symbolName = "null")
         {
             return new Operator("arcsinh")
                 .SetInput(data)
@@ -1554,7 +1554,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Arccosh(Symbol data, string symbolName = "null")
+        public static Symbol Arccosh(Symbol data, string symbolName = "null")
         {
             return new Operator("arccosh")
                 .SetInput(data)
@@ -1562,7 +1562,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Arctanh(Symbol data, string symbolName = "null")
+        public static Symbol Arctanh(Symbol data, string symbolName = "null")
         {
             return new Operator("arctanh")
                 .SetInput(data)
@@ -1570,7 +1570,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Embedding(Symbol data, Symbol weight, int inputDim, int outputDim, string dtype = "float32", bool sparseGrad = false, string symbolName = "null")
+        public static Symbol Embedding(Symbol data, Symbol weight, int inputDim, int outputDim, string dtype = "float32", bool sparseGrad = false, string symbolName = "null")
         {
             return new Operator("Embedding")
                 .SetInput(data)
@@ -1583,7 +1583,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Take(Symbol a, Symbol indices, int? axis = null, string mode = "clip", string symbolName = "null")
+        public static Symbol Take(Symbol a, Symbol indices, int? axis = null, string mode = "clip", string symbolName = "null")
         {
             return new Operator("take")
                 .SetInput(a)
@@ -1594,7 +1594,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BatchTake(Symbol a, Symbol indices, string symbolName = "null")
+        public static Symbol BatchTake(Symbol a, Symbol indices, string symbolName = "null")
         {
             return new Operator("batch_take")
                 .SetInput(a)
@@ -1603,7 +1603,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList OneHot(Symbol indices, int depth, double? onValue = null, double? offValue = null, string dtype = "float32", string symbolName = "null")
+        public static Symbol OneHot(Symbol indices, int depth, double? onValue = null, double? offValue = null, string dtype = "float32", string symbolName = "null")
         {
             return new Operator("one_hot")
                 .SetInput(indices)
@@ -1615,7 +1615,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList GatherNd(Symbol data, Symbol indices, string symbolName = "null")
+        public static Symbol GatherNd(Symbol data, Symbol indices, string symbolName = "null")
         {
             return new Operator("gather_nd")
                 .SetInput(data)
@@ -1624,7 +1624,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ScatterNd(Symbol data, Symbol indices, Shape shape, string symbolName = "null")
+        public static Symbol ScatterNd(Symbol data, Symbol indices, Shape shape, string symbolName = "null")
         {
             return new Operator("scatter_nd")
                 .SetInput(data)
@@ -1634,7 +1634,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ZerosLike(Symbol data, string symbolName = "null")
+        public static Symbol ZerosLike(Symbol data, string symbolName = "null")
         {
             return new Operator("zeros_like")
                 .SetInput(data)
@@ -1642,7 +1642,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList OnesLike(Symbol data, string symbolName = "null")
+        public static Symbol OnesLike(Symbol data, string symbolName = "null")
         {
             return new Operator("ones_like")
                 .SetInput(data)
@@ -1650,7 +1650,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Reshape(Symbol data, Shape shape = null, bool reverse = false, Shape targetShape = null, bool keepHighest = false, string symbolName = "null")
+        public static Symbol Reshape(Symbol data, Shape shape = null, bool reverse = false, Shape targetShape = null, bool keepHighest = false, string symbolName = "null")
         {
             shape = new Shape();
             targetShape = new Shape();
@@ -1664,7 +1664,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Transpose(Symbol data, Shape axes = null, string symbolName = "null")
+        public static Symbol Transpose(Symbol data, Shape axes = null, string symbolName = "null")
         {
             axes = new Shape();
             return new Operator("transpose")
@@ -1674,7 +1674,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ExpandDims(Symbol data, int axis, string symbolName = "null")
+        public static Symbol ExpandDims(Symbol data, int axis, string symbolName = "null")
         {
             return new Operator("expand_dims")
                 .SetInput(data)
@@ -1683,7 +1683,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Slice(Symbol data, Shape begin, Shape end, Shape step = null, string symbolName = "null")
+        public static Symbol Slice(Symbol data, Shape begin, Shape end, Shape step = null, string symbolName = "null")
         {
             step = new Shape();
             return new Operator("slice")
@@ -1695,7 +1695,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SliceAxis(Symbol data, int axis, int begin, int end, string symbolName = "null")
+        public static Symbol SliceAxis(Symbol data, int axis, int begin, int end, string symbolName = "null")
         {
             return new Operator("slice_axis")
                 .SetInput(data)
@@ -1706,7 +1706,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SliceLike(Symbol data, Symbol shapeLike, Shape axes = null, string symbolName = "null")
+        public static Symbol SliceLike(Symbol data, Symbol shapeLike, Shape axes = null, string symbolName = "null")
         {
             axes = new Shape();
             return new Operator("slice_like")
@@ -1717,7 +1717,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Clip(Symbol data, float aMin, float aMax, string symbolName = "null")
+        public static Symbol Clip(Symbol data, float aMin, float aMax, string symbolName = "null")
         {
             return new Operator("clip")
                 .SetInput(data)
@@ -1727,7 +1727,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Repeat(Symbol data, int repeats, int? axis = null, string symbolName = "null")
+        public static Symbol Repeat(Symbol data, int repeats, int? axis = null, string symbolName = "null")
         {
             return new Operator("repeat")
                 .SetInput(data)
@@ -1737,7 +1737,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Tile(Symbol data, Shape reps, string symbolName = "null")
+        public static Symbol Tile(Symbol data, Shape reps, string symbolName = "null")
         {
             return new Operator("tile")
                 .SetInput(data)
@@ -1746,7 +1746,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Reverse(Symbol data, Shape axis, string symbolName = "null")
+        public static Symbol Reverse(Symbol data, Shape axis, string symbolName = "null")
         {
             return new Operator("reverse")
                 .SetInput(data)
@@ -1755,7 +1755,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Stack(SymbolList data, int? axis = null, int? numArgs = null, string symbolName = "null")
+        public static Symbol Stack(SymbolList data, int? axis = null, int? numArgs = null, string symbolName = "null")
         {
             return new Operator("stack")
                 .SetInput(data)
@@ -1765,7 +1765,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Squeeze(SymbolList data, Shape axis = null, string symbolName = "null")
+        public static Symbol Squeeze(SymbolList data, Shape axis = null, string symbolName = "null")
         {
             return new Operator("squeeze")
                 .SetInput(data)
@@ -1774,7 +1774,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList DepthToSpace(Symbol data, int blockSize, string symbolName = "null")
+        public static Symbol DepthToSpace(Symbol data, int blockSize, string symbolName = "null")
         {
             return new Operator("depth_to_space")
                 .SetInput(data)
@@ -1783,7 +1783,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SpaceToDepth(Symbol data, int blockSize, string symbolName = "null")
+        public static Symbol SpaceToDepth(Symbol data, int blockSize, string symbolName = "null")
         {
             return new Operator("space_to_depth")
                 .SetInput(data)
@@ -1792,7 +1792,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Topk(Symbol data, int? axis = null, int? k = null, string retTyp = "indices", bool isAscend = false, string dtype = "float32", string symbolName = "null")
+        public static Symbol Topk(Symbol data, int? axis = null, int? k = null, string retTyp = "indices", bool isAscend = false, string dtype = "float32", string symbolName = "null")
         {
             return new Operator("topk")
                 .SetInput(data)
@@ -1805,7 +1805,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Sort(Symbol data, int? axis = null, bool isAscend = true, string symbolName = "null")
+        public static Symbol Sort(Symbol data, int? axis = null, bool isAscend = true, string symbolName = "null")
         {
             return new Operator("sort")
                 .SetInput(data)
@@ -1815,7 +1815,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Argsort(Symbol data, int? axis = null, bool isAscend = true, string dtype = "float32", string symbolName = "null")
+        public static Symbol Argsort(Symbol data, int? axis = null, bool isAscend = true, string dtype = "float32", string symbolName = "null")
         {
             return new Operator("argsort")
                 .SetInput(data)
@@ -1826,7 +1826,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList BilinearSampler(Symbol data, Symbol grid, bool? cudnnOff = null, string symbolName = "null")
+        public static Symbol BilinearSampler(Symbol data, Symbol grid, bool? cudnnOff = null, string symbolName = "null")
         {
             return new Operator("BilinearSampler")
                 .SetInput(data)
@@ -1836,7 +1836,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ConvolutionV1(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride = null, Shape dilate = null, Shape pad = null, int? numFilter = null, int? numGroup = null, long? workspace = null, bool noBias = false, string cudnnTune = "None", bool cudnnOff = false, string layout = "None", string symbolName = "null")
+        public static Symbol ConvolutionV1(Symbol data, Symbol weight, Symbol bias, Shape kernel, Shape stride = null, Shape dilate = null, Shape pad = null, int? numFilter = null, int? numGroup = null, long? workspace = null, bool noBias = false, string cudnnTune = "None", bool cudnnOff = false, string layout = "None", string symbolName = "null")
         {
             stride = new Shape();
             dilate = new Shape();
@@ -1860,7 +1860,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Correlation(Symbol data1, Symbol data2, int? kernelSize = null, int? maxDisplacement = null, int? stride1 = null, int? stride2 = null, int? padSize = null, bool isMultiply = true, string symbolName = "null")
+        public static Symbol Correlation(Symbol data1, Symbol data2, int? kernelSize = null, int? maxDisplacement = null, int? stride1 = null, int? stride2 = null, int? padSize = null, bool isMultiply = true, string symbolName = "null")
         {
             return new Operator("Correlation")
                 .SetInput(data1)
@@ -1875,7 +1875,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList Crop(SymbolList data, int numArgs, Shape offset = null, Shape hw = null, bool centerCrop = false, string symbolName = "null")
+        public static Symbol Crop(SymbolList data, int numArgs, Shape offset = null, Shape hw = null, bool centerCrop = false, string symbolName = "null")
         {
             offset = new [] {0,0};
             hw = new [] {0,0};
@@ -1889,7 +1889,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList GridGenerator(Symbol data, string transformType, Shape targetShape = null, string symbolName = "null")
+        public static Symbol GridGenerator(Symbol data, string transformType, Shape targetShape = null, string symbolName = "null")
         {
             targetShape = new [] {0,0};
             return new Operator("GridGenerator")
@@ -1900,7 +1900,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList InstanceNorm(Symbol data, Symbol gamma, Symbol beta, float? eps = null, string symbolName = "null")
+        public static Symbol InstanceNorm(Symbol data, Symbol gamma, Symbol beta, float? eps = null, string symbolName = "null")
         {
             return new Operator("InstanceNorm")
                 .SetInput(data)
@@ -1911,7 +1911,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList L2Normalization(Symbol data, float? eps = null, string mode = "instance", string symbolName = "null")
+        public static Symbol L2Normalization(Symbol data, float? eps = null, string mode = "instance", string symbolName = "null")
         {
             return new Operator("L2Normalization")
                 .SetInput(data)
@@ -1921,7 +1921,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList MakeLoss(Symbol data, float? gradScale = null, float? validThresh = null, string normalization = "null", string symbolName = "null")
+        public static Symbol MakeLoss(Symbol data, float? gradScale = null, float? validThresh = null, string normalization = "null", string symbolName = "null")
         {
             return new Operator("MakeLoss")
                 .SetInput(data)
@@ -1932,7 +1932,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList PoolingV1(Symbol data, Shape kernel = null, string poolType = "max", bool globalPool = false, string poolingConvention = "valid", Shape stride = null, Shape pad = null, string symbolName = "null")
+        public static Symbol PoolingV1(Symbol data, Shape kernel = null, string poolType = "max", bool globalPool = false, string poolingConvention = "valid", Shape stride = null, Shape pad = null, string symbolName = "null")
         {
             kernel = new Shape();
             stride = new Shape();
@@ -1949,7 +1949,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList ROIPooling(Symbol data, Symbol rois, Shape pooledSize, float spatialScale, string symbolName = "null")
+        public static Symbol ROIPooling(Symbol data, Symbol rois, Shape pooledSize, float spatialScale, string symbolName = "null")
         {
             return new Operator("ROIPooling")
                 .SetInput(data)
@@ -1960,7 +1960,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SequenceLast(Symbol data, Symbol sequenceLength, bool useSequenceLength = false, int? axis = null, string symbolName = "null")
+        public static Symbol SequenceLast(Symbol data, Symbol sequenceLength, bool useSequenceLength = false, int? axis = null, string symbolName = "null")
         {
             return new Operator("SequenceLast")
                 .SetInput(data)
@@ -1971,7 +1971,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SequenceMask(Symbol data, Symbol sequenceLength, bool useSequenceLength = false, float? value = null, int? axis = null, string symbolName = "null")
+        public static Symbol SequenceMask(Symbol data, Symbol sequenceLength, bool useSequenceLength = false, float? value = null, int? axis = null, string symbolName = "null")
         {
             return new Operator("SequenceMask")
                 .SetInput(data)
@@ -1983,7 +1983,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SequenceReverse(Symbol data, Symbol sequenceLength, bool useSequenceLength = false, int? axis = null, string symbolName = "null")
+        public static Symbol SequenceReverse(Symbol data, Symbol sequenceLength, bool useSequenceLength = false, int? axis = null, string symbolName = "null")
         {
             return new Operator("SequenceReverse")
                 .SetInput(data)
@@ -1994,7 +1994,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SpatialTransformer(Symbol data, Symbol loc, Shape targetShape = null, string transformType = "null", string samplerType = "null", bool? cudnnOff = null, string symbolName = "null")
+        public static Symbol SpatialTransformer(Symbol data, Symbol loc, Shape targetShape = null, string transformType = "null", string samplerType = "null", bool? cudnnOff = null, string symbolName = "null")
         {
             targetShape = new [] {0,0};
             return new Operator("SpatialTransformer")
@@ -2008,7 +2008,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList SVMOutput(Symbol data, Symbol label, float? margin = null, float? regularizationCoefficient = null, bool useLinear = false, string symbolName = "null")
+        public static Symbol SVMOutput(Symbol data, Symbol label, float? margin = null, float? regularizationCoefficient = null, bool useLinear = false, string symbolName = "null")
         {
             return new Operator("SVMOutput")
                 .SetInput(data)
@@ -2020,7 +2020,7 @@ namespace Horker.MXNet
                 .CreateSymbol(symbolName);
         }
 
-        public static SymbolList FillElement0index(NDArray lhs, NDArray mhs, NDArray rhs, string symbolName = "null")
+        public static Symbol FillElement0index(NDArray lhs, NDArray mhs, NDArray rhs, string symbolName = "null")
         {
             return new Operator("fill_element_0index")
                 .SetInput(lhs)

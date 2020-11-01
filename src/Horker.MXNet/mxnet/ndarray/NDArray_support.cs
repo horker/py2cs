@@ -23,5 +23,15 @@ namespace Horker.MXNet
         {
             throw new NotImplementedException();
         }
+
+        internal NDArray _getNdAdvancedIndexing(object key)
+        {
+            throw new InvalidOperationException();
+        }
+
+        internal void _setNdAdvancedIndexing(object key, object value)
+        {
+            throw new InvalidOperationException();
+        }
     }
 }

@@ -51,14 +51,16 @@ namespace Horker.MXNet
             return (ParameterDict)obj;
         }
 
-        public static Shape CoerceIntoShape(Shape s)
-        {
-            return s;
-        }
-
         public static Shape CoerceIntoShape(params int[] d)
         {
             return new Shape(d);
+        }
+
+        public static Shape CoerceIntoShape(object value)
+        {
+            if (value != null)
+                throw new ArgumentException("non-null value can not be accepted");
+            return new Shape();
         }
     }
 }

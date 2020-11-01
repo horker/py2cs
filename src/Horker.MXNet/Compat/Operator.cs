@@ -12,5 +12,10 @@ namespace Horker.MXNet.Compat
         public static float Truediv(float a, float b) => a / b;
         public static float Mod(float a, float b) => a % b;
         public static float Pow(float a, float b) => MathF.Pow(a, b);
+
+        public static int Add(int a, int b) => a + b;
+        public static int Sub(int a, int b) => a - b;
+        public static int Mul(int a, int b) => a * b;
+        public static int Truediv(int a, int b) => a / b;
     }
 }

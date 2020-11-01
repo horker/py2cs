@@ -41,7 +41,10 @@
         ],
         "_get_indexing_dispatch_code": [
           {
-            "Signature": "internal static int _getIndexingDispatchCode(NDArray key)"
+            "Signature": "internal static int _getIndexingDispatchCode(int key)"
+          },
+          {
+            "Signature": "internal static int _getIndexingDispatchCode(PySlice key)"
           },
           {
             "Signature": "internal static int _getIndexingDispatchCode(object key)"
@@ -54,7 +57,7 @@
         ],
         "_get_oshape_of_gather_nd_op": [
           {
-            "Signature": "internal static object _getOshapeOfGatherNdOp(Shape dshape, Shape ishape)"
+            "Signature": "internal static Shape _getOshapeOfGatherNdOp(Shape dshape, Shape ishape)"
           }
         ],
         "_get_dim_size": [
@@ -91,7 +94,7 @@
         ],
         "full": [
           {
-            "Signature": "public static NDArray Full(Shape shape, object val, Context ctx = null, DType dtype = default, NDArray @out = null)"
+            "Signature": "public static NDArray Full(Shape shape, float val, Context ctx = null, DType dtype = default, NDArray @out = null)"
           }
         ],
         "array": [
@@ -399,6 +402,7 @@
         ],
         "histogram": [
           {
+            "Drop": true,
             "Signature": "public static object Histogram(object a, int bins = 10, object range = null)"
           }
         ],
@@ -698,7 +702,10 @@
         ],
         "__setitem__": [
           {
-            "Signature": "internal void __Setitem__(NDArray key, NDArray value)"
+            "Signature": "internal void __Setitem__(int key, NDArray value)"
+          },
+          {
+            "Signature": "internal void __Setitem__(PySlice key, NDArray value)"
           }
         ],
         "__getitem__": [
@@ -709,7 +716,33 @@
         "_get_index_nd": [
           {
             "Drop": true,
-            "Signature": "internal object _getIndexNd(object key)"
+            "Signature": "internal NDArray _getIndexNd(int[] key)",
+            "Reassigned": [
+              "idx_i"
+            ],
+            "Locals": {
+              "indices": {
+                "Type": "List<NDArray>"
+              },
+              "advanced_indices": {
+                "Type": "Shape"
+              },
+              "basic_indices": {
+                "Type": "Shape"
+              },
+              "advanced_index_bshape": {
+                "Type": "Shape"
+              },
+              "idx_i": {
+                "Type": "int"
+              },
+              "idx_iReassigned": {
+                "Type": "NDArray"
+              },
+              "index_bshape_list": {
+                "Type": "List<Shape>"
+              }
+            }
           }
         ],
         "_prepare_value_nd": [
@@ -722,32 +755,22 @@
         ],
         "_set_nd_basic_indexing": [
           {
-            "Signature": "internal object _setNdBasicIndexing(object key, object value)"
-          }
-        ],
-        "_set_nd_advanced_indexing": [
-          {
-            "Signature": "internal object _setNdAdvancedIndexing(object key, object value)"
-          }
-        ],
-        "_get_nd_basic_indexing": [
-          {
-            "Signature": "internal NDArray _getNdBasicIndexing(int key)"
-          },
-          {
-            "Signature": "internal NDArray _getNdBasicIndexing(IEnumerable<int> key)",
+            "Signature": "internal void _setNdBasicIndexing(int key, NDArray value)",
             "Locals": {
               "begin": {
-                "Type": "List<int>"
+                "Type": "Shape"
               },
               "end": {
-                "Type": "List<int>"
+                "Type": "Shape"
               },
-              "step": {
-                "Type": "List<int>"
+              "steps": {
+                "Type": "Shape"
               },
-              "kept_axes": {
-                "Type": "List<int>"
+              "oshape": {
+                "Type": "Shape"
+              },
+              "vshape": {
+                "Type": "Shape"
               },
               "slice_i": {
                 "Type": "int"
@@ -755,28 +778,46 @@
             }
           },
           {
-            "Signature": "internal NDArray _getNdBasicIndexing(IEnumerable<PySlice> key)",
+            "Signature": "internal void _setNdBasicIndexing(PySlice key, NDArray value)",
             "Locals": {
               "begin": {
-                "Type": "List<int>"
+                "Type":  "Shape"
               },
               "end": {
-                "Type": "List<int>"
+                "Type":  "Shape"
               },
-              "step": {
-                "Type": "List<int>"
+              "steps": {
+                "Type":  "Shape"
               },
-              "kept_axes": {
-                "Type": "List<int>"
+              "oshape": {
+                "Type":  "Shape"
+              },
+              "vshape": {
+                "Type": "Shape"
               },
               "slice_i": {
-                "Type": "PySlice"
+                "Type": "int"
               }
             }
           }
         ],
+        "_set_nd_advanced_indexing": [
+          {
+            "Drop": true,
+            "Signature": "internal void _setNdAdvancedIndexing(int[] key, float value)"
+          }
+        ],
+        "_get_nd_basic_indexing": [
+          {
+            "Signature": "internal NDArray _getNdBasicIndexing(int key)"
+          },
+          {
+            "Signature": "internal NDArray _getNdBasicIndexing(PySlice key)"
+          }
+        ],
         "_get_nd_advanced_indexing": [
           {
+            "Drop": true,
             "Signature": "internal object _getNdAdvancedIndexing(object key)"
           }
         ],
@@ -797,7 +838,7 @@
         ],
         "reshape": [
           {
-            "Signature": "public NDArray Reshape(Shape shape, bool reverse)",
+            "Signature": "public NDArray Reshape(Shape shape, bool reverse = false)",
             "Locals": {
               "kwargs": {
                 "Type": "string[]",

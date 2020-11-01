@@ -59,7 +59,12 @@ namespace Horker.MXNet
             return new CArrayBufIntermediate(type, nativeArrayResult.Item1, nativeArrayResult.Item2);
         }
 
-        public static int[] CArray(Type type, int[] values) => values;
+        public static T[] CArray<T>(Type type, IEnumerable<T> values)
+        {
+            if (type != typeof(T))
+                throw new ArgumentException("CArray's first argument does not match the second argument");
+            return values.ToArray();
+        }
 
         public static IntPtr[] CHandleArray(IntPtr[] values) => values;
         public static IntPtr[] CHandleArray(NDArray[] values) => values.Select(x => x.Handle).ToArray();

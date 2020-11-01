@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Horker.MXNet.Compat;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Horker.MXNet
@@ -27,7 +29,7 @@ namespace Horker.MXNet
         public class NDArray
         {
             public Shape Shape { get; private set; }
-            public Array Data { get; private set; }
+            public float[] Data { get; private set; }
 
             public float Item1 => (float)Data.GetValue(0);
             public float Item2 => (float)Data.GetValue(1);
@@ -36,7 +38,7 @@ namespace Horker.MXNet
             public float Item5 => (float)Data.GetValue(4);
             public float Item6 => (float)Data.GetValue(5);
 
-            public NDArray(Array data)
+            public NDArray(float[] data)
             {
                 Data = data;
 
@@ -50,7 +52,12 @@ namespace Horker.MXNet
 
         public static NDArray Empty(Shape shape, DType dtype)
         {
-            return new NDArray(Array.CreateInstance(dtype, (int[])shape));
+            return new NDArray((float[])System.Array.CreateInstance(dtype, (int[])shape));
+        }
+
+        public static int Prod(IEnumerable<int> ndarray)
+        {
+            return ndarray.Aggregate(1, (x, sum) => x * sum);
         }
     }
 }
