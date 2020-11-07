@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using YamlDotNet.Serialization.NodeDeserializers;
+using static Python2CSharp.JsonUtils;
 
 namespace Python2CSharp.MXNet
 {
@@ -18,7 +19,7 @@ namespace Python2CSharp.MXNet
             if (ObjectNameOf(arg) != "Lambda")
             {
                 Generate(arg, ctx);
-                _out.Write($"({ConvertAsLocal(lhs)}, {ConvertAsLocal(rhs)})");
+                _out.Write($"({ConvertAsLocal(lhs)}, {ConvertAsLocal(rhs)});");
             }
             else
             {

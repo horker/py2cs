@@ -43,23 +43,28 @@ function Get-Declarations([string]$HeaderFile, [Hashtable]$Methods) {
             $name = $m.Groups[2].Value.Trim()
             $isOut = ($paramDefs[$name] -and $paramDefs[$name]["IsOut"]) -or $name -match "out"
 
-            $csType = $type -Replace "\s*const\s*", ""
-            $csType = $csType -Replace "void\s*\*", "IntPtr"
-            $CsType = $csType -Replace "\s*struct\s*", ""
-
-            if ($isOut) {
-                $csType = $csType -Replace "\s*\*$", ""
+            if ($paramDefs[$name] -and $paramDefs[$name]["Type"]) {
+                $csType = $paramDefs[$name]["Type"]
             }
             else {
-                $csType = $csType -Replace "\s*\*$", "[]"
-            }
+                $csType = $type -Replace "\s*const\s*", ""
+                $csType = $csType -Replace "void\s*\*", "IntPtr"
+                $CsType = $csType -Replace "\s*struct\s*", ""
 
-            $csType = $csType -Replace "^char\s*\*", "string"
-            $csType = $csType -Replace "^char\s*\*", "string"
-            $csType = $csType -Replace "(\w+)\s*\*", "`$1[]"
-            $csType = $csType -Replace "mx_uint", "int"
-            $csType = $csType -Replace "mx_int", "int"
-            $csType = $csType -Replace "uint", "int"
+                if ($isOut) {
+                    $csType = $csType -Replace "\s*\*$", ""
+                }
+                else {
+                    $csType = $csType -Replace "\s*\*$", "[]"
+                }
+
+                $csType = $csType -Replace "^char\s*\*", "string"
+                $csType = $csType -Replace "^char\s*\*", "string"
+                $csType = $csType -Replace "(\w+)\s*\*", "`$1[]"
+                $csType = $csType -Replace "mx_uint", "int"
+                $csType = $csType -Replace "mx_int", "int"
+                $csType = $csType -Replace "uint", "int"
+            }
 
             if (("this", "base", "out") -Contains $name) {
                 $name = "@" + $name
@@ -195,6 +200,7 @@ namespace Horker.MXNet.Interop
             "MXSymbolInferShapePartial" = @{ Drop = $true }
             "MXSymbolInferShapePartialEx" = @{ Drop = $true }
             "MXSymbolInferType" = @{ Drop = $true }
+
             "MXNDArrayGetSharedMemHandle" = @{
                 Params = @{
                     "shared_pid" = @{ IsOut = $true }
@@ -205,6 +211,12 @@ namespace Horker.MXNet.Interop
                 Params = @{
                     "free_mem" = @{ IsOut = $true }
                     "total_mem" = @{ IsOut = $true }
+                }
+            }
+
+            "MXNDArraySyncCopyFromCPU" = @{
+                Params = @{
+                    data = @{ Type = "float[]" }
                 }
             }
         }

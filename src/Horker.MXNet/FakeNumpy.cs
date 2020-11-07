@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Horker.MXNet
@@ -48,6 +49,16 @@ namespace Horker.MXNet
 
                 Shape = shape;
             }
+
+            public int Size => Shape.Size;
+            public NDArrayCTypesUtils CTypes => new NDArrayCTypesUtils(this);
+
+            public static implicit operator float[](NDArray array)
+            {
+                var result = new float[array.Size];
+                array.Data.CopyTo(result, 0);
+                return result;
+            }
         }
 
         public static NDArray Empty(Shape shape, DType dtype)
@@ -58,6 +69,31 @@ namespace Horker.MXNet
         public static int Prod(IEnumerable<int> ndarray)
         {
             return ndarray.Aggregate(1, (x, sum) => x * sum);
+        }
+
+        public static NDArray Asarray(float[] array, DType dtype, string order = "C")
+        {
+            if (dtype.Type != MXNet.DType.Float32)
+                throw new ArgumentException("dtype mismatch");
+
+            if (order != "C")
+                throw new NotImplementedException("Orders other than C are not implemented");
+
+            return new NDArray(array);
+        }
+
+        public class NDArrayCTypesUtils
+        {
+            private NDArray _instance;
+            public NDArrayCTypesUtils(NDArray instance)
+            {
+                _instance = instance;
+            }
+
+            public float[] DataAs(Func<IntPtr> f)
+            {
+                return _instance.Data;
+            }
         }
     }
 }

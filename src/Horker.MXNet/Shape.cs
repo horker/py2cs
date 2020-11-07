@@ -26,6 +26,8 @@ namespace Horker.MXNet
 
         public int Length => Dimensions.Count;
 
+        public int Size => Dimensions.Aggregate(1, (x, sum) => x * sum);
+
         public Shape(params int[] d)
         {
             Dimensions = new List<int>(d);
@@ -82,6 +84,11 @@ namespace Horker.MXNet
         public static bool operator !=(Shape self, object other)
         {
             return !self.Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Dimensions.GetHashCode();
         }
 
         // Shape specific methods

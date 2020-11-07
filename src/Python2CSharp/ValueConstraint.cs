@@ -40,5 +40,16 @@ namespace Python2CSharp
         {
             Type = type;
         }
+
+        public ValueConstraint Negate()
+        {
+            if (IsTrue())
+                return False;
+
+            if (IsFalse())
+                return True;
+
+            return this;
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Horker.MXNet;
+using Horker.MXNet.Compat;
 using Horker.MXNet.Gluon;
 using NDArrayHandle = System.IntPtr;
 
@@ -44,6 +45,21 @@ namespace Horker.MXNet
         public static NDArrayHandle[] CoerceIntoNDArrayHandleArray(NDArrayHandle[] handles)
         {
             return handles;
+        }
+
+        public static Np.NDArray CoerceIntoNpNDArray(Np.NDArray array)
+        {
+            return array;
+        }
+
+        public static Slice CoerceIntoPySlice(Slice value)
+        {
+            return value;
+        }
+
+        public static Slice CoerceIntoPySlice(ValueTuple<Slice> value)
+        {
+            return value.Item1;
         }
 
         public static ParameterDict CoerceIntoParameterDict(object obj)

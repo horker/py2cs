@@ -36,6 +36,8 @@ namespace Horker.MXNet
     // Expr
     // ImportFrom
     // ImportFrom
+    // try block outside of function -- only body generated
+    // ImportFrom
     // ImportFrom
     // Import
     // Import
@@ -224,7 +226,7 @@ namespace Horker.MXNet
         {
             var sharedPid = CTypes.CInt();
             var sharedId = CTypes.CInt();
-            CheckCall(_LIB.MXNDArrayGetSharedMemHandle(this.Handle, out sharedPid, out sharedId));
+            CheckCall(_LIB.MXNDArrayGetSharedMemHandle(this.GetHandle(), out sharedPid, out sharedId));
             return ValueTuple.Create(sharedPid, sharedId, this.Shape, this.DType);
         }
         
@@ -485,7 +487,28 @@ namespace Horker.MXNet
             }
         }
         
-        internal object __Getitem__(NDArray key)
+        internal object __Getitem__(int key)
+        {
+            // Expr
+            var indexingDispatchCode = _getIndexingDispatchCode(key);
+            if (IsTrue((indexingDispatchCode == _NDARRAY_BASIC_INDEXING)))
+            {
+                return this._getNdBasicIndexing(key);
+            }
+            else
+            {
+                if (IsTrue((indexingDispatchCode == _NDARRAY_ADVANCED_INDEXING)))
+                {
+                    return this._getNdAdvancedIndexing(key);
+                }
+                else
+                {
+                    throw new ValueError(("Indexing NDArray with index=%s and type=%s is not supported".PyFormat(ValueTuple.Create(Str(key), Str(Type(key))))));
+                }
+            }
+        }
+        
+        internal object __Getitem__(PySlice key)
         {
             // Expr
             var indexingDispatchCode = _getIndexingDispatchCode(key);
@@ -508,7 +531,7 @@ namespace Horker.MXNet
         
         // Drop: _get_index_nd
         
-        internal object _prepareValueNd(float value, Shape vshape)
+        internal NDArray _prepareValueNd(float value, Shape vshape)
         {
             // Expr
             var valueNd = Full(shape: vshape, val: value, ctx: this.Context, dtype: this.DType);
@@ -519,7 +542,7 @@ namespace Horker.MXNet
             return valueNd;
         }
         
-        internal object _prepareValueNd(NDArray value, Shape vshape)
+        internal NDArray _prepareValueNd(NDArray value, Shape vshape)
         {
             // Expr
             var valueNd = value.AsInContext(this.Context);
@@ -536,29 +559,73 @@ namespace Horker.MXNet
         
         internal void _setNdBasicIndexing(int key, NDArray value)
         {
+            int keySsa2;
+            int keySsa4;
+            PySlice keySsa8;
             // Expr
             var shape = this.Shape;
             if (IsTrue((key < 0)))
             {
-                key = BinOp.Add(key, shape.Item1);
+                var keySsa1 = BinOp.Add(key, shape.Item1);
+                keySsa2 = CoerceIntoInt(keySsa1);
             }
-            if (IsTrue((IsTrue((key < 0)) || IsTrue((key >= shape.Item1)))))
+            else
             {
-                if (IsTrue((key < 0)))
-                {
-                    key = (key - shape.Item1);
-                }
-                throw new IndexError(("index %d is out of bounds for axis 0 with size %d".PyFormat(ValueTuple.Create(key, shape.Item1))));
+                /* pass */
+                keySsa2 = CoerceIntoInt(key);
             }
-            key = PySlice(key, BinOp.Add(key, 1));
-            Assert(IsTrue(Isinstance(key, typeof(Tuple))), "Isinstance(key, typeof(Tuple))");
-            Assert(IsTrue((Len(key) <= Len(shape))), "(Len(key) <= Len(shape))");
+            if (IsTrue((IsTrue((keySsa2 < 0)) || IsTrue((keySsa2 >= shape.Item1)))))
+            {
+                if (IsTrue((keySsa2 < 0)))
+                {
+                    var keySsa3 = (keySsa2 - shape.Item1);
+                    keySsa4 = CoerceIntoInt(keySsa3);
+                }
+                else
+                {
+                    /* pass */
+                    keySsa4 = CoerceIntoInt(keySsa2);
+                }
+                throw new IndexError(("index %d is out of bounds for axis 0 with size %d".PyFormat(ValueTuple.Create(keySsa4, shape.Item1))));
+            }
+            var keySsa5 = PySlice(keySsa2, BinOp.Add(keySsa2, 1));
+            var keySsa6 = keySsa5;
+            if (IsTrue(Isinstance(keySsa6, typeof(PySlice))))
+            {
+                var assignToSelf = (IsTrue((IsNone(keySsa6.Step))) || IsTrue((keySsa6.Step == 1)));
+                assignToSelf = (assignToSelf & (IsTrue((IsNone(keySsa6.Start))) || IsTrue((keySsa6.Start == 0))));
+                assignToSelf = (assignToSelf & (IsTrue((IsNone(keySsa6.Stop))) || IsTrue((keySsa6.Stop == shape.Item1))));
+                if (IsTrue(assignToSelf))
+                {
+                    if (IsTrue((!Object.ReferenceEquals(value.GetHandle(), this.GetHandle()))))
+                    {
+                        if (IsTrue((value.Shape != shape)))
+                        {
+                            value = value.BroadcastTo(shape);
+                        }
+                        value.Copyto(this);
+                    }
+                    return;
+                }
+                else
+                {
+                    var keySsa7 = ValueTuple.Create(keySsa6);
+                    keySsa8 = CoerceIntoPySlice(keySsa7);
+                }
+            }
+            else
+            {
+                /* pass */
+                keySsa8 = CoerceIntoPySlice(keySsa6);
+            }
+            Assert(IsTrue(Isinstance(keySsa8, typeof(Tuple))), "Isinstance(keySsa8, typeof(Tuple))");
+            Assert(IsTrue((Len(keySsa8) <= Len(shape))), "(Len(keySsa8) <= Len(shape))");
             var begin = CoerceIntoShape(null);
             var end = CoerceIntoShape(null);
             var steps = CoerceIntoShape(null);
             var oshape = CoerceIntoShape(null);
             var vshape = CoerceIntoShape(null);
-            foreach (var (i, sliceI) in Enumerate(key))
+            foreach (var (i, sliceI) in Enumerate(keySsa8))
             {
                 var dimSize = 1;
                 begin.Append(sliceI);
@@ -566,8 +633,8 @@ namespace Horker.MXNet
                 steps.Append(1);
                 oshape.Append(dimSize);
             }
-            oshape.Extend(shape.Slice(Len(key), null, null));
-            vshape.Extend(shape.Slice(Len(key), null, null));
+            oshape.Extend(shape.Slice(Len(keySsa8), null, null));
+            vshape.Extend(shape.Slice(Len(keySsa8), null, null));
             if (IsTrue((Len(vshape) == 0)))
             {
                 vshape.Append(1);
@@ -584,35 +651,47 @@ namespace Horker.MXNet
         
         internal void _setNdBasicIndexing(PySlice key, NDArray value)
         {
+            PySlice keySsa8;
             // Expr
             var shape = this.Shape;
-            var assignToSelf = (IsTrue((IsNone(key.Step))) || IsTrue((key.Step == 1)));
-            assignToSelf = (assignToSelf & (IsTrue((IsNone(key.Start))) || IsTrue((key.Start == 0))));
-            assignToSelf = (assignToSelf & (IsTrue((IsNone(key.Stop))) || IsTrue((key.Stop == shape.Item1))));
-            if (IsTrue(assignToSelf))
+            /* pass */
+            var keySsa6 = key;
+            if (IsTrue(Isinstance(keySsa6, typeof(PySlice))))
             {
-                if (IsTrue((!(value.Handle is this.Handle))))
+                var assignToSelf = (IsTrue((IsNone(keySsa6.Step))) || IsTrue((keySsa6.Step == 1)));
+                assignToSelf = (assignToSelf & (IsTrue((IsNone(keySsa6.Start))) || IsTrue((keySsa6.Start == 0))));
+                assignToSelf = (assignToSelf & (IsTrue((IsNone(keySsa6.Stop))) || IsTrue((keySsa6.Stop == shape.Item1))));
+                if (IsTrue(assignToSelf))
                 {
-                    if (IsTrue((value.Shape != shape)))
+                    if (IsTrue((!Object.ReferenceEquals(value.GetHandle(), this.GetHandle()))))
                     {
-                        value = value.BroadcastTo(shape);
+                        if (IsTrue((value.Shape != shape)))
+                        {
+                            value = value.BroadcastTo(shape);
+                        }
+                        value.Copyto(this);
                     }
-                    value.Copyto(this);
+                    return;
                 }
-                return;
+                else
+                {
+                    var keySsa7 = ValueTuple.Create(keySsa6);
+                    keySsa8 = CoerceIntoPySlice(keySsa7);
+                }
             }
             else
             {
-                key = ValueTuple.Create(key);
+                /* pass */
+                keySsa8 = CoerceIntoPySlice(keySsa6);
             }
-            Assert(IsTrue(Isinstance(key, typeof(Tuple))), "Isinstance(key, typeof(Tuple))");
-            Assert(IsTrue((Len(key) <= Len(shape))), "(Len(key) <= Len(shape))");
+            Assert(IsTrue(Isinstance(keySsa8, typeof(Tuple))), "Isinstance(keySsa8, typeof(Tuple))");
+            Assert(IsTrue((Len(keySsa8) <= Len(shape))), "(Len(keySsa8) <= Len(shape))");
             var begin = CoerceIntoShape(null);
             var end = CoerceIntoShape(null);
             var steps = CoerceIntoShape(null);
             var oshape = CoerceIntoShape(null);
             var vshape = CoerceIntoShape(null);
-            foreach (var (i, sliceI) in Enumerate(key))
+            foreach (var (i, sliceI) in Enumerate(keySsa8))
             {
                 var dimSize = 1;
                 begin.Append(sliceI);
@@ -620,8 +699,8 @@ namespace Horker.MXNet
                 steps.Append(1);
                 oshape.Append(dimSize);
             }
-            oshape.Extend(shape.Slice(Len(key), null, null));
-            vshape.Extend(shape.Slice(Len(key), null, null));
+            oshape.Extend(shape.Slice(Len(keySsa8), null, null));
+            vshape.Extend(shape.Slice(Len(keySsa8), null, null));
             if (IsTrue((Len(vshape) == 0)))
             {
                 vshape.Append(1);
@@ -672,48 +751,26 @@ namespace Horker.MXNet
                     return this;
                 }
             }
+            /* pass */
             Assert(IsTrue((Len(key) != 0)), "(Len(key) != 0)");
-            var begin = null;
-            var end = null;
-            var step = null;
-            var keptAxes = null;
-            var i = (-1);
+            var begin = CoerceIntoShape(null);
+            var end = CoerceIntoShape(null);
+            var step = CoerceIntoShape(null);
+            var keptAxes = CoerceIntoShape(null);
+            var iSsa1 = (-1);
             foreach (var (i, sliceI) in Enumerate(key))
             {
-                if (IsTrue(Isinstance(sliceI, typeof(IntegerTypes))))
-                {
-                    var local0 = (integer_types)sliceI;
-                    begin.Append(local0);
-                    end.Append((IsTrue((local0 != (-1))) ? BinOp.Add(local0, 1) : this.Shape[i]));
-                    step.Append(1);
-                }
-                else
-                {
-                    if (IsTrue(Isinstance(sliceI, typeof(PySlice))))
-                    {
-                        var local0 = (py_slice)sliceI;
-                        if (IsTrue((local0.Step == 0)))
-                        {
-                            throw new ValueError(("basic index=%s cannot have slice=%s with step = 0".PyFormat(ValueTuple.Create(Str(key), Str(local0)))));
-                        }
-                        begin.Append(local0.Start);
-                        end.Append(local0.Stop);
-                        step.Append(local0.Step);
-                        keptAxes.Append(i);
-                    }
-                    else
-                    {
-                        throw new ValueError(("basic_indexing does not support slicing with index=%s of type=%s.".PyFormat(ValueTuple.Create(Str(sliceI), Str(Type(sliceI))))));
-                    }
-                }
+                begin.Append(sliceI);
+                end.Append((IsTrue((sliceI != (-1))) ? BinOp.Add(sliceI, 1) : this.Shape[iSsa1]));
+                step.Append(1);
             }
-            keptAxes.Extend(Range(BinOp.Add(i, 1), Len(shape)));
+            keptAxes.Extend(Range(BinOp.Add(iSsa1, 1), Len(shape)));
             var slicedNd = Op.Slice(this, begin, end, step);
             if (IsTrue((Len(keptAxes) == Len(shape))))
             {
                 return slicedNd;
             }
-            var oshape = null;
+            var oshape = CoerceIntoShape(null);
             var slicedShape = slicedNd.Shape;
             foreach (var axis in keptAxes)
             {
@@ -723,25 +780,25 @@ namespace Horker.MXNet
             {
                 oshape.Append(1);
             }
-            oshape = Tuple(oshape);
+            oshape = CoerceIntoShape(Tuple(oshape));
             Assert(IsTrue((Np.Prod(oshape) == Np.Prod(slicedShape))), "(Np.Prod(oshape) == Np.Prod(slicedShape))");
             return slicedNd.Reshape(oshape);
         }
         
         // Drop: _get_nd_advanced_indexing
         
-        internal object _syncCopyfrom(object sourceArray)
+        internal void _syncCopyfrom(Np.NDArray sourceArray)
         {
+            Np.NDArray sourceArraySsa2;
             // Expr
-            if (IsTrue((!IsTrue(Isinstance(sourceArray, typeof(Np.NDArray))))))
+            /* pass */
+            sourceArraySsa2 = CoerceIntoNpNDArray(sourceArray);
+            var sourceArraySsa3 = Np.Asarray(sourceArraySsa2, dtype: this.DType, order: "C");
+            if (IsTrue((sourceArraySsa3.Shape != this.Shape)))
             {
+                throw new ValueError(("Shape inconsistent: expected %s vs got %s".PyFormat(ValueTuple.Create(Str(sourceArraySsa3.Shape), Str(this.Shape)))));
             }
-            sourceArray = Np.Asarray(sourceArray, dtype: this.DType, order: "C");
-            if (IsTrue((sourceArray.Shape != this.Shape)))
-            {
-                throw new ValueError(("Shape inconsistent: expected %s vs got %s".PyFormat(ValueTuple.Create(Str(sourceArray.Shape), Str(this.Shape)))));
-            }
-            CheckCall(_LIB.MXNDArraySyncCopyFromCPU(this.Handle, sourceArray.CTypes.DataAs(CTypes.CVoidP), CTypes.CSizeT(sourceArray.Size)));
+            CheckCall(_LIB.MXNDArraySyncCopyFromCPU(this.GetHandle(), sourceArraySsa3.CTypes.DataAs(CTypes.CVoidP), CTypes.CSizeT(sourceArraySsa3.Size)));
         }
         
         internal NDArray _slice(int start, int stop)
@@ -751,7 +808,7 @@ namespace Horker.MXNet
             var (local0, local1, _) = _getIndexRange(start, stop, this.Shape.Item1);
             start = local0;
             stop = local1;
-            CheckCall(_LIB.MXNDArraySlice(this.Handle, MxUint(start), MxUint(stop), out handle));
+            CheckCall(_LIB.MXNDArraySlice(this.GetHandle(), MxUint(start), MxUint(stop), out handle));
             return new NDArray(handle: handle, writable: this.Writable);
         }
         
@@ -768,7 +825,7 @@ namespace Horker.MXNet
                     throw new IndexError(("index %d is out of bounds for axis 0 with size %d".PyFormat(ValueTuple.Create((idx - length), length))));
                 }
             }
-            CheckCall(_LIB.MXNDArrayAt(this.Handle, MxUint(idx), out handle));
+            CheckCall(_LIB.MXNDArrayAt(this.GetHandle(), MxUint(idx), out handle));
             return new NDArray(handle: handle, writable: this.Writable);
         }
         
@@ -794,7 +851,7 @@ namespace Horker.MXNet
             }
             reverse = reverse;
             var handle = new NDArrayHandle();
-            CheckCall(_LIB.MXNDArrayReshape64(this.Handle, Len(shape), shape.Cast<long>().ToArray(), reverse, out handle));
+            CheckCall(_LIB.MXNDArrayReshape64(this.GetHandle(), Len(shape), shape.Cast<long>().ToArray(), reverse, out handle));
             return new NDArray(handle: handle, writable: this.Writable);
         }
         
@@ -821,7 +878,7 @@ namespace Horker.MXNet
         public NDArray Repeat(int repeat, int axis, NDArray @out = null)
         {
             // Expr
-            return Op.Repeat(this, repeat, axis);
+            return Op.Repeat(this, repeat, axis, @out);
         }
         
         public NDArray Pad(string mode, Shape padWidth, double constantValue, NDArray @out = null)
@@ -1297,7 +1354,7 @@ namespace Horker.MXNet
         public object WaitToRead()
         {
             // Expr
-            CheckCall(_LIB.MXNDArrayWaitToRead(this.Handle));
+            CheckCall(_LIB.MXNDArrayWaitToRead(this.GetHandle()));
         }
         
         public int Ndim
@@ -1314,14 +1371,14 @@ namespace Horker.MXNet
                 // Expr
                 var ndim = MxInt();
                 var pdata = CTypes.POINTER(typeof(MxInt))();
-                CheckCall(_LIB.MXNDArrayGetShapeEx(this.Handle, out ndim, out pdata));
-                if (IsTrue((ndim.Value == (-1))))
+                CheckCall(_LIB.MXNDArrayGetShapeEx(this.GetHandle(), out ndim, out pdata));
+                if (IsTrue((ndim.GetValue() == (-1))))
                 {
                     return null;
                 }
                 else
                 {
-                    return Tuple(pdata.Slice(null, ndim.Value, null));
+                    return Tuple(pdata.Slice(null, ndim.GetValue(), null));
                 }
             }
         }
@@ -1345,7 +1402,7 @@ namespace Horker.MXNet
                 // Expr
                 var devTypeid = CTypes.CInt();
                 var devId = CTypes.CInt();
-                CheckCall(_LIB.MXNDArrayGetContext(this.Handle, out devTypeid, out devId));
+                CheckCall(_LIB.MXNDArrayGetContext(this.GetHandle(), out devTypeid, out devId));
                 return new Context(Context.Devtype2str[devTypeid], devId);
             }
         }
@@ -1355,7 +1412,7 @@ namespace Horker.MXNet
             get {
                 // Expr
                 var mxDtype = CTypes.CInt();
-                CheckCall(_LIB.MXNDArrayGetDType(this.Handle, out mxDtype));
+                CheckCall(_LIB.MXNDArrayGetDType(this.GetHandle(), out mxDtype));
                 return _DTYPE_MX_TO_NP[mxDtype];
             }
         }
@@ -1364,7 +1421,7 @@ namespace Horker.MXNet
         {
             get {
                 // Expr
-                return _STORAGE_TYPE_ID_TO_STR[_storageType(this.Handle)];
+                return _STORAGE_TYPE_ID_TO_STR[_storageType(this.GetHandle())];
             }
         }
         
@@ -1384,20 +1441,20 @@ namespace Horker.MXNet
         {
             // Expr
             var @out = CTypes.CInt();
-            CheckCall(_LIB.MXNDArrayGetGradState(this.Handle, out @out));
+            CheckCall(_LIB.MXNDArrayGetGradState(this.GetHandle(), out @out));
             return @out;
         }
         
         internal void Set_freshGrad(object state)
         {
-            CheckCall(_LIB.MXNDArraySetGradState(this.Handle, CTypes.CInt(state)));
+            CheckCall(_LIB.MXNDArraySetGradState(this.GetHandle(), CTypes.CInt(state)));
         }
         
         public Np.NDArray Asnumpy()
         {
             // Expr
             var data = Np.Empty(this.Shape, dtype: this.DType);
-            CheckCall(_LIB.MXNDArraySyncCopyToCPU(this.Handle, data.CTypes.DataAs(CTypes.CVoidP), CTypes.CSizeT(data.Size)));
+            CheckCall(_LIB.MXNDArraySyncCopyToCPU(this.GetHandle(), data.CTypes.DataAs(CTypes.CVoidP), CTypes.CSizeT(data.Size)));
             return data;
         }
         
@@ -1426,7 +1483,7 @@ namespace Horker.MXNet
         public NDArray Copyto(NDArray other)
         {
             // Expr
-            if (IsTrue(((other.Handle is this.Handle))))
+            if (IsTrue((Object.ReferenceEquals(other.GetHandle(), this.GetHandle()))))
             {
                 Warnings.Warn("You are attempting to copy an array to itself", typeof(RuntimeWarning));
                 return false;
@@ -1463,8 +1520,8 @@ namespace Horker.MXNet
             {
                 grad = CoerceIntoNDArray(Op.ZerosLike(this));
             }
-            var gradReqReassigned = _GRAD_REQ_MAP[gradReq];
-            CheckCall(_LIB.MXAutogradMarkVariables(1, CTypes.Pointer(this.Handle), CTypes.Pointer(MxUint(gradReqReassigned)), CTypes.Pointer(grad.Handle)));
+            gradReq = _GRAD_REQ_MAP[gradReq];
+            CheckCall(_LIB.MXAutogradMarkVariables(1, CTypes.Pointer(this.GetHandle()), CTypes.Pointer(MxUint(gradReq)), CTypes.Pointer(grad.GetHandle())));
         }
         
         public object Grad
@@ -1473,8 +1530,8 @@ namespace Horker.MXNet
                 // Expr
                 // ImportFrom
                 var hdl = new NDArrayHandle();
-                CheckCall(_LIB.MXNDArrayGetGrad(this.Handle, out hdl));
-                if (IsTrue((IsNone(hdl.Value))))
+                CheckCall(_LIB.MXNDArrayGetGrad(this.GetHandle(), out hdl));
+                if (IsTrue((IsNone(hdl.GetValue()))))
                 {
                     return null;
                 }
@@ -1487,7 +1544,7 @@ namespace Horker.MXNet
             // Expr
             // ImportFrom
             var hdl = new NDArrayHandle();
-            CheckCall(_LIB.MXNDArrayDetach(this.Handle, out hdl));
+            CheckCall(_LIB.MXNDArrayDetach(this.GetHandle(), out hdl));
             return _ndarrayCls(hdl);
         }
         
@@ -1501,7 +1558,7 @@ namespace Horker.MXNet
             }
             else
             {
-                ogradHandles = CoerceIntoNDArrayHandleArray(new [] { outGrad.Handle });
+                ogradHandles = CoerceIntoNDArrayHandleArray(new [] { outGrad.GetHandle() });
             }
             CheckCall(_LIB.MXAutogradBackwardEx(1, CHandleArray(new [] { this }), ogradHandles.Cast<NDArrayHandle>().ToArray(), 0, CTypes.CVoidP(0), CTypes.CInt(retainGraph), CTypes.CInt(0), CTypes.CInt(trainMode), CTypes.CVoidP(0), CTypes.CVoidP(0)));
         }
@@ -1744,6 +1801,18 @@ namespace Horker.MXNet
         public static object Moveaxis(NDArray tensor, Shape source, Shape destination)
         {
             // Expr
+            try{
+                source = Np.Core.Numeric.NormalizeAxisTuple(source, tensor.Ndim);
+            }
+            catch (IndexError){
+                throw new ValueError(("Source should verify 0 <= source < tensor.ndimGot %d".PyFormat(source)));
+            }
+            try{
+                destination = Np.Core.Numeric.NormalizeAxisTuple(destination, tensor.Ndim);
+            }
+            catch (IndexError){
+                throw new ValueError(("Destination should verify 0 <= destination < tensor.ndim (%d).".PyFormat(tensor.Ndim)), ("Got %d".PyFormat(destination)));
+            }
             if (IsTrue((Len(source) != Len(destination))))
             {
                 throw new ValueError("`source` and `destination` arguments must have the same number of elements");
@@ -1794,7 +1863,7 @@ namespace Horker.MXNet
         public static NDArray Add(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastAdd(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastAdd(lhs, rhs);;
         }
     }
     
@@ -1803,7 +1872,7 @@ namespace Horker.MXNet
         public static NDArray Add(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._plusScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._plusScalar(lhs, rhs);;
         }
     }
     
@@ -1812,7 +1881,7 @@ namespace Horker.MXNet
         public static NDArray Add(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._plusScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._plusScalar(rhs, lhs);;
         }
     }
     
@@ -1821,7 +1890,7 @@ namespace Horker.MXNet
         public static float Add(float lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Operator.Add(lhs, rhs);
+            return /* _ufunc_helper expanded */ Operator.Add(lhs, rhs);;
         }
     }
     
@@ -1830,7 +1899,7 @@ namespace Horker.MXNet
         public static NDArray Subtract(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastSub(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastSub(lhs, rhs);;
         }
     }
     
@@ -1839,7 +1908,7 @@ namespace Horker.MXNet
         public static NDArray Subtract(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._minusScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._minusScalar(lhs, rhs);;
         }
     }
     
@@ -1848,7 +1917,7 @@ namespace Horker.MXNet
         public static NDArray Subtract(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._rminusScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._rminusScalar(rhs, lhs);;
         }
     }
     
@@ -1857,7 +1926,7 @@ namespace Horker.MXNet
         public static float Subtract(float lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Operator.Sub(lhs, rhs);
+            return /* _ufunc_helper expanded */ Operator.Sub(lhs, rhs);;
         }
     }
     
@@ -1866,7 +1935,7 @@ namespace Horker.MXNet
         public static NDArray Multiply(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastMul(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastMul(lhs, rhs);;
         }
     }
     
@@ -1875,7 +1944,7 @@ namespace Horker.MXNet
         public static NDArray Multiply(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._mulScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._mulScalar(lhs, rhs);;
         }
     }
     
@@ -1884,7 +1953,7 @@ namespace Horker.MXNet
         public static NDArray Multiply(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._mulScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._mulScalar(rhs, lhs);;
         }
     }
     
@@ -1893,7 +1962,7 @@ namespace Horker.MXNet
         public static float Multiply(float lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Operator.Mul(lhs, rhs);
+            return /* _ufunc_helper expanded */ Operator.Mul(lhs, rhs);;
         }
     }
     
@@ -1902,7 +1971,7 @@ namespace Horker.MXNet
         public static NDArray Divide(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastDiv(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastDiv(lhs, rhs);;
         }
     }
     
@@ -1911,7 +1980,7 @@ namespace Horker.MXNet
         public static NDArray Divide(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._divScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._divScalar(lhs, rhs);;
         }
     }
     
@@ -1920,7 +1989,7 @@ namespace Horker.MXNet
         public static NDArray Divide(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._rdivScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._rdivScalar(rhs, lhs);;
         }
     }
     
@@ -1929,7 +1998,7 @@ namespace Horker.MXNet
         public static float Divide(float lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Operator.Truediv(lhs, rhs);
+            return /* _ufunc_helper expanded */ Operator.Truediv(lhs, rhs);;
         }
     }
     
@@ -1938,7 +2007,7 @@ namespace Horker.MXNet
         public static NDArray Modulo(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastMod(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastMod(lhs, rhs);;
         }
     }
     
@@ -1947,7 +2016,7 @@ namespace Horker.MXNet
         public static NDArray Modulo(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._modScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._modScalar(lhs, rhs);;
         }
     }
     
@@ -1956,7 +2025,7 @@ namespace Horker.MXNet
         public static NDArray Modulo(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._rmodScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._rmodScalar(rhs, lhs);;
         }
     }
     
@@ -1965,7 +2034,7 @@ namespace Horker.MXNet
         public static float Modulo(float lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Operator.Mod(lhs, rhs);
+            return /* _ufunc_helper expanded */ Operator.Mod(lhs, rhs);;
         }
     }
     
@@ -1974,7 +2043,7 @@ namespace Horker.MXNet
         public static NDArray Power(NDArray @base, NDArray exp)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastPower(@base, exp);
+            return /* _ufunc_helper expanded */ Op.BroadcastPower(@base, exp);;
         }
     }
     
@@ -1983,7 +2052,7 @@ namespace Horker.MXNet
         public static NDArray Power(NDArray @base, float exp)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._powerScalar(@base, exp);
+            return /* _ufunc_helper expanded */ _internal._powerScalar(@base, exp);;
         }
     }
     
@@ -1992,7 +2061,7 @@ namespace Horker.MXNet
         public static NDArray Power(float @base, NDArray exp)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._rpowerScalar(exp, @base);
+            return /* _ufunc_helper expanded */ _internal._rpowerScalar(exp, @base);;
         }
     }
     
@@ -2001,7 +2070,7 @@ namespace Horker.MXNet
         public static float Power(float @base, float exp)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Operator.Pow(@base, exp);
+            return /* _ufunc_helper expanded */ Operator.Pow(@base, exp);;
         }
     }
     
@@ -2010,7 +2079,7 @@ namespace Horker.MXNet
         public static NDArray Maximum(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastMaximum(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastMaximum(lhs, rhs);;
         }
     }
     
@@ -2019,7 +2088,7 @@ namespace Horker.MXNet
         public static NDArray Maximum(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._maximumScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._maximumScalar(lhs, rhs);;
         }
     }
     
@@ -2028,7 +2097,7 @@ namespace Horker.MXNet
         public static NDArray Maximum(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._maximumScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._maximumScalar(rhs, lhs);;
         }
     }
     
@@ -2046,7 +2115,7 @@ namespace Horker.MXNet
         public static NDArray Minimum(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastMinimum(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastMinimum(lhs, rhs);;
         }
     }
     
@@ -2055,7 +2124,7 @@ namespace Horker.MXNet
         public static NDArray Minimum(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._minimumScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._minimumScalar(lhs, rhs);;
         }
     }
     
@@ -2064,7 +2133,7 @@ namespace Horker.MXNet
         public static NDArray Minimum(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._minimumScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._minimumScalar(rhs, lhs);;
         }
     }
     
@@ -2082,7 +2151,7 @@ namespace Horker.MXNet
         public static NDArray Equal(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastEqual(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastEqual(lhs, rhs);;
         }
     }
     
@@ -2091,7 +2160,7 @@ namespace Horker.MXNet
         public static NDArray Equal(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._equalScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._equalScalar(lhs, rhs);;
         }
     }
     
@@ -2100,7 +2169,7 @@ namespace Horker.MXNet
         public static NDArray Equal(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._equalScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._equalScalar(rhs, lhs);;
         }
     }
     
@@ -2118,7 +2187,7 @@ namespace Horker.MXNet
         public static NDArray NotEqual(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastNotEqual(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastNotEqual(lhs, rhs);;
         }
     }
     
@@ -2127,7 +2196,7 @@ namespace Horker.MXNet
         public static NDArray NotEqual(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._notEqualScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._notEqualScalar(lhs, rhs);;
         }
     }
     
@@ -2136,7 +2205,7 @@ namespace Horker.MXNet
         public static NDArray NotEqual(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._notEqualScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._notEqualScalar(rhs, lhs);;
         }
     }
     
@@ -2154,7 +2223,7 @@ namespace Horker.MXNet
         public static NDArray Greater(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastGreater(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastGreater(lhs, rhs);;
         }
     }
     
@@ -2163,7 +2232,7 @@ namespace Horker.MXNet
         public static NDArray Greater(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._greaterScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._greaterScalar(lhs, rhs);;
         }
     }
     
@@ -2172,7 +2241,7 @@ namespace Horker.MXNet
         public static NDArray Greater(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._lesserScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._lesserScalar(rhs, lhs);;
         }
     }
     
@@ -2190,7 +2259,7 @@ namespace Horker.MXNet
         public static NDArray GreaterEqual(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastGreaterEqual(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastGreaterEqual(lhs, rhs);;
         }
     }
     
@@ -2199,7 +2268,7 @@ namespace Horker.MXNet
         public static NDArray GreaterEqual(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._greaterEqualScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._greaterEqualScalar(lhs, rhs);;
         }
     }
     
@@ -2208,7 +2277,7 @@ namespace Horker.MXNet
         public static NDArray GreaterEqual(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._lesserEqualScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._lesserEqualScalar(rhs, lhs);;
         }
     }
     
@@ -2226,7 +2295,7 @@ namespace Horker.MXNet
         public static NDArray Lesser(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastLesser(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastLesser(lhs, rhs);;
         }
     }
     
@@ -2235,7 +2304,7 @@ namespace Horker.MXNet
         public static NDArray Lesser(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._lesserScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._lesserScalar(lhs, rhs);;
         }
     }
     
@@ -2244,7 +2313,7 @@ namespace Horker.MXNet
         public static NDArray Lesser(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._greaterScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._greaterScalar(rhs, lhs);;
         }
     }
     
@@ -2262,7 +2331,7 @@ namespace Horker.MXNet
         public static NDArray LesserEqual(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastLesserEqual(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastLesserEqual(lhs, rhs);;
         }
     }
     
@@ -2271,7 +2340,7 @@ namespace Horker.MXNet
         public static NDArray LesserEqual(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._lesserEqualScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._lesserEqualScalar(lhs, rhs);;
         }
     }
     
@@ -2280,7 +2349,7 @@ namespace Horker.MXNet
         public static NDArray LesserEqual(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._greaterEqualScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._greaterEqualScalar(rhs, lhs);;
         }
     }
     
@@ -2298,7 +2367,7 @@ namespace Horker.MXNet
         public static NDArray LogicalAnd(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastLogicalAnd(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastLogicalAnd(lhs, rhs);;
         }
     }
     
@@ -2307,7 +2376,7 @@ namespace Horker.MXNet
         public static NDArray LogicalAnd(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._logicalAndScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._logicalAndScalar(lhs, rhs);;
         }
     }
     
@@ -2316,7 +2385,7 @@ namespace Horker.MXNet
         public static NDArray LogicalAnd(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._logicalAndScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._logicalAndScalar(rhs, lhs);;
         }
     }
     
@@ -2334,7 +2403,7 @@ namespace Horker.MXNet
         public static NDArray LogicalOr(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastLogicalOr(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastLogicalOr(lhs, rhs);;
         }
     }
     
@@ -2343,7 +2412,7 @@ namespace Horker.MXNet
         public static NDArray LogicalOr(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._logicalOrScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._logicalOrScalar(lhs, rhs);;
         }
     }
     
@@ -2352,7 +2421,7 @@ namespace Horker.MXNet
         public static NDArray LogicalOr(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._logicalOrScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._logicalOrScalar(rhs, lhs);;
         }
     }
     
@@ -2370,7 +2439,7 @@ namespace Horker.MXNet
         public static NDArray LogicalXor(NDArray lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ Op.BroadcastLogicalXor(lhs, rhs);
+            return /* _ufunc_helper expanded */ Op.BroadcastLogicalXor(lhs, rhs);;
         }
     }
     
@@ -2379,7 +2448,7 @@ namespace Horker.MXNet
         public static NDArray LogicalXor(NDArray lhs, float rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._logicalXorScalar(lhs, rhs);
+            return /* _ufunc_helper expanded */ _internal._logicalXorScalar(lhs, rhs);;
         }
     }
     
@@ -2388,7 +2457,7 @@ namespace Horker.MXNet
         public static NDArray LogicalXor(float lhs, NDArray rhs)
         {
             // Expr
-            return /* _ufunc_helper expanded */ _internal._logicalXorScalar(rhs, lhs);
+            return /* _ufunc_helper expanded */ _internal._logicalXorScalar(rhs, lhs);;
         }
     }
     

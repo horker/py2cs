@@ -31,9 +31,16 @@ namespace Horker.MXNet.Compat
         public static bool CBool(int obj) => obj != 0;
         public static bool CBool(object obj) => (bool)obj;
 
+        public static long CSizeT() => default;
+        public static long CSizeT(long obj) => obj;
+        public static long CSizeT(object obj) => (long)obj;
+
         public static IntPtr CVoidP() => default;
         public static IntPtr CVoidP(int obj) => (IntPtr)obj;
 
         public static T[] Pointer<T>(T value) => new T[] { value };
+
+        public class CTypesUtil 
+        public static CTypesUtil
     }
 }

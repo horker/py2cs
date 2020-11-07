@@ -399,7 +399,7 @@ namespace Horker.MXNet.Interop
         [DllImport(MXNetDll)]
         public static extern int MXNDArraySyncCopyFromCPU(
             NDArrayHandle handle,
-            IntPtr data,
+            float[] data,
             size_t size
         );
 

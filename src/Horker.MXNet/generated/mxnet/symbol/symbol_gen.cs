@@ -33,6 +33,8 @@ namespace Horker.MXNet
     
     // Expr
     // ImportFrom
+    // try block outside of function -- only body generated
+    // ImportFrom
     // ImportFrom
     // Import
     // Import
@@ -325,7 +327,7 @@ namespace Horker.MXNet
             {
                 throw new ValueError(("Cannot find output that matches name \"%s\"".PyFormat(index)));
             }
-            var indexReassigned = idx;
+            var index = idx;
             if (IsTrue((indexReassigned >= outputCount)))
             {
                 throw new IndexError();
@@ -450,6 +452,42 @@ namespace Horker.MXNet
         public object InferType(object *args, object kwargs)
         {
             // Expr
+            try{
+                var res = this._inferTypeImpl(false, Args);
+                if (IsTrue((IsNone(res.Item2))))
+                {
+                    var (argShapes, _, local0) = this._inferTypeImpl(true, Args);
+                    _ = local0;
+                    var argNames = this.ListArguments();
+                    var unknowns = null;
+                    foreach (var (name, dtype) in Zip(argNames, argShapes))
+                    {
+                        if (IsTrue((!IsTrue(dtype))))
+                        {
+                            if (IsTrue((Len(unknowns) >= 10)))
+                            {
+                                unknowns.Append("...");
+                                break;
+                            }
+                            unknowns.Append(("%s: %s".PyFormat(ValueTuple.Create(name, Str(dtype)))));
+                        }
+                    }
+                    Warnings.Warn(BinOp.Add(BinOp.Add("Cannot decide type for the following arguments. ", "Consider providing them as input:\n\t"), "\n\t".Join(unknowns)), stacklevel: 2);
+                }
+                return res;
+            }
+            catch (MXNetError){
+                Print("infer_type error. Arguments:");
+                foreach (var (i, arg) in Enumerate(Args))
+                {
+                    Print(("  #%d: %s".PyFormat(ValueTuple.Create(i, arg))));
+                }
+                foreach (var (k, v) in kwargs.Items())
+                {
+                    Print(("  %s: %s".PyFormat(ValueTuple.Create(k, v))));
+                }
+                throw null;
+            }
         }
         
         public object InferTypePartial(object *args, object kwargs)
@@ -532,6 +570,50 @@ namespace Horker.MXNet
         public object InferShape(object *args, object kwargs)
         {
             // Expr
+            try{
+                var res = this._inferShapeImpl(false, Args);
+                if (IsTrue((IsNone(res.Item2))))
+                {
+                    var (argShapes, _, local0) = this._inferShapeImpl(true, Args);
+                    _ = local0;
+                    var argNames = this.ListArguments();
+                    var unknowns = null;
+                    foreach (var (name, shape) in Zip(argNames, argShapes))
+                    {
+                        if (IsTrue(IsNpShape()))
+                        {
+                            var shapeIsNone = (IsTrue((!IsTrue(shape))) || IsTrue((shape.Contains((-1)))));
+                        }
+                        else
+                        {
+                            var shapeIsNone = (IsTrue((!IsTrue(shape))) || IsTrue((shape.Contains(0))));
+                        }
+                        if (IsTrue(ShapeIsNone))
+                        {
+                            if (IsTrue((Len(unknowns) >= 10)))
+                            {
+                                unknowns.Append("...");
+                                break;
+                            }
+                            unknowns.Append(("%s: %s".PyFormat(ValueTuple.Create(name, Str(shape)))));
+                        }
+                    }
+                    Warnings.Warn(BinOp.Add(BinOp.Add(BinOp.Add("Cannot decide shape for the following arguments ", "(0s in shape means unknown dimensions). "), "Consider providing them as input:\n\t"), "\n\t".Join(unknowns)), stacklevel: 2);
+                }
+                return res;
+            }
+            catch (MXNetError){
+                Print("infer_shape error. Arguments:");
+                foreach (var (i, arg) in Enumerate(Args))
+                {
+                    Print(("  #%d: %s".PyFormat(ValueTuple.Create(i, arg))));
+                }
+                foreach (var (k, v) in kwargs.Items())
+                {
+                    Print(("  %s: %s".PyFormat(ValueTuple.Create(k, v))));
+                }
+                throw null;
+            }
         }
         
         public object InferShapePartial(object *args, object kwargs)
@@ -707,9 +789,8 @@ namespace Horker.MXNet
             {
                 if (IsTrue(Isinstance(v, typeof(Tuple))))
                 {
-                    var local0 = (tuple)v;
                     providedArgShapeNames.Append(k);
-                    providedArgShapeData.Extend(local0);
+                    providedArgShapeData.Extend(v);
                     providedArgShapeIdx.Append(Len(providedArgShapeData));
                 }
             }
@@ -766,6 +847,18 @@ namespace Horker.MXNet
             var argGradHandles = CTypes.POINTER(typeof(NDArrayHandle))();
             var numAuxStates = CTypes.CUint();
             var auxStateHandles = CTypes.POINTER(typeof(NDArrayHandle))();
+            try{
+                CheckCall(_LIB.MXExecutorSimpleBindEx(this.Handle, CTypes.CInt(ctx.DeviceTypeid), CTypes.CInt(ctx.DeviceId), numCtxMapKeys, ctxMapKeys, ctxMapDevTypes, ctxMapDevIds, MxUint(providedReqTypeListLen), providedGradReqNames, providedGradReqTypes, MxUint(Len(providedArgShapeNames)), CStrArray(providedArgShapeNames), CArrayBuf(typeof(MxInt), Array("I", providedArgShapeData)), CArrayBuf(typeof(MxUint), Array("i", providedArgShapeIdx)), numProvidedArgTypes, providedArgTypeNames, providedArgTypeData, numProvidedArgStypes, providedArgStypeNames, providedArgStypeData, MxUint(Len(sharedArgNameList)), CStrArray(sharedArgNameList), out sharedBufferLen, SharedBufferNames, SharedBufferHandles, out updatedSharedBufferNames, out updatedSharedBufferHandles, out numInArgs, out inArgHandles, out argGradHandles, out numAuxStates, out auxStateHandles, sharedExecHandle, out exeHandle));
+            }
+            catch (MXNetError ){
+                var errorMsg = "simple_bind error. Arguments:\n";
+                foreach (var (k, v) in kwargs.Items())
+                {
+                    errorMsg = BinOp.Add(errorMsg, ("%s: %s\n".PyFormat(ValueTuple.Create(k, v))));
+                }
+                errorMsg = BinOp.Add(errorMsg, ("%s".PyFormat(E)));
+                throw new RuntimeError(errorMsg);
+            }
             if (IsTrue((!IsNone(sharedBuffer))))
             {
                 foreach (var i in Range(SharedBufferLen.Value))

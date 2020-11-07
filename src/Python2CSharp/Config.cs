@@ -90,7 +90,7 @@ namespace Python2CSharp
             if (parameters.Length == 2)
                 return;
 
-            var paramRe = new Regex(@"(?:(?:params\s+)?(\w+(?:<[^>]+>+)?\s*(?:\[\])?)\s+@?([*\w]+)(?:\s*=\s*(?:[^(),]+|(?:\([^)]*\))))?(?:\s*,\s*)?)|(\)$)");
+            var paramRe = new Regex(@"(?:(?:params\s+)?([\w.]+(?:<[^>]+>+)?\s*(?:\[\])?)\s+@?([*\w]+)(?:\s*=\s*(?:[^(),]+|(?:\([^)]*\))))?(?:\s*,\s*)?)|(\)$)");
             var matches = paramRe.Matches(parameters.Substring(1, parameters.Length - 1));
 
             if (matches[matches.Count - 1].Groups[3].Value != ")")
@@ -127,6 +127,8 @@ namespace Python2CSharp
         public List<string> Prologue { get; set; } = new List<string>();
         public Dictionary<string, LocalConfig> Locals { get; set; } = new Dictionary<string, LocalConfig>();
         public Dictionary<string, string> LocalAliases { get; set; } = new Dictionary<string, string>();
+        public List<string> LocalsToBeRenamed { get; set; } = new List<string>();
+        public bool StopIsInstanceResolution { get; set; } = false;
 
         private SignatureAnalysis _signatureAnalysis;
         private SignatureAnalysis _signatureSetterAnalysis;
@@ -218,6 +220,7 @@ namespace Python2CSharp
         public string Name { get; set; } = "";
         public List<string> BaseClasses { get; set; } = new List<string>();
         public Dictionary<string, FieldConfig> Fields { get; set; } = new Dictionary<string, FieldConfig>();
+        public List<string> PropertiesAsMethods { get; set; } = new List<string>();
         public Dictionary<string, List<MethodConfig>> Methods { get; set; } = new Dictionary<string, List<MethodConfig>>();
         public List<string> SpecialMethods { get; set; } = new List<string>();
         public Dictionary<string, StaticFieldConfig> StaticFields { get; set; } = new Dictionary<string, StaticFieldConfig>();

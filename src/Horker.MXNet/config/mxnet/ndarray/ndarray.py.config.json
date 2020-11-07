@@ -12,6 +12,9 @@
     "Helper": {
       "Name": "Helper",
       "BaseClasses": null,
+      "PropertiesAsMethods": [
+        "handle", "value"
+      ],
       "Fields": {},
       "Methods": {
         "_new_empty_handle": [
@@ -509,6 +512,9 @@
       "BaseClasses": [
         "NDArrayBase"
       ],
+      "PropertiesAsMethods": [
+        "handle", "value"
+      ],
       "Fields": {
         "handle": {
           "Signature": "public NDArrayHandle Handle { get; set; }",
@@ -710,7 +716,10 @@
         ],
         "__getitem__": [
           {
-            "Signature": "internal object __Getitem__(NDArray key)"
+            "Signature": "internal object __Getitem__(int key)"
+          },
+          {
+            "Signature": "internal object __Getitem__(PySlice key)"
           }
         ],
         "_get_index_nd": [
@@ -747,16 +756,28 @@
         ],
         "_prepare_value_nd": [
           {
-            "Signature": "internal object _prepareValueNd(float value, Shape vshape)"
+            "Signature": "internal NDArray _prepareValueNd(float value, Shape vshape)"
           },
           {
-            "Signature": "internal object _prepareValueNd(NDArray value, Shape vshape)"
+            "Signature": "internal NDArray _prepareValueNd(NDArray value, Shape vshape)"
           }
         ],
         "_set_nd_basic_indexing": [
           {
             "Signature": "internal void _setNdBasicIndexing(int key, NDArray value)",
             "Locals": {
+              "key_ssa2": {
+                "Type": "int",
+                "Definition":  "int keySsa2;"
+              },
+              "key_ssa4": {
+                "Type":  "int",
+                "Definition":  "int keySsa4;"
+              },
+              "key_ssa8": {
+                "Type":  "PySlice",
+                "Definition":  "PySlice keySsa8;"
+              },
               "begin": {
                 "Type": "Shape"
               },
@@ -775,11 +796,18 @@
               "slice_i": {
                 "Type": "int"
               }
-            }
+            },
+            "LocalsToBeRenamed": [
+              "key"
+            ]
           },
           {
             "Signature": "internal void _setNdBasicIndexing(PySlice key, NDArray value)",
             "Locals": {
+              "key_ssa8": {
+                "Type":  "PySlice",
+                "Definition":  "PySlice keySsa8;"
+              },
               "begin": {
                 "Type":  "Shape"
               },
@@ -812,7 +840,30 @@
             "Signature": "internal NDArray _getNdBasicIndexing(int key)"
           },
           {
-            "Signature": "internal NDArray _getNdBasicIndexing(PySlice key)"
+            "Signature": "internal NDArray _getNdBasicIndexing(PySlice key)",
+            "Locals": {
+              "begin": {
+                "Type": "Shape"
+              },
+              "end": {
+                "Type": "Shape"
+              },
+              "step": {
+                "Type": "Shape"
+              },
+              "kept_axes": {
+                "Type": "Shape"
+              },
+              "slice_i": {
+                "Type": "int"
+              },
+              "oshape": {
+                "Type":  "Shape"
+              }
+            },
+            "LocalsToBeRenamed": [
+              "i"
+            ]
           }
         ],
         "_get_nd_advanced_indexing": [
@@ -823,7 +874,16 @@
         ],
         "_sync_copyfrom": [
           {
-            "Signature": "internal object _syncCopyfrom(object sourceArray)"
+            "Signature": "internal void _syncCopyfrom(Np.NDArray sourceArray)",
+            "Locals": {
+              "source_array_ssa2": {
+                "Type": "Np.NDArray",
+                "Definition": "Np.NDArray sourceArraySsa2;"
+              }
+            },
+            "LocalsToBeRenamed": [
+              "source_array"
+            ]
           }
         ],
         "_slice": [
@@ -1420,14 +1480,11 @@
         "attach_grad": [
           {
             "Signature": "public void AttachGrad(string gradReq = \"write\", string stype = null)",
-            "Reassigned": [
-              "grad_req"
-            ],
             "Locals": {
               "grad": {
                 "Type": "NDArray",
                 "Definition": "NDArray grad;"
-              }
+              },
             }
           }
         ],

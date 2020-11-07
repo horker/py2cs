@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Threading;
 
 namespace Horker.MXNet
 {
@@ -13,6 +15,10 @@ namespace Horker.MXNet
             // TODO
             return format;
         }
+
+        public static IntPtr GetHandle(this NDArray self) => self.Handle;
+
+        public static ThreadLocal<T> GetValue<T>(this ThreadLocal<T> self) => self;
 
         public static void InsertToSlice(NDArray lhs, int? lower, int? upper, int? step, NDArray rhs)
         {
@@ -38,13 +44,13 @@ namespace Horker.MXNet
             return new List<int>(shape.Dimensions);
         }
 
+        public static int MxInt() => default;
         public static int MxInt(int value) => value;
-        public static int MxInt(object value) => (int)value;
+        public static int MxInt(uint value) => (int)value;
 
         // uint is not useful; We will use int instead.
         public static int MxUint() => default;
         public static int MxUint(uint value) => (int)value;
         public static int MxUint(int value) => (int)value;
-        public static int MxUint(object value) => (int)value;
     }
 }
